@@ -1,0 +1,8 @@
+[Script for Search and Replace]
+[Search /ix]
+["</]verify/
+[Replace]
+%1validate/
+[Path]
+C:\cygwin\home\jofa\dev\trunk\itl\*.h;*.hpp;*.cpp;*.vcproj
+[End of Search and Replace Script]

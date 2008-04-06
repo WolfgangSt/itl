@@ -1,0 +1,276 @@
+[Script for Search and Replace]
+[Search /i]
+"atmlmt.h"
+[Replace]
+<ufo5\attr\h\atmlmt.h>
+[Search /i]
+"cmplmt.h"
+[Replace]
+<ufo5\attr\h\cmplmt.h>
+[Search /i]
+"distrib.h"
+[Replace]
+<ufo5\attr\h\distrib.h>
+[Search /i]
+"fold.h"
+[Replace]
+<ufo5\attr\h\fold.h>
+[Search /i]
+"frmstyle.h"
+[Replace]
+<ufo5\attr\h\frmstyle.h>
+[Search /i]
+"glex.h"
+[Replace]
+<ufo5\attr\h\glex.h>
+[Search /i]
+"pad.h"
+[Replace]
+<ufo5\attr\h\pad.h>
+[Search /i]
+"tpcmb.h"
+[Replace]
+<ufo5\attr\h\tpcmb.h>
+[Search /i]
+"wlimits.h"
+[Replace]
+<ufo5\attr\h\wlimits.h>
+[Search /i]
+"abstb.h"
+[Replace]
+<ufo5\box\h\abstb.h>
+[Search /i]
+"atmbx.h"
+[Replace]
+<ufo5\box\h\atmbx.h>
+[Search /i]
+"bibx.h"
+[Replace]
+<ufo5\box\h\bibx.h>
+[Search /i]
+"box.h"
+[Replace]
+<ufo5\box\h\box.h>
+[Search /i]
+"boxattr.h"
+[Replace]
+<ufo5\box\h\boxattr.h>
+[Search /i]
+"cell.h"
+[Replace]
+<ufo5\box\h\cell.h>
+[Search /i]
+"cmpbx.h"
+[Replace]
+<ufo5\box\h\cmpbx.h>
+[Search /i]
+"cmtb.h"
+[Replace]
+<ufo5\box\h\cmtb.h>
+[Search /i]
+"col.h"
+[Replace]
+<ufo5\box\h\col.h>
+[Search /i]
+"dshbx.h"
+[Replace]
+<ufo5\box\h\dshbx.h>
+[Search /i]
+"entrybx.h"
+[Replace]
+<ufo5\box\h\entrybx.h>
+[Search /i]
+"flprw.h"
+[Replace]
+<ufo5\box\h\flprw.h>
+[Search /i]
+"flwrw.h"
+[Replace]
+<ufo5\box\h\flwrw.h>
+[Search /i]
+"lfsmtb.h"
+[Replace]
+<ufo5\box\h\lfsmtb.h>
+[Search /i]
+"lftb.h"
+[Replace]
+<ufo5\box\h\lftb.h>
+[Search /i]
+"mtbx.h"
+[Replace]
+<ufo5\box\h\mtbx.h>
+[Search /i]
+"qlev.h"
+[Replace]
+<ufo5\box\h\qlev.h>
+[Search /i]
+"rgsmtb.h"
+[Replace]
+<ufo5\box\h\rgsmtb.h>
+[Search /i]
+"rgtb.h"
+[Replace]
+<ufo5\box\h\rgtb.h>
+[Search /i]
+"row.h"
+[Replace]
+<ufo5\box\h\row.h>
+[Search /i]
+"share.h"
+[Replace]
+<ufo5\box\h\share.h>
+[Search /i]
+"sldbx.h"
+[Replace]
+<ufo5\box\h\sldbx.h>
+[Search /i]
+"smtb.h"
+[Replace]
+<ufo5\box\h\smtb.h>
+[Search /i]
+"spin.h"
+[Replace]
+<ufo5\box\h\spin.h>
+[Search /i]
+"tbrw.h"
+[Replace]
+<ufo5\box\h\tbrw.h>
+[Search /i]
+"txtbx.h"
+[Replace]
+<ufo5\box\h\txtbx.h>
+[Search /i]
+"txtknd.h"
+[Replace]
+<ufo5\box\h\txtknd.h>
+[Search /i]
+"utxtfld.h"
+[Replace]
+<ufo5\box\h\utxtfld.h>
+[Search /i]
+"varbx.h"
+[Replace]
+<ufo5\box\h\varbx.h>
+[Search /i]
+"xtxtbx.h"
+[Replace]
+<ufo5\box\h\xtxtbx.h>
+[Search /i]
+"editor.h"
+[Replace]
+<ufo5\itf\h\editor.h>
+[Search /i]
+"stdafx.h"
+[Replace]
+<ufo5\itf\h\stdafx.h>
+[Search /i]
+"tcltki.h"
+[Replace]
+<ufo5\itf\h\tcltki.h>
+[Search /i]
+"tkInt.h"
+[Replace]
+<ufo5\itf\h\tkInt.h>
+[Search /i]
+"tkPort.h"
+[Replace]
+<ufo5\itf\h\tkPort.h>
+[Search /i]
+"tkWinPort.h"
+[Replace]
+<ufo5\itf\h\tkWinPort.h>
+[Search /i]
+"tk_itf.h"
+[Replace]
+<ufo5\itf\h\tk_itf.h>
+[Search /i]
+"typo.h"
+[Replace]
+<ufo5\itf\h\typo.h>
+[Search /i]
+"ufocmd.h"
+[Replace]
+<ufo5\itf\h\ufocmd.h>
+[Search /i]
+"ufocmds.h"
+[Replace]
+<ufo5\itf\h\ufocmds.h>
+[Search /i]
+"wspace.h"
+[Replace]
+<ufo5\itf\h\wspace.h>
+[Search /i]
+"xfont.h"
+[Replace]
+<ufo5\itf\h\xfont.h>
+[Search /i]
+"extrem.h"
+[Replace]
+<ufo5\jolib\h\extrem.h>
+[Search /i]
+"fktl.h"
+[Replace]
+<ufo5\jolib\h\fktl.h>
+[Search /i]
+"frame.h"
+[Replace]
+<ufo5\jolib\h\frame.h>
+[Search /i]
+"mathfkt.h"
+[Replace]
+<ufo5\jolib\h\mathfkt.h>
+[Search /i]
+"mathmac.h"
+[Replace]
+<ufo5\jolib\h\mathmac.h>
+[Search /i]
+"nvec.h"
+[Replace]
+<ufo5\jolib\h\nvec.h>
+[Search /i]
+"pos.h"
+[Replace]
+<ufo5\jolib\h\pos.h>
+[Search /i]
+"pre.h"
+[Replace]
+<ufo5\jolib\h\pre.h>
+[Search /i]
+"rect.h"
+[Replace]
+<ufo5\jolib\h\rect.h>
+[Search /i]
+"seq.h"
+[Replace]
+<ufo5\jolib\h\seq.h>
+[Search /i]
+"size.h"
+[Replace]
+<ufo5\jolib\h\size.h>
+[Search /i]
+"stypes.h"
+[Replace]
+<ufo5\jolib\h\stypes.h>
+[Search /i]
+"sugar.h"
+[Replace]
+<ufo5\jolib\h\sugar.h>
+[Search /i]
+"text.h"
+[Replace]
+<ufo5\jolib\h\text.h>
+[Search /i]
+"tupel.h"
+[Replace]
+<ufo5\jolib\h\tupel.h>
+[Search /i]
+"vec.h"
+[Replace]
+<ufo5\jolib\h\vec.h>
+[Search /i]
+"unistd.h"
+[Replace]
+<ufo5\pars\h\unistd.h>
+[Path]
+C:\wspace\prj\ufo\ufo5\*.h;*.cpp;*.l;*.y
+[End of Search and Replace Script]

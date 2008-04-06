@@ -1,0 +1,20 @@
+[Script for Search and Replace]
+[Search /ix]
+itv/*[a-z_]\.h\>
+[Replace]
+itl/%1.hpp>
+[Search /ix]
+cont/*[a-z_]\.h\>
+[Replace]
+itl/%1.hpp>
+[Search /ix]
+cube/*[a-z_]\.h\>
+[Replace]
+itl/%1.hpp>
+[Search /ix]
+base/*[a-z_]\.h\>
+[Replace]
+itl/%1.hpp>
+[Path]
+C:\cygwin\home\jofa\dev\trunk\itl\src\verify\*.h;*.hpp;*.cpp;*.vcproj
+[End of Search and Replace Script]
