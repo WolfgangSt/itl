@@ -107,7 +107,7 @@ bool ItvMapTesterT<ItvMapTV>::testInsertionIndependence(int nTries)
 		}
 
 	if(!correct) {
-		cout << "InsertionIndependence violated" << endl;
+		std::cout << "InsertionIndependence violated" << std::endl;
 	}
 
 	return correct;
@@ -145,18 +145,18 @@ bool ItvMapTesterT<ItvMapTV>::testJoinIndependence(int nTries)
 			if(true==correct) { 
 				min_y = y; min_y_join = y_join;
 				correct=false;
-				cout << "y.sz=" << y.interval_count() << "  try=" << i << endl;
+				std::cout << "y.sz=" << y.interval_count() << "  try=" << i << std::endl;
 			}
 			else if( y.interval_count() < min_y.interval_count() ) {
 				min_y = y; min_y_join = y_join;
-				cout << "y.sz=" << y.interval_count() << "  try=" << i << endl;
+				std::cout << "y.sz=" << y.interval_count() << "  try=" << i << std::endl;
 			}
 		}
 
 	if(!correct) {
-		cout << "JoinIndependence violated ---------------------------" << endl;
-		cout << "y     :" << min_y.asString().c_str() << endl;
-		cout << "y_join:" << min_y_join.asString().c_str() << endl;
+		std::cout << "JoinIndependence violated ---------------------------" << std::endl;
+		std::cout << "y     :" << min_y.asString().c_str() << std::endl;
+		std::cout << "y_join:" << min_y_join.asString().c_str() << std::endl;
 	}
 
 	return correct;
@@ -198,20 +198,20 @@ bool ItvMapTesterT<ItvMapTV>::testInsertAndJoinIndependence(int nTries)
 			if(true==correct) { 
 				min_y = y; min_y_perm = y_perm; min_y_permJoin = y_permJoin;
 				correct=false;
-				cout << "y.sz=" << y.interval_count() << "  try=" << i << endl;
+				std::cout << "y.sz=" << y.interval_count() << "  try=" << i << std::endl;
 			}
 			else if( y.interval_count() < min_y.interval_count() ) {
 				min_y = y; min_y_perm = y_perm; min_y_permJoin = y_permJoin;
-				cout << "y.sz=" << y.interval_count() << "  try=" << i << endl;
+				std::cout << "y.sz=" << y.interval_count() << "  try=" << i << std::endl;
 			}
 		}
 	}
 
 	if(!correct) {
-		cout << "InsertAndJoinIndependence violated ---------------------------" << endl;
-		cout << "y      :" << min_y.asString().c_str() << endl;
-		cout << "y_perm :" << min_y_perm.asString().c_str() << endl;
-		cout << "y_pjoin:" << min_y_permJoin.asString().c_str() << endl;
+		std::cout << "InsertAndJoinIndependence violated ---------------------------" << std::endl;
+		std::cout << "y      :" << min_y.asString().c_str() << std::endl;
+		std::cout << "y_perm :" << min_y_perm.asString().c_str() << std::endl;
+		std::cout << "y_pjoin:" << min_y_permJoin.asString().c_str() << std::endl;
 	}
 
 	return correct;
@@ -273,8 +273,8 @@ bool ItvMapTesterT<ItvMapTV>::testInsertReversibility1(int nTries, char* errFile
 				min_x = x; min_y = y; min_y_perm = y_perm; 
 				min_y_permJoin = y_permJoin; min_x_plus_y = x_plus_y; min_x2 = x2;
 				min_caseSize = caseSize;
-				cout << "x.sz=" << x.interval_count() << " y.sz=" << y.interval_count() 
-					 << "  try=" << i << endl;
+				std::cout << "x.sz=" << x.interval_count() << " y.sz=" << y.interval_count() 
+					 << "  try=" << i << std::endl;
 				correct=false;
 			}
 			else if ( caseSize < min_caseSize )
@@ -282,20 +282,20 @@ bool ItvMapTesterT<ItvMapTV>::testInsertReversibility1(int nTries, char* errFile
 				min_x = x; min_y = y; min_y_perm = y_perm;
 				min_y_permJoin = y_permJoin; min_x_plus_y = x_plus_y; min_x2 = x2;
 				min_caseSize = caseSize;
-				cout << "x.sz=" << x.interval_count() << " y.sz=" << y.interval_count() 
-					 << "  try=" << i << endl;
+				std::cout << "x.sz=" << x.interval_count() << " y.sz=" << y.interval_count() 
+					 << "  try=" << i << std::endl;
 			}
 		}
 	}
 
 	if(!correct) {
-		cout << "InsertReversibility1: x + y - join(perm(y)) == x =: x2  violated --------" << endl;
-		cout << "x       :" << min_x.asString().c_str() << endl;
-		cout << "y       :" << min_y.asString().c_str() << endl;
-		cout << "y_perm  :" << min_y_perm.asString().c_str() << endl;
-		cout << "y_pJnt  :" << min_y_permJoin.asString().c_str() << endl;
-		cout << "x+y     :" << min_x_plus_y.asString().c_str() << endl;
-		cout << "x2      :" << min_x2.asString().c_str() << endl;
+		std::cout << "InsertReversibility1: x + y - join(perm(y)) == x =: x2  violated --------" << std::endl;
+		std::cout << "x       :" << min_x.asString().c_str() << std::endl;
+		std::cout << "y       :" << min_y.asString().c_str() << std::endl;
+		std::cout << "y_perm  :" << min_y_perm.asString().c_str() << std::endl;
+		std::cout << "y_pJnt  :" << min_y_permJoin.asString().c_str() << std::endl;
+		std::cout << "x+y     :" << min_x_plus_y.asString().c_str() << std::endl;
+		std::cout << "x2      :" << min_x2.asString().c_str() << std::endl;
 
 		FILE* fp;
 		fp = fopen(errFile,"w");
@@ -311,8 +311,8 @@ bool ItvMapTesterT<ItvMapTV>::testInsertReversibility1(int nTries, char* errFile
 	}
 	else
 	{
-		cout << "InsertReversibility1("<<nTries<<") OK " 
-			 << " x + y - join(perm(y)) == x =: x2" << endl;
+		std::cout << "InsertReversibility1("<<nTries<<") OK " 
+			 << " x + y - join(perm(y)) == x =: x2" << std::endl;
 	}
 
 	return correct;
@@ -385,9 +385,9 @@ bool ItvMapTesterT<ItvMapTV>::testInsertReversibility2(int nTries, char* errFile
 				min_y_permJoin = y_permJoin; min_x_plus_y_pj = x_plus_y_pj; 
 				min_x2 = x2;
 				min_caseSize = caseSize;
-				cout << "x.sz="  << static_cast<unsigned int>(x.interval_count())
+				std::cout << "x.sz="  << static_cast<unsigned int>(x.interval_count())
 					 << " y.sz=" << static_cast<unsigned int>(y.interval_count())
-					 << "  try=" << i << endl;
+					 << "  try=" << i << std::endl;
 				correct=false;
 			}
 			else if ( caseSize < min_caseSize )
@@ -395,21 +395,21 @@ bool ItvMapTesterT<ItvMapTV>::testInsertReversibility2(int nTries, char* errFile
 				min_x = x; min_y = y; min_y_perm = y_perm;
 				min_y_permJoin = y_permJoin; min_x_plus_y_pj = x_plus_y_pj; min_x2 = x2;
 				min_caseSize = caseSize;
-				cout << "x.sz="  << static_cast<unsigned int>(x.interval_count())
+				std::cout << "x.sz="  << static_cast<unsigned int>(x.interval_count())
 					 << " y.sz=" << static_cast<unsigned int>(y.interval_count()) 
-					 << "  try=" << i << endl;
+					 << "  try=" << i << std::endl;
 			}
 		}
 	}
 
 	if(!correct) {
-		cout << "InsertReversibility2: x + join(perm(y)) - y == x =: x2  violated --------" << endl;
-		cout << "x       :" << min_x.asString().c_str() << endl;
-		cout << "y       :" << min_y.asString().c_str() << endl;
-		cout << "y_perm  :" << min_y_perm.asString().c_str() << endl;
-		cout << "y_pJnt  :" << min_y_permJoin.asString().c_str() << endl;
-		cout << "x+y_pJnt:" << min_x_plus_y_pj.asString().c_str() << endl;
-		cout << "x2      :" << min_x2.asString().c_str() << endl;
+		std::cout << "InsertReversibility2: x + join(perm(y)) - y == x =: x2  violated --------" << std::endl;
+		std::cout << "x       :" << min_x.asString().c_str() << std::endl;
+		std::cout << "y       :" << min_y.asString().c_str() << std::endl;
+		std::cout << "y_perm  :" << min_y_perm.asString().c_str() << std::endl;
+		std::cout << "y_pJnt  :" << min_y_permJoin.asString().c_str() << std::endl;
+		std::cout << "x+y_pJnt:" << min_x_plus_y_pj.asString().c_str() << std::endl;
+		std::cout << "x2      :" << min_x2.asString().c_str() << std::endl;
 
 
 		FILE* fp;
@@ -425,8 +425,8 @@ bool ItvMapTesterT<ItvMapTV>::testInsertReversibility2(int nTries, char* errFile
 	}
 	else
 	{
-		cout << "InsertReversibility2("<<nTries<<") OK " 
-			 << " x + join(perm(y)) - y == x =: x2" << endl;
+		std::cout << "InsertReversibility2("<<nTries<<") OK " 
+			 << " x + join(perm(y)) - y == x =: x2" << std::endl;
 	}
 
 	return correct;
@@ -504,9 +504,9 @@ bool ItvMapTesterT<ItvMapTV>::testErasureAsIntersectionComputability(int nTries,
 				min_xDom_minus_y = xDom_minus_y;
 				min_x_resid = x_resid; min_x_section = x_section;
 				min_caseSize = caseSize;
-				cout << "x.sz="  << static_cast<unsigned int>(x.interval_count())
+				std::cout << "x.sz="  << static_cast<unsigned int>(x.interval_count())
 					 << " y.sz=" << static_cast<unsigned int>(y.interval_count())
-					 << "  try=" << i << endl;
+					 << "  try=" << i << std::endl;
 				correct=false;
 			}
 			else if ( caseSize < min_caseSize )
@@ -515,17 +515,17 @@ bool ItvMapTesterT<ItvMapTV>::testErasureAsIntersectionComputability(int nTries,
 				min_xDom_minus_y = xDom_minus_y;
 				min_x_resid = x_resid; min_x_section = x_section;
 				min_caseSize = caseSize;
-				cout << "x.sz="  << static_cast<unsigned int>(x.interval_count())
+				std::cout << "x.sz="  << static_cast<unsigned int>(x.interval_count())
 					 << " y.sz=" << static_cast<unsigned int>(y.interval_count())
-					 << "  try=" << i << endl;
+					 << "  try=" << i << std::endl;
 			}
 		}
 	}
 
 	if(!correct) {
-		cout << "ErasureAsIntersectionComputability: x -~ y == x * (dom(x)-y) violated --------" << endl;
-		cout << "x       :" << min_x.asString().c_str() << endl;
-		cout << "y       :" << min_y.asString().c_str() << endl;
+		std::cout << "ErasureAsIntersectionComputability: x -~ y == x * (dom(x)-y) violated --------" << std::endl;
+		std::cout << "x       :" << min_x.asString().c_str() << std::endl;
+		std::cout << "y       :" << min_y.asString().c_str() << std::endl;
 
 
 		FILE* fp;
@@ -537,8 +537,8 @@ bool ItvMapTesterT<ItvMapTV>::testErasureAsIntersectionComputability(int nTries,
 	}
 	else
 	{
-		cout << "ErasureAsIntersectionComputability("<<nTries<<") OK " 
-			 << " x -~ y == x * (dom(x)-y)" << endl;
+		std::cout << "ErasureAsIntersectionComputability("<<nTries<<") OK " 
+			 << " x -~ y == x * (dom(x)-y)" << std::endl;
 	}
 
 	return correct;

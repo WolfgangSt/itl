@@ -85,17 +85,22 @@ class episode_set : public itl::set<typed_episode<ItvDomTV, TypeDomTV>*, Less_Ty
 {
 	// all elements must have the same type from TypeDomTV
 public:
+	typedef itl::set<typed_episode<ItvDomTV, TypeDomTV>*, Less_TypedEpisodeATP > base_type;
+	typedef typename base_type::iterator iterator;
+	typedef typename base_type::const_iterator const_iterator;
+	
+public:
 	bool isMonoTyped()const;
 
 	std::string asString(const char* sep = " ")const
 	{
-		const_iterator it = begin();
+		const_iterator it = this->begin();
 		
-		if(it == end()) return std::string("");
+		if(it == this->end()) return std::string("");
 		else
 		{
 			std::string y = (**it).asString(); it++;
-			while(it != end()) 
+			while(it != this->end()) 
 			{ 
 				y += sep; 
 				y += (**it).asString(); 
@@ -116,7 +121,9 @@ inline bool operator == (const episode_set<ItvDomTV,TypeDomTV>& lhs,
 	if(lhs.size() != rhs.size())
 		return false;
 
-	episode_set<ItvDomTV,TypeDomTV>::const_iterator lhs_ = lhs.begin(), rhs_ = rhs.begin();
+	typename episode_set<ItvDomTV,TypeDomTV>::const_iterator 
+		lhs_ = lhs.begin(), 
+		rhs_ = rhs.begin();
 
 	while(lhs_ != lhs.end())
 	{

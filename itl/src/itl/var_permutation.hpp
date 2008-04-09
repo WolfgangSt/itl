@@ -145,7 +145,7 @@ namespace itl
 	template <int varCountV>
 	var_permutation<varCountV>& var_permutation<varCountV>::del(int count) // = 1 default 
 	{
-		int back = atomin(count, m_Size);
+		int back = std::min(count, m_Size);
 		m_Size -= back;
 		return *this;
 	}
@@ -190,12 +190,13 @@ namespace itl
 	template <int varCountV>
 	bool var_permutation<varCountV>::insert(VarEnumTD var, int pos)
 	{
+		//JODO URG untested
 		J_ASSERT2(!contains(var), "var_permutation has to be unique");
-		if(varCountV <= idx || varCountV == m_Size)
+		if(varCountV <= var || varCountV == m_Size)
 			return false;
 
 		// Alle nach rechts schaufeln
-		for(int idx=pos; idx < m_Size)
+		for(int idx=pos; idx < m_Size; idx++)
 			m_Permutation[idx+1] = m_Permutation[idx];
 
 		m_Permutation[pos] = var;
@@ -204,13 +205,13 @@ namespace itl
 	template <int varCountV>
 	std::string var_permutation<varCountV>::asString()const
 	{
-		stringT repr = "[";
+		std::string repr = "[";
 		int idx = 0;
 		if(m_Size>0)
-			repr += StringF("%d", m_Permutation[idx++]);
+			repr += ReprBaseT<VarEnumTD>::toString(m_Permutation[idx++]);
 
 		while(idx<m_Size)
-			repr += StringF(" %d", m_Permutation[idx++]);
+			repr += ReprBaseT<VarEnumTD>::toString(m_Permutation[idx++]);
 
 		repr += "]";
 

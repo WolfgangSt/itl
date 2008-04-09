@@ -37,7 +37,7 @@ DEALINGS IN THE SOFTWARE.
 #define const_FORALL(type,iter,obj) for(type::const_iterator iter=(obj).begin(); !((iter)==(obj).end()); (iter)++)
 
 #define FORALL_THIS(iter) for(iterator iter=begin(); (iter)!=end(); (iter)++)
-#define const_FORALL_THIS(iter) for(const_iterator iter=begin(); (iter)!=end(); (iter)++)
+#define const_FORALL_THIS(iter) for(const_iterator iter=this->begin(); (iter)!=this->end(); (iter)++)
 
 // Plain old array iteration (assuming memberfunction VecT::size()!)
 #define FORALL_VEC(idx, vec) for(int idx=0; idx<vec.size(); idx++)
@@ -50,7 +50,7 @@ DEALINGS IN THE SOFTWARE.
 
 // Variants that requires already declared iterators
 #define FOR_ALL(iter,obj) for((iter)=(obj).begin(); (iter)!=(obj).end(); (iter)++)
-#define FOR_ALL_THIS(iter) for((iter)=begin(); (iter)!=end(); (iter)++)
+#define FOR_ALL_THIS(iter) for((iter)=this->begin(); (iter)!=this->end(); (iter)++)
 
 #define FOR_ALL2(iter1,obj1, iter2,obj2)\
 	for((iter1)=(obj1).begin(), (iter2)=(obj2).begin(); (iter1)!=(obj1).end(); ++(iter1),++(iter2))

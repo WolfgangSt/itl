@@ -90,11 +90,13 @@ template <class ItvDomTV, class TypeDomTV>
 class episode_product : public itl::map<typename TypeDomTV::DomainET, episode_set<ItvDomTV,TypeDomTV> >
 {
 public:
-	typedef itl::map<typename TypeDomTV::DomainET, episode_set<ItvDomTV,TypeDomTV> > BaseTypeTD;
-	typedef	typename	BaseTypeTD::value_type value_type;
-	typedef	typename	BaseTypeTD::data_type data_type;
-	typedef	typename	BaseTypeTD::data_type EpisodeSetTD;
-	typedef	typename	episode_set<ItvDomTV,TypeDomTV>::value_type EpisodePTD;
+	typedef itl::map<typename TypeDomTV::DomainET, episode_set<ItvDomTV,TypeDomTV> > base_type;
+	typedef	typename base_type::value_type value_type;
+	typedef	typename base_type::data_type data_type;
+	typedef	typename base_type::data_type EpisodeSetTD;
+	typedef	typename episode_set<ItvDomTV,TypeDomTV>::value_type EpisodePTD;
+	typedef typename base_type::iterator iterator;
+	typedef typename base_type::const_iterator const_iterator;
 	
 public:
 
@@ -103,28 +105,32 @@ public:
 	EpisodePTD getFirst(typename TypeDomTV::DomainET type)const
 	{
 		const_iterator epiSet_ = find(type);
-		if(epiSet_==end()) return NULL;
+		if(epiSet_ == this->end()) 
+			return NULL;
 		else return *((*epiSet_).CONT_VALUE.begin());
 	}
 
 	EpisodePTD getLast(typename TypeDomTV::DomainET type)const
 	{
 		const_iterator epiSet_ = find(type);
-		if(epiSet_==end()) return NULL;
+		if(epiSet_ == this->end())
+			return NULL;
 		else return *((*epiSet_).CONT_VALUE.rbegin());
 	}
 
 	EpisodeSetTD* getEpisodeSetPtr(typename TypeDomTV::DomainET type)
 	{
 		iterator epiSet_ = find(type);
-		if(epiSet_==end()) return NULL;
+		if(epiSet_ == this->end()) 
+			return NULL;
 		else return &((*epiSet_).CONT_VALUE);
 	}
 	
 	int size(typename TypeDomTV::DomainET type)const
 	{
 		const_iterator epiSet_ = find(type);
-		if(epiSet_==end()) return 0;
+		if(epiSet_ == this->end()) 
+			return 0;
 		else return (*epiSet_).CONT_VALUE.size();
 	}
 		
@@ -133,7 +139,7 @@ public:
 		EpisodeSetTD sglSet;
 		sglSet.insert(pEpisode);
 		typename TypeDomTV::DomainET type = pEpisode->type();
-		return BaseTypeTD::insert(value_type(type,sglSet)).WAS_SUCCESSFUL;
+		return base_type::insert(value_type(type,sglSet)).WAS_SUCCESSFUL;
 	}
 
 	void leftAlignedEpisodes(episode_product& syncProd, const ItvDomTV& start)
@@ -144,7 +150,7 @@ public:
 			EpisodeSetTD& epiSet = (*elem_).KEY_VALUE;
 			
 			EpisodeSetTD syncSet;
-			const_FORALL(EpisodeSetTD, epi_, epiSet)
+			const_FORALL(typename EpisodeSetTD, epi_, epiSet)
 			{
 				if((*epi_)->interval().first()==start)
 					syncSet.insert(*epi_);
@@ -157,16 +163,17 @@ public:
 	std::string asString()const
 	{
 		std::string str;
-		const_iterator it = begin();
+		const_iterator it = this->begin();
 
-		if(it==end()) return std::string("");
+		if(it == this->end()) 
+			return std::string("");
 		else
 		{
 			std::string str( TypeDomTV::asString((*it).KEY_VALUE) );
 			str += ("{"+((*it).CONT_VALUE).asString()+"}");
 			it++;
 			
-			while(it != end()) {
+			while(it != this->end()) {
 				str += ", "; str += TypeDomTV::asString((*it).KEY_VALUE);
 				str += ("{"+((*it).CONT_VALUE).asString()+"}");
 				it++;

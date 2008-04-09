@@ -30,7 +30,7 @@ DEALINGS IN THE SOFTWARE.
 #include <itl/ctxreprbase.hpp>
 #include <itl/string_set.hpp>
 #include <itl/split_interval_map.hpp>
-#include <example/toytime.h>
+#include "../toytime.h"
 
 using namespace std;
 using namespace itl;

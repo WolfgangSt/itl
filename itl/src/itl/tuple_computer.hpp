@@ -91,6 +91,10 @@ namespace itl
 	class tuple_computer_base : public tuple_computer_interface<varCountV>
 	{
 	public:
+		typedef tuple_computer_interface<varCountV> base_type;
+		typedef typename base_type::tuple_set_type tuple_set_type;
+
+	public:
 
 	/** @name A: Type definitions for the template class 
 	*/
@@ -114,7 +118,7 @@ namespace itl
 		/// Type of strict weak ordering
 		typedef typename ImplMapTD::key_compare key_compare;
 
-		typedef CounterT CounterTD;
+		typedef CounterT counter_type;
 	//@}
 
 		// B: Constructors, destructors, assignment
@@ -255,7 +259,7 @@ namespace itl
 	template <int varCountV, class CounterT>
 	void tuple_computer_base<varCountV, CounterT>::insert(const value_type& val)
 	{
-		pair<ImplMapTD::iterator,bool> insertion = m_map.insert(val);
+		std::pair<typename ImplMapTD::iterator,bool> insertion = m_map.insert(val);
 
 		if(!insertion.WAS_SUCCESSFUL)
 			(*insertion.ITERATOR).CONT_VALUE += val.CONT_VALUE;
@@ -282,17 +286,19 @@ namespace itl
 		class amount_tuple_computer : public tuple_computer_base<varCountV, CounteeTV>
 	{
 	public:
-		typedef tuple_computer_base<varCountV, CounteeTV> BaseTD;
-		typedef typename BaseTD::key_type var_tuple_type;
-		typedef typename BaseTD::key_type key_type;
+		typedef tuple_computer_base<varCountV, CounteeTV> base_type;
+		typedef typename base_type::key_type var_tuple_type;
+		typedef typename base_type::key_type key_type;
+		typedef typename base_type::key_compare key_compare;
+		typedef typename base_type::tuple_set_type tuple_set_type;
 
 	public:
 		// Default Ctor
-		amount_tuple_computer(): BaseTD() {}
+		amount_tuple_computer(): base_type() {}
 		// Copy Ctor
-		amount_tuple_computer(const amount_tuple_computer& src): BaseTD(src) {}
+		amount_tuple_computer(const amount_tuple_computer& src): base_type(src) {}
 		// Ctor from strict weak ordering
-		amount_tuple_computer(const key_compare& order): BaseTD(order) {}
+		amount_tuple_computer(const key_compare& order): base_type(order) {}
 
 	public:
 		// Special interface that can not be expressed by TupelComputerT
@@ -301,7 +307,7 @@ namespace itl
 
 		void alignFor(const tuple_set_type& domain)
 		{
-			const_FORALL(tuple_set_type, it_, domain)
+			const_FORALL(typename tuple_set_type, it_, domain)
 				insert(*it_, CounteeTV());
 		}
 
@@ -311,7 +317,7 @@ namespace itl
 	void amount_tuple_computer<varCountV, CounterT>::load(const tuple_computer_interface<varCountV>& srcI)
 	{
 		const amount_tuple_computer& src = dynamic_cast<const amount_tuple_computer&>(srcI);
-		const_FORALL(amount_tuple_computer, it_, src)
+		const_FORALL(typename amount_tuple_computer, it_, src)
 			insert(*it_);
 	}
 
@@ -327,18 +333,21 @@ namespace itl
 		class date_tuple_computer : public tuple_computer_base<varCountV, itl::map<TimeTV, CounteeTV> >
 	{
 	public:
-		typedef itl::set<var_tuple_type, var_tuple_order> tuple_set_type;
-		typedef itl::map<TimeTV, CounteeTV> CounterTD;
-		typedef tuple_computer_base<varCountV, CounterTD> BaseTD;
-		typedef typename BaseTD::key_type var_tuple_type;
+		typedef tuple_computer_base<varCountV, itl::map<TimeTV, CounteeTV> > base_type;
+		typedef typename base_type::var_tuple_type var_tuple_type;
+		typedef typename base_type::key_compare key_compare;
+		typedef typename itl::set<var_tuple_type, var_tuple_order> tuple_set_type;
+		typedef typename itl::map<TimeTV, CounteeTV> counter_type;
+		typedef tuple_computer_base<varCountV, counter_type> base_type;
+		typedef typename base_type::key_type var_tuple_type;
 
 	public:
 		// Default Ctor
-		date_tuple_computer(): BaseTD() {}
+		date_tuple_computer(): base_type() {}
 		// Copy Ctor
-		date_tuple_computer(const date_tuple_computer& src): BaseTD(src) {}
+		date_tuple_computer(const date_tuple_computer& src): base_type(src) {}
 		// Ctor from strict weak ordering
-		date_tuple_computer(const key_compare& order): BaseTD(order) {}
+		date_tuple_computer(const key_compare& order): base_type(order) {}
 
 	public:
 		// Special interface that can not be expressed by TupelComputerT
@@ -347,8 +356,8 @@ namespace itl
 
 		void alignFor(const tuple_set_type& domain)
 		{
-			const_FORALL(tuple_set_type, it_, domain)
-				insert(*it_, CounterTD());
+			const_FORALL(typename tuple_set_type, it_, domain)
+				insert(*it_, counter_type());
 		}
 
 	};
@@ -357,7 +366,7 @@ namespace itl
 	void date_tuple_computer<varCountV,TimeTV,CounteeTV>::load(const tuple_computer_interface<varCountV>& srcI)
 	{
 		const date_tuple_computer& src = dynamic_cast<const date_tuple_computer&>(srcI);
-		const_FORALL(date_tuple_computer, it_, src)
+		const_FORALL(typename date_tuple_computer, it_, src)
 			insert(*it_);
 	}
 
@@ -374,22 +383,25 @@ namespace itl
 		class interval_tuple_computer : public tuple_computer_base<varCountV, split_interval_map<TimeTV, CounteeTV> >
 	{
 	public:
+		typedef tuple_computer_base<varCountV, split_interval_map<TimeTV, CounteeTV> > base_type;
+		typedef typename base_type::var_tuple_type var_tuple_type;
+		typedef typename base_type::key_compare key_compare;
 		typedef itl::set<var_tuple_type, var_tuple_order> tuple_set_type;
-		typedef split_interval_map<TimeTV, CounteeTV> CounterTD;
-		typedef tuple_computer_base<varCountV, split_interval_map<TimeTV, CounteeTV> > BaseTD;
-		typedef typename BaseTD::key_type var_tuple_type;
-		typedef typename BaseTD::CounterTD::IntervalTD IntervalTD;
+		typedef split_interval_map<TimeTV, CounteeTV> counter_type;
+		typedef tuple_computer_base<varCountV, split_interval_map<TimeTV, CounteeTV> > base_type;
+		typedef typename base_type::key_type var_tuple_type;
+		typedef typename base_type::counter_type::IntervalTD IntervalTD;
 
 	private:
 		typedef itl::map<TimeTV, CounteeTV> DateMapTD;
 
 	public:
 		// Default Ctor
-		interval_tuple_computer(): BaseTD() {}
+		interval_tuple_computer(): base_type() {}
 		// Copy Ctor
-		interval_tuple_computer(const interval_tuple_computer& src): BaseTD(src) {}
+		interval_tuple_computer(const interval_tuple_computer& src): base_type(src) {}
 		// Ctor from strict weak ordering
-		interval_tuple_computer(const key_compare& order): BaseTD(order) {}
+		interval_tuple_computer(const key_compare& order): base_type(order) {}
 
 	public:
 		// Special interface that can not be expressed by TupelComputerT
@@ -401,8 +413,8 @@ namespace itl
 
 		void alignFor(const tuple_set_type& domain)
 		{
-			const_FORALL(tuple_set_type, it_, domain)
-				insert(*it_, CounterTD());
+			const_FORALL(typename tuple_set_type, it_, domain)
+				insert(*it_, counter_type());
 		}
 	};
 
@@ -411,19 +423,19 @@ namespace itl
 	void interval_tuple_computer<varCountV,TimeTV,CounteeTV>::load(const tuple_computer_interface<varCountV>& srcI)
 	{
 		const interval_tuple_computer& src = dynamic_cast<const interval_tuple_computer&>(srcI);
-		const_FORALL(interval_tuple_computer, it_, src)
+		const_FORALL(typename interval_tuple_computer, it_, src)
 			insert(*it_);
 	}
 
 	template <int varCountV, class TimeTV, class CounteeTV>
 	void interval_tuple_computer<varCountV,TimeTV,CounteeTV>::insertDateMap(const var_tuple_type tup, const DateMapTD& date)
 	{
-		CounterTD itvCounter;
-		const_FORALL(DateMapTD, date_, date)
+		counter_type itvCounter;
+		const_FORALL(typename DateMapTD, date_, date)
 		{
 			itvCounter.insert(
-				CounterTD::value_type(
-					CounterTD::IntervalTD((*date_).KEY_VALUE, (*date_).KEY_VALUE), 
+				counter_type::value_type(
+					counter_type::IntervalTD((*date_).KEY_VALUE, (*date_).KEY_VALUE), 
 					(*date_).CONT_VALUE
 					)
 				);
@@ -442,7 +454,7 @@ namespace itl
 		typedef interval_base_map<ItvDomTV, CodomTV> ItvMapTD;
 
 		itvMap.clear();
-		const_FORALL(DateMapTD, date_, dateMap)
+		const_FORALL(typename DateMapTD, date_, dateMap)
 		{
 			itvMap.insert(
 				ItvMapTD::value_type(
@@ -472,7 +484,7 @@ namespace itl
 
 		ItvMapTD* aux = itvMap.cons();
 		//JODO OPTI: optimize using the ordering: if intervalls are beyond borders we can terminate
-		const_FORALL(DiscItvSetTD, itv_, grid)
+		const_FORALL(typename DiscItvSetTD, itv_, grid)
 		{
 			itvMap.intersect(*aux, *itv_);
 			gridSums.insert(ItvMapTD::value_type(*itv_, (*aux).volume()));

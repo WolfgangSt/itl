@@ -40,30 +40,18 @@ namespace itl
 	{
 	public:
 		/// Default Ctor
-		EnumBitSetT() : bitset<EnumSizeVV>() 
-		{
-			if(EnumSizeVV > sizeof(unsigned long) * 8 )
-				throw exception(StringF("ShivaRuntime::EnumBitSetT(%d) must be <= 32 bits; Reason: serialisation is much simpler",EnumSizeVV ).c_str());
-		}
+		EnumBitSetT() : std::bitset<EnumSizeVV>(){}
 		
 		/// Copy Ctor
-		EnumBitSetT(const EnumBitSetT& src): bitset<EnumSizeVV>(src)
-		{
-			if(EnumSizeVV > sizeof(unsigned long) * 8)
-				throw exception(StringF("ShivaRuntime::EnumBitSetT(%d) must be <= 32 bits; Reason: serialisation is much simpler",EnumSizeVV ).c_str());
-		}
+		EnumBitSetT(const EnumBitSetT& src): std::bitset<EnumSizeVV>(src){}
 
 		/// Construct from unsigned
-		EnumBitSetT(unsigned long val): bitset<EnumSizeVV>(val)
-		{
-			if(EnumSizeVV > sizeof(unsigned long) * 8)
-				throw exception(StringF("ShivaRuntime::EnumBitSetT(%d) must be <= 32 bits; Reason: serialisation is much simpler",EnumSizeVV ).c_str());
-		}
+		EnumBitSetT(unsigned long val): std::bitset<EnumSizeVV>(val){}
 
-		EnumBitSetT& add(int bit) {	set(bit); return *this;	}
+		EnumBitSetT& add(int bit) {	this->set(bit); return *this;	}
 	};
 
 }
 
-#endif __itl_EnumBitSetT_JOFA_021204_H__
+#endif // __itl_EnumBitSetT_JOFA_021204_H__
 

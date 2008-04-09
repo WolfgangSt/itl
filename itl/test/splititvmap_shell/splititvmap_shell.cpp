@@ -65,8 +65,12 @@ void mapTestShell()
 
 	try {
 		char cmd = 'b';
-		MapTV::domain_type lwb=MapTV::domain_type(), upb=MapTV::domain_type();
-		MapTV::codomain_type val=MapTV::codomain_type();
+		typename MapTV::domain_type 
+		    lwb = typename MapTV::domain_type(), 
+			upb = typename MapTV::domain_type();
+			
+		typename MapTV::codomain_type 
+		    val = typename MapTV::codomain_type();
 
 		instructions();
 
@@ -84,7 +88,8 @@ void mapTestShell()
 				{
 					cout << "input: lwb upb val >> ";
 					cin >> lwb >> upb >> val;
-					MapTV::interval_type itv = MapTV::interval_type(lwb,upb);
+					typename MapTV::interval_type 
+					    itv = typename MapTV::interval_type(lwb,upb);
 					m1.insert(make_pair(itv,val));
 
 					cout << "+" << itv.asString().c_str()<<" "<<val<< " =" << endl;
@@ -96,7 +101,8 @@ void mapTestShell()
 				{
 					cout << "input: lwb upb val >> ";
 					cin >> lwb >> upb >> val;
-					MapTV::interval_type itv = MapTV::interval_type(lwb,upb);
+					typename MapTV::interval_type 
+					    itv = typename MapTV::interval_type(lwb,upb);
 					m1.subtract(make_pair(itv,val));
 
 					cout << "-" << itv.asString().c_str()<<" "<<val<< " =" << endl;
@@ -108,8 +114,9 @@ void mapTestShell()
 				{
 					cout << "input: lwb upb >> ";
 					cin >> lwb >> upb;
-					MapTV::interval_type itv = MapTV::interval_type(lwb,upb);
-					split_interval_set<MapTV::domain_type> sgl(itv);
+					typename MapTV::interval_type 
+					    itv = typename MapTV::interval_type(lwb,upb);
+					split_interval_set<typename MapTV::domain_type> sgl(itv);
 					m1.erase(itv);
 
 					cout << "_" << itv.asString().c_str()<<" "<< " =" << endl;

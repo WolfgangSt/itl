@@ -59,7 +59,7 @@ public:
 	virtual typename TypeDomTV::DomainET type()const=0;
 
 	/// 
-	virtual typename const TypeDomTV::ValueBaseTD* value()const=0;
+	virtual const typename TypeDomTV::ValueBaseTD* value()const=0;
 
 	/// Kleiner Relation auf dem Typ
 	virtual bool isLessOnType(const ordered_type* x2)const=0;
@@ -93,8 +93,10 @@ public:
 	typedef ordered_type<TypeDomTV>* OrderedTypeOfDomPIT;
 
 public:
-	virtual bool isLessOnType (const ordered_type<TypeDomTV>* x2)const { return type() < x2->type(); }
-	virtual bool isTypeEquivalent (const ordered_type<TypeDomTV>* x2)const { return type() == x2->type(); }
+	virtual bool isLessOnType (const ordered_type<TypeDomTV>* x2)const 
+	{ return this->type() < x2->type(); }
+	virtual bool isTypeEquivalent (const ordered_type<TypeDomTV>* x2)const 
+	{ return this->type() == x2->type(); }
 
 	// comparisons on value level
 	bool isEqual(const ordered_type<TypeDomTV>* x2)const

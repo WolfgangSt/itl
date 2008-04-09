@@ -42,8 +42,8 @@ information on the erroneous testcases if there are any.
 
 #include <itl/split_interval_set.hpp>
 #include <itl/split_interval_map.hpp>
-#include <test/itvmaptester.h>
-#include <test/itvsettester.h>
+#include "../itvmaptester.h"
+#include "../test/itvsettester.h"
 
 using namespace std;
 using namespace itl;
@@ -151,8 +151,8 @@ int main()
 	cout << ">> Interval Template Library: Test auto_itv_test.cpp <<\n";
 	cout << "-------------------------------------------------------\n";
 	// Test programmed properties on a sample of generated interval_set<int>
-	autoPropertyTest_ItvSet_int();
-	//autoPropertyTest_SplitItvMap_double_int();
+	//autoPropertyTest_ItvSet_int();
+	autoPropertyTest_SplitItvMap_double_int();
 
 	// Test programmed properties on a sample of generated split_interval_map<double,int>
 	// autoPropertyTest_SplitItvMap_double_int();

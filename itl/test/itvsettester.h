@@ -146,7 +146,7 @@ bool ItvSetTesterT<ItvSetTV>::testInsertionIndependence(int nTries)
 		}
 
 	if(!correct) {
-		cout << "InsertionIndependence violated" << endl;
+		std::cout << "InsertionIndependence violated" << std::endl;
 	}
 
 	return correct;
@@ -184,18 +184,18 @@ bool ItvSetTesterT<ItvSetTV>::testJoinIndependence(int nTries)
 			if(true==correct) { 
 				min_y = y; min_y_join = y_join;
 				correct=false;
-				cout << "y.sz=" << static_cast<unsigned int>(y.interval_count()) << "  try=" << i << endl;
+				std::cout << "y.sz=" << static_cast<unsigned int>(y.interval_count()) << "  try=" << i << std::endl;
 			}
 			else if( y.interval_count() < min_y.interval_count() ) {
 				min_y = y; min_y_join = y_join;
-				cout << "y.sz=" << static_cast<unsigned int>(y.interval_count()) << "  try=" << i << endl;
+				std::cout << "y.sz=" << static_cast<unsigned int>(y.interval_count()) << "  try=" << i << std::endl;
 			}
 		}
 
 	if(!correct) {
-		cout << "JoinIndependence violated ---------------------------" << endl;
-		cout << "y     :" << min_y.asString().c_str() << endl;
-		cout << "y_join:" << min_y_join.asString().c_str() << endl;
+		std::cout << "JoinIndependence violated ---------------------------" << std::endl;
+		std::cout << "y     :" << min_y.asString().c_str() << std::endl;
+		std::cout << "y_join:" << min_y_join.asString().c_str() << std::endl;
 	}
 
 	return correct;
@@ -236,20 +236,20 @@ bool ItvSetTesterT<ItvSetTV>::testInsertAndJoinIndependence(int nTries)
 			if(true==correct) { 
 				min_y = y; min_y_perm = y_perm; min_y_permJoin = y_permJoin;
 				correct=false;
-				cout << "y.sz=" << y.interval_count() << "  try=" << i << endl;
+				std::cout << "y.sz=" << y.interval_count() << "  try=" << i << std::endl;
 			}
 			else if( y.interval_count() < min_y.interval_count() ) {
 				min_y = y; min_y_perm = y_perm; min_y_permJoin = y_permJoin;
-				cout << "y.sz=" << y.interval_count() << "  try=" << i << endl;
+				std::cout << "y.sz=" << y.interval_count() << "  try=" << i << std::endl;
 			}
 		}
 	}
 
 	if(!correct) {
-		cout << "InsertAndJoinIndependence violated ---------------------------" << endl;
-		cout << "y      :" << min_y.asString().c_str() << endl;
-		cout << "y_perm :" << min_y_perm.asString().c_str() << endl;
-		cout << "y_pjoin:" << min_y_permJoin.asString().c_str() << endl;
+		std::cout << "InsertAndJoinIndependence violated ---------------------------" << std::endl;
+		std::cout << "y      :" << min_y.asString().c_str() << std::endl;
+		std::cout << "y_perm :" << min_y_perm.asString().c_str() << std::endl;
+		std::cout << "y_pjoin:" << min_y_permJoin.asString().c_str() << std::endl;
 	}
 
 	return correct;
@@ -312,9 +312,9 @@ bool ItvSetTesterT<ItvSetTV>::testInsertReversibility(int nTries, char* errFile)
 				min_y_permJoin = y_permJoin; min_x_plus_y = x_plus_y; 
 				min_lhs = lhs; min_rhs = rhs;
 				min_caseSize = caseSize;
-				cout << "x.sz="  << static_cast<unsigned int>(x.interval_count()) 
+				std::cout << "x.sz="  << static_cast<unsigned int>(x.interval_count()) 
 					 << " y.sz=" << static_cast<unsigned int>(y.interval_count()) 
-					 << "  try=" << i << endl;
+					 << "  try=" << i << std::endl;
 				correct=false;
 			}
 			else if ( caseSize < min_caseSize )
@@ -323,26 +323,26 @@ bool ItvSetTesterT<ItvSetTV>::testInsertReversibility(int nTries, char* errFile)
 				min_y_permJoin = y_permJoin; min_x_plus_y = x_plus_y;
 				min_lhs = lhs; min_rhs = rhs;
 				min_caseSize = caseSize;
-				cout << "x.sz="  << static_cast<unsigned int>(x.interval_count()) 
+				std::cout << "x.sz="  << static_cast<unsigned int>(x.interval_count()) 
 					 << " y.sz=" << static_cast<unsigned int>(y.interval_count()) 
-					 << "  try=" << i << endl;
+					 << "  try=" << i << std::endl;
 			}
 		}
 	}
 
 	if(!correct) {
-		cout << "InsertReversibility: x + y - join(perm(y)) == x - y  violated --------" << endl;
-		cout << "x       :" << min_x.asString().c_str() << endl;
-		cout << "y       :" << min_y.asString().c_str() << endl;
-		cout << "y_perm  :" << min_y_perm.asString().c_str() << endl;
-		cout << "y_pJnt  :" << min_y_permJoin.asString().c_str() << endl;
-		cout << "x+y     :" << min_x_plus_y.asString().c_str() << endl;
-		cout << "lhs     :" << min_lhs.asString().c_str() << endl;
-		cout << "rhs     :" << min_rhs.asString().c_str() << endl;
+		std::cout << "InsertReversibility: x + y - join(perm(y)) == x - y  violated --------" << std::endl;
+		std::cout << "x       :" << min_x.asString().c_str() << std::endl;
+		std::cout << "y       :" << min_y.asString().c_str() << std::endl;
+		std::cout << "y_perm  :" << min_y_perm.asString().c_str() << std::endl;
+		std::cout << "y_pJnt  :" << min_y_permJoin.asString().c_str() << std::endl;
+		std::cout << "x+y     :" << min_x_plus_y.asString().c_str() << std::endl;
+		std::cout << "lhs     :" << min_lhs.asString().c_str() << std::endl;
+		std::cout << "rhs     :" << min_rhs.asString().c_str() << std::endl;
 		
 		FILE* fp;
-		// fp = fopen(errFile,"w");
-		fopen_s(&fp,errFile,"w");
+		fp = fopen(errFile,"w");
+		//fopen_s(&fp,errFile,"w");
 		fprintf(fp, "x: %s\n",      min_x.asString().c_str());
 		fprintf(fp, "y: %s\n",      min_y.asString().c_str());
 		fprintf(fp, "y_perm: %s\n", min_y_perm.asString().c_str());
@@ -356,8 +356,8 @@ bool ItvSetTesterT<ItvSetTV>::testInsertReversibility(int nTries, char* errFile)
 	}
 	else
 	{
-		cout << "InsertReversibility("<<nTries<<") OK " 
-			 << " x + y - join(perm(y)) == x - y" << endl;
+		std::cout << "InsertReversibility("<<nTries<<") OK " 
+			 << " x + y - join(perm(y)) == x - y" << std::endl;
 	}
 
 	return correct;
@@ -423,8 +423,8 @@ bool ItvSetTesterT<ItvSetTV>::testInsertReversibility1(int nTries, char* errFile
 				min_x = x; min_y = y; min_y_perm = y_perm; 
 				min_y_permJoin = y_permJoin; min_x_plus_y = x_plus_y; min_x2 = x2;
 				min_caseSize = caseSize;
-				cout << "x.sz=" << x.interval_count() << " y.sz=" << y.interval_count() 
-					 << "  try=" << i << endl;
+				std::cout << "x.sz=" << x.interval_count() << " y.sz=" << y.interval_count() 
+					 << "  try=" << i << std::endl;
 				correct=false;
 			}
 			else if ( caseSize < min_caseSize )
@@ -432,20 +432,20 @@ bool ItvSetTesterT<ItvSetTV>::testInsertReversibility1(int nTries, char* errFile
 				min_x = x; min_y = y; min_y_perm = y_perm;
 				min_y_permJoin = y_permJoin; min_x_plus_y = x_plus_y; min_x2 = x2;
 				min_caseSize = caseSize;
-				cout << "x.sz=" << x.interval_count() << " y.sz=" << y.interval_count() 
-					 << "  try=" << i << endl;
+				std::cout << "x.sz=" << x.interval_count() << " y.sz=" << y.interval_count() 
+					 << "  try=" << i << std::endl;
 			}
 		}
 	}
 
 	if(!correct) {
-		cout << "InsertReversibility1: x + y - join(perm(y)) == x =: x2  violated --------" << endl;
-		cout << "x       :" << min_x.asString().c_str() << endl;
-		cout << "y       :" << min_y.asString().c_str() << endl;
-		cout << "y_perm  :" << min_y_perm.asString().c_str() << endl;
-		cout << "y_pJnt  :" << min_y_permJoin.asString().c_str() << endl;
-		cout << "x+y     :" << min_x_plus_y.asString().c_str() << endl;
-		cout << "x2      :" << min_x2.asString().c_str() << endl;
+		std::cout << "InsertReversibility1: x + y - join(perm(y)) == x =: x2  violated --------" << std::endl;
+		std::cout << "x       :" << min_x.asString().c_str() << std::endl;
+		std::cout << "y       :" << min_y.asString().c_str() << std::endl;
+		std::cout << "y_perm  :" << min_y_perm.asString().c_str() << std::endl;
+		std::cout << "y_pJnt  :" << min_y_permJoin.asString().c_str() << std::endl;
+		std::cout << "x+y     :" << min_x_plus_y.asString().c_str() << std::endl;
+		std::cout << "x2      :" << min_x2.asString().c_str() << std::endl;
 
 		FILE* fp;
 		fp = fopen(errFile,"w");
@@ -461,8 +461,8 @@ bool ItvSetTesterT<ItvSetTV>::testInsertReversibility1(int nTries, char* errFile
 	}
 	else
 	{
-		cout << "InsertReversibility1("<<nTries<<") OK " 
-			 << " x + y - join(perm(y)) == x =: x2" << endl;
+		std::cout << "InsertReversibility1("<<nTries<<") OK " 
+			 << " x + y - join(perm(y)) == x =: x2" << std::endl;
 	}
 
 	return correct;
@@ -557,9 +557,9 @@ bool ItvSetTesterT<ItvSetTV>::testSymmetricDifference(int nTries, char* errFile)
 				more results
 				*/
 				min_caseSize = caseSize;
-				cout << "x.sz="  << static_cast<unsigned int>(x.interval_count()) 
+				std::cout << "x.sz="  << static_cast<unsigned int>(x.interval_count()) 
 					 << " y.sz=" << static_cast<unsigned int>(y.interval_count()) 
-					 << "  try=" << i << endl;
+					 << "  try=" << i << std::endl;
 				correct=false;
 			}
 			else if ( caseSize < min_caseSize )
@@ -569,27 +569,27 @@ bool ItvSetTesterT<ItvSetTV>::testSymmetricDifference(int nTries, char* errFile)
 				more results
 				*/
 				min_caseSize = caseSize;
-				cout << "x.sz="  << static_cast<unsigned int>(x.interval_count()) 
+				std::cout << "x.sz="  << static_cast<unsigned int>(x.interval_count()) 
 					 << " y.sz=" << static_cast<unsigned int>(y.interval_count()) 
-					 << "  try=" << i << endl;
+					 << "  try=" << i << std::endl;
 			}
 		}
 	}
 
 	if(!correct) {
-		cout << "SymmetricDifference: (x + y) - (x * y) == (x - y) + (y - x)  violated --------" << endl;
-		cout << "x       :" << min_x.asString().c_str() << endl;
-		cout << "y       :" << min_y.asString().c_str() << endl;
+		std::cout << "SymmetricDifference: (x + y) - (x * y) == (x - y) + (y - x)  violated --------" << std::endl;
+		std::cout << "x       :" << min_x.asString().c_str() << std::endl;
+		std::cout << "y       :" << min_y.asString().c_str() << std::endl;
 		/*
-		cout << "y_perm  :" << min_y_perm.asString().c_str() << endl;
-		cout << "y_pJnt  :" << min_y_permJoin.asString().c_str() << endl;
-		cout << "x+y     :" << min_x_plus_y.asString().c_str() << endl;
-		cout << "x2      :" << min_x2.asString().c_str() << endl;
+		std::cout << "y_perm  :" << min_y_perm.asString().c_str() << std::endl;
+		std::cout << "y_pJnt  :" << min_y_permJoin.asString().c_str() << std::endl;
+		std::cout << "x+y     :" << min_x_plus_y.asString().c_str() << std::endl;
+		std::cout << "x2      :" << min_x2.asString().c_str() << std::endl;
 		*/
 
 		FILE* fp;
-		//fp = fopen(errFile,"w");
-		fopen_s(&fp,errFile,"w");
+		fp = fopen(errFile,"w");
+		//fopen_s(&fp,errFile,"w");
 		fprintf(fp, "x: %s\n",      min_x.asString().c_str());
 		fprintf(fp, "y: %s\n",      min_y.asString().c_str());
 		/*
@@ -604,8 +604,8 @@ bool ItvSetTesterT<ItvSetTV>::testSymmetricDifference(int nTries, char* errFile)
 	}
 	else
 	{
-		cout << "SymmetricDifference("<<nTries<<") OK " 
-			 << "  (x + y) - (x * y) == (x - y) + (y - x)" << endl;
+		std::cout << "SymmetricDifference("<<nTries<<") OK " 
+			 << "  (x + y) - (x * y) == (x - y) + (y - x)" << std::endl;
 	}
 
 	return correct;

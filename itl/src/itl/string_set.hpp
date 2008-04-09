@@ -73,6 +73,11 @@ namespace itl
 	class string_set: public itl::set<std::string, Compare>
 	{
 	public:
+		typedef itl::set<std::string, Compare> base_type;
+		typedef typename base_type::iterator iterator;
+		typedef typename base_type::const_iterator const_iterator;
+		
+	public:
 		std::string asString(char* sep = " ")const; // JODO URG Sync 
 		std::string join(char* sep = " ")const { return asString(sep); } // JODO URG Sync 
 		void selectSet(string_set& selectees, StringSelectorFPD selector)const;
@@ -90,12 +95,12 @@ namespace itl
 	template <template<class>class Compare>
 	std::string string_set<Compare>::asString(char* sep)const
 	{
-		const_iterator it=begin();
-		if(it == end()) return std::string("");
+		const_iterator it = this->begin();
+		if(it == this->end()) return std::string("");
 		else
 		{
 			std::string y(*it++);
-			while(it != end()) { y += sep; y += (*it++); }
+			while(it != this->end()) { y += sep; y += (*it++); }
 			return y;
 		}
 	}
