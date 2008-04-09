@@ -47,12 +47,12 @@ namespace itl
 		interval<Type> last()const;
 
 		void setLowerBoundRange(int lwb, int upb)
-		{ setLowerBoundRange(rightOpenInterval(lwb,upb)); }
+		{ setLowerBoundRange(rightopen_interval(lwb,upb)); }
 		void setLowerBoundRange(const interval<int>& range)
 		{ J_ASSERT(range.is_rightopen()||range.is_closed()); _lwbGentor.setRange(range); }
 
 		void setUpperBoundRange(int lwb, int upb)
-		{ setUpperBoundRange(rightOpenInterval(lwb,upb)); }
+		{ setUpperBoundRange(rightopen_interval(lwb,upb)); }
 		void setUpperBoundRange(const interval<int>& range)
 		{ J_ASSERT(range.is_rightopen()||range.is_closed()); _upbGentor.setRange(range); }
 

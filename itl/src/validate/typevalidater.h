@@ -1,8 +1,10 @@
 #pragma once
 
 #include <itl/functors.hpp>
+#include <itl/interval_morphism.hpp>
 #include <validate/laws/set_laws.h>
 #include <validate/laws/order.h>
+#include <validate/laws/pushouts.h>
 #include <validate/laws/pushouts.h>
 #include <validate/lawvalidater.h>
 
@@ -488,7 +490,18 @@ namespace itl
 		{
 			switch(_lawChoice.some())
 			{
-			case atomize_plus:	return new LawValidater<BinaryPushout<Type, typename Type::atomized_type, Interval::Atomize, InplacePlus>,  RandomGentor>();
+			case atomize_plus:	
+				return new LawValidater
+						   <
+						       BinaryPushout
+							   <
+									Type, 
+									typename Type::atomized_type, 
+									Interval::Atomize, 
+									InplacePlus
+							   >,								
+						       RandomGentor
+						   >();
 			case atomize_minus: return new LawValidater<BinaryPushout<Type, typename Type::atomized_type, Interval::Atomize, InplaceMinus>, RandomGentor>();
 			case atomize_star:  return new LawValidater<BinaryPushout<Type, typename Type::atomized_type, Interval::Atomize, InplaceStar>,  RandomGentor>();
 			case cluster_plus:	return new LawValidater<BinaryPushout<typename Type::atomized_type, Type, Interval::Cluster, InplacePlus>,  RandomGentor>();

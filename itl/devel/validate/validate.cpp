@@ -1,7 +1,5 @@
 // verify.cpp : Definiert den Einstiegspunkt für die Konsolenanwendung.
 //
-#include "stdafx.h"
-
 #define ITL_VALIDATE //JODO URG REMOVE after finding a better way
 
 #include <iostream>
@@ -259,7 +257,7 @@ void test_misc()
 	cout << iset.asString() << endl;
 }
 
-int _tmain(int argc, _TCHAR* argv[])
+int main()
 {
 	//test_Tuple();
 	//test_Law();
