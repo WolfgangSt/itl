@@ -62,7 +62,8 @@ void setTestShell()
 
 	try {
 		char cmd = 'b';
-		SetTV::domain_type lwb=SetTV::domain_type(), upb=SetTV::domain_type();
+		typename SetTV::domain_type lwb = typename SetTV::domain_type();
+		typename SetTV::domain_type upb = typename SetTV::domain_type();
 
 		instructions();
 
@@ -80,7 +81,8 @@ void setTestShell()
 				{
 					cout << "input: lwb upb >> ";
 					cin >> lwb >> upb;
-					SetTV::interval_type itv = SetTV::interval_type(lwb,upb);
+					typename SetTV::interval_type itv 
+					    = typename SetTV::interval_type(lwb,upb);
 					// SetTV::IntervalTD itv = rightOpenInterval(lwb,upb);
 					m1.insert(itv);
 
@@ -93,7 +95,8 @@ void setTestShell()
 				{
 					cout << "input: lwb upb >> ";
 					cin >> lwb >> upb;
-					SetTV::interval_type itv = SetTV::interval_type(lwb,upb);
+					typename SetTV::interval_type itv 
+					    = typename SetTV::interval_type(lwb,upb);
 					// m1.subtract(itv);
 					SetTV tmp;
 					tmp.insert(itv);
