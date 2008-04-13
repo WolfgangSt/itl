@@ -39,66 +39,66 @@ namespace itl
 
 /// Describes the signature demanded for a template parameter class of interval containers
 /**  
-	<b>ItvDomTV</b> defines the implicit interface 
-	which every instance of the <b>template parameter</b> of 
-	the template \ref IntervalT class has to implement.
-	
-	Increment and decrement operations <tt>++</tt> and <tt>--</tt> are needed
-	only for discrete datatypes. But for a simplified class structure
-	one has to provide them also for continuous types (For built in
-	continuous types float and double they are implemented anyway).
+    <b>ItvDomTV</b> defines the implicit interface 
+    which every instance of the <b>template parameter</b> of 
+    the template \ref IntervalT class has to implement.
+    
+    Increment and decrement operations <tt>++</tt> and <tt>--</tt> are needed
+    only for discrete datatypes. But for a simplified class structure
+    one has to provide them also for continuous types (For built in
+    continuous types float and double they are implemented anyway).
 
-	If you want to use own continuous datatapes (Rational, Complex, etc.)
-	please note the following:
+    If you want to use own continuous datatapes (Rational, Complex, etc.)
+    please note the following:
 
-	<ul>
-		<li> Class \ref AlgBase
-			has to be extended for every additional continuous type! This
-			class serves to distinguish discrete fron continuous types.		
-		<li> Operations <tt>++</tt> und <tt>--</tt> have to be implemented. Otherwise
-			the template instance for the continuouse type won't compile.
-			But those operations are in fact never called for a continuous type
-			within \ref IntervalT. This is due to the fact that.
-	</ul>
+    <ul>
+        <li> Class \ref AlgBase
+            has to be extended for every additional continuous type! This
+            class serves to distinguish discrete fron continuous types.        
+        <li> Operations <tt>++</tt> und <tt>--</tt> have to be implemented. Otherwise
+            the template instance for the continuouse type won't compile.
+            But those operations are in fact never called for a continuous type
+            within \ref IntervalT. This is due to the fact that.
+    </ul>
 
-	Für das Design von \ref IntervalT ist es wichtig, <tt>++</tt> und <tt>--</tt>
-	so weit als möglich zu vermeiden. Auf diese Weise kommt man zu einer
-	allgemeinereren Implementierung von Intervallen. Nötigenfalls könnte man aus
-	der allgemeinen Implementierung von <b>IntervalT<DomTV></b> eine Klasse 
-	<b>ContIntervalT<ContinTV></b> herleiten, die vollständig ohne <tt>++</tt> und <tt>--</tt>
-	auskommt.
+    Für das Design von \ref IntervalT ist es wichtig, <tt>++</tt> und <tt>--</tt>
+    so weit als möglich zu vermeiden. Auf diese Weise kommt man zu einer
+    allgemeinereren Implementierung von Intervallen. Nötigenfalls könnte man aus
+    der allgemeinen Implementierung von <b>IntervalT<DomTV></b> eine Klasse 
+    <b>ContIntervalT<ContinTV></b> herleiten, die vollständig ohne <tt>++</tt> und <tt>--</tt>
+    auskommt.
 
-	Die Verwendung von nur einerm Typ von Intervall-Klasse für diskrete und
-	kontinuierliche Domain-Datentypen hat eine Menge Kopfzerbrechen bereitet.
-	Schließlich wurde der Variante den Vorzug gegeben, die bequemer für die
-	Benutzung zu sein scheint. vgl. auch die Diskussion in \ref IntervalT.
+    Die Verwendung von nur einerm Typ von Intervall-Klasse für diskrete und
+    kontinuierliche Domain-Datentypen hat eine Menge Kopfzerbrechen bereitet.
+    Schließlich wurde der Variante den Vorzug gegeben, die bequemer für die
+    Benutzung zu sein scheint. vgl. auch die Diskussion in \ref IntervalT.
 
-	@author  Joachim Faulhaber
+    @author  Joachim Faulhaber
 */
 
 
 class ItvDomTV
 {
 public:
-	/// Liefert einen Wert; in der Regel einen Nullwert oder Leerwert
-	ItvDomTV();
+    /// Liefert einen Wert; in der Regel einen Nullwert oder Leerwert
+    ItvDomTV();
 
-	/** Eine strikte schwache Ordnung
+    /** Eine strikte schwache Ordnung
 
-		Die folgenden Eigenschaften müssen erfüllt sein:
-		!(x < y && y < x)   Antisymmetrie
-		u.s.w. (JODO)
-	*/
-	bool operator < (ItvDomTV x2)const;
+        Die folgenden Eigenschaften müssen erfüllt sein:
+        !(x < y && y < x)   Antisymmetrie
+        u.s.w. (JODO)
+    */
+    bool operator < (ItvDomTV x2)const;
 
-	/** Eine abgeleitete Ordnung mit der Eigenschaft: <tt>x<=y  <=> x<y || x==y</tt>
-	*/
-	bool operator <= (ItvDomTV x2)const;
+    /** Eine abgeleitete Ordnung mit der Eigenschaft: <tt>x<=y  <=> x<y || x==y</tt>
+    */
+    bool operator <= (ItvDomTV x2)const;
 
-	/// Eine Inkrementierungs Operation: <tt>++(--x) == --(++x) == x</tt>
-	operator ++ ();
-	/// Eine Inkrementierungs Operation: <tt>++(--x) == --(++x) == x</tt>
-	operator -- ();
+    /// Eine Inkrementierungs Operation: <tt>++(--x) == --(++x) == x</tt>
+    operator ++ ();
+    /// Eine Inkrementierungs Operation: <tt>++(--x) == --(++x) == x</tt>
+    operator -- ();
 
 } ;
 

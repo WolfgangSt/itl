@@ -42,9 +42,9 @@ template <class TypeT> class RandomGentorProfile{};
 template <class TypeTV> class GentorIT
 {
 public:
-	virtual ~GentorIT(){}
-	//JODO virtual void calibrate(const RandomGentorProfile& profile);
-	virtual void some(TypeTV& x)=0;
+    virtual ~GentorIT(){}
+    //JODO virtual void calibrate(const RandomGentorProfile& profile);
+    virtual void some(TypeTV& x)=0;
 };
 
 

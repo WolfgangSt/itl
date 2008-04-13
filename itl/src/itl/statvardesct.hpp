@@ -33,48 +33,48 @@ DEALINGS IN THE SOFTWARE.
 namespace itl
 {
 
-	/// Skalenniveau der Skala
-	enum KindOfScaleET { nominal_scale, ordinal_scale, interval_scale, ratio_scale };
+    /// Skalenniveau der Skala
+    enum KindOfScaleET { nominal_scale, ordinal_scale, interval_scale, ratio_scale };
 
-	//JODO Noch nicht ganz klar ob wirs so brauchen
-	// Konzept: Zähltupeln sind immer interger-codier
-	/// Werte der Skala
-	enum VarValueET 
-	{
-		integer_value, 
-		interval_value, 
-		string_value, 
-		class_value,
-		VarValueET_size 
-	};
+    //JODO Noch nicht ganz klar ob wirs so brauchen
+    // Konzept: Zähltupeln sind immer interger-codier
+    /// Werte der Skala
+    enum VarValueET 
+    {
+        integer_value, 
+        interval_value, 
+        string_value, 
+        class_value,
+        VarValueET_size 
+    };
 
-	/// Flags für eine Variable
-	enum StatVarPropertyET
-	{
-		dependent,				// Abhängige Variable
-		// independent,			// Unabhängige Variable ?? JODO Können beide gleichzeitig false sein? (nur restricting)
-		restricting,			// Restriktionsvariable
-		StatVarPropertyET_size
-	};
+    /// Flags für eine Variable
+    enum StatVarPropertyET
+    {
+        dependent,                // Abhängige Variable
+        // independent,            // Unabhängige Variable ?? JODO Können beide gleichzeitig false sein? (nur restricting)
+        restricting,            // Restriktionsvariable
+        StatVarPropertyET_size
+    };
 
-	typedef EnumBitSetT<StatVarPropertyET, StatVarPropertyET_size> StatVarPropertySetTD ; 
+    typedef EnumBitSetT<StatVarPropertyET, StatVarPropertyET_size> StatVarPropertySetTD ; 
 
 
-	/** class StatVarDescT: Beschreibung der Eigenschaften von Variablen einer Statistik 
-		(auch bekannt als Stochastische Variable). 
+    /** class StatVarDescT: Beschreibung der Eigenschaften von Variablen einer Statistik 
+        (auch bekannt als Stochastische Variable). 
 
-		Zuständigkeit: Beschreibt wichtige Eigenschaften von Datenbank-Feldern im Kontext
-		von Statistischen Auswertungen.
+        Zuständigkeit: Beschreibt wichtige Eigenschaften von Datenbank-Feldern im Kontext
+        von Statistischen Auswertungen.
 
-		Zusammenarbeit:  
-	*/
-	class StatVarDescT
-	{
-	public:
-		bool isDependent()const;
-		
-	private:
-	};
+        Zusammenarbeit:  
+    */
+    class StatVarDescT
+    {
+    public:
+        bool isDependent()const;
+        
+    private:
+    };
 
 
 }

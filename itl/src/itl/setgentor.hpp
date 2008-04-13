@@ -27,7 +27,7 @@ DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
 /* ------------------------------------------------------------------
 class SetGentorT
-	A random generator for Sets.
+    A random generator for Sets.
 --------------------------------------------------------------------*/
 #ifndef __SETGENTOR_H_JOFA_000724__
 #define __SETGENTOR_H_JOFA_000724__
@@ -43,82 +43,82 @@ template <class SetTV>
 class SetGentorT: public RandomGentorAT<SetTV>
 {
 public:
-	typedef typename SetTV::value_type	ValueTypeTD;
-	typedef typename SetTV::key_type	DomainTD;
-	typedef list<ValueTypeTD>	SampleTypeTD;
-	typedef RandomGentorAT<DomainTD>  DomainGentorT;
-	typedef DomainGentorT*		DomainGentorPT;
+    typedef typename SetTV::value_type    ValueTypeTD;
+    typedef typename SetTV::key_type    DomainTD;
+    typedef list<ValueTypeTD>    SampleTypeTD;
+    typedef RandomGentorAT<DomainTD>  DomainGentorT;
+    typedef DomainGentorT*        DomainGentorPT;
 
-	SetGentorT(): p_domainGentor(NULL) {}
-	~SetGentorT() {}
+    SetGentorT(): p_domainGentor(NULL) {}
+    ~SetGentorT() {}
 
-	virtual void some(SetTV& x);
-	void last(SetTV& x)const;
-	void last_permuted(SetTV& x)const;
+    virtual void some(SetTV& x);
+    void last(SetTV& x)const;
+    void last_permuted(SetTV& x)const;
 
-	void setDomainGentor(RandomGentorAT<DomainTD>* gentor)
-	{ 
-		if(p_domainGentor)
-			delete p_domainGentor;
-		p_domainGentor = gentor; 
-	}
+    void setDomainGentor(RandomGentorAT<DomainTD>* gentor)
+    { 
+        if(p_domainGentor)
+            delete p_domainGentor;
+        p_domainGentor = gentor; 
+    }
 
-	void setRangeOfSampleSize(int lwb, int upb)
-	{ m_sampleSizeRange = rightopen_interval(lwb,upb); }
-	void setRangeOfSampleSize(const interval<int>& szRange)
-	{ J_ASSERT(szRange.is_rightopen()); m_sampleSizeRange = szRange; }
+    void setRangeOfSampleSize(int lwb, int upb)
+    { m_sampleSizeRange = rightopen_interval(lwb,upb); }
+    void setRangeOfSampleSize(const interval<int>& szRange)
+    { J_ASSERT(szRange.is_rightopen()); m_sampleSizeRange = szRange; }
 
-	DomainGentorPT domainGentor()const { return p_domainGentor; } 
+    DomainGentorPT domainGentor()const { return p_domainGentor; } 
 
 private:
-	RandomGentorAT<DomainTD>*	p_domainGentor;
-	interval<int>				m_sampleSizeRange;
-	SampleTypeTD				m_sample;
-	int							m_sampleSize;
+    RandomGentorAT<DomainTD>*    p_domainGentor;
+    interval<int>                m_sampleSizeRange;
+    SampleTypeTD                m_sample;
+    int                            m_sampleSize;
 };
 
 
 template <class SetTV> 
 void SetGentorT<SetTV>::some(SetTV& x)
 {
-	NumberGentorT<int> intGentor;
-	x.clear();
-	m_sample.clear();
-	m_sampleSize = intGentor(m_sampleSizeRange);
+    NumberGentorT<int> intGentor;
+    x.clear();
+    m_sample.clear();
+    m_sampleSize = intGentor(m_sampleSizeRange);
 
-	for(int i=0; i<m_sampleSize; i++)
-	{
-		DomainTD key;
-		//CL m_domainGentor->some(key);
-		domainGentor()->some(key);
-		x.insert(key);
-		m_sample.push_back(key);
-	}
+    for(int i=0; i<m_sampleSize; i++)
+    {
+        DomainTD key;
+        //CL m_domainGentor->some(key);
+        domainGentor()->some(key);
+        x.insert(key);
+        m_sample.push_back(key);
+    }
 }
 
 
 template <class SetTV> 
 void SetGentorT<SetTV>::last(SetTV& x)const
 {
-	x.clear();
-	const_FORALL(typename SampleTypeTD, it, m_sample) x.insert(*it);
+    x.clear();
+    const_FORALL(typename SampleTypeTD, it, m_sample) x.insert(*it);
 }
 
 template <class SetTV>
 void SetGentorT<SetTV>::last_permuted(SetTV& x)const
 {
-	x.clear();
+    x.clear();
 
-	SampleTypeTD perm;
+    SampleTypeTD perm;
 
-	NumberGentorT<int> intGentor;
-	const_FORALL(typename SampleTypeTD, it, m_sample)
-	{
-		if( 0==intGentor(2) ) perm.push_back(*it);
-		else perm.push_front(*it);
-	}
+    NumberGentorT<int> intGentor;
+    const_FORALL(typename SampleTypeTD, it, m_sample)
+    {
+        if( 0==intGentor(2) ) perm.push_back(*it);
+        else perm.push_front(*it);
+    }
 
-	const_FORALL(typename SampleTypeTD, pit, perm) x.insert(*pit);
+    const_FORALL(typename SampleTypeTD, pit, perm) x.insert(*pit);
 }
 
 
@@ -131,14 +131,14 @@ void SetGentorT<SetTV>::lastSample(SampleTypeTD& sam)const
 template <class SetTV> 
 void SetGentorT<SetTV>::lastSample_permuted(SampleTypeTD& sam)
 {
-	NumberGentorT<unsigned> intGentor;
-	x.clear();
-	int coin = intGentor.some(2); // gives 0 or 1
-	const_FORALL(typename SampleTypeTD, it, m_sample)
-	{
-		if( 0==intGentor.some(2) ) sam.push_back(*it);
-		else sam.push_front(*it);
-	}
+    NumberGentorT<unsigned> intGentor;
+    x.clear();
+    int coin = intGentor.some(2); // gives 0 or 1
+    const_FORALL(typename SampleTypeTD, it, m_sample)
+    {
+        if( 0==intGentor.some(2) ) sam.push_back(*it);
+        else sam.push_front(*it);
+    }
 }
 */
 

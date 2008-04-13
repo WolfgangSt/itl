@@ -43,46 +43,46 @@ template <class ItvDomTV, class ItvTV=interval<ItvDomTV> >
 class ItvGentorT: public RandomGentorAT<ItvTV>
 {
 public:
-	virtual void some(ItvTV& x);
+    virtual void some(ItvTV& x);
 
-	void setValueRange(ItvDomTV low, ItvDomTV up)
-	{ m_valueRange.set(low,up, ItvTV::RIGHT_OPEN); }
+    void setValueRange(ItvDomTV low, ItvDomTV up)
+    { m_valueRange.set(low,up, ItvTV::RIGHT_OPEN); }
 
-	void setMaxIntervalLength(ItvDomTV len) { m_maxIntervalLength=len; }
-	void setProbDerivation();
+    void setMaxIntervalLength(ItvDomTV len) { m_maxIntervalLength=len; }
+    void setProbDerivation();
 
 
 private:
-	NumberGentorT<ItvDomTV> m_ItvDomTVGentor;
+    NumberGentorT<ItvDomTV> m_ItvDomTVGentor;
 
-	interval<ItvDomTV> m_valueRange;
-	ItvDomTV			  m_maxIntervalLength;
+    interval<ItvDomTV> m_valueRange;
+    ItvDomTV              m_maxIntervalLength;
 };
 
 
 template <class ItvDomTV, class ItvTV>
 void ItvGentorT<ItvDomTV,ItvTV>::some(ItvTV& x)
 {
-	NumberGentorT<unsigned> NATGentor;
-	ItvDomTV x1   = m_ItvDomTVGentor(m_valueRange);
-	ITV_BOUNDTYPES bndTypes = NATGentor(4);
-	unsigned upOrDown = NATGentor(1);
-	unsigned decideEmpty = NATGentor(2);
+    NumberGentorT<unsigned> NATGentor;
+    ItvDomTV x1   = m_ItvDomTVGentor(m_valueRange);
+    ITV_BOUNDTYPES bndTypes = NATGentor(4);
+    unsigned upOrDown = NATGentor(1);
+    unsigned decideEmpty = NATGentor(2);
 
-	if(decideEmpty==0)
-	{		
-		ItvDomTV x2   = m_ItvDomTVGentor(m_valueRange);
-		x.set(x1, x1-x2, bndTypes); //JODO this should be done smarter
-	}
-	else if(upOrDown==0) {
-		ItvDomTV up 
-			= m_ItvDomTVGentor(x1, static_cast<ItvDomTV>(std::min(m_valueRange.upb(), x1+m_maxIntervalLength)));
-		x.set(x1, up, bndTypes);
-	} else {
-		ItvDomTV low 
-			= m_ItvDomTVGentor(static_cast<ItvDomTV>(std::max(m_valueRange.lwb(), x1-m_maxIntervalLength)), x1);
-		x.set(low, x1, bndTypes);
-	}
+    if(decideEmpty==0)
+    {        
+        ItvDomTV x2   = m_ItvDomTVGentor(m_valueRange);
+        x.set(x1, x1-x2, bndTypes); //JODO this should be done smarter
+    }
+    else if(upOrDown==0) {
+        ItvDomTV up 
+            = m_ItvDomTVGentor(x1, static_cast<ItvDomTV>(std::min(m_valueRange.upb(), x1+m_maxIntervalLength)));
+        x.set(x1, up, bndTypes);
+    } else {
+        ItvDomTV low 
+            = m_ItvDomTVGentor(static_cast<ItvDomTV>(std::max(m_valueRange.lwb(), x1-m_maxIntervalLength)), x1);
+        x.set(low, x1, bndTypes);
+    }
 };
 
 } // namespace itl

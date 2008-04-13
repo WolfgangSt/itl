@@ -33,40 +33,40 @@ DEALINGS IN THE SOFTWARE.
 namespace itl
 {
 
-	template <typename Type> struct Neutron
-	{
-		inline Type operator()()const { return Type(); }
-	};
+    template <typename Type> struct Neutron
+    {
+        inline Type operator()()const { return Type(); }
+    };
 
-	template<>
-	inline std::string UnaryTemplateAsString<Neutron>::it() { return "0"; }
+    template<>
+    inline std::string UnaryTemplateAsString<Neutron>::it() { return "0"; }
 
-	template <typename Type> struct InplacePlus
-	{
-		void operator()(Type& object, const Type& operand)const
-		{ object += operand; }
-	};
+    template <typename Type> struct InplacePlus
+    {
+        void operator()(Type& object, const Type& operand)const
+        { object += operand; }
+    };
 
-	template<>
-	inline std::string UnaryTemplateAsString<InplacePlus>::it() { return "+="; }
+    template<>
+    inline std::string UnaryTemplateAsString<InplacePlus>::it() { return "+="; }
 
-	template <typename Type> struct InplaceMinus
-	{
-		void operator()(Type& object, const Type& operand)const
-		{ object -= operand; }
-	};
+    template <typename Type> struct InplaceMinus
+    {
+        void operator()(Type& object, const Type& operand)const
+        { object -= operand; }
+    };
 
-	template<>
-	inline std::string UnaryTemplateAsString<InplaceMinus>::it() { return "-="; }
+    template<>
+    inline std::string UnaryTemplateAsString<InplaceMinus>::it() { return "-="; }
 
-	template <typename Type> struct InplaceStar
-	{
-		void operator()(Type& object, const Type& operand)const
-		{ object *= operand; }
-	};
+    template <typename Type> struct InplaceStar
+    {
+        void operator()(Type& object, const Type& operand)const
+        { object *= operand; }
+    };
 
-	template<>
-	inline std::string UnaryTemplateAsString<InplaceStar>::it() { return "*="; }
+    template<>
+    inline std::string UnaryTemplateAsString<InplaceStar>::it() { return "*="; }
 
 } // namespace itl
 

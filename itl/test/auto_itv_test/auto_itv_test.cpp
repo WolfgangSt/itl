@@ -51,113 +51,113 @@ using namespace itl;
 // -------------------------------------------------
 void autoPropertyTest_ItvSet_int()
 {
-	try 
-	{
-		int nTries=0, maxSamSize=0;
-		char errFile[256];
+    try 
+    {
+        int nTries=0, maxSamSize=0;
+        char errFile[256];
 
-		cout << "Property test for interval_set<int>: " << endl;
-		cout << "how many ? >> ";
-		cin >> nTries;
-		cout << "max sample ? >> ";
-		cin >> maxSamSize;
-		cout << "errfile ? >> ";
-		cin >> errFile ;
+        cout << "Property test for interval_set<int>: " << endl;
+        cout << "how many ? >> ";
+        cin >> nTries;
+        cout << "max sample ? >> ";
+        cin >> maxSamSize;
+        cout << "errfile ? >> ";
+        cin >> errFile ;
 
-		typedef ItvSetTesterT< interval_set<int> > TesterT;
-		TesterT::domain_generator_type* domain_gentor 
-			= new TesterT::domain_generator_type();
-		domain_gentor->setValueRange(0, 100);
-		domain_gentor->setMaxIntervalLength(50);
+        typedef ItvSetTesterT< interval_set<int> > TesterT;
+        TesterT::domain_generator_type* domain_gentor 
+            = new TesterT::domain_generator_type();
+        domain_gentor->setValueRange(0, 100);
+        domain_gentor->setMaxIntervalLength(50);
 
-		TesterT cntTester;
-		cntTester.set_domain_generator(domain_gentor);
-		cntTester.setRangeOfSampleSize(0, maxSamSize);
+        TesterT cntTester;
+        cntTester.set_domain_generator(domain_gentor);
+        cntTester.setRangeOfSampleSize(0, maxSamSize);
 
-		cntTester.testInsertionIndependence(nTries);
-		cntTester.testJoinIndependence(nTries);
-		cntTester.testInsertReversibility(nTries, errFile);
-		cntTester.testSymmetricDifference(nTries, errFile);
+        cntTester.testInsertionIndependence(nTries);
+        cntTester.testJoinIndependence(nTries);
+        cntTester.testInsertReversibility(nTries, errFile);
+        cntTester.testSymmetricDifference(nTries, errFile);
 
-		cout << ">> auto tests completed\n";
-	}
-	catch (exception e)
-	{
-		cout << "autoPropertyTest_ItvSet_int(): exception caught\n";
-		cout << e.what() << endl;
-	}	
-	catch (...)
-	{
-		cout << "autoPropertyTest_ItvSet_int(): unknown exception caught\n";
-	}
+        cout << ">> auto tests completed\n";
+    }
+    catch (exception e)
+    {
+        cout << "autoPropertyTest_ItvSet_int(): exception caught\n";
+        cout << e.what() << endl;
+    }    
+    catch (...)
+    {
+        cout << "autoPropertyTest_ItvSet_int(): unknown exception caught\n";
+    }
 }
 
 // -------------------------------------------------
 void autoPropertyTest_SplitItvMap_double_int()
 {
-	try 
-	{
-		int nTries=0, maxSamSize=0;
-		char errFile[256];
+    try 
+    {
+        int nTries=0, maxSamSize=0;
+        char errFile[256];
 
-		cout << "Property test for split_interval_map<double,int>: " << endl;
-		cout << "how many ? >> ";
-		cin >> nTries;
-		cout << "max sample ? >> ";
-		cin >> maxSamSize;
-		cout << "errfile ? >> ";
-		cin >> errFile ;
-
-
-		typedef ItvMapTesterT< split_interval_map<double,int> > TesterT;
-		TesterT::domain_generator_type* domain_gentor 
-			= new TesterT::domain_generator_type();
-		TesterT::codomain_generator_type* codomain_gentor 
-			= new TesterT::codomain_generator_type();
+        cout << "Property test for split_interval_map<double,int>: " << endl;
+        cout << "how many ? >> ";
+        cin >> nTries;
+        cout << "max sample ? >> ";
+        cin >> maxSamSize;
+        cout << "errfile ? >> ";
+        cin >> errFile ;
 
 
-		domain_gentor->setValueRange(0.0, 1.0);
-		domain_gentor->setMaxIntervalLength(1.0);
-		codomain_gentor->setRange(1,5);
+        typedef ItvMapTesterT< split_interval_map<double,int> > TesterT;
+        TesterT::domain_generator_type* domain_gentor 
+            = new TesterT::domain_generator_type();
+        TesterT::codomain_generator_type* codomain_gentor 
+            = new TesterT::codomain_generator_type();
 
-		TesterT cntTester;
-		cntTester.set_domain_generator(domain_gentor);
-		cntTester.set_codomain_generator(codomain_gentor);
 
-		cntTester.setRangeOfSampleSize(0, maxSamSize);
+        domain_gentor->setValueRange(0.0, 1.0);
+        domain_gentor->setMaxIntervalLength(1.0);
+        codomain_gentor->setRange(1,5);
 
-		cntTester.testInsertReversibility2(nTries, errFile);
-		cntTester.testErasureAsIntersectionComputability(nTries, errFile);
+        TesterT cntTester;
+        cntTester.set_domain_generator(domain_gentor);
+        cntTester.set_codomain_generator(codomain_gentor);
 
-		cout << ">> auto tests completed\n";
-	}
-	catch (exception e)
-	{
-		printf("autoPropertyTest_SplitItvMap_double_int(): exception caught\n");
-		printf("%s\n", e.what());
-	}	
-	catch (...)
-	{
-		printf("autoPropertyTest_SplitItvMap_double_int(): unknown exception caught\n");
-	}
+        cntTester.setRangeOfSampleSize(0, maxSamSize);
+
+        cntTester.testInsertReversibility2(nTries, errFile);
+        cntTester.testErasureAsIntersectionComputability(nTries, errFile);
+
+        cout << ">> auto tests completed\n";
+    }
+    catch (exception e)
+    {
+        printf("autoPropertyTest_SplitItvMap_double_int(): exception caught\n");
+        printf("%s\n", e.what());
+    }    
+    catch (...)
+    {
+        printf("autoPropertyTest_SplitItvMap_double_int(): unknown exception caught\n");
+    }
 }
 
 
 
 int main()
 {
-	// Select a test by (re)moving the comment tokens!
+    // Select a test by (re)moving the comment tokens!
 
-	cout << ">> Interval Template Library: Test auto_itv_test.cpp <<\n";
-	cout << "-------------------------------------------------------\n";
-	// Test programmed properties on a sample of generated interval_set<int>
-	//autoPropertyTest_ItvSet_int();
-	autoPropertyTest_SplitItvMap_double_int();
+    cout << ">> Interval Template Library: Test auto_itv_test.cpp <<\n";
+    cout << "-------------------------------------------------------\n";
+    // Test programmed properties on a sample of generated interval_set<int>
+    //autoPropertyTest_ItvSet_int();
+    autoPropertyTest_SplitItvMap_double_int();
 
-	// Test programmed properties on a sample of generated split_interval_map<double,int>
-	// autoPropertyTest_SplitItvMap_double_int();
-	system("pause");
+    // Test programmed properties on a sample of generated split_interval_map<double,int>
+    // autoPropertyTest_SplitItvMap_double_int();
+    system("pause");
 
-	return 0;
+    return 0;
 }
 

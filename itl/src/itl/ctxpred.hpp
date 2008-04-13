@@ -27,38 +27,38 @@ DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
 /* ------------------------------------------------------------------
 Predicates
-	general classes for Predicates
+    general classes for Predicates
 --------------------------------------------------------------------*/
 #ifndef __itl_PRED_H_JOFA_990224__
 #define __itl_PRED_H_JOFA_990224__
 
 namespace itl
 {
-	
+    
 // Unary predicates
 
 template <class ALPHA>
 class PropertyT // : public unary_function<ALPHA,bool>
 {
 public:
-	virtual bool operator() (const ALPHA& x)const=0; // { return true; }
+    virtual bool operator() (const ALPHA& x)const=0; // { return true; }
 } ;
 
 template <class ALPHA>
 class PredT : public PropertyT<ALPHA>
 {
 public:
-	PredT( bool(ALPHA::* pred)()const ): PropertyT<ALPHA>(), m_pred(pred){}
-	bool operator () (const ALPHA& x)const { return (x.*m_pred)(); }
+    PredT( bool(ALPHA::* pred)()const ): PropertyT<ALPHA>(), m_pred(pred){}
+    bool operator () (const ALPHA& x)const { return (x.*m_pred)(); }
 private:
-	bool(ALPHA::* m_pred)()const;
+    bool(ALPHA::* m_pred)()const;
 } ;
 
 template <class ALPHA>
 class EmptyT: public PropertyT<ALPHA>
 {
 public:
-	bool operator() (const ALPHA& x)const { return x.empty(); }
+    bool operator() (const ALPHA& x)const { return x.empty(); }
 } ;
 
 
@@ -68,31 +68,31 @@ template <class ALPHA, class BETA>
 class RelationT // : public binary_function<ALPHA,bool>
 {
 public:
-	virtual bool operator() (const ALPHA& a, const BETA& b)const { return true; }
+    virtual bool operator() (const ALPHA& a, const BETA& b)const { return true; }
 } ;
 
 template <class ALPHA>
 class SubsetRelationT: public RelationT<ALPHA, ALPHA>
 {
 public:
-	bool operator()(const ALPHA& x1, const ALPHA& x2)const
-	{ return x1.isSubsetOf(x2); }
+    bool operator()(const ALPHA& x1, const ALPHA& x2)const
+    { return x1.isSubsetOf(x2); }
 } ;
 
 template <class ALPHA>
 class IdentityRelationT: public RelationT<ALPHA, ALPHA>
 {
 public:
-	bool operator()(const ALPHA& x1, const ALPHA& x2)const
-	{ return x1 == x2; }
+    bool operator()(const ALPHA& x1, const ALPHA& x2)const
+    { return x1 == x2; }
 } ;
 
 template <class ALPHA>
 class DisjointRelationT: public RelationT<ALPHA, ALPHA>
 {
 public:
-	bool operator()(const ALPHA& x1, const ALPHA& x2)const
-	{ return x1.isDisjointTo(x2); }
+    bool operator()(const ALPHA& x1, const ALPHA& x2)const
+    { return x1.isDisjointTo(x2); }
 } ;
 
 
@@ -101,7 +101,7 @@ template <class DomTV>
 class OrderT
 {
 public:
-	virtual bool operator() (const DomTV&, const DomTV&)const=0;
+    virtual bool operator() (const DomTV&, const DomTV&)const=0;
 };
 
 

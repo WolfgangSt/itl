@@ -32,60 +32,60 @@ DEALINGS IN THE SOFTWARE.
 
 namespace itl
 {
-	namespace Interval
-	{
-		template <typename ElementContainerT, typename IntervalContainerT>
-		void atomize(ElementContainerT& result, const IntervalContainerT& src)
-		{
-			const_FORALL(typename IntervalContainerT, itv_, src)
-			{
-				const typename IntervalContainerT::key_type& itv   = IntervalContainerT::key_value(itv_);
-				typename IntervalContainerT::codomain_type   coval = IntervalContainerT::codomain_value(itv_);
+    namespace Interval
+    {
+        template <typename ElementContainerT, typename IntervalContainerT>
+        void atomize(ElementContainerT& result, const IntervalContainerT& src)
+        {
+            const_FORALL(typename IntervalContainerT, itv_, src)
+            {
+                const typename IntervalContainerT::key_type& itv   = IntervalContainerT::key_value(itv_);
+                typename IntervalContainerT::codomain_type   coval = IntervalContainerT::codomain_value(itv_);
 
-				for(typename IntervalContainerT::domain_type element = itv.first(); element <= itv.last(); element++)
-				{
-					result.insert(ElementContainerT::make_element(element, coval));
-				}
-			}
-		}
+                for(typename IntervalContainerT::domain_type element = itv.first(); element <= itv.last(); element++)
+                {
+                    result.insert(ElementContainerT::make_element(element, coval));
+                }
+            }
+        }
 
-		template <typename IntervalContainerT, typename ElementContainerT>
-		void cluster(IntervalContainerT& result, const ElementContainerT& src)
-		{
-			const_FORALL(typename ElementContainerT, element_, src)
-			{
-				const typename ElementContainerT::key_type&  key  = ElementContainerT::key_value(element_);
-				const typename ElementContainerT::data_type& data = ElementContainerT::data_value(element_);
+        template <typename IntervalContainerT, typename ElementContainerT>
+        void cluster(IntervalContainerT& result, const ElementContainerT& src)
+        {
+            const_FORALL(typename ElementContainerT, element_, src)
+            {
+                const typename ElementContainerT::key_type&  key  = ElementContainerT::key_value(element_);
+                const typename ElementContainerT::data_type& data = ElementContainerT::data_value(element_);
 
-				result.insert(IntervalContainerT::make_domain_element(key, data));
-			}
-		}
+                result.insert(IntervalContainerT::make_domain_element(key, data));
+            }
+        }
 
-		template <typename AtomizedType, typename ClusteredType>
-		struct Atomize
-		{
-			void operator()(AtomizedType& atomized, const ClusteredType& clustered)
-			{
-				Interval::atomize(atomized, clustered);
-			}
-		};
+        template <typename AtomizedType, typename ClusteredType>
+        struct Atomize
+        {
+            void operator()(AtomizedType& atomized, const ClusteredType& clustered)
+            {
+                Interval::atomize(atomized, clustered);
+            }
+        };
 
-		template <typename ClusteredType, typename AtomizedType>
-		struct Cluster
-		{
-			void operator()(ClusteredType& clustered, const AtomizedType& atomized)
-			{
-				Interval::cluster(clustered, atomized);
-			}
-		};
+        template <typename ClusteredType, typename AtomizedType>
+        struct Cluster
+        {
+            void operator()(ClusteredType& clustered, const AtomizedType& atomized)
+            {
+                Interval::cluster(clustered, atomized);
+            }
+        };
 
-	} // namespace Interval
+    } // namespace Interval
 
 
-	template<> 
-	inline std::string BinaryTemplateAsString<Interval::Atomize>::it() { return "@"; }
-	template<> 
-	inline std::string BinaryTemplateAsString<Interval::Cluster>::it() { return "&"; }
+    template<> 
+    inline std::string BinaryTemplateAsString<Interval::Atomize>::it() { return "@"; }
+    template<> 
+    inline std::string BinaryTemplateAsString<Interval::Cluster>::it() { return "&"; }
 
 } // namespace itl
 

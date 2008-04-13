@@ -36,48 +36,48 @@ DEALINGS IN THE SOFTWARE.
 
 namespace itl
 {
-	template <int varCountV>
-	class grouping
-	{
-		public:
-			typedef group_order<varCountV> group_orderT;
-		public:
-			grouping();
-			grouping(const grouping&);
-			grouping& operator = (const grouping&);
+    template <int varCountV>
+    class grouping
+    {
+        public:
+            typedef group_order<varCountV> group_orderT;
+        public:
+            grouping();
+            grouping(const grouping&);
+            grouping& operator = (const grouping&);
 
-			const group_orderT* operator[] (StatVarTD permIdx)const { return m_GroupOrder[permIdx]; }
-			void setGrouper(group_orderT* grouper, int idx) { m_GroupOrder[idx] = grouper; }
+            const group_orderT* operator[] (StatVarTD permIdx)const { return m_GroupOrder[permIdx]; }
+            void setGrouper(group_orderT* grouper, int idx) { m_GroupOrder[idx] = grouper; }
 
-		private:
-			group_orderT* m_GroupOrder[varCountV];
-	};
+        private:
+            group_orderT* m_GroupOrder[varCountV];
+    };
 
-	template <int varCountV>
-	itl::grouping<varCountV>::grouping ()
-	{
-		FOREACH_VAR(idx)
-			m_GroupOrder[idx] = NULL;
-	}
+    template <int varCountV>
+    itl::grouping<varCountV>::grouping ()
+    {
+        FOREACH_VAR(idx)
+            m_GroupOrder[idx] = NULL;
+    }
 
 
-	template <int varCountV>
-	itl::grouping<varCountV>::grouping (const grouping<varCountV>& src)
-	{
-		FOREACH_VAR(idx)
-			m_GroupOrder[idx] = src.m_GroupOrder[idx];
-	}
+    template <int varCountV>
+    itl::grouping<varCountV>::grouping (const grouping<varCountV>& src)
+    {
+        FOREACH_VAR(idx)
+            m_GroupOrder[idx] = src.m_GroupOrder[idx];
+    }
 
-	template <int varCountV>
-	grouping<varCountV>& itl::grouping<varCountV>::operator = (const grouping<varCountV>& src)
-	{
-		if(&src != this)
-		{
-			FOREACH_VAR(idx)
-				m_GroupOrder[idx] = src.m_GroupOrder[idx];
-		}
-		return *this;
-	}
+    template <int varCountV>
+    grouping<varCountV>& itl::grouping<varCountV>::operator = (const grouping<varCountV>& src)
+    {
+        if(&src != this)
+        {
+            FOREACH_VAR(idx)
+                m_GroupOrder[idx] = src.m_GroupOrder[idx];
+        }
+        return *this;
+    }
 
 
 }

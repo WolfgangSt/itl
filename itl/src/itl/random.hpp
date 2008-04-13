@@ -40,29 +40,29 @@ namespace itl
 class random
 {
 public:
-	//JODO subtractive_rng random generator is only an sgi extension of std-lib
-	//unsigned rnd(unsigned upb) { return m_random(upb); };
-	
-	unsigned rnd(unsigned upb) 
-	{
-		return static_cast<int>(upb * (::rand() / static_cast<double>(RAND_MAX)));
-		//JODO return m_random(upb); 
-	};
+    //JODO subtractive_rng random generator is only an sgi extension of std-lib
+    //unsigned rnd(unsigned upb) { return m_random(upb); };
+    
+    unsigned rnd(unsigned upb) 
+    {
+        return static_cast<int>(upb * (::rand() / static_cast<double>(RAND_MAX)));
+        //JODO return m_random(upb); 
+    };
 
 
-	unsigned rnd(unsigned lwb, unsigned upb)
-	{ // JODO cpp
-		J_ASSERT(0<=lwb && lwb <= upb);
-		unsigned len = upb - lwb ;
-		unsigned some = rnd(len);
-		return some + lwb;
-	}
+    unsigned rnd(unsigned lwb, unsigned upb)
+    { // JODO cpp
+        J_ASSERT(0<=lwb && lwb <= upb);
+        unsigned len = upb - lwb ;
+        unsigned some = rnd(len);
+        return some + lwb;
+    }
 
-	unsigned rnd(const itl::interval<unsigned>& rng)
-	{ J_ASSERT( rng.is_rightopen() ); return rnd(rng.lwb(),rng.upb()); }
+    unsigned rnd(const itl::interval<unsigned>& rng)
+    { J_ASSERT( rng.is_rightopen() ); return rnd(rng.lwb(),rng.upb()); }
 
 private:
-	//JODO subtractive_rng m_random;
+    //JODO subtractive_rng m_random;
 };
 
 } // namespace itl

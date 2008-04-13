@@ -27,9 +27,9 @@ DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
 /* ------------------------------------------------------------------
 class itl::cop
-	a general computing map class that extends stl-maps
-	for concepts InplaceAddable and InplaceSubtractable.
-	itl::cop is completed for inverse elements.
+    a general computing map class that extends stl-maps
+    for concepts InplaceAddable and InplaceSubtractable.
+    itl::cop is completed for inverse elements.
 --------------------------------------------------------------------*/
 #ifndef __itl_cop_h_JOFA_071124__
 #define __itl_cop_h_JOFA_071124__
@@ -44,298 +44,298 @@ class itl::cop
 
 namespace itl
 {
-	// counter, counter_map, total_map, complete_map, comap, cop
-	/* class cop is a 
-	   (1) Counting or computing map: it adds up values on insertion if DataT is numeric
-	   (2) Collecing map: It unifies values on insertion if DataT is a container
-	   (3) Completed map: For every cop x there exists an inverse cop -x such that x + (-x) = cop().
-	*/
+    // counter, counter_map, total_map, complete_map, comap, cop
+    /* class cop is a 
+       (1) Counting or computing map: it adds up values on insertion if DataT is numeric
+       (2) Collecing map: It unifies values on insertion if DataT is a container
+       (3) Completed map: For every cop x there exists an inverse cop -x such that x + (-x) = cop().
+    */
 
-	// semigroup EA
-	// monoid EAN
-	// commutative monoid EANC
+    // semigroup EA
+    // monoid EAN
+    // commutative monoid EANC
 
-	/*JODO move this comment to concept InplaceAddable, InplaceSubtractable, InplaceCombinable
+    /*JODO move this comment to concept InplaceAddable, InplaceSubtractable, InplaceCombinable
 
-		Many features of the itl are based on the concept, that instances of
-		template parameter are InplaceAddable(InplaceSubtractible). That is, 
-		operators += and -= are implemented.
-	*/
+        Many features of the itl are based on the concept, that instances of
+        template parameter are InplaceAddable(InplaceSubtractible). That is, 
+        operators += and -= are implemented.
+    */
 
-	/// an stl based map implementing inplace addition and subtraction operators += and -=
-	//JODO 1_0_1 documentation
-	/** 
+    /// an stl based map implementing inplace addition and subtraction operators += and -=
+    //JODO 1_0_1 documentation
+    /** 
 
-		@author Joachim Faulhaber
-	*/
-	template <typename KeyT, typename DataT, typename CompareT = std::less<KeyT>,
-			  typename AllocT = std::allocator<std::pair<const KeyT, DataT> > >
-	class cop: private std::map<KeyT, DataT, CompareT, AllocT>
-	{
-	public:
-		typedef typename itl::cop<KeyT, DataT, CompareT, AllocT> type;
-		typedef typename std::map<KeyT, DataT, CompareT, AllocT> base_type;
-		typedef typename itl::set<KeyT, CompareT, std::allocator<KeyT> > set_type;
+        @author Joachim Faulhaber
+    */
+    template <typename KeyT, typename DataT, typename CompareT = std::less<KeyT>,
+              typename AllocT = std::allocator<std::pair<const KeyT, DataT> > >
+    class cop: private std::map<KeyT, DataT, CompareT, AllocT>
+    {
+    public:
+        typedef typename itl::cop<KeyT, DataT, CompareT, AllocT> type;
+        typedef typename std::map<KeyT, DataT, CompareT, AllocT> base_type;
+        typedef typename itl::set<KeyT, CompareT, std::allocator<KeyT> > set_type;
 
-	public:
-		typedef KeyT                                       key_type;
-		typedef DataT                                      mapped_type;
-		typedef DataT                                      data_type;
-		typedef std::pair<const KeyT, DataT>               value_type;
-		typedef CompareT                                   key_compare;
-		typedef typename base_type::value_compare          value_compare;
-		typedef AllocT                                     allocator_type;
+    public:
+        typedef KeyT                                       key_type;
+        typedef DataT                                      mapped_type;
+        typedef DataT                                      data_type;
+        typedef std::pair<const KeyT, DataT>               value_type;
+        typedef CompareT                                   key_compare;
+        typedef typename base_type::value_compare          value_compare;
+        typedef AllocT                                     allocator_type;
 
-	public:
-		typedef typename base_type::pointer                pointer;
-		typedef typename base_type::const_pointer          const_pointer;
-		typedef typename base_type::reference              reference;
-		typedef typename base_type::const_reference        const_reference;
-		typedef typename base_type::iterator               iterator;
-		typedef typename base_type::const_iterator         const_iterator;
-		typedef typename base_type::size_type              size_type;
-		typedef typename base_type::difference_type        difference_type;
-		typedef typename base_type::reverse_iterator       reverse_iterator;
-		typedef typename base_type::const_reverse_iterator const_reverse_iterator;
-		
-	public:
-		cop(){}
-		cop(const key_compare& comp): std::map(comp){}
+    public:
+        typedef typename base_type::pointer                pointer;
+        typedef typename base_type::const_pointer          const_pointer;
+        typedef typename base_type::reference              reference;
+        typedef typename base_type::const_reference        const_reference;
+        typedef typename base_type::iterator               iterator;
+        typedef typename base_type::const_iterator         const_iterator;
+        typedef typename base_type::size_type              size_type;
+        typedef typename base_type::difference_type        difference_type;
+        typedef typename base_type::reverse_iterator       reverse_iterator;
+        typedef typename base_type::const_reverse_iterator const_reverse_iterator;
+        
+    public:
+        cop(){}
+        cop(const key_compare& comp): std::map(comp){}
 
-		template <class InputIterator>
-		cop(InputIterator f, InputIterator l): std::map<InputIterator>(f,l) {}
+        template <class InputIterator>
+        cop(InputIterator f, InputIterator l): std::map<InputIterator>(f,l) {}
 
-		template <class InputIterator>
-		cop(InputIterator f, InputIterator l, const key_compare& comp): std::map<InputIterator>(f,l,comp) {}
+        template <class InputIterator>
+        cop(InputIterator f, InputIterator l, const key_compare& comp): std::map<InputIterator>(f,l,comp) {}
 
-		cop(const cop& src): base_type::map(src){}
+        cop(const cop& src): base_type::map(src){}
 
-		cop& operator=(const cop& src) { base_type::operator=(src); return *this; } 
-		void swap(cop& src) { base_type::swap(src); }
+        cop& operator=(const cop& src) { base_type::operator=(src); return *this; } 
+        void swap(cop& src) { base_type::swap(src); }
 
-		using base_type::begin;
-		using base_type::end;
-		using base_type::rbegin;
-		using base_type::rend;
+        using base_type::begin;
+        using base_type::end;
+        using base_type::rbegin;
+        using base_type::rend;
 
-		using base_type::size;
-		using base_type::max_size;
-		using base_type::empty;
+        using base_type::size;
+        using base_type::max_size;
+        using base_type::empty;
 
-		using base_type::key_comp;
-		using base_type::value_comp;
+        using base_type::key_comp;
+        using base_type::value_comp;
 
-		using base_type::insert;
-		using base_type::erase;
-		using base_type::clear;
-		using base_type::find;
-		using base_type::count;
+        using base_type::insert;
+        using base_type::erase;
+        using base_type::clear;
+        using base_type::find;
+        using base_type::count;
 
-		using base_type::lower_bound;
-		using base_type::upper_bound;
-		using base_type::equal_range;
+        using base_type::lower_bound;
+        using base_type::upper_bound;
+        using base_type::equal_range;
 
-		using base_type::operator[];
+        using base_type::operator[];
 
-	public:
-		// --------------------------------------------------------------------
-		// itl specific extensions
+    public:
+        // --------------------------------------------------------------------
+        // itl specific extensions
 
-		//JODO concept set
-		/// Checks if a key element is in the cop
-		bool contains(const KeyT& x)const { return !(find(x) == end()); }
+        //JODO concept set
+        /// Checks if a key element is in the cop
+        bool contains(const KeyT& x)const { return !(find(x) == end()); }
 
-		/** Is <tt>*this</tt> contained in <tt>super</tt>? */
-		bool contained_in(const cop& super)const { return Map::contained_in(*this, super); }
+        /** Is <tt>*this</tt> contained in <tt>super</tt>? */
+        bool contained_in(const cop& super)const { return Map::contained_in(*this, super); }
 
-		/** Does <tt>*this</tt> contain <tt>sub</tt>? */
-		bool contains(const cop& sub)const { return Map::contained_in(sub, *this); }
+        /** Does <tt>*this</tt> contain <tt>sub</tt>? */
+        bool contains(const cop& sub)const { return Map::contained_in(sub, *this); }
 
-		// Default inject-function using += on CodomTV
-		iterator inject(const value_type& vp);
+        // Default inject-function using += on CodomTV
+        iterator inject(const value_type& vp);
 
-		iterator subtract(const key_type& key);
-		// Default subtract-function using -= on CodomTV
-		iterator subtract(const value_type& vp);
+        iterator subtract(const key_type& key);
+        // Default subtract-function using -= on CodomTV
+        iterator subtract(const value_type& vp);
 
-		//JODO concept InplaceAddable
-		/** Add a cop \c x2 to this cop. If an element of \c x2 already exists
-			in \c *this, add up the contents using <tt>operator +=</tt>. */
-		cop& operator += (const cop& x2) { Set::inject(*this, x2); return *this; } ;
+        //JODO concept InplaceAddable
+        /** Add a cop \c x2 to this cop. If an element of \c x2 already exists
+            in \c *this, add up the contents using <tt>operator +=</tt>. */
+        cop& operator += (const cop& x2) { Set::inject(*this, x2); return *this; } ;
 
-		//JODO concept InplaceSubtractable
-		/** Subtract a cop \c x2 from this cop. If an element of \c x2 already exists
-			in \c *this, subtract the contents using <tt>operator +=</tt>. */
-		cop& operator -= (const cop& x2) { Set::subtract(*this, x2); return *this; }
+        //JODO concept InplaceSubtractable
+        /** Subtract a cop \c x2 from this cop. If an element of \c x2 already exists
+            in \c *this, subtract the contents using <tt>operator +=</tt>. */
+        cop& operator -= (const cop& x2) { Set::subtract(*this, x2); return *this; }
 
-		/** Subtract a set \c x2 from this cop. Every element of \c this cop that
-			has a key that is element of \c x2 is deleted from the cop. */
-		cop& operator -= (const set_type& x2) { Set::subtract(*this, x2); return *this; }
+        /** Subtract a set \c x2 from this cop. Every element of \c this cop that
+            has a key that is element of \c x2 is deleted from the cop. */
+        cop& operator -= (const set_type& x2) { Set::subtract(*this, x2); return *this; }
 
-		//JODO
-		/** Intersect cop \c x2 \c *this.
-		So \c *this becomes the intersection of \c *this and \c x2 */
-		cop& operator *= (const cop& x2) { Map::intersect(*this, x2); return *this; }
+        //JODO
+        /** Intersect cop \c x2 \c *this.
+        So \c *this becomes the intersection of \c *this and \c x2 */
+        cop& operator *= (const cop& x2) { Map::intersect(*this, x2); return *this; }
 
-		/** Intersect set \c x2 and \c *this.
-		So \c *this becomes the intersection of \c *this and \c x2 */
-		cop& operator *= (const set_type& x2) { Map::intersect(*this, x2); return *this; }
+        /** Intersect set \c x2 and \c *this.
+        So \c *this becomes the intersection of \c *this and \c x2 */
+        cop& operator *= (const set_type& x2) { Map::intersect(*this, x2); return *this; }
 
-		//JODO concept StringRepresentable
-		/** Represent this cop as string */
-		std::string asString()const;
+        //JODO concept StringRepresentable
+        /** Represent this cop as string */
+        std::string asString()const;
 
-		/** Keep the elements in *this cop to which property \c hasProperty applies. 
-		    Erase all the rest. */
-		cop& keep_if(const PropertyT<value_type>& hasProperty);
+        /** Keep the elements in *this cop to which property \c hasProperty applies. 
+            Erase all the rest. */
+        cop& keep_if(const PropertyT<value_type>& hasProperty);
 
-		/** Erase the elements in *this cop to which property \c hasProperty applies. 
-		    Keep all the rest. */
-		cop& drop_if(const PropertyT<value_type>& hasProperty);
+        /** Erase the elements in *this cop to which property \c hasProperty applies. 
+            Keep all the rest. */
+        cop& drop_if(const PropertyT<value_type>& hasProperty);
 
-		/** Copy the elements in cop \c src to which property \c hasProperty applies 
-		    into \c *this cop. */
-		cop& copy_if(const PropertyT<value_type>& hasProperty, const cop& src);
+        /** Copy the elements in cop \c src to which property \c hasProperty applies 
+            into \c *this cop. */
+        cop& copy_if(const PropertyT<value_type>& hasProperty, const cop& src);
 
-		template<typename IteratorT>
-		static const KeyT& key_value(IteratorT& value_){ return (*value_).first; }
+        template<typename IteratorT>
+        static const KeyT& key_value(IteratorT& value_){ return (*value_).first; }
 
-		template<typename LeftIterT, typename RightIterT>
-		static bool key_less(LeftIterT& lhs_, RightIterT& rhs_) { return less<KeyT>()((*lhs_).first,(*rhs_).first); }
-	};
-
-
-	template <typename KeyT, typename DataT, typename CompareT, typename AllocT>
-	inline bool operator == (const itl::cop<KeyT,DataT,CompareT,AllocT>& lhs,
-							 const itl::cop<KeyT,DataT,CompareT,AllocT>& rhs)
-	{
-		typedef std::map<KeyT,DataT,CompareT,AllocT> base_type;
-		return operator==((const base_type&)lhs, (const base_type&)rhs);
-	}
-	
-	template <typename KeyT, typename DataT, typename CompareT, typename AllocT>
-	inline bool operator < (const itl::cop<KeyT,DataT,CompareT,AllocT>& lhs,
-							const itl::cop<KeyT,DataT,CompareT,AllocT>& rhs)
-	{
-		typedef std::map<KeyT,DataT,CompareT,AllocT> base_type;
-		return operator<((const base_type&)lhs, (const base_type&)rhs);
-	}
+        template<typename LeftIterT, typename RightIterT>
+        static bool key_less(LeftIterT& lhs_, RightIterT& rhs_) { return less<KeyT>()((*lhs_).first,(*rhs_).first); }
+    };
 
 
-
-	template <typename KeyT, typename DataT, typename CompareT, typename AllocT>
-	typename cop<KeyT,DataT,CompareT,AllocT>::iterator
-		cop<KeyT,DataT,CompareT,AllocT>::inject(const value_type& val)
-	{
-		if(val.CONT_VALUE == DataT())
-			return end();
-
-		pair<iterator, bool> insertionAttempt = insert(val);
-
-		if( insertionAttempt.WAS_SUCCESSFUL )
-			return insertionAttempt.ITERATOR ;
-		else
-		{
-			iterator it = insertionAttempt.ITERATOR;
-			(*it).CONT_VALUE += val.CONT_VALUE ;
-
-			if((*it).CONT_VALUE == DataT()) //neutron absorbtion
-			{
-				erase(it);
-				return end();
-			}
-			else 
-				return it ;
-		}
-	}
-
-	template <typename KeyT, typename DataT, typename CompareT, typename AllocT>
-	typename cop<KeyT,DataT,CompareT,AllocT>::iterator
-		cop<KeyT,DataT,CompareT,AllocT>::subtract(const key_type& key)
-	{
-		iterator it_ = find(key);
-		if(it_ != end())
-			erase(it_);
-
-		return end();
-	}
-
-	template <typename KeyT, typename DataT, typename CompareT, typename AllocT>
-	typename cop<KeyT,DataT,CompareT,AllocT>::iterator
-		cop<KeyT,DataT,CompareT,AllocT>::subtract(const value_type& val)
-	{
-		iterator it_ = find(val.KEY_VALUE);
-		if(it_ != end())
-		{
-			(*it_).CONT_VALUE -= val.CONT_VALUE;
-
-			if((*it_).CONT_VALUE == DataT()) //neutron absorbtion
-			{
-				erase(it_);
-				return end();
-			}
-			else
-				return it_;
-		}
-		//JODO inverse subtraction violates LAW: symmetric difference
-		//else
-		//{
-		//	DataT inverse = DataT();
-		//	inverse -= val.CONT_VALUE;
-		//	return insert(value_type(val.KEY_VALUE, inverse)).ITERATOR;
-		//}
-	}
-
-	template <typename KeyT, typename DataT, typename CompareT, typename AllocT>
-	std::string cop<KeyT,DataT,CompareT,AllocT>::asString()const
-	{ 
-		std::string repr;
-		const_FORALL_THIS(it) {
-			std::string elem("(");
-			elem += ReprBaseT<KeyT>::toString((*it).KEY_VALUE);
-			elem += "->";
-			elem += ReprBaseT<DataT>::toString((*it).CONT_VALUE);
-			elem += ")";
-
-			repr += elem;
-		}
-		return repr;
-	}
+    template <typename KeyT, typename DataT, typename CompareT, typename AllocT>
+    inline bool operator == (const itl::cop<KeyT,DataT,CompareT,AllocT>& lhs,
+                             const itl::cop<KeyT,DataT,CompareT,AllocT>& rhs)
+    {
+        typedef std::map<KeyT,DataT,CompareT,AllocT> base_type;
+        return operator==((const base_type&)lhs, (const base_type&)rhs);
+    }
+    
+    template <typename KeyT, typename DataT, typename CompareT, typename AllocT>
+    inline bool operator < (const itl::cop<KeyT,DataT,CompareT,AllocT>& lhs,
+                            const itl::cop<KeyT,DataT,CompareT,AllocT>& rhs)
+    {
+        typedef std::map<KeyT,DataT,CompareT,AllocT> base_type;
+        return operator<((const base_type&)lhs, (const base_type&)rhs);
+    }
 
 
-	template <typename KeyT, typename DataT, typename CompareT, typename AllocT>
-	cop<KeyT,DataT,CompareT,AllocT>& cop<KeyT,DataT,CompareT,AllocT>
-		::drop_if(const PropertyT<value_type>& hasProperty)
-	{
-		iterator it = begin(), victim;
-		while(it != end())
-			if ( hasProperty(*it) ) { victim = it++; erase(victim); } else ++it;
-		return *this;
-	}
 
-	template <typename KeyT, typename DataT, typename CompareT, typename AllocT>
-	cop<KeyT,DataT,CompareT,AllocT>& cop<KeyT,DataT,CompareT,AllocT>
-		::keep_if(const PropertyT<value_type>& hasProperty)
-	{
-		iterator it = begin(), victim;
-		while(it != end())
-			if ( !hasProperty(*it) ) { victim = it++; erase(victim); } else ++it;
-		return *this;
-	}
+    template <typename KeyT, typename DataT, typename CompareT, typename AllocT>
+    typename cop<KeyT,DataT,CompareT,AllocT>::iterator
+        cop<KeyT,DataT,CompareT,AllocT>::inject(const value_type& val)
+    {
+        if(val.CONT_VALUE == DataT())
+            return end();
 
-	template <typename KeyT, typename DataT, typename CompareT, typename AllocT>
-	cop<KeyT,DataT,CompareT,AllocT>& cop<KeyT,DataT,CompareT,AllocT>
-		::copy_if(const PropertyT<value_type>& hasProperty, const cop<KeyT,DataT,CompareT,AllocT>& src)
-	{
-		if(this == &src) return keep_if(hasProperty);
-		// otherwise
-		clear();
-		const_iterator it = src.begin();
-		while(it != src.end()) {
-			if ( hasProperty(*it) ) insert(*it); it++;
-		}
-		return *this;
-	}
+        pair<iterator, bool> insertionAttempt = insert(val);
+
+        if( insertionAttempt.WAS_SUCCESSFUL )
+            return insertionAttempt.ITERATOR ;
+        else
+        {
+            iterator it = insertionAttempt.ITERATOR;
+            (*it).CONT_VALUE += val.CONT_VALUE ;
+
+            if((*it).CONT_VALUE == DataT()) //neutron absorbtion
+            {
+                erase(it);
+                return end();
+            }
+            else 
+                return it ;
+        }
+    }
+
+    template <typename KeyT, typename DataT, typename CompareT, typename AllocT>
+    typename cop<KeyT,DataT,CompareT,AllocT>::iterator
+        cop<KeyT,DataT,CompareT,AllocT>::subtract(const key_type& key)
+    {
+        iterator it_ = find(key);
+        if(it_ != end())
+            erase(it_);
+
+        return end();
+    }
+
+    template <typename KeyT, typename DataT, typename CompareT, typename AllocT>
+    typename cop<KeyT,DataT,CompareT,AllocT>::iterator
+        cop<KeyT,DataT,CompareT,AllocT>::subtract(const value_type& val)
+    {
+        iterator it_ = find(val.KEY_VALUE);
+        if(it_ != end())
+        {
+            (*it_).CONT_VALUE -= val.CONT_VALUE;
+
+            if((*it_).CONT_VALUE == DataT()) //neutron absorbtion
+            {
+                erase(it_);
+                return end();
+            }
+            else
+                return it_;
+        }
+        //JODO inverse subtraction violates LAW: symmetric difference
+        //else
+        //{
+        //    DataT inverse = DataT();
+        //    inverse -= val.CONT_VALUE;
+        //    return insert(value_type(val.KEY_VALUE, inverse)).ITERATOR;
+        //}
+    }
+
+    template <typename KeyT, typename DataT, typename CompareT, typename AllocT>
+    std::string cop<KeyT,DataT,CompareT,AllocT>::asString()const
+    { 
+        std::string repr;
+        const_FORALL_THIS(it) {
+            std::string elem("(");
+            elem += ReprBaseT<KeyT>::toString((*it).KEY_VALUE);
+            elem += "->";
+            elem += ReprBaseT<DataT>::toString((*it).CONT_VALUE);
+            elem += ")";
+
+            repr += elem;
+        }
+        return repr;
+    }
+
+
+    template <typename KeyT, typename DataT, typename CompareT, typename AllocT>
+    cop<KeyT,DataT,CompareT,AllocT>& cop<KeyT,DataT,CompareT,AllocT>
+        ::drop_if(const PropertyT<value_type>& hasProperty)
+    {
+        iterator it = begin(), victim;
+        while(it != end())
+            if ( hasProperty(*it) ) { victim = it++; erase(victim); } else ++it;
+        return *this;
+    }
+
+    template <typename KeyT, typename DataT, typename CompareT, typename AllocT>
+    cop<KeyT,DataT,CompareT,AllocT>& cop<KeyT,DataT,CompareT,AllocT>
+        ::keep_if(const PropertyT<value_type>& hasProperty)
+    {
+        iterator it = begin(), victim;
+        while(it != end())
+            if ( !hasProperty(*it) ) { victim = it++; erase(victim); } else ++it;
+        return *this;
+    }
+
+    template <typename KeyT, typename DataT, typename CompareT, typename AllocT>
+    cop<KeyT,DataT,CompareT,AllocT>& cop<KeyT,DataT,CompareT,AllocT>
+        ::copy_if(const PropertyT<value_type>& hasProperty, const cop<KeyT,DataT,CompareT,AllocT>& src)
+    {
+        if(this == &src) return keep_if(hasProperty);
+        // otherwise
+        clear();
+        const_iterator it = src.begin();
+        while(it != src.end()) {
+            if ( hasProperty(*it) ) insert(*it); it++;
+        }
+        return *this;
+    }
 
 } // namespace itl
 

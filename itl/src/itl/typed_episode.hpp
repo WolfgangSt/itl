@@ -37,34 +37,34 @@ namespace itl
 {
 
 /**  
-	<b>Episoden-Intercace</b>
+    <b>Episoden-Intercace</b>
 
-	Eine Episode besitzt ein Intervall. 
+    Eine Episode besitzt ein Intervall. 
   
-	@author  Joachim Faulhaber
+    @author  Joachim Faulhaber
 */
 template <class ItvDomTV>
 class episode_interface
 {
 public:
 
-	/// virtual dtor: cave leakem
-	virtual ~episode_interface(){}
+    /// virtual dtor: cave leakem
+    virtual ~episode_interface(){}
 
-	/// das Intervall der Episode
-	virtual interval<ItvDomTV> interval()const=0;
+    /// das Intervall der Episode
+    virtual interval<ItvDomTV> interval()const=0;
 
-	// der Wert der Episode is dann dat Ding selba
+    // der Wert der Episode is dann dat Ding selba
 };
 
 /**  
-	<b>ein Episode mit Typ dazu</b>
+    <b>ein Episode mit Typ dazu</b>
 
-	Die Klasse TypesEpisodeAT ist nach Typ sortierbar, denn sie 
-	implementiert \ref OrderedTypeAT. Ausserdem ist es eine Episode, denn
-	sie implementiert \ref episode_interface.
+    Die Klasse TypesEpisodeAT ist nach Typ sortierbar, denn sie 
+    implementiert \ref OrderedTypeAT. Ausserdem ist es eine Episode, denn
+    sie implementiert \ref episode_interface.
   
-	@author  Joachim Faulhaber
+    @author  Joachim Faulhaber
 */
 template <class ItvDomTV, class TypeDomTV>
 class typed_episode : public ordered_type_base<TypeDomTV>, public episode_interface<ItvDomTV>

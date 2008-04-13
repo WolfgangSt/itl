@@ -65,285 +65,285 @@ namespace Loki
 
 
 
-	template <typename FstT, typename SndT> struct TypePair
-	{
-		typedef FstT FirstT;
-		typedef SndT SecondT;
-	};
+    template <typename FstT, typename SndT> struct TypePair
+    {
+        typedef FstT FirstT;
+        typedef SndT SecondT;
+    };
 
-	template <typename Type, unsigned int index>
-	struct TupleElement 
-	{
-		typedef Type ValueType;
-		enum { position = index };
-		Type _value;
-		operator Type&() { return _value; }
-		operator const Type&() const { return _value; }
-		void set(Type& value){ _value = value; }
-	};
+    template <typename Type, unsigned int index>
+    struct TupleElement 
+    {
+        typedef Type ValueType;
+        enum { position = index };
+        Type _value;
+        operator Type&() { return _value; }
+        operator const Type&() const { return _value; }
+        void set(Type& value){ _value = value; }
+    };
 
-	template <class TList, unsigned int index>
-	class TupleGentor;
+    template <class TList, unsigned int index>
+    class TupleGentor;
 
-	template <class HeadT, class TailT, unsigned int index>
-	class TupleGentor<Typelist<HeadT, TailT>, index>
-		: public TupleElement<HeadT, index>
-		, public TupleGentor<TailT, index+1>
-	{
-	public:
-		enum { Index = index };
-		typedef Typelist<HeadT, TailT>		TList;
-		typedef TupleElement<HeadT, index>  HeadClass;
-		typedef TupleGentor<TailT, index+1> TailClass;
-	};
+    template <class HeadT, class TailT, unsigned int index>
+    class TupleGentor<Typelist<HeadT, TailT>, index>
+        : public TupleElement<HeadT, index>
+        , public TupleGentor<TailT, index+1>
+    {
+    public:
+        enum { Index = index };
+        typedef Typelist<HeadT, TailT>        TList;
+        typedef TupleElement<HeadT, index>  HeadClass;
+        typedef TupleGentor<TailT, index+1> TailClass;
+    };
 
-	template <unsigned int size>
-	class TupleGentor<NullType, size>
-	{};
+    template <unsigned int size>
+    class TupleGentor<NullType, size>
+    {};
 
-	// ---------------------------------------------------------------------------
-	template <typename Types> class Tupl 
-		: public TupleGentor<Types, 0>
-	{
-	public:
-		typedef TupleGentor<Types, 0> BaseClass;
-		std::string asString()const;
-	};
+    // ---------------------------------------------------------------------------
+    template <typename Types> class Tupl 
+        : public TupleGentor<Types, 0>
+    {
+    public:
+        typedef TupleGentor<Types, 0> BaseClass;
+        std::string asString()const;
+    };
 
-	// ---------------------------------------------------------------------------
-	// ---------------------------------------------------------------------------
-	template <class TupleT, unsigned int idx> struct ValueGetter;
+    // ---------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
+    template <class TupleT, unsigned int idx> struct ValueGetter;
 
-	template <class TupleT>
-	struct ValueGetter<TupleT, 0>
-	{
-		typedef typename TupleT::HeadClass HeadClass;
-		typedef typename HeadClass::ValueType ValueType;
+    template <class TupleT>
+    struct ValueGetter<TupleT, 0>
+    {
+        typedef typename TupleT::HeadClass HeadClass;
+        typedef typename HeadClass::ValueType ValueType;
 
-		static ValueType& Do(TupleT& obj)
-		{
-			HeadClass& elem = obj;
-			return elem;
-		}
-	};
+        static ValueType& Do(TupleT& obj)
+        {
+            HeadClass& elem = obj;
+            return elem;
+        }
+    };
 
-	template <class TupleT, unsigned int idx>
-	struct ValueGetter
-	{
-		typedef typename TupleT::HeadClass HeadClass;
-		typedef typename TupleT::TailClass TailClass;
-		typedef typename TL::TypeAt<typename TupleT::TList, idx>::Result ValueType;
+    template <class TupleT, unsigned int idx>
+    struct ValueGetter
+    {
+        typedef typename TupleT::HeadClass HeadClass;
+        typedef typename TupleT::TailClass TailClass;
+        typedef typename TL::TypeAt<typename TupleT::TList, idx>::Result ValueType;
 
-		static ValueType& Do(TupleT& obj)
-		{
-			TailClass& rightBase = obj;
-			return ValueGetter<TailClass, idx-1>::Do(rightBase);
-		}
-	};
+        static ValueType& Do(TupleT& obj)
+        {
+            TailClass& rightBase = obj;
+            return ValueGetter<TailClass, idx-1>::Do(rightBase);
+        }
+    };
 
-	template <int i, class H>
-	typename ValueGetter<H, i>::ValueType& get(H& obj)
-	{
-		return ValueGetter<H, i>::Do(obj);
-	}
-	// ---------------------------------------------------------------------------
+    template <int i, class H>
+    typename ValueGetter<H, i>::ValueType& get(H& obj)
+    {
+        return ValueGetter<H, i>::Do(obj);
+    }
+    // ---------------------------------------------------------------------------
 
-	////////////////////////////////////////////////////////////////////////////////
-	// helper class template Reductor
-	// See Reduce below
-	////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    // helper class template Reductor
+    // See Reduce below
+    ////////////////////////////////////////////////////////////////////////////////
 
-	template <class H, unsigned int i> struct Reductor;
+    template <class H, unsigned int i> struct Reductor;
 
-	template <class H>
-	struct Reductor<H, 0>
-	{
-		typedef typename H::TList::Head HeadType;
+    template <class H>
+    struct Reductor<H, 0>
+    {
+        typedef typename H::TList::Head HeadType;
 
-		static HeadType Do(H& obj)
-		{
-			return get<0>(obj);
-		}
-	};
+        static HeadType Do(H& obj)
+        {
+            return get<0>(obj);
+        }
+    };
 
-	template <class H, unsigned int i>
-	struct Reductor
-	{
-		typedef typename H::TList::Head HeadType;
-		typedef typename H::TailClass TailClass;
+    template <class H, unsigned int i>
+    struct Reductor
+    {
+        typedef typename H::TList::Head HeadType;
+        typedef typename H::TailClass TailClass;
 
-		static HeadType Do(H& obj)
-		{
-			// Which is: first(obj) + reduce(tail(obj))
-			return get<0>(obj) + Reductor<TailClass, i-1>::Do(obj);
-		}
-	};
+        static HeadType Do(H& obj)
+        {
+            // Which is: first(obj) + reduce(tail(obj))
+            return get<0>(obj) + Reductor<TailClass, i-1>::Do(obj);
+        }
+    };
 
-	template <class H>
-	typename Reductor<H, 0>::HeadType Reduce(H& obj)
-	{
-		return Reductor<H, Length<H::TList>::value-1>::Do(obj);
-	}
+    template <class H>
+    typename Reductor<H, 0>::HeadType Reduce(H& obj)
+    {
+        return Reductor<H, Length<H::TList>::value-1>::Do(obj);
+    }
 
-	////////////////////////////////////////////////////////////////////////////////
-	// helper class template Stringer
-	// See Reduce below
-	////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
+    // helper class template Stringer
+    // See Reduce below
+    ////////////////////////////////////////////////////////////////////////////////
 
-	template <class H, unsigned int i> struct Stringer;
-
-
-	template <class H>
-	struct Stringer<H, 0>
-	{
-		typedef typename H::TList::Head HeadType;
-
-		static std::string Do(H& obj)
-		{
-			return CTX::ReprBaseT<HeadType>::toString(get<0>(obj));
-		}
-	};
-
-	template <class H, unsigned int i>
-	struct Stringer
-	{
-		typedef typename H::TList::Head HeadType;
-		typedef typename H::TailClass TailClass;
-
-		static std::string Do(H& obj)
-		{
-			return CTX::ReprBaseT<HeadType>::toString(get<0>(obj)) 
-				   + ", " + Stringer<TailClass, i-1>::Do(obj);
-		}
-	};
-
-	template <class H>
-	typename std::string Stringify(H& obj)
-	{
-		return "("+Stringer<H, Length<H::TList>::value-1>::Do(obj)+")";
-	}
-
-	template <typename Types>
-	std::string Tupl<Types>::asString()const
-	{
-		//JODO In order to work with const selector functions I need to
-		// implement a const ValueGetter version
-		return Stringify(const_cast<Tupl<Types>&>(*this));
-	}
+    template <class H, unsigned int i> struct Stringer;
 
 
-	////////////////////////////////////////////////////////////////////////////////
-	// helper class template Mapper
-	// See Map below 
-	////////////////////////////////////////////////////////////////////////////////
+    template <class H>
+    struct Stringer<H, 0>
+    {
+        typedef typename H::TList::Head HeadType;
 
-	template <typename TargetT, typename SourceT> struct UnaryFunction
-	{
-		typedef typename TargetT (*Type)(SourceT);
-	};
+        static std::string Do(H& obj)
+        {
+            return CTX::ReprBaseT<HeadType>::toString(get<0>(obj));
+        }
+    };
 
-	template <typename TargetT, typename SourceT> struct TwiceFun
-	{
-		static TargetT apply(const SourceT& src); 
-	};
-	template <> 
-	struct TwiceFun<int,int>
-	{
-		static int apply(const int& src) 
-		{
-			return 2*src;
-		}
-	};
-	template <> 
-	struct TwiceFun<int,double>
-	{
-		static int apply(const double& src) 
-		{
-			return static_cast<int>(2.0*src);
-		}
-	};
-	template <> 
-	struct TwiceFun<double,double>
-	{
-		static double apply(const double& src) 
-		{
-			return (2.0*src);
-		}
-	};
-	
-	// ---------------------------------------------------------------------------
-	// template class ToString
-	// ---------------------------------------------------------------------------
-	template <typename TargetT, typename SourceT> struct ToString
-	{ static TargetT apply(const SourceT& src); };
+    template <class H, unsigned int i>
+    struct Stringer
+    {
+        typedef typename H::TList::Head HeadType;
+        typedef typename H::TailClass TailClass;
 
-	template <typename SourceT> struct ToString<std::string, SourceT>
-	{
-		static std::string apply(const SourceT& src)
-		{
-			return CTX::ReprBaseT<SourceT>::toString(src);
-		}
-	};
+        static std::string Do(H& obj)
+        {
+            return CTX::ReprBaseT<HeadType>::toString(get<0>(obj)) 
+                   + ", " + Stringer<TailClass, i-1>::Do(obj);
+        }
+    };
+
+    template <class H>
+    typename std::string Stringify(H& obj)
+    {
+        return "("+Stringer<H, Length<H::TList>::value-1>::Do(obj)+")";
+    }
+
+    template <typename Types>
+    std::string Tupl<Types>::asString()const
+    {
+        //JODO In order to work with const selector functions I need to
+        // implement a const ValueGetter version
+        return Stringify(const_cast<Tupl<Types>&>(*this));
+    }
 
 
-	// ---------------------------------------------------------------------------
-	// template class Mapper
-	// ---------------------------------------------------------------------------
-	template <template<typename,typename>class Function, class TrgTupleT, class SrcTupleT>
-	struct Mapper;
+    ////////////////////////////////////////////////////////////////////////////////
+    // helper class template Mapper
+    // See Map below 
+    ////////////////////////////////////////////////////////////////////////////////
 
-	template <template<typename,typename>class Function, typename TrgType, typename SrcType, unsigned int index>
-	struct Mapper<Function, 
-				  TupleGentor<Typelist<TrgType, NullType>, index>,
-				  TupleGentor<Typelist<SrcType, NullType>, index> >
-	{
-		typedef typename TupleGentor<Typelist<TrgType, NullType>, index> TrgTupleT;
-		typedef typename TupleGentor<Typelist<SrcType, NullType>, index> SrcTupleT;
+    template <typename TargetT, typename SourceT> struct UnaryFunction
+    {
+        typedef typename TargetT (*Type)(SourceT);
+    };
 
-		static void Do(TrgTupleT& trg, const SrcTupleT& src)
-		{
-			TrgType trgVal = Function<TrgType, SrcType>::apply(src);
-			trg.set(trgVal);
-		}
-	};
+    template <typename TargetT, typename SourceT> struct TwiceFun
+    {
+        static TargetT apply(const SourceT& src); 
+    };
+    template <> 
+    struct TwiceFun<int,int>
+    {
+        static int apply(const int& src) 
+        {
+            return 2*src;
+        }
+    };
+    template <> 
+    struct TwiceFun<int,double>
+    {
+        static int apply(const double& src) 
+        {
+            return static_cast<int>(2.0*src);
+        }
+    };
+    template <> 
+    struct TwiceFun<double,double>
+    {
+        static double apply(const double& src) 
+        {
+            return (2.0*src);
+        }
+    };
+    
+    // ---------------------------------------------------------------------------
+    // template class ToString
+    // ---------------------------------------------------------------------------
+    template <typename TargetT, typename SourceT> struct ToString
+    { static TargetT apply(const SourceT& src); };
+
+    template <typename SourceT> struct ToString<std::string, SourceT>
+    {
+        static std::string apply(const SourceT& src)
+        {
+            return CTX::ReprBaseT<SourceT>::toString(src);
+        }
+    };
 
 
-	template <template<typename,typename>class Function, class TrgTupleT, class SrcTupleT>
-	struct Mapper
-	{
-		typedef typename TrgTupleT::HeadClass TrgHeadClass;
-		typedef typename SrcTupleT::HeadClass SrcHeadClass;
-		typedef typename TrgTupleT::TailClass TrgTailClass;
-		typedef typename SrcTupleT::TailClass SrcTailClass;
-		typedef typename TrgHeadClass::ValueType TrgType;
-		typedef typename SrcHeadClass::ValueType SrcType;
+    // ---------------------------------------------------------------------------
+    // template class Mapper
+    // ---------------------------------------------------------------------------
+    template <template<typename,typename>class Function, class TrgTupleT, class SrcTupleT>
+    struct Mapper;
 
-		static void Do(TrgTupleT& trg, const SrcTupleT& src)
-		{
-			TrgHeadClass& trgHead		= trg;
-			const SrcHeadClass& srcHead = src;
-			TrgTailClass& trgTail		= trg;
-			const SrcTailClass& srcTail = src;
-			TrgType trgVal				= Function<TrgType, SrcType>::apply(srcHead);
-			trgHead.set(trgVal);
+    template <template<typename,typename>class Function, typename TrgType, typename SrcType, unsigned int index>
+    struct Mapper<Function, 
+                  TupleGentor<Typelist<TrgType, NullType>, index>,
+                  TupleGentor<Typelist<SrcType, NullType>, index> >
+    {
+        typedef typename TupleGentor<Typelist<TrgType, NullType>, index> TrgTupleT;
+        typedef typename TupleGentor<Typelist<SrcType, NullType>, index> SrcTupleT;
 
-			Mapper<Function, TrgTailClass, SrcTailClass>::Do(trgTail, srcTail);
-		}
-	};
+        static void Do(TrgTupleT& trg, const SrcTupleT& src)
+        {
+            TrgType trgVal = Function<TrgType, SrcType>::apply(src);
+            trg.set(trgVal);
+        }
+    };
 
-	template <template<typename,typename>class Fun, class TrgTupelT, class SrcTupelT>
-	TrgTupelT Transform(const SrcTupelT& src)
-	{
-		TrgTupelT target;
-		Mapper<Fun, TrgTupelT, SrcTupelT>::Do(target, src);
-		return target;
-	}
 
-	
+    template <template<typename,typename>class Function, class TrgTupleT, class SrcTupleT>
+    struct Mapper
+    {
+        typedef typename TrgTupleT::HeadClass TrgHeadClass;
+        typedef typename SrcTupleT::HeadClass SrcHeadClass;
+        typedef typename TrgTupleT::TailClass TrgTailClass;
+        typedef typename SrcTupleT::TailClass SrcTailClass;
+        typedef typename TrgHeadClass::ValueType TrgType;
+        typedef typename SrcHeadClass::ValueType SrcType;
 
-	////////////////////////////////////////////////////////////////////////////////
-	// ---------------------------------------------------------------------------
-	// ---------------------------------------------------------------------------
+        static void Do(TrgTupleT& trg, const SrcTupleT& src)
+        {
+            TrgHeadClass& trgHead        = trg;
+            const SrcHeadClass& srcHead = src;
+            TrgTailClass& trgTail        = trg;
+            const SrcTailClass& srcTail = src;
+            TrgType trgVal                = Function<TrgType, SrcType>::apply(srcHead);
+            trgHead.set(trgVal);
+
+            Mapper<Function, TrgTailClass, SrcTailClass>::Do(trgTail, srcTail);
+        }
+    };
+
+    template <template<typename,typename>class Fun, class TrgTupelT, class SrcTupelT>
+    TrgTupelT Transform(const SrcTupelT& src)
+    {
+        TrgTupelT target;
+        Mapper<Fun, TrgTupelT, SrcTupelT>::Do(target, src);
+        return target;
+    }
+
+    
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // ---------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------
 
 
 #if defined(_MSC_VER) && _MSC_VER >= 1300

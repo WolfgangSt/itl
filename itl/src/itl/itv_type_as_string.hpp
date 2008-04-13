@@ -42,44 +42,44 @@ for concepts InplaceAddable and InplaceSubtractable
 
 namespace itl
 {
-	//JODO 1_0_1 documentation
-	/// an stl based set implementing inplace addition and subtraction operators += and -=
-	/** 
+    //JODO 1_0_1 documentation
+    /// an stl based set implementing inplace addition and subtraction operators += and -=
+    /** 
 
-	@author Joachim Faulhaber
-	*/
-	template <class Type>
-	class TypeAsString<itl::interval_set<Type> >
-	{
-	public:
-		static std::string it() 
-		{ return "interval_set<"+ TypeAsString<Type>::it() +">"; }
-	};
+    @author Joachim Faulhaber
+    */
+    template <class Type>
+    class TypeAsString<itl::interval_set<Type> >
+    {
+    public:
+        static std::string it() 
+        { return "interval_set<"+ TypeAsString<Type>::it() +">"; }
+    };
 
-	template <class Type>
-	class TypeAsString<itl::split_interval_set<Type> >
-	{
-	public:
-		static std::string it() 
-		{ return "splt_itv_set<"+ TypeAsString<Type>::it() +">"; }
-	};
+    template <class Type>
+    class TypeAsString<itl::split_interval_set<Type> >
+    {
+    public:
+        static std::string it() 
+        { return "splt_itv_set<"+ TypeAsString<Type>::it() +">"; }
+    };
 
-	//CL
-	//template <class KeyT, class DataT>
-	//class TypeAsString<itl::joint_interval_map<KeyT,DataT> >
-	//{
-	//public:
-	//	static std::string it() 
-	//	{ return "joint_interval_map<"+ TypeAsString<KeyT>::it() + "," + TypeAsString<DataT>::it() +">"; }
-	//};
+    //CL
+    //template <class KeyT, class DataT>
+    //class TypeAsString<itl::joint_interval_map<KeyT,DataT> >
+    //{
+    //public:
+    //    static std::string it() 
+    //    { return "joint_interval_map<"+ TypeAsString<KeyT>::it() + "," + TypeAsString<DataT>::it() +">"; }
+    //};
 
-	template <class KeyT, class DataT>
-	class TypeAsString<itl::split_interval_map<KeyT,DataT> >
-	{
-	public:
-		static std::string it() 
-		{ return "splt_itv_map<"+ TypeAsString<KeyT>::it() + "," + TypeAsString<DataT>::it() +">"; }
-	};
+    template <class KeyT, class DataT>
+    class TypeAsString<itl::split_interval_map<KeyT,DataT> >
+    {
+    public:
+        static std::string it() 
+        { return "splt_itv_map<"+ TypeAsString<KeyT>::it() + "," + TypeAsString<DataT>::it() +">"; }
+    };
 
 } // namespace itl
 

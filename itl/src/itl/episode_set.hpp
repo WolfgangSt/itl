@@ -37,78 +37,78 @@ DEALINGS IN THE SOFTWARE.
 namespace itl
 {
 
-	//CL absi
-	//template <class ItvDomTV, class TypeDomTV>
-	//class Less_TypedEpisodeATP
-	//{
-	//public:
-	//	typedef typed_episode<ItvDomTV, TypeDomTV>* typed_episode_ptr;
+    //CL absi
+    //template <class ItvDomTV, class TypeDomTV>
+    //class Less_TypedEpisodeATP
+    //{
+    //public:
+    //    typedef typed_episode<ItvDomTV, TypeDomTV>* typed_episode_ptr;
 
-	//	bool operator ()(const typed_episode_ptr& rhs, const typed_episode_ptr& lhs)const
-	//	{
-	//		return rhs->isLess(lhs);
-	//	}
-	//};
+    //    bool operator ()(const typed_episode_ptr& rhs, const typed_episode_ptr& lhs)const
+    //    {
+    //        return rhs->isLess(lhs);
+    //    }
+    //};
 
-	template <typename EpisodePointer>
-	class Less_TypedEpisodeATP
-	{
-	public:
-		bool operator ()(const EpisodePointer& rhs, const EpisodePointer& lhs)const
-		{
-			return rhs->isLess(lhs);
-		}
-	};
+    template <typename EpisodePointer>
+    class Less_TypedEpisodeATP
+    {
+    public:
+        bool operator ()(const EpisodePointer& rhs, const EpisodePointer& lhs)const
+        {
+            return rhs->isLess(lhs);
+        }
+    };
 
 
 /**    
-	<b>Eine Menge von Episoden</b>
+    <b>Eine Menge von Episoden</b>
 
-	Template-Parameter <b>ItvDomTV</b>: Domain-Typ der Episoden-Intervalle
-	(z.B. Tage, Sekunden, Monate, int u.ä.). Episoden haben ja ein Intervall, das
-	Anfang und Ende der Episode angibt.
+    Template-Parameter <b>ItvDomTV</b>: Domain-Typ der Episoden-Intervalle
+    (z.B. Tage, Sekunden, Monate, int u.ä.). Episoden haben ja ein Intervall, das
+    Anfang und Ende der Episode angibt.
 
-	Template-Parameter <b>TypeDomTV</b>: TypeDomTV ist der Definitionsbereich (Domain)
-	der Typen von Episoden, die in der Menge verwendet werden können.
+    Template-Parameter <b>TypeDomTV</b>: TypeDomTV ist der Definitionsbereich (Domain)
+    der Typen von Episoden, die in der Menge verwendet werden können.
 
-	Die Episonden-Menge darf nur Episoden enthalten, die vom gleichen
-	Episoden-Typ sind. Dieser Episodentyp wird durch einen Wert aus dem
-	Template-Parameter TypeDomTV repräsentiert.
+    Die Episonden-Menge darf nur Episoden enthalten, die vom gleichen
+    Episoden-Typ sind. Dieser Episodentyp wird durch einen Wert aus dem
+    Template-Parameter TypeDomTV repräsentiert.
 
-	JODO: Diese Eigenschaft sollte man durch eine geeignete Implementierung
-	der Klasse sicherstellen. Enfällt bislang wg. Zeitmangels
+    JODO: Diese Eigenschaft sollte man durch eine geeignete Implementierung
+    der Klasse sicherstellen. Enfällt bislang wg. Zeitmangels
 
-	@author  Joachim Faulhaber
+    @author  Joachim Faulhaber
 */
 template <class ItvDomTV, class TypeDomTV>
 class episode_set : public itl::set<typed_episode<ItvDomTV, TypeDomTV>*, Less_TypedEpisodeATP > 
 {
-	// all elements must have the same type from TypeDomTV
+    // all elements must have the same type from TypeDomTV
 public:
-	typedef itl::set<typed_episode<ItvDomTV, TypeDomTV>*, Less_TypedEpisodeATP > base_type;
-	typedef typename base_type::iterator iterator;
-	typedef typename base_type::const_iterator const_iterator;
-	
+    typedef itl::set<typed_episode<ItvDomTV, TypeDomTV>*, Less_TypedEpisodeATP > base_type;
+    typedef typename base_type::iterator iterator;
+    typedef typename base_type::const_iterator const_iterator;
+    
 public:
-	bool isMonoTyped()const;
+    bool isMonoTyped()const;
 
-	std::string asString(const char* sep = " ")const
-	{
-		const_iterator it = this->begin();
-		
-		if(it == this->end()) return std::string("");
-		else
-		{
-			std::string y = (**it).asString(); it++;
-			while(it != this->end()) 
-			{ 
-				y += sep; 
-				y += (**it).asString(); 
-				it++; 
-			}
-			return y;
-		}
-	}
+    std::string asString(const char* sep = " ")const
+    {
+        const_iterator it = this->begin();
+        
+        if(it == this->end()) return std::string("");
+        else
+        {
+            std::string y = (**it).asString(); it++;
+            while(it != this->end()) 
+            { 
+                y += sep; 
+                y += (**it).asString(); 
+                it++; 
+            }
+            return y;
+        }
+    }
 };
 
 
@@ -116,23 +116,23 @@ public:
 // == operator sollte überflüssig sein. Korrektes Type-Konzept für Pointertypen etc.
 template <class ItvDomTV, class TypeDomTV>
 inline bool operator == (const episode_set<ItvDomTV,TypeDomTV>& lhs,
-						 const episode_set<ItvDomTV,TypeDomTV>& rhs)
+                         const episode_set<ItvDomTV,TypeDomTV>& rhs)
 {
-	if(lhs.size() != rhs.size())
-		return false;
+    if(lhs.size() != rhs.size())
+        return false;
 
-	typename episode_set<ItvDomTV,TypeDomTV>::const_iterator 
-		lhs_ = lhs.begin(), 
-		rhs_ = rhs.begin();
+    typename episode_set<ItvDomTV,TypeDomTV>::const_iterator 
+        lhs_ = lhs.begin(), 
+        rhs_ = rhs.begin();
 
-	while(lhs_ != lhs.end())
-	{
-		if(!(**lhs_ == **rhs_))
-			return false;
-		lhs_++; rhs_++;
-	}
+    while(lhs_ != lhs.end())
+    {
+        if(!(**lhs_ == **rhs_))
+            return false;
+        lhs_++; rhs_++;
+    }
 
-	return true;
+    return true;
 }
 
 } // namespace itl

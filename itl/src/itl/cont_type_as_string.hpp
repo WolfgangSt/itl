@@ -40,28 +40,28 @@ for concepts InplaceAddable and InplaceSubtractable
 
 namespace itl
 {
-	//JODO 1_0_1 documentation
-	/// an stl based set implementing inplace addition and subtraction operators += and -=
-	/** 
+    //JODO 1_0_1 documentation
+    /// an stl based set implementing inplace addition and subtraction operators += and -=
+    /** 
 
-	@author Joachim Faulhaber
-	*/
-	//JODO URG In separates file
-	template <class Type>
-	class TypeAsString<itl::set<Type> >
-	{
-	public:
-		static std::string it() 
-		{ return "itl::set<"+ TypeAsString<Type>::it() +">"; }
-	};
+    @author Joachim Faulhaber
+    */
+    //JODO URG In separates file
+    template <class Type>
+    class TypeAsString<itl::set<Type> >
+    {
+    public:
+        static std::string it() 
+        { return "itl::set<"+ TypeAsString<Type>::it() +">"; }
+    };
 
-	template <class KeyT, class DataT>
-	class TypeAsString<itl::map<KeyT,DataT> >
-	{
-	public:
-		static std::string it() 
-		{ return "itl::map<"+ TypeAsString<KeyT>::it() + "," + TypeAsString<DataT>::it() +">"; }
-	};
+    template <class KeyT, class DataT>
+    class TypeAsString<itl::map<KeyT,DataT> >
+    {
+    public:
+        static std::string it() 
+        { return "itl::map<"+ TypeAsString<KeyT>::it() + "," + TypeAsString<DataT>::it() +">"; }
+    };
 
 } // namespace itl
 

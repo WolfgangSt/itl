@@ -37,53 +37,53 @@ DEALINGS IN THE SOFTWARE.
 
 namespace itl
 {
-	template <int varCountV> class var_tuple;
+    template <int varCountV> class var_tuple;
 
 
-	/** Gruppierung kann man so ausdrücken, dass alle Werte, die in gleiche Gruppen
-		zusammenfallen, äquivalent sind.
+    /** Gruppierung kann man so ausdrücken, dass alle Werte, die in gleiche Gruppen
+        zusammenfallen, äquivalent sind.
 
-		Werte, die nicht in Gruppen zusammenfallen sind nicht äquivalent.
-		
-		Wir erhalten diese Äquivalenz auch durch eine strikt schwachen Ordnung <.
-		Denn wenn !(x < y) && !(y < x) dann gilt x ~= y. Wenn also zwei Werte weder
-		kleiner noch grösser bzgl. einer strikt schwachen Ordnung sind, dann sind sie
-		äquivalent.
+        Werte, die nicht in Gruppen zusammenfallen sind nicht äquivalent.
+        
+        Wir erhalten diese Äquivalenz auch durch eine strikt schwachen Ordnung <.
+        Denn wenn !(x < y) && !(y < x) dann gilt x ~= y. Wenn also zwei Werte weder
+        kleiner noch grösser bzgl. einer strikt schwachen Ordnung sind, dann sind sie
+        äquivalent.
 
-		Diesen Zusammenhang machen wir uns zunutze, um möglichst viel (wenn nicht sogar
-		alles) was mit Äquivalenzen zu tun hat auch durch strikt schwache Ordnungen und
-		stl-containern ausdrücken zu können.
+        Diesen Zusammenhang machen wir uns zunutze, um möglichst viel (wenn nicht sogar
+        alles) was mit Äquivalenzen zu tun hat auch durch strikt schwache Ordnungen und
+        stl-containern ausdrücken zu können.
 
-		Wegen des allgemeinen Falls, einer bedingten Gruppierung, bei dem die
-		Gruppierung einer Variable von den Werten anderer Variablen abhängt,
-		definieren wir die GroupOrder nicht als
+        Wegen des allgemeinen Falls, einer bedingten Gruppierung, bei dem die
+        Gruppierung einer Variable von den Werten anderer Variablen abhängt,
+        definieren wir die GroupOrder nicht als
 
-		binary_function<StatVarTD,     StatVarTD,     bool>      sondern als
-		binary_function<var_tuple, var_tuple, bool>
-	*/
-	template <int varCountV>
-	class group_order : public std::binary_function<var_tuple<varCountV>, var_tuple<varCountV>, bool>
-	{
-	public:
-		typedef var_tuple<varCountV> var_tupleD;
-	public:
-		/** Die strikt schwache Ordnung, die auch die Äquivalenz induziert! Sie wird
-			in abgeleiteten Klassen implementiert. */
-		virtual	bool operator() (const var_tupleD& lhs, const var_tupleD& rhs)const=0;
+        binary_function<StatVarTD,     StatVarTD,     bool>      sondern als
+        binary_function<var_tuple, var_tuple, bool>
+    */
+    template <int varCountV>
+    class group_order : public std::binary_function<var_tuple<varCountV>, var_tuple<varCountV>, bool>
+    {
+    public:
+        typedef var_tuple<varCountV> var_tupleD;
+    public:
+        /** Die strikt schwache Ordnung, die auch die Äquivalenz induziert! Sie wird
+            in abgeleiteten Klassen implementiert. */
+        virtual    bool operator() (const var_tupleD& lhs, const var_tupleD& rhs)const=0;
 
-		/// Get the index of the variable that is grouped by the order.
-		virtual VarEnumTD getVarIndex()const=0;
+        /// Get the index of the variable that is grouped by the order.
+        virtual VarEnumTD getVarIndex()const=0;
 
-		/** Die Äquivalenz ergibt sich aus der Ordnung (operator()). Deshalb 
-			besitzt die Funktion eine entsprechende Default-implementierung. 
-			Wir können aber oft eine effizientere Implementierung in der
-			abgeleiteten Klasse angeben.
-		*/
-		virtual bool areEquivalent(const var_tupleD& lhs, const var_tupleD& rhs)const
-		{
-			return !operator()(lhs, rhs) && !operator()(rhs, lhs);
-		}
-	};
+        /** Die Äquivalenz ergibt sich aus der Ordnung (operator()). Deshalb 
+            besitzt die Funktion eine entsprechende Default-implementierung. 
+            Wir können aber oft eine effizientere Implementierung in der
+            abgeleiteten Klasse angeben.
+        */
+        virtual bool areEquivalent(const var_tupleD& lhs, const var_tupleD& rhs)const
+        {
+            return !operator()(lhs, rhs) && !operator()(rhs, lhs);
+        }
+    };
 
 }
 

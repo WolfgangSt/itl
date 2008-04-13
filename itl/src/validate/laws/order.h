@@ -34,172 +34,172 @@ DEALINGS IN THE SOFTWARE.
 namespace itl
 {
 
-	/*  Orders (Orderings): .<. : M x M -> bool */
+    /*  Orders (Orderings): .<. : M x M -> bool */
 
 
-	template <typename Type, template<class>class Relation>
-	class Reflexivity : public LawBase<LOKI_TYPELIST_1(Type), Loki::NullType> 
-	{
-	public:
-		std::string name()const { return "Reflexivity"; }
-		std::string formula()const { return "a <= a"; }
+    template <typename Type, template<class>class Relation>
+    class Reflexivity : public LawBase<LOKI_TYPELIST_1(Type), Loki::NullType> 
+    {
+    public:
+        std::string name()const { return "Reflexivity"; }
+        std::string formula()const { return "a <= a"; }
 
-		std::string typeString()const
-		{
-			return "Reflexivity<"+TypeAsString<Type>::it()+","
-			                     +UnaryTemplateAsString<Relation>::it()+">";
-		}
+        std::string typeString()const
+        {
+            return "Reflexivity<"+TypeAsString<Type>::it()+","
+                                 +UnaryTemplateAsString<Relation>::it()+">";
+        }
 
-	public:
-		bool holds()
-		{
-			Type a = this->template getInputValue<operand_a>();
-			return Relation<Type>()(a,a);
-		}
+    public:
+        bool holds()
+        {
+            Type a = this->template getInputValue<operand_a>();
+            return Relation<Type>()(a,a);
+        }
 
-		size_t size()const 
-		{ return value_size<Type>::get(this->template getInputValue<operand_a>());	}
-	};
+        size_t size()const 
+        { return value_size<Type>::get(this->template getInputValue<operand_a>());    }
+    };
 
-	template<> 
-	std::string UnaryTemplateAsString<std::less_equal>::it()  { return "<="; }
-	template<> 
-	std::string UnaryTemplateAsString<std::less>::it()        { return "<"; }
-	template<> 
-	std::string UnaryTemplateAsString<itl::contained_in>::it(){ return "C="; }
+    template<> 
+    std::string UnaryTemplateAsString<std::less_equal>::it()  { return "<="; }
+    template<> 
+    std::string UnaryTemplateAsString<std::less>::it()        { return "<"; }
+    template<> 
+    std::string UnaryTemplateAsString<itl::contained_in>::it(){ return "C="; }
 
-	// ---------------------------------------------------------------------------
-	template <typename Type, template<class>class Relation>
-	class Irreflexivity : public LawBase<LOKI_TYPELIST_1(Type), Loki::NullType> 
-	{
-	public:
-		std::string name()const { return "Irreflexivity"; }
-		std::string formula()const { return "!(a < a)"; }
+    // ---------------------------------------------------------------------------
+    template <typename Type, template<class>class Relation>
+    class Irreflexivity : public LawBase<LOKI_TYPELIST_1(Type), Loki::NullType> 
+    {
+    public:
+        std::string name()const { return "Irreflexivity"; }
+        std::string formula()const { return "!(a < a)"; }
 
-		std::string typeString()const
-		{
-			return "Irreflexivity<"+TypeAsString<Type>::it()+","
-			                       +UnaryTemplateAsString<Relation>::it()+">";
-		}
+        std::string typeString()const
+        {
+            return "Irreflexivity<"+TypeAsString<Type>::it()+","
+                                   +UnaryTemplateAsString<Relation>::it()+">";
+        }
 
-	public:
-		bool holds()
-		{
-			Type a = this->template getInputValue<operand_a>();
-			return !Relation<Type>()(a,a);
-		}
+    public:
+        bool holds()
+        {
+            Type a = this->template getInputValue<operand_a>();
+            return !Relation<Type>()(a,a);
+        }
 
-		size_t size()const 
-		{ return value_size<Type>::get(this->template getInputValue<operand_a>());	}
-	};
+        size_t size()const 
+        { return value_size<Type>::get(this->template getInputValue<operand_a>());    }
+    };
 
-	// ---------------------------------------------------------------------------
-	template <typename Type, template<class>class Relation>
-	class Antisymmetry : public LawBase<LOKI_TYPELIST_2(Type,Type), LOKI_TYPELIST_1(Type)> 
-	{
-		/** a <= b && b <= a  =>  a == b 
-		Input  = (a := inVal1, b := inVal2)
-		Output = ()
-		*/
-	public:
-		std::string name()const { return "Antisymmetry"; }
-		std::string formula()const { return "(a <= b && b <= a)  =>  a == b"; }
+    // ---------------------------------------------------------------------------
+    template <typename Type, template<class>class Relation>
+    class Antisymmetry : public LawBase<LOKI_TYPELIST_2(Type,Type), LOKI_TYPELIST_1(Type)> 
+    {
+        /** a <= b && b <= a  =>  a == b 
+        Input  = (a := inVal1, b := inVal2)
+        Output = ()
+        */
+    public:
+        std::string name()const { return "Antisymmetry"; }
+        std::string formula()const { return "(a <= b && b <= a)  =>  a == b"; }
 
-		std::string typeString()const
-		{
-			return "Antisymmetry<"+TypeAsString<Type>::it()+"," 
-			                      +UnaryTemplateAsString<Relation>::it()+">";
-		}
+        std::string typeString()const
+        {
+            return "Antisymmetry<"+TypeAsString<Type>::it()+"," 
+                                  +UnaryTemplateAsString<Relation>::it()+">";
+        }
 
-	public:
+    public:
 
-		bool holds()
-		{
-			Type a = this->template getInputValue<operand_a>();
-			Type b = this->template getInputValue<operand_a>();
+        bool holds()
+        {
+            Type a = this->template getInputValue<operand_a>();
+            Type b = this->template getInputValue<operand_a>();
 
-			return !(Relation<Type>()(a,b) && Relation<Type>()(b,a)) || a == b;
-		}
+            return !(Relation<Type>()(a,b) && Relation<Type>()(b,a)) || a == b;
+        }
 
-		size_t size()const 
-		{ 
-			return value_size<Type>::get(this->template getInputValue<operand_a>())+
-				value_size<Type>::get(this->template getInputValue<operand_b>());
-		}
-	};
+        size_t size()const 
+        { 
+            return value_size<Type>::get(this->template getInputValue<operand_a>())+
+                value_size<Type>::get(this->template getInputValue<operand_b>());
+        }
+    };
 
-	// ---------------------------------------------------------------------------
-	template <typename Type, template<class>class Relation>
-	class Antisymmetry2 : public LawBase<LOKI_TYPELIST_2(Type,Type), LOKI_TYPELIST_1(Type)> 
-	{
-		/** a < b  => !(b < a) 
-		Input  = (a := inVal1, b := inVal2)
-		Output = ()
-		*/
-	public:
-		std::string name()const { return "Antisymmetry2"; }
-		std::string formula()const { return " a < b  => !(b < a)"; }
+    // ---------------------------------------------------------------------------
+    template <typename Type, template<class>class Relation>
+    class Antisymmetry2 : public LawBase<LOKI_TYPELIST_2(Type,Type), LOKI_TYPELIST_1(Type)> 
+    {
+        /** a < b  => !(b < a) 
+        Input  = (a := inVal1, b := inVal2)
+        Output = ()
+        */
+    public:
+        std::string name()const { return "Antisymmetry2"; }
+        std::string formula()const { return " a < b  => !(b < a)"; }
 
-		std::string typeString()const
-		{
-			return "Antisymmetry2<"+TypeAsString<Type>::it()+","
-			                       +UnaryTemplateAsString<Relation>::it()+">";
-		}
+        std::string typeString()const
+        {
+            return "Antisymmetry2<"+TypeAsString<Type>::it()+","
+                                   +UnaryTemplateAsString<Relation>::it()+">";
+        }
 
-	public:
+    public:
 
-		bool holds()
-		{
-			Type a = this->template getInputValue<operand_a>();
-			Type b = this->template getInputValue<operand_a>();
+        bool holds()
+        {
+            Type a = this->template getInputValue<operand_a>();
+            Type b = this->template getInputValue<operand_a>();
 
-			return !(Relation<Type>()(a,b) && Relation<Type>()(b,a));
-		}
+            return !(Relation<Type>()(a,b) && Relation<Type>()(b,a));
+        }
 
-		size_t size()const 
-		{ 
-			return value_size<Type>::get(this->template getInputValue<operand_a>())+
-				value_size<Type>::get(this->template getInputValue<operand_b>());
-		}
-	};
+        size_t size()const 
+        { 
+            return value_size<Type>::get(this->template getInputValue<operand_a>())+
+                value_size<Type>::get(this->template getInputValue<operand_b>());
+        }
+    };
 
 
-	// ---------------------------------------------------------------------------
-	template <typename Type, template<class>class Relation>
-	class Transitivity : public LawBase<LOKI_TYPELIST_3(Type,Type,Type), Loki::NullType> 
-	{
-		/** a < b && b < c  =>  a < c 
-		Input  = (a := inVal1, b := inVal2, c := inVal3)
-		Output = ()
-		*/
-	public:
-		std::string name()const { return "Transitivity"; }
-		std::string formula()const { return "a < b && b < c  =>  a < c"; }
+    // ---------------------------------------------------------------------------
+    template <typename Type, template<class>class Relation>
+    class Transitivity : public LawBase<LOKI_TYPELIST_3(Type,Type,Type), Loki::NullType> 
+    {
+        /** a < b && b < c  =>  a < c 
+        Input  = (a := inVal1, b := inVal2, c := inVal3)
+        Output = ()
+        */
+    public:
+        std::string name()const { return "Transitivity"; }
+        std::string formula()const { return "a < b && b < c  =>  a < c"; }
 
-		std::string typeString()const
-		{
-			return "Transitivity<"+TypeAsString<Type>::it()+","
-			                      +UnaryTemplateAsString<Relation>::it()+">";
-		}
+        std::string typeString()const
+        {
+            return "Transitivity<"+TypeAsString<Type>::it()+","
+                                  +UnaryTemplateAsString<Relation>::it()+">";
+        }
 
-	public:
+    public:
 
-		bool holds()
-		{
-			Type a = this->template getInputValue<operand_a>();
-			Type b = this->template getInputValue<operand_a>();
-			Type c = this->template getInputValue<operand_c>();
+        bool holds()
+        {
+            Type a = this->template getInputValue<operand_a>();
+            Type b = this->template getInputValue<operand_a>();
+            Type c = this->template getInputValue<operand_c>();
 
-			return !(Relation<Type>()(a,b) && Relation<Type>()(b,c)) || Relation<Type>()(a,c);
-		}
+            return !(Relation<Type>()(a,b) && Relation<Type>()(b,c)) || Relation<Type>()(a,c);
+        }
 
-		size_t size()const 
-		{ 
-			return value_size<Type>::get(this->template getInputValue<operand_a>())+
-				value_size<Type>::get(this->template getInputValue<operand_b>())+
-				value_size<Type>::get(this->template getInputValue<operand_c>());
-		}
-	};
+        size_t size()const 
+        { 
+            return value_size<Type>::get(this->template getInputValue<operand_a>())+
+                value_size<Type>::get(this->template getInputValue<operand_b>())+
+                value_size<Type>::get(this->template getInputValue<operand_c>());
+        }
+    };
 
 } // namespace itl
 

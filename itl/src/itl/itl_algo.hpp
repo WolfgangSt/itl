@@ -32,88 +32,88 @@ DEALINGS IN THE SOFTWARE.
 namespace itl
 {
 
-	/** common_range(lwb, upb, x1, x2) yields the common range of two sorted
-	containers x1 and x2. lwb points to the first element of x1 and x2 in
-	*/
-	template<class ObjectT, class ConstObjectT, class IteratorT>
-	bool common_range(IteratorT& lwb, IteratorT& upb, ObjectT& x1, const ConstObjectT& x2)
-	{
-		// lwb and upb are iterator of x1 marking the lower and upper bound of
-		// the common range of x1 and x2.
-		lwb = x1.end();
-		upb = x1.end();
+    /** common_range(lwb, upb, x1, x2) yields the common range of two sorted
+    containers x1 and x2. lwb points to the first element of x1 and x2 in
+    */
+    template<class ObjectT, class ConstObjectT, class IteratorT>
+    bool common_range(IteratorT& lwb, IteratorT& upb, ObjectT& x1, const ConstObjectT& x2)
+    {
+        // lwb and upb are iterator of x1 marking the lower and upper bound of
+        // the common range of x1 and x2.
+        lwb = x1.end();
+        upb = x1.end();
 
-		if(x1.empty() || x2.empty()) return false;
+        if(x1.empty() || x2.empty()) return false;
 
-		IteratorT x1_fst_ = x1.begin();
-		IteratorT x1_lst_ = x1.end(); x1_lst_--;
+        IteratorT x1_fst_ = x1.begin();
+        IteratorT x1_lst_ = x1.end(); x1_lst_--;
 
-		ConstObjectT::const_iterator x2_fst_ = x2.begin();
-		ConstObjectT::const_iterator x2_lst_ = x2.end(); x2_lst_--;
+        ConstObjectT::const_iterator x2_fst_ = x2.begin();
+        ConstObjectT::const_iterator x2_lst_ = x2.end(); x2_lst_--;
 
-		ObjectT::key_compare key_less;
+        ObjectT::key_compare key_less;
 
-		if(key_less(ObjectT::key_value(x1_lst_), ConstObjectT::key_value(x2_fst_))) // {x1}   {x2}
-			return false;
-		if(key_less(ConstObjectT::key_value(x2_lst_), ObjectT::key_value(x1_fst_))) // {x2}   {x1} 
-			return false;
+        if(key_less(ObjectT::key_value(x1_lst_), ConstObjectT::key_value(x2_fst_))) // {x1}   {x2}
+            return false;
+        if(key_less(ConstObjectT::key_value(x2_lst_), ObjectT::key_value(x1_fst_))) // {x2}   {x1} 
+            return false;
 
-		// We do have a common range
-		if(key_less(ObjectT::key_value(x1_fst_), ConstObjectT::key_value(x2_fst_)))	
-		{
-			//       lwb!   !upb
-			// x1  {        }
-			//         {          } x2
-			lwb = x1.lower_bound(ConstObjectT::key_value(x2_fst_));
-		}
-		else
-		{
-			//      lwb!    !upb
-			//        {          } x1
-			// x2 {         }
-			lwb = x1_fst_;
-		}
+        // We do have a common range
+        if(key_less(ObjectT::key_value(x1_fst_), ConstObjectT::key_value(x2_fst_)))    
+        {
+            //       lwb!   !upb
+            // x1  {        }
+            //         {          } x2
+            lwb = x1.lower_bound(ConstObjectT::key_value(x2_fst_));
+        }
+        else
+        {
+            //      lwb!    !upb
+            //        {          } x1
+            // x2 {         }
+            lwb = x1_fst_;
+        }
 
-		if(key_less(ObjectT::key_value(x1_lst_), ConstObjectT::key_value(x2_lst_)))
-		{
-			upb = x1.end();
-		}
-		else
-		{
-			upb = x1.upper_bound(ConstObjectT::key_value(x2_lst_));		
-		}
+        if(key_less(ObjectT::key_value(x1_lst_), ConstObjectT::key_value(x2_lst_)))
+        {
+            upb = x1.end();
+        }
+        else
+        {
+            upb = x1.upper_bound(ConstObjectT::key_value(x2_lst_));        
+        }
 
-		if(!x1.contains(ObjectT::key_value(lwb)))
-			printf("x1={%s} x2={%s} lwb=%s", x1.asString().c_str(), x2.asString().c_str(), ReprBaseT::toString(key_value(lwb)));
-		if(!x2.contains(ConstObjectT::key_value(lwb)))
-			printf("x1={%s} x2={%s} lwb=%s", x1.asString().c_str(), x2.asString().c_str(), ReprBaseT::toString(key_value(lwb)));
+        if(!x1.contains(ObjectT::key_value(lwb)))
+            printf("x1={%s} x2={%s} lwb=%s", x1.asString().c_str(), x2.asString().c_str(), ReprBaseT::toString(key_value(lwb)));
+        if(!x2.contains(ConstObjectT::key_value(lwb)))
+            printf("x1={%s} x2={%s} lwb=%s", x1.asString().c_str(), x2.asString().c_str(), ReprBaseT::toString(key_value(lwb)));
 
-		return true;
-	}
+        return true;
+    }
 
-	//JODO where to put common algorithms? namespace Collector, Ordered, Sorted, SortedObject
+    //JODO where to put common algorithms? namespace Collector, Ordered, Sorted, SortedObject
 
-	template<class ObjectT>
-	void inject(ObjectT& result, const ObjectT& x2)
-	{
-		const_FORALL(ObjectT, x2_, x2)
-			result.inject(*x2_);
-	}
+    template<class ObjectT>
+    void inject(ObjectT& result, const ObjectT& x2)
+    {
+        const_FORALL(ObjectT, x2_, x2)
+            result.inject(*x2_);
+    }
 
-	template<class ObjectT, class CoObjectT>
-	void subtract(ObjectT& result, const CoObjectT& x2) //JODO TEST
-	{
-		CoObjectT::const_iterator common_lwb_;
-		CoObjectT::const_iterator common_upb_;
-		if(!common_range(common_lwb_, common_upb_, x2, result))
-			return;
+    template<class ObjectT, class CoObjectT>
+    void subtract(ObjectT& result, const CoObjectT& x2) //JODO TEST
+    {
+        CoObjectT::const_iterator common_lwb_;
+        CoObjectT::const_iterator common_upb_;
+        if(!common_range(common_lwb_, common_upb_, x2, result))
+            return;
 
-		CoObjectT::const_iterator x2_ = common_lwb_;
-		ObjectT::iterator common_;
+        CoObjectT::const_iterator x2_ = common_lwb_;
+        ObjectT::iterator common_;
 
-		while(x2_ != common_upb_)
-			result.subtract(*x2_++);
-	}
+        while(x2_ != common_upb_)
+            result.subtract(*x2_++);
+    }
 
 } // namespace itl
 

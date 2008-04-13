@@ -37,29 +37,29 @@ namespace itl
 {
 
 /**  
-	<b>large definiert das implizite Interface aller
-	Type-Domain-Parameter von Episoden- und Historien-Template-Klassen</b>
-	
-	TypeDomTV kapselt einen Aufzählungstyp. Ein solcher wird z.B. für
-	Episoden benutzt, um den Typ von Episoden als Werte im Programm repräsentieren
-	zu können.
+    <b>large definiert das implizite Interface aller
+    Type-Domain-Parameter von Episoden- und Historien-Template-Klassen</b>
+    
+    TypeDomTV kapselt einen Aufzählungstyp. Ein solcher wird z.B. für
+    Episoden benutzt, um den Typ von Episoden als Werte im Programm repräsentieren
+    zu können.
 
-	Daher ist die wichtigste Komponente von TypeDomTV die Definition
-	dieses Aufzählungstyps TypeDomTV::DomainET. Daneben gibt es noch
-	eine Funktion asString zur Repräsentation von Typen als strings.
+    Daher ist die wichtigste Komponente von TypeDomTV die Definition
+    dieses Aufzählungstyps TypeDomTV::DomainET. Daneben gibt es noch
+    eine Funktion asString zur Repräsentation von Typen als strings.
 
-	@author  Joachim Faulhaber
+    @author  Joachim Faulhaber
 */
 
 
 class TypeDomTV
 {
 public:
-	/// Aufzählungstyp
-	typedef enum {} DomainET;
+    /// Aufzählungstyp
+    typedef enum {} DomainET;
 
-	/// String-Repräsentation
-	static string asString(DomainET val);
+    /// String-Repräsentation
+    static string asString(DomainET val);
 } ;
 
 } // namespace itl

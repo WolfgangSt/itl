@@ -47,131 +47,131 @@ namespace itl
 {
 
 /**
-	\mainpage The Interval Template Library
+    \mainpage The Interval Template Library
 
-	\section intro_sec Introduction
+    \section intro_sec Introduction
 
-	The Interval Template Library (ITL) is a collection of
-	generic c++ template classes for computations on <em>collections of
-	intervals</em>. The most important instance of their use is the computation
-	with containers of time intervals that are associated to values. We call
-	such containers \e histories and their elements \e episodes. In addition to
-	intervals and interval containers the library provides classes for
-	generalized crosstables, which are tuple containers. We call such
-	containers <em>tuple computers</em> or \e cubes.
-	\n \n \n
+    The Interval Template Library (ITL) is a collection of
+    generic c++ template classes for computations on <em>collections of
+    intervals</em>. The most important instance of their use is the computation
+    with containers of time intervals that are associated to values. We call
+    such containers \e histories and their elements \e episodes. In addition to
+    intervals and interval containers the library provides classes for
+    generalized crosstables, which are tuple containers. We call such
+    containers <em>tuple computers</em> or \e cubes.
+    \n \n \n
 
-	\section sample_sec Examples
+    \section sample_sec Examples
 
-	We do provide a collection of examples that demonstrate the purpose and basic
-	characteristics of the classes offered by the library. To get an instant 
-	impression you may browse these examples first:
-	\n \n \n
+    We do provide a collection of examples that demonstrate the purpose and basic
+    characteristics of the classes offered by the library. To get an instant 
+    impression you may browse these examples first:
+    \n \n \n
 
-	\subsection party_subsec Party
+    \subsection party_subsec Party
 
-	Party demonstrates the possibilities of a <em>split interval map</em> (SplitItvMapT).
-	In party.cpp the change of guests of a party in time is calculated using a 
-	\ref SplitItvMapT simply by inserting pairs of intervals and guest sets into the SplitItvMapT.
-	\n \n
+    Party demonstrates the possibilities of a <em>split interval map</em> (SplitItvMapT).
+    In party.cpp the change of guests of a party in time is calculated using a 
+    \ref SplitItvMapT simply by inserting pairs of intervals and guest sets into the SplitItvMapT.
+    \n \n
 
-	\subsection overlap_counter_subsec Overlap counter
+    \subsection overlap_counter_subsec Overlap counter
 
-	The most basic application of a SplitItvMapT is a counter counting
-	the number of overlaps of intervals inserted into it as shown in overlap_counter.cpp.
-	\n \n
+    The most basic application of a SplitItvMapT is a counter counting
+    the number of overlaps of intervals inserted into it as shown in overlap_counter.cpp.
+    \n \n
 
-	\subsection interval_container_subsec Interval container
+    \subsection interval_container_subsec Interval container
 
-	Sample interval_container.cpp demonstrates basic charactersistics of 
-	interval container objects.
-	\n \n
+    Sample interval_container.cpp demonstrates basic charactersistics of 
+    interval container objects.
+    \n \n
 
-	\subsection interval_subsec Intervals 
-	
-	Interval.cpp gives a short example of different instances of the class interval
-	\n \n
+    \subsection interval_subsec Intervals 
+    
+    Interval.cpp gives a short example of different instances of the class interval
+    \n \n
 
-	\subsection history_subsec History
+    \subsection history_subsec History
 
-	History is a more sophisticated application of a SplitItvMapT to decompose
-	data in time. Sample history.cpp shows how we can monitor a set of attributes in a history.
-	\n \n
+    History is a more sophisticated application of a SplitItvMapT to decompose
+    data in time. Sample history.cpp shows how we can monitor a set of attributes in a history.
+    \n \n
 
-	\subsection amount_cube_subsec Amount cube
+    \subsection amount_cube_subsec Amount cube
 
-	Cubes or tuple computers allow to perform computations on values associated 
-	to tuples. A ITL tuple computer works similar to pivot tables (in spreadsheet programs)
-	olap cubes (online analytic	processing) or crosstables (in statistical programs). 
-	Sample amount_cube.cpp presents an application where values are \e 'amounts', 
-	which is the simplest instance.
-	\n \n \n
+    Cubes or tuple computers allow to perform computations on values associated 
+    to tuples. A ITL tuple computer works similar to pivot tables (in spreadsheet programs)
+    olap cubes (online analytic    processing) or crosstables (in statistical programs). 
+    Sample amount_cube.cpp presents an application where values are \e 'amounts', 
+    which is the simplest instance.
+    \n \n \n
 
-	\section content_sec Content of the ITL 
+    \section content_sec Content of the ITL 
 
-	\subsection itv_subsec Intervals and sets of intervals 
+    \subsection itv_subsec Intervals and sets of intervals 
 
-	A set of intervals is again a set. The implementation of a set as a set of
-	intervals is a very efficient implementation of a set if it's elements are
-	clustered in intervals. Examples for interval sets are given in sample
-	interval_container.cpp. 
-	\n \n
+    A set of intervals is again a set. The implementation of a set as a set of
+    intervals is a very efficient implementation of a set if it's elements are
+    clustered in intervals. Examples for interval sets are given in sample
+    interval_container.cpp. 
+    \n \n
 
-	\subsection aov_subsec Interval maps and 'aggregation on overlap' 
+    \subsection aov_subsec Interval maps and 'aggregation on overlap' 
 
-	On of the most fruitful concept of the ITL is the <em>aggregation on overlap</em>
-	mechanism on interval maps. The associated values of an interval map are 
-	aggregated on insertion, whenever an interval value pair is inserted and
-	the inserted interval overlaps intervals within the map. Depending on the value
-	type this aggration can be summation (for numbers), concatentation 
-	(for lists, strings), set union (for sets) and more. Samples of the 
-	<em>aggreation on overlap</em> mechanics are demonstrated in
-	files party.cpp, overlap_counter.cpp and history.cpp.
-	\n \n
+    On of the most fruitful concept of the ITL is the <em>aggregation on overlap</em>
+    mechanism on interval maps. The associated values of an interval map are 
+    aggregated on insertion, whenever an interval value pair is inserted and
+    the inserted interval overlaps intervals within the map. Depending on the value
+    type this aggration can be summation (for numbers), concatentation 
+    (for lists, strings), set union (for sets) and more. Samples of the 
+    <em>aggreation on overlap</em> mechanics are demonstrated in
+    files party.cpp, overlap_counter.cpp and history.cpp.
+    \n \n
 
-	\subsection decom_subsec Decomposition of Histories
+    \subsection decom_subsec Decomposition of Histories
 
-	Using interval maps we can build a so called <em>product history</em>, 
-	where a product of attributes (or objects) is associated to intervals
-	and then inserted to a history. A product history keeps itself always
-	in a normal form. Whenever any of the attributes changes, the intervals
-	are split such that all attributes associated to an interval are constant.
-	So here we get a general mechanism for decomposition of (time) intervals for
-	the change of monitored attributes. An example for product histories is
-	given in file history.cpp. 
-	\n \n
+    Using interval maps we can build a so called <em>product history</em>, 
+    where a product of attributes (or objects) is associated to intervals
+    and then inserted to a history. A product history keeps itself always
+    in a normal form. Whenever any of the attributes changes, the intervals
+    are split such that all attributes associated to an interval are constant.
+    So here we get a general mechanism for decomposition of (time) intervals for
+    the change of monitored attributes. An example for product histories is
+    given in file history.cpp. 
+    \n \n
 
-	\subsection cubes_subsec Cubes 
+    \subsection cubes_subsec Cubes 
 
-	Tuple computer or cubes are implemented as maps of tuples in the ITL. 
-	Cubes are known as crosstables from statistical packages, OLAP 
-	(online analytic processing) cubes from data warehouse technology 
-	and pivot tables from spradsheet programs (e.g. excel). In the ITL 
-	we offer a generic implementation of such cubes in c++. Aggregation
-	(e.g. summation) can be expressed by omitting elements of the tuple 
-	type of the cube, which we call projection. Other things like grouping
-	and sorting can be done quite elegantly. An example for cubes is 
-	provided by file amount_cube.cpp. 
-	\n \n
+    Tuple computer or cubes are implemented as maps of tuples in the ITL. 
+    Cubes are known as crosstables from statistical packages, OLAP 
+    (online analytic processing) cubes from data warehouse technology 
+    and pivot tables from spradsheet programs (e.g. excel). In the ITL 
+    we offer a generic implementation of such cubes in c++. Aggregation
+    (e.g. summation) can be expressed by omitting elements of the tuple 
+    type of the cube, which we call projection. Other things like grouping
+    and sorting can be done quite elegantly. An example for cubes is 
+    provided by file amount_cube.cpp. 
+    \n \n
 
 */
 
 /// A class for intervals
-/**	Bounds of the interval may be closed or open.
-	Discrete or continuous datatypes may be used as domain datatypes \ref DataT.
+/**    Bounds of the interval may be closed or open.
+    Discrete or continuous datatypes may be used as domain datatypes \ref DataT.
 
-   	Template parameter <b>DataT</b>:
-	The intervals domain type or type of the elements of the interval.
-	The interface <b>DataT</b> has to be implemented by any actual template
-	parameter.
+       Template parameter <b>DataT</b>:
+    The intervals domain type or type of the elements of the interval.
+    The interface <b>DataT</b> has to be implemented by any actual template
+    parameter.
 
-	The class defines intervals with closed or open bounds for discrete
-	<tt>(short, int, date, time etc.)</tt> and continuous 
-	<tt>float, double, Rational, Complex etc.</tt> elements. The domain parameter
-	may be a built in c++ datatype or a class type. It has to implement
-	the interface \ref DataT.
+    The class defines intervals with closed or open bounds for discrete
+    <tt>(short, int, date, time etc.)</tt> and continuous 
+    <tt>float, double, Rational, Complex etc.</tt> elements. The domain parameter
+    may be a built in c++ datatype or a class type. It has to implement
+    the interface \ref DataT.
 
-	@author  Joachim Faulhaber
+    @author  Joachim Faulhaber
 */
 template <class DataT>
 class interval
@@ -181,86 +181,86 @@ public:
 /** @name A: Type definitions for the template class 
 */
 //@{ 
-	/// Domain type or element type
-	typedef DataT data_type;
+    /// Domain type or element type
+    typedef DataT data_type;
 
-	/// Interval bounds as bitset
-	typedef unsigned char bound_types;
+    /// Interval bounds as bitset
+    typedef unsigned char bound_types;
 
-	/// Constants for intervalbounds
-	enum BoundTypesT {
-		/// Both open: <tt>(x,y)</tt>
-		OPEN					= 0x0, 
-		/// Left open right closed: <tt>(x,y]</tt>
-		LEFT_OPEN				= 0x1, 
-		/// Left closed right open: <tt>[x,y)</tt>
-		RIGHT_OPEN				= 0x2,
-		/// Both closed: <tt>[x,y]</tt>
-		CLOSED					= 0x3,
-	} ;
+    /// Constants for intervalbounds
+    enum BoundTypesT {
+        /// Both open: <tt>(x,y)</tt>
+        OPEN                    = 0x0, 
+        /// Left open right closed: <tt>(x,y]</tt>
+        LEFT_OPEN                = 0x1, 
+        /// Left closed right open: <tt>[x,y)</tt>
+        RIGHT_OPEN                = 0x2,
+        /// Both closed: <tt>[x,y]</tt>
+        CLOSED                    = 0x3,
+    } ;
 
-	// public?
-	typedef std::pair<DataT, bound_types> BoundT;
+    // public?
+    typedef std::pair<DataT, bound_types> BoundT;
 //@}
 
 
-	// JODO unon() dokumentieren
-	/// Default constructor; yields an empty interval <tt>[1,0]</tt>
-	interval() : _lwb(AlgBaseT<DataT>::unon()), _upb(DataT()), _boundtypes(CLOSED) {}
-	/// Constructor for a closed singleton interval <tt>[val,val]</tt>
-	interval(const DataT& val) : 
-		_lwb(val), _upb(val), _boundtypes(CLOSED) {}
-	/// Closed interval <tt>[lw,up]</tt>
-	interval(const DataT& lw, const DataT& up) : 
-		_lwb(lw), _upb(up), _boundtypes(CLOSED) {}
-	/// Interval from <tt>lw</tt> to <tt>up</tt> with bounds <tt>bt</tt> 
-	interval(const DataT& lw, const DataT& up, bound_types bt) : 
-		_lwb(lw), _upb(up), _boundtypes(bt) {}
+    // JODO unon() dokumentieren
+    /// Default constructor; yields an empty interval <tt>[1,0]</tt>
+    interval() : _lwb(AlgBaseT<DataT>::unon()), _upb(DataT()), _boundtypes(CLOSED) {}
+    /// Constructor for a closed singleton interval <tt>[val,val]</tt>
+    interval(const DataT& val) : 
+        _lwb(val), _upb(val), _boundtypes(CLOSED) {}
+    /// Closed interval <tt>[lw,up]</tt>
+    interval(const DataT& lw, const DataT& up) : 
+        _lwb(lw), _upb(up), _boundtypes(CLOSED) {}
+    /// Interval from <tt>lw</tt> to <tt>up</tt> with bounds <tt>bt</tt> 
+    interval(const DataT& lw, const DataT& up, bound_types bt) : 
+        _lwb(lw), _upb(up), _boundtypes(bt) {}
 
 
 /** @name E: Selectors
 */
 //@{
-	/// Lower bound of the interval
-	DataT lwb()const { return _lwb; }
-	/// Upper bound of the interval
-	DataT upb()const { return _upb; }
-	/// Typ of interval bounds
-	bound_types boundtypes()const { return _boundtypes; }
+    /// Lower bound of the interval
+    DataT lwb()const { return _lwb; }
+    /// Upper bound of the interval
+    DataT upb()const { return _upb; }
+    /// Typ of interval bounds
+    bound_types boundtypes()const { return _boundtypes; }
 //@}
 
 /** @name F.P: Tester, predicates
 */
 //@{
-	/// Is the interval empty?
-	bool empty()const;
-	/// Does the interval contain <tt>x</tt>?
-	bool contains(const DataT& x)const;
+    /// Is the interval empty?
+    bool empty()const;
+    /// Does the interval contain <tt>x</tt>?
+    bool contains(const DataT& x)const;
 
-	/// Both closed: <tt>[x,y]</tt> ?
-	bool is_closed()const { return _boundtypes == CLOSED; }
-	/// Left open right closed: <tt>(x,y]</tt> ?
-	bool is_leftopen()const  { return _boundtypes == LEFT_OPEN; }
-	/// Left closed right open: <tt>[x,y)</tt> ?
-	bool is_rightopen()const  { return _boundtypes == RIGHT_OPEN; }
-	/// Both open: <tt>(x,y)</tt> ?
-	bool is_open()const   { return _boundtypes == OPEN; }
+    /// Both closed: <tt>[x,y]</tt> ?
+    bool is_closed()const { return _boundtypes == CLOSED; }
+    /// Left open right closed: <tt>(x,y]</tt> ?
+    bool is_leftopen()const  { return _boundtypes == LEFT_OPEN; }
+    /// Left closed right open: <tt>[x,y)</tt> ?
+    bool is_rightopen()const  { return _boundtypes == RIGHT_OPEN; }
+    /// Both open: <tt>(x,y)</tt> ?
+    bool is_open()const   { return _boundtypes == OPEN; }
 
-	/// Left bound is open right unknown <tt>(x,y|</tt> ?
-	bool leftbound_open()const { return !leftbound_closed(); }
-	//CL bool leftbound_open()const { return !leftbound_closed(); }
+    /// Left bound is open right unknown <tt>(x,y|</tt> ?
+    bool leftbound_open()const { return !leftbound_closed(); }
+    //CL bool leftbound_open()const { return !leftbound_closed(); }
 
-	/// Right bound is open left unknown <tt>|x,y)</tt> ?
-	bool rightbound_open()const { return !rightbound_closed(); }
-	//CL bool rightbound_open()const { return !rightbound_closed(); }
+    /// Right bound is open left unknown <tt>|x,y)</tt> ?
+    bool rightbound_open()const { return !rightbound_closed(); }
+    //CL bool rightbound_open()const { return !rightbound_closed(); }
 
-	/// Left closed right unknown <tt>[x,y|</tt> ?
-	bool leftbound_closed()const { return 0 != (_boundtypes & RIGHT_OPEN); }
-	//CL bool leftbound_closed()const { return 0 != (_boundtypes & RIGHT_OPEN); }
+    /// Left closed right unknown <tt>[x,y|</tt> ?
+    bool leftbound_closed()const { return 0 != (_boundtypes & RIGHT_OPEN); }
+    //CL bool leftbound_closed()const { return 0 != (_boundtypes & RIGHT_OPEN); }
 
-	/// Right closed left unknown <tt>|x,y]</tt> ?
-	bool rightbound_closed()const { return 0 != (_boundtypes & LEFT_OPEN); }
-	//CL bool rightbound_closed()const { return 0 != (_boundtypes & LEFT_OPEN); }
+    /// Right closed left unknown <tt>|x,y]</tt> ?
+    bool rightbound_closed()const { return 0 != (_boundtypes & LEFT_OPEN); }
+    //CL bool rightbound_closed()const { return 0 != (_boundtypes & LEFT_OPEN); }
 
 //@}
 
@@ -268,26 +268,26 @@ public:
 */
 //@{
 
-	/// <tt>*this</tt> is subset of <tt>super</tt>
-	bool contained_in(const interval& super)const ;
-	/// Equality
-	bool equal(const interval& x2)const
-	{ return contained_in(x2) && x2.contained_in(*this); } //JODO direct implementation via lwb_equal and upb_equal, then test of correctness
-	/// Equality operator
-	//CL bool operator == (const interval& x2)const { return isEqual(x2); }
+    /// <tt>*this</tt> is subset of <tt>super</tt>
+    bool contained_in(const interval& super)const ;
+    /// Equality
+    bool equal(const interval& x2)const
+    { return contained_in(x2) && x2.contained_in(*this); } //JODO direct implementation via lwb_equal and upb_equal, then test of correctness
+    /// Equality operator
+    //CL bool operator == (const interval& x2)const { return isEqual(x2); }
 
 
-	///  <tt>*this</tt> and <tt>x2</tt> are disjoint; their intersection is empty
-	bool disjoint_to(const interval& x2)const
-	{ return exclusive_less(x2) || x2.exclusive_less(*this); }
-	/// There is no gap between <tt>*this</tt> and <tt>x2</tt> but they have no element in common
-	bool touches(const interval& x2)const;
+    ///  <tt>*this</tt> and <tt>x2</tt> are disjoint; their intersection is empty
+    bool disjoint_to(const interval& x2)const
+    { return exclusive_less(x2) || x2.exclusive_less(*this); }
+    /// There is no gap between <tt>*this</tt> and <tt>x2</tt> but they have no element in common
+    bool touches(const interval& x2)const;
 
-	/// Exclusive less: maximal element of <tt>*this</tt> is less than the minimal element of <tt>x2</tt>
-	bool exclusive_less(const interval& x2)const;
+    /// Exclusive less: maximal element of <tt>*this</tt> is less than the minimal element of <tt>x2</tt>
+    bool exclusive_less(const interval& x2)const;
 
-	bool less(const interval& x2)const
-	{ return lwb_less(x2) || ( lwb_equal(x2) && upb_less(x2) ); }
+    bool less(const interval& x2)const
+    { return lwb_less(x2) || ( lwb_equal(x2) && upb_less(x2) ); }
 
 //@}
 
@@ -295,143 +295,143 @@ public:
 /** @name G: Modificators
 */
 //@{
-	/// Set the interval empty
-	void clear()
-	{ set_lwb(AlgBaseT<DataT>::unon()); set_upb(DataT()); _boundtypes=CLOSED; }
+    /// Set the interval empty
+    void clear()
+    { set_lwb(AlgBaseT<DataT>::unon()); set_upb(DataT()); _boundtypes=CLOSED; }
 
-	/// Set the intervals values
-	interval& set(const DataT& lw, const DataT& up, bound_types bt) 
-	{ _lwb=lw; _upb=up; _boundtypes=bt; return *this; }
+    /// Set the intervals values
+    interval& set(const DataT& lw, const DataT& up, bound_types bt) 
+    { _lwb=lw; _upb=up; _boundtypes=bt; return *this; }
 
-	/** Extend <tt>*this</tt> to <tt>x2</tt> yielding an interval from the minimum of lower bounds
-		to the maximum of upper bounds */
-	interval& extend(const interval& x2);
+    /** Extend <tt>*this</tt> to <tt>x2</tt> yielding an interval from the minimum of lower bounds
+        to the maximum of upper bounds */
+    interval& extend(const interval& x2);
 
-	/** scaleUp the unit of an Interval to a finer degree. To scale up from days to minutes
-		call scaleUp(Time::minutes_per_day, Time::maxMinutes_inDays).
-		The second parameter 'max' gives the maximum value of the old scale that can be
-		represented in the new finer scale.
-	*/
-	interval& scale_up(DataT factor, DataT max);
+    /** scaleUp the unit of an Interval to a finer degree. To scale up from days to minutes
+        call scaleUp(Time::minutes_per_day, Time::maxMinutes_inDays).
+        The second parameter 'max' gives the maximum value of the old scale that can be
+        represented in the new finer scale.
+    */
+    interval& scale_up(DataT factor, DataT max);
 
-	/** scaleDown the unit of an Interval to a rougher degree. To scale down from minutes to days.
-		Call scaleDown(Time::minutes_per_day). */
-	interval& scale_down(DataT factor);
+    /** scaleDown the unit of an Interval to a rougher degree. To scale down from minutes to days.
+        Call scaleDown(Time::minutes_per_day). */
+    interval& scale_down(DataT factor);
 //@}
 
 
 /** @name H: Combinators and more
 */
 //@{
-	/// Intersection with the interval  <tt>x2</tt>; assign result to <tt>isec</tt>
-	void intersect(interval& isec, const interval& x2)const;
+    /// Intersection with the interval  <tt>x2</tt>; assign result to <tt>isec</tt>
+    void intersect(interval& isec, const interval& x2)const;
 
-	/// Returns the intersection with the interval  <tt>x2</tt>
-	interval intersect(const interval& x2)const { interval isec; intersect(isec, x2); return isec; }
+    /// Returns the intersection with the interval  <tt>x2</tt>
+    interval intersect(const interval& x2)const { interval isec; intersect(isec, x2); return isec; }
 
-	// wenn <tt>*this</tt> links über <tt>x2</tt> herausragt, ist <tt>lsur</tt> das überstehende linke Teilintervall
-	///
-	void left_surplus(interval& lsur, const interval& x2)const;
-	// wenn <tt>*this</tt> rechts über <tt>x2</tt> herausragt, ist <tt>rsur</tt> das überstehende rechte Teilintervall
-	///
-	void right_surplus(interval& rsur, const interval& x2)const;
+    // wenn <tt>*this</tt> links über <tt>x2</tt> herausragt, ist <tt>lsur</tt> das überstehende linke Teilintervall
+    ///
+    void left_surplus(interval& lsur, const interval& x2)const;
+    // wenn <tt>*this</tt> rechts über <tt>x2</tt> herausragt, ist <tt>rsur</tt> das überstehende rechte Teilintervall
+    ///
+    void right_surplus(interval& rsur, const interval& x2)const;
 
-	/** Interval spanning from lower bound of *this interval to the upper bound of rhs.
-		Bordertypes according to the lower bound of *this and the upper bound of rhs.
-	*/
-	interval span(const interval& rhs)const
-	{ return interval(lwb(), rhs.upb(), span(boundtypes(), rhs.boundtypes()));	}
+    /** Interval spanning from lower bound of *this interval to the upper bound of rhs.
+        Bordertypes according to the lower bound of *this and the upper bound of rhs.
+    */
+    interval span(const interval& rhs)const
+    { return interval(lwb(), rhs.upb(), span(boundtypes(), rhs.boundtypes()));    }
 
-	interval& left_subtract(const interval& x2);
+    interval& left_subtract(const interval& x2);
 //@}
 
 
 /** @name S: String representation
-	*/
+    */
 //@{
-	/// Interval as string
-	const std::string asString()const;
+    /// Interval as string
+    const std::string asString()const;
 //@}
 
 
-	// NOTE ------- DISCRETE ONLY ------- DISCRETE ONLY ------- DISCRETE ONLY ------- 
+    // NOTE ------- DISCRETE ONLY ------- DISCRETE ONLY ------- DISCRETE ONLY ------- 
 /** @name T: For discrete domain datatypes only that implement operators <tt>++</tt> 
-		and <tt>--</tt>
-	*/
+        and <tt>--</tt>
+    */
 //@{
-	/// First (smallest) element of the interval
-	DataT first()const;
-	/// Last (largest) element of the interval
-	DataT last()const;
+    /// First (smallest) element of the interval
+    DataT first()const;
+    /// Last (largest) element of the interval
+    DataT last()const;
 
-	/// Size of the interval
-	DataT size()const;
+    /// Size of the interval
+    DataT size()const;
 
-	/// <tt>*this</tt> interval as closed <tt>[x,y]</tt> interval
-	interval as_closed_interval()const;
-	/// <tt>*this</tt> interval as open  <tt>[x,y]</tt> interval
-	interval as_rightopen_interval()const;
+    /// <tt>*this</tt> interval as closed <tt>[x,y]</tt> interval
+    interval as_closed_interval()const;
+    /// <tt>*this</tt> interval as open  <tt>[x,y]</tt> interval
+    interval as_rightopen_interval()const;
 
-	/** Transforms the interval to the bound-type <tt>bound_types bt</tt> without
-		changing it's content
-	*/
-	void transform_bounds(bound_types bt);
+    /** Transforms the interval to the bound-type <tt>bound_types bt</tt> without
+        changing it's content
+    */
+    void transform_bounds(bound_types bt);
 
-	/** Sets left border closed. */
-	void close_left_bound();
+    /** Sets left border closed. */
+    void close_left_bound();
 
-	/** Sets right border open. */
-	void open_right_bound();
-	
+    /** Sets right border open. */
+    void open_right_bound();
+    
 //@}
 
 /** @name U: Utilities and Limits
-	*/
+    */
 //@{
-	/// Maximum Interval
-	static interval always()
-	{ return closed_interval(std::numeric_limits<DataT>::min(), 
-	                         std::numeric_limits<DataT>::max()); }
+    /// Maximum Interval
+    static interval always()
+    { return closed_interval(std::numeric_limits<DataT>::min(), 
+                             std::numeric_limits<DataT>::max()); }
 //@}
 
-	void set_lwb(DataT lw) { _lwb=lw; }
-	void set_upb(DataT up) { _upb=up; }
+    void set_lwb(DataT lw) { _lwb=lw; }
+    void set_upb(DataT up) { _upb=up; }
 
 private:
 
-	void set_lwb_type(bound_types bt) 
-	{ _boundtypes = (unsigned char)((LEFT_OPEN & _boundtypes) | (RIGHT_OPEN & bt)); }
+    void set_lwb_type(bound_types bt) 
+    { _boundtypes = (unsigned char)((LEFT_OPEN & _boundtypes) | (RIGHT_OPEN & bt)); }
 
-	void set_upb_type(bound_types bt) 
-	{ _boundtypes = (unsigned char)((RIGHT_OPEN & _boundtypes) | (LEFT_OPEN & bt)); }
+    void set_upb_type(bound_types bt) 
+    { _boundtypes = (unsigned char)((RIGHT_OPEN & _boundtypes) | (LEFT_OPEN & bt)); }
 
-	static bound_types span(bound_types left, bound_types right)
-	{ return (unsigned char)((LEFT_OPEN | left) & (RIGHT_OPEN | right)) ; }
+    static bound_types span(bound_types left, bound_types right)
+    { return (unsigned char)((LEFT_OPEN | left) & (RIGHT_OPEN | right)) ; }
 
-	bound_types succession_bounds()const;
+    bound_types succession_bounds()const;
 
-	void set_lwb(const BoundT& lw) { _lwb=lw.BOUND_VAL; set_lwb_type(lw.BOUND_TYPES); }
-	void set_upb(const BoundT& up) { _upb=up.BOUND_VAL; set_upb_type(up.BOUND_TYPES); }
+    void set_lwb(const BoundT& lw) { _lwb=lw.BOUND_VAL; set_lwb_type(lw.BOUND_TYPES); }
+    void set_upb(const BoundT& up) { _upb=up.BOUND_VAL; set_upb_type(up.BOUND_TYPES); }
 
-	bool lwb_less(const interval& x2)const;
-	bool upb_less(const interval& x2)const;
-	bool lwb_less_equal(const interval& x2)const;
-	bool upb_less_equal(const interval& x2)const;
-	bool lwb_equal(const interval& x2)const;
-	bool upb_equal(const interval& x2)const;
+    bool lwb_less(const interval& x2)const;
+    bool upb_less(const interval& x2)const;
+    bool lwb_less_equal(const interval& x2)const;
+    bool upb_less_equal(const interval& x2)const;
+    bool lwb_equal(const interval& x2)const;
+    bool upb_equal(const interval& x2)const;
 
-	BoundT lwb_min(const interval& x2)const;
-	BoundT lwb_max(const interval& x2)const;
-	BoundT upb_min(const interval& x2)const;
-	BoundT upb_max(const interval& x2)const;
+    BoundT lwb_min(const interval& x2)const;
+    BoundT lwb_max(const interval& x2)const;
+    BoundT upb_min(const interval& x2)const;
+    BoundT upb_max(const interval& x2)const;
 
-	BoundT lwb_rightOf(const interval& x2)const;
-	BoundT upb_leftOf(const interval& x2)const;
+    BoundT lwb_rightOf(const interval& x2)const;
+    BoundT upb_leftOf(const interval& x2)const;
 
 private:
-	DataT _lwb;
-	DataT _upb;
-	bound_types _boundtypes;
+    DataT _lwb;
+    DataT _upb;
+    bound_types _boundtypes;
 } ;
 
 
@@ -459,25 +459,25 @@ interval<DataT> open_interval(const DataT& lwb, const DataT& upb)
 template <class DataT>
 typename interval<DataT>::bound_types interval<DataT>::succession_bounds()const
 {
-	if(_boundtypes==RIGHT_OPEN) return RIGHT_OPEN;
-	if(_boundtypes==LEFT_OPEN)  return LEFT_OPEN;
-	if(_boundtypes==CLOSED)     return OPEN;
-	return CLOSED;
+    if(_boundtypes==RIGHT_OPEN) return RIGHT_OPEN;
+    if(_boundtypes==LEFT_OPEN)  return LEFT_OPEN;
+    if(_boundtypes==CLOSED)     return OPEN;
+    return CLOSED;
 }
 
 
 template <class DataT>
 bool interval<DataT>::empty()const
 {
-	// JODO simplify after test
-	if(rightbound_closed() && leftbound_closed()) return upb() <  lwb();
-	if(rightbound_open()   && leftbound_closed()) return upb() <= lwb();
-	if(rightbound_closed() && leftbound_open())   return upb() <= lwb();
+    // JODO simplify after test
+    if(rightbound_closed() && leftbound_closed()) return upb() <  lwb();
+    if(rightbound_open()   && leftbound_closed()) return upb() <= lwb();
+    if(rightbound_closed() && leftbound_open())   return upb() <= lwb();
 
-	// OTHERWISE (rightbound_open() && leftbound_open())
-	if(AlgBaseT<DataT>::isContinuous())   
-												  return upb() <= lwb();
-											 else return upb() <= succ(lwb());
+    // OTHERWISE (rightbound_open() && leftbound_open())
+    if(AlgBaseT<DataT>::isContinuous())   
+                                                  return upb() <= lwb();
+                                             else return upb() <= succ(lwb());
 }
 
 // NOTE structural similarities between empty and exclusive_less! 
@@ -485,69 +485,69 @@ bool interval<DataT>::empty()const
 template <class DataT>
 bool interval<DataT>::exclusive_less(const interval& x2)const
 {
-	if(rightbound_closed() && x2.leftbound_closed()) return upb() <  x2.lwb();
-	if(rightbound_open()   && x2.leftbound_closed()) return upb() <= x2.lwb();
-	if(rightbound_closed() && x2.leftbound_open() )  return upb() <= x2.lwb();
+    if(rightbound_closed() && x2.leftbound_closed()) return upb() <  x2.lwb();
+    if(rightbound_open()   && x2.leftbound_closed()) return upb() <= x2.lwb();
+    if(rightbound_closed() && x2.leftbound_open() )  return upb() <= x2.lwb();
 
-	// OTHERWISE (rightbound_open()  && x2.leftbound_open())
-	if(AlgBaseT<DataT>::isContinuous())   
-													 return upb() <= x2.lwb();
-												else return upb() <= succ(x2.lwb());
+    // OTHERWISE (rightbound_open()  && x2.leftbound_open())
+    if(AlgBaseT<DataT>::isContinuous())   
+                                                     return upb() <= x2.lwb();
+                                                else return upb() <= succ(x2.lwb());
 }
 
 
 template <class DataT>
 bool interval<DataT>::lwb_less(const interval& x2)const
 {
-	if(leftbound_closed() && x2.leftbound_closed()) return lwb() <  x2.lwb();
-	if(leftbound_open()   && x2.leftbound_open())   return lwb() <  x2.lwb();
-	if(leftbound_closed() && x2.leftbound_open())   return lwb() <= x2.lwb();
+    if(leftbound_closed() && x2.leftbound_closed()) return lwb() <  x2.lwb();
+    if(leftbound_open()   && x2.leftbound_open())   return lwb() <  x2.lwb();
+    if(leftbound_closed() && x2.leftbound_open())   return lwb() <= x2.lwb();
 
-	// OTHERWISE (leftbound_open()  && x2.leftbound_closed())
-	if(AlgBaseT<DataT>::isContinuous())   
-									return       lwb() <  x2.lwb();
-							   else return succ(lwb()) <  x2.lwb();
+    // OTHERWISE (leftbound_open()  && x2.leftbound_closed())
+    if(AlgBaseT<DataT>::isContinuous())   
+                                    return       lwb() <  x2.lwb();
+                               else return succ(lwb()) <  x2.lwb();
 }
 
 template <class DataT>
 bool interval<DataT>::upb_less(const interval& x2)const
 {
-	if(rightbound_closed() && x2.rightbound_closed()) return upb() <  x2.upb();
-	if(rightbound_open()   && x2.rightbound_open())   return upb() <  x2.upb();
-	if(rightbound_open()   && x2.rightbound_closed()) return upb() <= x2.upb();
+    if(rightbound_closed() && x2.rightbound_closed()) return upb() <  x2.upb();
+    if(rightbound_open()   && x2.rightbound_open())   return upb() <  x2.upb();
+    if(rightbound_open()   && x2.rightbound_closed()) return upb() <= x2.upb();
 
-	// OTHERWISE (rightbound_closed()  && x2.rightbound_open())
-	if(AlgBaseT<DataT>::isContinuous())   
-									 return      upb()  <  x2.upb();
-								else return	succ(upb()) <  x2.upb();
+    // OTHERWISE (rightbound_closed()  && x2.rightbound_open())
+    if(AlgBaseT<DataT>::isContinuous())   
+                                     return      upb()  <  x2.upb();
+                                else return    succ(upb()) <  x2.upb();
 }
 
 
 template <class DataT>
 bool interval<DataT>::lwb_less_equal(const interval& x2)const
 {
-	if(leftbound_closed() && x2.leftbound_closed()) return lwb() <= x2.lwb();
-	if(leftbound_open()  && x2.leftbound_open())  return lwb() <= x2.lwb();
-	if(leftbound_open() &&  x2.leftbound_closed()) return lwb() <  x2.lwb();
+    if(leftbound_closed() && x2.leftbound_closed()) return lwb() <= x2.lwb();
+    if(leftbound_open()  && x2.leftbound_open())  return lwb() <= x2.lwb();
+    if(leftbound_open() &&  x2.leftbound_closed()) return lwb() <  x2.lwb();
 
-	// OTHERWISE (leftbound_closed() && x2.leftbound_open())
-	if(AlgBaseT<DataT>::isContinuous()) 
-										  return lwb() <= x2.lwb();
-									 else return lwb() <= succ(x2.lwb());
+    // OTHERWISE (leftbound_closed() && x2.leftbound_open())
+    if(AlgBaseT<DataT>::isContinuous()) 
+                                          return lwb() <= x2.lwb();
+                                     else return lwb() <= succ(x2.lwb());
 }
 
 
 template <class DataT>
 bool interval<DataT>::upb_less_equal(const interval& x2)const
 {
-	if(rightbound_closed() && x2.rightbound_closed()) return upb() <= x2.upb();
-	if(rightbound_open()  && x2.rightbound_open())  return upb() <= x2.upb();
-	if(rightbound_closed() && x2.rightbound_open())  return upb() <  x2.upb();
+    if(rightbound_closed() && x2.rightbound_closed()) return upb() <= x2.upb();
+    if(rightbound_open()  && x2.rightbound_open())  return upb() <= x2.upb();
+    if(rightbound_closed() && x2.rightbound_open())  return upb() <  x2.upb();
 
-	// OTHERWISE (rightbound_open()  && x2.rightbound_closed())
-	if(AlgBaseT<DataT>::isContinuous())   
-											return upb() <= x2.upb();
-									   else return upb() <= succ(x2.upb());
+    // OTHERWISE (rightbound_open()  && x2.rightbound_closed())
+    if(AlgBaseT<DataT>::isContinuous())   
+                                            return upb() <= x2.upb();
+                                       else return upb() <= succ(x2.upb());
 }
 
 
@@ -556,22 +556,22 @@ bool interval<DataT>::upb_less_equal(const interval& x2)const
 template <class DataT>
 bool interval<DataT>::lwb_equal(const interval& x2)const
 {
-	if(leftbound_closed() && x2.leftbound_closed()) return lwb() == x2.lwb();
-	if(leftbound_open()  && x2.leftbound_open())  return lwb() == x2.lwb();
+    if(leftbound_closed() && x2.leftbound_closed()) return lwb() == x2.lwb();
+    if(leftbound_open()  && x2.leftbound_open())  return lwb() == x2.lwb();
 
-	if(AlgBaseT<DataT>::isContinuous())
-	{
-		// mimimal (maximal) values of intervals of continuous values are never equal, if
-		// they have different bound types. Interestingly this seems to be true only
-		// in theory, because the very representations of doubles is discrete on a given
-		// machine. We implement the theory here.
-		return false;
-	}
-	else
-	{
-		if(leftbound_open() &&  x2.leftbound_closed()) return succ(lwb()) ==      x2.lwb();
-		                                 else return      lwb()  == succ(x2.lwb());
-	}
+    if(AlgBaseT<DataT>::isContinuous())
+    {
+        // mimimal (maximal) values of intervals of continuous values are never equal, if
+        // they have different bound types. Interestingly this seems to be true only
+        // in theory, because the very representations of doubles is discrete on a given
+        // machine. We implement the theory here.
+        return false;
+    }
+    else
+    {
+        if(leftbound_open() &&  x2.leftbound_closed()) return succ(lwb()) ==      x2.lwb();
+                                         else return      lwb()  == succ(x2.lwb());
+    }
 }
 
 //NOTE THINK: This implementation is rather interesting wrt. continuous value types.
@@ -579,22 +579,22 @@ bool interval<DataT>::lwb_equal(const interval& x2)const
 template <class DataT>
 bool interval<DataT>::upb_equal(const interval& x2)const
 {
-	if(rightbound_closed() && x2.rightbound_closed()) return upb() == x2.upb();
-	if(rightbound_open()  && x2.rightbound_open())  return upb() == x2.upb();
+    if(rightbound_closed() && x2.rightbound_closed()) return upb() == x2.upb();
+    if(rightbound_open()  && x2.rightbound_open())  return upb() == x2.upb();
 
-	if(AlgBaseT<DataT>::isContinuous())
-	{
-		// mimimal (maximal) values of intervals of continuous values are never equal, if
-		// they have different bound types. Interestingly this seems to be true only
-		// in theory, because the very representations of doubles is discrete on a given
-		// machine. We implement the theory here.
-		return false;
-	}
-	else
-	{
-		if(rightbound_closed() && x2.rightbound_open())  return succ(upb()) ==      x2.upb();
-	                                       else return      upb()  == succ(x2.upb());
-	}
+    if(AlgBaseT<DataT>::isContinuous())
+    {
+        // mimimal (maximal) values of intervals of continuous values are never equal, if
+        // they have different bound types. Interestingly this seems to be true only
+        // in theory, because the very representations of doubles is discrete on a given
+        // machine. We implement the theory here.
+        return false;
+    }
+    else
+    {
+        if(rightbound_closed() && x2.rightbound_open())  return succ(upb()) ==      x2.upb();
+                                           else return      upb()  == succ(x2.upb());
+    }
 }
 
 
@@ -602,19 +602,19 @@ bool interval<DataT>::upb_equal(const interval& x2)const
 template <class DataT>
 typename interval<DataT>::BoundT interval<DataT>::lwb_min(const interval& x2)const
 {
-	if( x2.lwb_less(*this) )
-		return BoundT(x2.lwb(), x2.boundtypes());
-	else
-		return BoundT(lwb(), boundtypes());
+    if( x2.lwb_less(*this) )
+        return BoundT(x2.lwb(), x2.boundtypes());
+    else
+        return BoundT(lwb(), boundtypes());
 }
 
 template <class DataT>
 typename interval<DataT>::BoundT interval<DataT>::upb_max(const interval& x2)const
 {
-	if( upb_less(x2) )
-		return BoundT(x2.upb(), x2.boundtypes());
-	else
-		return BoundT(upb(), boundtypes());
+    if( upb_less(x2) )
+        return BoundT(x2.upb(), x2.boundtypes());
+    else
+        return BoundT(upb(), boundtypes());
 }
 
 
@@ -622,32 +622,32 @@ typename interval<DataT>::BoundT interval<DataT>::upb_max(const interval& x2)con
 template <class DataT>
 typename interval<DataT>::BoundT interval<DataT>::lwb_max(const interval& x2)const
 {
-	if( lwb_less(x2) )
-		return BoundT(x2.lwb(), x2.boundtypes());
-	else
-		return BoundT(lwb(), boundtypes());
+    if( lwb_less(x2) )
+        return BoundT(x2.lwb(), x2.boundtypes());
+    else
+        return BoundT(lwb(), boundtypes());
 }
 
 template <class DataT>
 typename interval<DataT>::BoundT interval<DataT>::upb_min(const interval& x2)const
 {
-	if( x2.upb_less(*this) )
-		return BoundT(x2.upb(), x2.boundtypes());
-	else
-		return BoundT(upb(), boundtypes());
+    if( x2.upb_less(*this) )
+        return BoundT(x2.upb(), x2.boundtypes());
+    else
+        return BoundT(upb(), boundtypes());
 }
 
 
 template <class DataT>
 typename interval<DataT>::BoundT interval<DataT>::upb_leftOf(const interval& x2)const
 {
-	return BoundT(x2.lwb(), x2.succession_bounds());
+    return BoundT(x2.lwb(), x2.succession_bounds());
 }
 
 template <class DataT>
 typename interval<DataT>::BoundT interval<DataT>::lwb_rightOf(const interval& x2)const
 {
-	return BoundT(x2.upb(), x2.succession_bounds());
+    return BoundT(x2.upb(), x2.succession_bounds());
 }
 
 
@@ -655,26 +655,26 @@ typename interval<DataT>::BoundT interval<DataT>::lwb_rightOf(const interval& x2
 template <class DataT>
 bool interval<DataT>::touches(const interval& x2)const
 {
-	if(rightbound_open()  && x2.leftbound_closed()) return upb() == x2.lwb();
-	if(rightbound_closed() && x2.leftbound_open())  return upb() == x2.lwb();
+    if(rightbound_open()  && x2.leftbound_closed()) return upb() == x2.lwb();
+    if(rightbound_closed() && x2.leftbound_open())  return upb() == x2.lwb();
 
-	if(AlgBaseT<DataT>::isContinuous()) {
-		// ... sie konnten zusammen nicht kommen
-		return false;
-	} else {
-		if(rightbound_closed() && x2.leftbound_closed()) return succ(upb()) == x2.lwb();
-		if(rightbound_open()  && x2.leftbound_open() ) return upb() == succ(x2.lwb());
-		return false;
-	}
+    if(AlgBaseT<DataT>::isContinuous()) {
+        // ... sie konnten zusammen nicht kommen
+        return false;
+    } else {
+        if(rightbound_closed() && x2.leftbound_closed()) return succ(upb()) == x2.lwb();
+        if(rightbound_open()  && x2.leftbound_open() ) return upb() == succ(x2.lwb());
+        return false;
+    }
 }
 
 template <class DataT>
 bool interval<DataT>::contains(const DataT& x)const
 {
-	if(rightbound_closed() && leftbound_closed()) return lwb() <= x && x <= upb();
-	if(rightbound_closed() && leftbound_open() )	return lwb() <  x && x <= upb();
-	if(rightbound_open()  && leftbound_closed()) return lwb() <= x && x <  upb();
-	                                    return lwb() <  x && x <  upb();
+    if(rightbound_closed() && leftbound_closed()) return lwb() <= x && x <= upb();
+    if(rightbound_closed() && leftbound_open() )    return lwb() <  x && x <= upb();
+    if(rightbound_open()  && leftbound_closed()) return lwb() <= x && x <  upb();
+                                        return lwb() <  x && x <  upb();
 }
 
 template <class DataT>
@@ -685,121 +685,121 @@ bool interval<DataT>::contained_in(const interval& super)const
 template <class DataT>
 interval<DataT>& interval<DataT>::extend(const interval<DataT>& x2)
 {
-	if(x2.empty()) return *this;
-	else if(empty()) {
-		// JODO THINK keeping border types necessary ?
-		*this = x2; return *this;
-	}
-	else {
-		set_lwb(lwb_min(x2));
-		set_upb(upb_max(x2));
-		return *this; 
-	} 
+    if(x2.empty()) return *this;
+    else if(empty()) {
+        // JODO THINK keeping border types necessary ?
+        *this = x2; return *this;
+    }
+    else {
+        set_lwb(lwb_min(x2));
+        set_upb(upb_max(x2));
+        return *this; 
+    } 
 }
 
 template <class DataT>
 interval<DataT>& interval<DataT>::scale_up(DataT factor, DataT max)
 {
-	if(empty())
-		return *this;
+    if(empty())
+        return *this;
 
-	if(leftbound_open())
-		if(_lwb >= max-1)
-			_lwb = max*factor - 1;
-		else
-		{
-			_lwb *= factor;
-			_lwb += factor - 1;
-		}
-	else // leftbound_closed()
-		if(_lwb >= max)
-			_lwb = max * factor;
-		else 
-			_lwb *= factor;
+    if(leftbound_open())
+        if(_lwb >= max-1)
+            _lwb = max*factor - 1;
+        else
+        {
+            _lwb *= factor;
+            _lwb += factor - 1;
+        }
+    else // leftbound_closed()
+        if(_lwb >= max)
+            _lwb = max * factor;
+        else 
+            _lwb *= factor;
 
-	if(rightbound_closed())
-		if(_upb >= max-1)
-			_upb = max*factor - 1;
-		else
-		{
-			_upb *= factor;
-			_upb += factor - 1;
-		}
-	else
-		if(_upb >= max)
-			_upb = max * factor;
-		else
-			_upb *= factor;
+    if(rightbound_closed())
+        if(_upb >= max-1)
+            _upb = max*factor - 1;
+        else
+        {
+            _upb *= factor;
+            _upb += factor - 1;
+        }
+    else
+        if(_upb >= max)
+            _upb = max * factor;
+        else
+            _upb *= factor;
 
-	return *this;
+    return *this;
 }
 
 template <class DataT>
 interval<DataT>& interval<DataT>::scale_down(DataT factor)
 {
-	if(empty())
-		return *this;
-	_lwb /= factor;
-	_upb /= factor;
-	return *this;
+    if(empty())
+        return *this;
+    _lwb /= factor;
+    _upb /= factor;
+    return *this;
 }
 
 
 template <class DataT>
 interval<DataT>& interval<DataT>::left_subtract(const interval& x2)
 {
-	set_lwb( BoundT(x2.upb(), x2.succession_bounds()) );
-	return *this; 
+    set_lwb( BoundT(x2.upb(), x2.succession_bounds()) );
+    return *this; 
 }
 
 
 template <class DataT>
 void interval<DataT>::intersect(interval<DataT>& isec, const interval<DataT>& x2)const
 {
-	isec.set_lwb(lwb_max(x2));
-	isec.set_upb(upb_min(x2));
+    isec.set_lwb(lwb_max(x2));
+    isec.set_upb(upb_min(x2));
 }
 
 
 template <class DataT>
 void interval<DataT>::left_surplus(interval<DataT>& lsur, const interval<DataT>& x2)const
 {
-	if(lwb_less(x2)) {
-		lsur.set_lwb( BoundT(lwb(),boundtypes()) ); 
-		lsur.set_upb( upb_leftOf(x2) );   // (toUpb(pred(x2.first()))); 
-	}
-	else lsur.clear();
+    if(lwb_less(x2)) {
+        lsur.set_lwb( BoundT(lwb(),boundtypes()) ); 
+        lsur.set_upb( upb_leftOf(x2) );   // (toUpb(pred(x2.first()))); 
+    }
+    else lsur.clear();
 }
 
 template <class DataT>
 void interval<DataT>::right_surplus(interval<DataT>& rsur, const interval<DataT>& x2)const
 {
-	if(x2.upb_less(*this)) {
-		rsur.set_lwb(lwb_rightOf(x2)); 
-		rsur.set_upb( BoundT(upb(),boundtypes()) );
-	}
-	else rsur.clear();
+    if(x2.upb_less(*this)) {
+        rsur.set_lwb(lwb_rightOf(x2)); 
+        rsur.set_upb( BoundT(upb(),boundtypes()) );
+    }
+    else rsur.clear();
 }
 
 
 template <class DataT>
 const std::string interval<DataT>::asString()const
 {
-	std::string itvRep("");
-	std::string lwbRep, ubpRep;
+    std::string itvRep("");
+    std::string lwbRep, ubpRep;
 
-	itvRep += leftbound_open() ? "(" : "[" ;
-	// if(AlgBaseT<DataT>::isAtomic()) 
-	{
-		itvRep += itl::ReprBaseT<DataT>::toString(lwb());
-		itvRep += ",";
-		itvRep += itl::ReprBaseT<DataT>::toString(upb());
+    itvRep += leftbound_open() ? "(" : "[" ;
+    // if(AlgBaseT<DataT>::isAtomic()) 
+    {
+        itvRep += itl::ReprBaseT<DataT>::toString(lwb());
+        itvRep += ",";
+        itvRep += itl::ReprBaseT<DataT>::toString(upb());
 
-	}
+    }
 
-	itvRep += rightbound_open() ? ")" : "]" ;
+    itvRep += rightbound_open() ? ")" : "]" ;
 
-	return itvRep;
+    return itvRep;
 }
 
 
@@ -820,9 +820,9 @@ DataT interval<DataT>::last()const
 template <class DataT>
 DataT interval<DataT>::size()const
 { 
-	if(empty()) return DataT(); 
-	else if(AlgBaseT<DataT>::isContinuous()) return _upb - _lwb;
-	else return last() - first() + AlgBaseT<DataT>::unon(); 
+    if(empty()) return DataT(); 
+    else if(AlgBaseT<DataT>::isContinuous()) return _upb - _lwb;
+    else return last() - first() + AlgBaseT<DataT>::unon(); 
 }
 
 template <class DataT>
@@ -836,33 +836,33 @@ interval<DataT> interval<DataT>::as_rightopen_interval()const
 template <class DataT>
 void interval<DataT>::transform_bounds(bound_types bt)
 { 
-	switch(bt)
-	{
-	case CLOSED:	set(first(), last(), bt);				break;
-	case RIGHT_OPEN:set(first(), succ(last()), bt);		break;
-	case LEFT_OPEN: set(pred(first()), last(), bt);		break;
-	case OPEN:		set(pred(first()), succ(last()), bt);	break;
-	}
+    switch(bt)
+    {
+    case CLOSED:    set(first(), last(), bt);                break;
+    case RIGHT_OPEN:set(first(), succ(last()), bt);        break;
+    case LEFT_OPEN: set(pred(first()), last(), bt);        break;
+    case OPEN:        set(pred(first()), succ(last()), bt);    break;
+    }
 }
 
 template <class DataT>
 void interval<DataT>::close_left_bound()
 {
-	if(leftbound_open())
-	{
-		_boundtypes |= RIGHT_OPEN;
-		_lwb++;
-	}
+    if(leftbound_open())
+    {
+        _boundtypes |= RIGHT_OPEN;
+        _lwb++;
+    }
 }
 
 template <class DataT>
 void interval<DataT>::open_right_bound()
 {
-	if(rightbound_closed())
-	{
-		_boundtypes &= RIGHT_OPEN;
-		_upb++;
-	}
+    if(rightbound_closed())
+    {
+        _boundtypes &= RIGHT_OPEN;
+        _upb++;
+    }
 }
 
 
@@ -870,41 +870,41 @@ void interval<DataT>::open_right_bound()
 template <typename DataT>
 inline bool operator == (const interval<DataT>& lhs, const interval<DataT>& rhs)
 {
-	return lhs.equal(rhs);
+    return lhs.equal(rhs);
 }
 
 template <typename DataT>
 inline bool operator < (const interval<DataT>& lhs, const interval<DataT>& rhs)
 {
-	return lhs.less(rhs);
+    return lhs.less(rhs);
 }
 
 
 
 /**    
-	<b>Template-Klasse exclusive_less: Comparison Functor for Intervals</b>
+    <b>Template-Klasse exclusive_less: Comparison Functor for Intervals</b>
 
-   	Template parameter <b>ItvTV</b>: needs to implement the boolean function
+       Template parameter <b>ItvTV</b>: needs to implement the boolean function
 
-	<tt>bool ItvTV::exclusive_less(ItvTV x2)const; </tt>
-	
-	<b>exclusive_less</b> implements a strict weak ordering that serves to
-	sort sets and maps of intervals \ref ItvSetT, \ref DiscItvSetT and \ref 
-	SplitItvMapT. 
-	
-	Function <tt>bool ItvTV::exclusive_less(ItvTV x2)const; </tt> is true if every
-	element of the interval <tt>*this</tt> is less than any element of <tt>x2</tt>
+    <tt>bool ItvTV::exclusive_less(ItvTV x2)const; </tt>
+    
+    <b>exclusive_less</b> implements a strict weak ordering that serves to
+    sort sets and maps of intervals \ref ItvSetT, \ref DiscItvSetT and \ref 
+    SplitItvMapT. 
+    
+    Function <tt>bool ItvTV::exclusive_less(ItvTV x2)const; </tt> is true if every
+    element of the interval <tt>*this</tt> is less than any element of <tt>x2</tt>
 
-	<tt>exclusive_less</tt> could indeed be defined as <tt>operator < </tt> on class interval
-	which will be done in the next relase.
+    <tt>exclusive_less</tt> could indeed be defined as <tt>operator < </tt> on class interval
+    which will be done in the next relase.
 
-	@author  Joachim Faulhaber
+    @author  Joachim Faulhaber
 */
 template <class ItvTV>
 struct exclusive_less {
-	/** Operator <tt>operator()</tt> implements a strict weak ordering on intervals. */
-	bool operator()(const ItvTV& x1, const ItvTV& x2)const
-	{ return x1.exclusive_less(x2); }
+    /** Operator <tt>operator()</tt> implements a strict weak ordering on intervals. */
+    bool operator()(const ItvTV& x1, const ItvTV& x2)const
+    { return x1.exclusive_less(x2); }
 };
 
 } // namespace itl

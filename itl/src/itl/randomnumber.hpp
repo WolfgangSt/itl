@@ -35,23 +35,23 @@ DEALINGS IN THE SOFTWARE.
 namespace itl
 {
 
-	template <class NumTV>
-	class RandomNumberT
-	{
-	public:
-		// JODO later more sophisticated versions!
-		NumTV rnd(NumTV upb) 
-		{ return _random.rnd(upb);}
+    template <class NumTV>
+    class RandomNumberT
+    {
+    public:
+        // JODO later more sophisticated versions!
+        NumTV rnd(NumTV upb) 
+        { return _random.rnd(upb);}
 
-		NumTV rnd(NumTV lwb, NumTV upb)
-		{ return _random.rnd(lwb, upb);}
+        NumTV rnd(NumTV lwb, NumTV upb)
+        { return _random.rnd(lwb, upb);}
 
-		NumTV rnd(const IntervalT<NumTV>& rng)
-		{ J_ASSERT( rng.isROpen() ); return rnd(rng.lwb(),rng.upb()); }
+        NumTV rnd(const IntervalT<NumTV>& rng)
+        { J_ASSERT( rng.isROpen() ); return rnd(rng.lwb(),rng.upb()); }
 
-	private:
-		random _random;
-	};
+    private:
+        random _random;
+    };
 
 } // namespace itl
 

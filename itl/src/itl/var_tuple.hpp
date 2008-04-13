@@ -38,117 +38,117 @@ DEALINGS IN THE SOFTWARE.
 
 namespace itl
 {
-	/** class var_tuple: Die Tupel unabhängiger Variablen. Beschreiben
-		die Zellen eines n-dimensionalen Zählwürfels
+    /** class var_tuple: Die Tupel unabhängiger Variablen. Beschreiben
+        die Zellen eines n-dimensionalen Zählwürfels
 
-		Zuständigkeit: Zellen eines n-dimensionalen Zählwürfels beschreiben. Als
-		Index für Merkmalskombinationsrechner dienen. (Um)Ordnen, Projizieren und
-		Gruppieren unterstützen.
+        Zuständigkeit: Zellen eines n-dimensionalen Zählwürfels beschreiben. Als
+        Index für Merkmalskombinationsrechner dienen. (Um)Ordnen, Projizieren und
+        Gruppieren unterstützen.
 
-		Zusammenarbeit: Order, Projection, Grouping, Merkmalskombinationsrecher
+        Zusammenarbeit: Order, Projection, Grouping, Merkmalskombinationsrecher
 
-		FastVarTupel ist schnell (Fast), da es als einfaches array[int] implemetiert wird
-	*/
-	template <int varCountV>
-	class var_tuple
-	{
-	public:
-		enum { var_count = varCountV };
-	public:
-		/// Default Ctor. Achtung absichtlich keine Initialisierung!
-		var_tuple(){};
-		/// Ctor initialisiere alle Elemente des Tupels auf einen Wert
-		var_tuple(StatVarTD);
+        FastVarTupel ist schnell (Fast), da es als einfaches array[int] implemetiert wird
+    */
+    template <int varCountV>
+    class var_tuple
+    {
+    public:
+        enum { var_count = varCountV };
+    public:
+        /// Default Ctor. Achtung absichtlich keine Initialisierung!
+        var_tuple(){};
+        /// Ctor initialisiere alle Elemente des Tupels auf einen Wert
+        var_tuple(StatVarTD);
 
-		/// Copy Ctor
-		var_tuple(const var_tuple&);
+        /// Copy Ctor
+        var_tuple(const var_tuple&);
 
-		/// Assignment
-		var_tuple& operator = (const var_tuple&);
+        /// Assignment
+        var_tuple& operator = (const var_tuple&);
 
-		/// Größe des Tupels
-		int size()const { return varCountV; }
+        /// Größe des Tupels
+        int size()const { return varCountV; }
 
-		/// Gleichheit
-		bool operator == (const var_tuple&)const;
+        /// Gleichheit
+        bool operator == (const var_tuple&)const;
 
-		/// Standard-Ordnung
-		bool operator < (const var_tuple&)const;
+        /// Standard-Ordnung
+        bool operator < (const var_tuple&)const;
 
-		/// Lesender Zugriff auf Elemente
-		StatVarTD  operator [] (int idx)const { return m_tupel[idx]; }
-		/// Modifizierender Zugriff
-		StatVarTD& operator [] (int idx) { return m_tupel[idx]; }
+        /// Lesender Zugriff auf Elemente
+        StatVarTD  operator [] (int idx)const { return m_tupel[idx]; }
+        /// Modifizierender Zugriff
+        StatVarTD& operator [] (int idx) { return m_tupel[idx]; }
 
-		///
-		std::string asString()const;
+        ///
+        std::string asString()const;
 
-	private:
-		StatVarTD m_tupel[varCountV];
-		
-	};
-
-
-	template <int varCountV>
-	itl::var_tuple<varCountV>::var_tuple (StatVarTD val) // vor VC8: itl::var_tuple<varCountV>::var_tuple<varCountV>(StatVarTD val)
-	{
-		FOREACH_VAR(idx) 
-			m_tupel[idx] = val;
-	}
-
-	template <int varCountV>
-	itl::var_tuple<varCountV>::var_tuple (const var_tuple<varCountV>& src)
-	{
-		FOREACH_VAR(idx)
-			m_tupel[idx] = src.m_tupel[idx];
-	}
-
-	template <int varCountV>
-	var_tuple<varCountV>& var_tuple<varCountV>::operator = (const var_tuple<varCountV>& src)
-	{
-		if(&src != this)
-		{
-			FOREACH_VAR(idx)
-				m_tupel[idx] = src.m_tupel[idx];			
-		}	
-		return *this;
-	}
+    private:
+        StatVarTD m_tupel[varCountV];
+        
+    };
 
 
-	template <int varCountV>
-	bool var_tuple<varCountV>::operator == (const var_tuple<varCountV>& rhs)const
-	{
-		for(int idx=0; idx < varCountV; idx++)
-			if(m_tupel[idx] != rhs.m_tupel[idx]) return false;
+    template <int varCountV>
+    itl::var_tuple<varCountV>::var_tuple (StatVarTD val) // vor VC8: itl::var_tuple<varCountV>::var_tuple<varCountV>(StatVarTD val)
+    {
+        FOREACH_VAR(idx) 
+            m_tupel[idx] = val;
+    }
 
-		return true;
-	}
+    template <int varCountV>
+    itl::var_tuple<varCountV>::var_tuple (const var_tuple<varCountV>& src)
+    {
+        FOREACH_VAR(idx)
+            m_tupel[idx] = src.m_tupel[idx];
+    }
+
+    template <int varCountV>
+    var_tuple<varCountV>& var_tuple<varCountV>::operator = (const var_tuple<varCountV>& src)
+    {
+        if(&src != this)
+        {
+            FOREACH_VAR(idx)
+                m_tupel[idx] = src.m_tupel[idx];            
+        }    
+        return *this;
+    }
 
 
-	template <int varCountV>
-	bool var_tuple<varCountV>::operator < (const var_tuple<varCountV>& rhs)const
-	{
-		FOREACH_VAR(idx)
-			if(m_tupel[idx] < rhs.m_tupel[idx]) return true;
-			else if (m_tupel[idx] > rhs.m_tupel[idx]) return false;
+    template <int varCountV>
+    bool var_tuple<varCountV>::operator == (const var_tuple<varCountV>& rhs)const
+    {
+        for(int idx=0; idx < varCountV; idx++)
+            if(m_tupel[idx] != rhs.m_tupel[idx]) return false;
 
-		// because all are equal
-		return false;
-	}
+        return true;
+    }
 
-	template <int varCountV>
-	std::string var_tuple<varCountV>::asString()const
-	{
-		std::stringstream repr;
-		repr << "(";
-		for(int idx = 0; idx < varCountV-1; idx++)
-			repr << m_tupel[idx] << ",";
 
-		if(varCountV==0) repr << ")";
-		else repr << m_tupel[varCountV-1] << ")";
+    template <int varCountV>
+    bool var_tuple<varCountV>::operator < (const var_tuple<varCountV>& rhs)const
+    {
+        FOREACH_VAR(idx)
+            if(m_tupel[idx] < rhs.m_tupel[idx]) return true;
+            else if (m_tupel[idx] > rhs.m_tupel[idx]) return false;
 
-		return repr.str();
-	}
+        // because all are equal
+        return false;
+    }
+
+    template <int varCountV>
+    std::string var_tuple<varCountV>::asString()const
+    {
+        std::stringstream repr;
+        repr << "(";
+        for(int idx = 0; idx < varCountV-1; idx++)
+            repr << m_tupel[idx] << ",";
+
+        if(varCountV==0) repr << ")";
+        else repr << m_tupel[varCountV-1] << ")";
+
+        return repr.str();
+    }
 
 
 } // namespace itl

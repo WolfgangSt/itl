@@ -37,76 +37,76 @@ DEALINGS IN THE SOFTWARE.
 namespace itl
 {
 
-	template <typename StringT>
-	struct PrefixLess : public binary_function<StringT, StringT, bool>
-	{
-		// Wenn einer von lhs & rhs ein echter Prefix des anderen ist, ist er kleiner.
-		// Ansonsten lexikografischer Vergleich
-		bool operator() (const StringT& lhs, const StringT& rhs)const;
-	};
+    template <typename StringT>
+    struct PrefixLess : public binary_function<StringT, StringT, bool>
+    {
+        // Wenn einer von lhs & rhs ein echter Prefix des anderen ist, ist er kleiner.
+        // Ansonsten lexikografischer Vergleich
+        bool operator() (const StringT& lhs, const StringT& rhs)const;
+    };
 
-	/** Ein prefix_set repraesentiert eine Menge von Strings mit Hilfe von
-		Prefixen.
+    /** Ein prefix_set repraesentiert eine Menge von Strings mit Hilfe von
+        Prefixen.
 
-		Zum Beispiel repraesentiert das 
-		prefix_set {Ha} die Menge {Hans, Hallo, Harald, ...} also alle Strings, 
-		die mit 'Ha' beginnen.
-		
-		Entsprechend
-		{Har, Hal}.contains(Haribo) == true
-		{Har, Hal}.contains(Hallenbad) == true
-		{Har, Hal}.contains(Hugo) == false
+        Zum Beispiel repraesentiert das 
+        prefix_set {Ha} die Menge {Hans, Hallo, Harald, ...} also alle Strings, 
+        die mit 'Ha' beginnen.
+        
+        Entsprechend
+        {Har, Hal}.contains(Haribo) == true
+        {Har, Hal}.contains(Hallenbad) == true
+        {Har, Hal}.contains(Hugo) == false
 
-		Einfuegen eines gemeinsamen Praefix, einer PraefixSetT verkleinert es:
-		{Har, Hal}.insert(Ha) == {Ha}
-		
-		PrefixSetTs sind sehr praktisch fuer die Behandlung unserer Gruppierungen
-		von Kategoriestrings aus den Cfg-Files, die ja mittels Prefix-Listen 
-		ausgedrueckt werden.
+        Einfuegen eines gemeinsamen Praefix, einer PraefixSetT verkleinert es:
+        {Har, Hal}.insert(Ha) == {Ha}
+        
+        PrefixSetTs sind sehr praktisch fuer die Behandlung unserer Gruppierungen
+        von Kategoriestrings aus den Cfg-Files, die ja mittels Prefix-Listen 
+        ausgedrueckt werden.
 
-		Hierfuer gibt es noch die Klasse StringPatternSetT, die die ensprechenden
-			prefix_set m_Includes;
-			prefix_set m_Excludes;
-		enthaelt.		
-	*/
-	class prefix_set
-	{
-	public:
-		typedef string_set<PrefixLess> PrefixSetTD;
-		typedef PrefixSetTD::iterator iterator;
-		typedef PrefixSetTD::const_iterator const_iterator;
+        Hierfuer gibt es noch die Klasse StringPatternSetT, die die ensprechenden
+            prefix_set m_Includes;
+            prefix_set m_Excludes;
+        enthaelt.        
+    */
+    class prefix_set
+    {
+    public:
+        typedef string_set<PrefixLess> PrefixSetTD;
+        typedef PrefixSetTD::iterator iterator;
+        typedef PrefixSetTD::const_iterator const_iterator;
 
-	public:
-		static int compareStrings(int& comSize, const char* s1, const char* s2);
+    public:
+        static int compareStrings(int& comSize, const char* s1, const char* s2);
 
-	public:
-		void insert(const std::string& val);
+    public:
+        void insert(const std::string& val);
 
-		const_iterator find(const std::string& val)const { return m_.find(val); }
-		bool contains(const std::string& val)const { return m_.find(val)!=m_.end();	}
+        const_iterator find(const std::string& val)const { return m_.find(val); }
+        bool contains(const std::string& val)const { return m_.find(val)!=m_.end();    }
 
-		std::string asString()const { return m_.asString(); }
+        std::string asString()const { return m_.asString(); }
 
-	private:
-		string_set<PrefixLess> m_;
-	};
+    private:
+        string_set<PrefixLess> m_;
+    };
 
 
 
-	template <typename StringT>
-	bool PrefixLess<StringT>::operator() (const StringT& lhs, const StringT& rhs)const
-	{
-		int commonPrefixLength;
-		int compareResult 
-			= prefix_set::compareStrings(commonPrefixLength, lhs.c_str(), rhs.c_str());
+    template <typename StringT>
+    bool PrefixLess<StringT>::operator() (const StringT& lhs, const StringT& rhs)const
+    {
+        int commonPrefixLength;
+        int compareResult 
+            = prefix_set::compareStrings(commonPrefixLength, lhs.c_str(), rhs.c_str());
 
-		if(compareResult == 0)      // Gleichheit
-			return false;
-		if(commonPrefixLength == lhs.size())
-			return true;			// lhs istEchterPrefix rhs
-		// OTHERWISE
-		return compareResult == -1; 
-	}
+        if(compareResult == 0)      // Gleichheit
+            return false;
+        if(commonPrefixLength == lhs.size())
+            return true;            // lhs istEchterPrefix rhs
+        // OTHERWISE
+        return compareResult == -1; 
+    }
 
 }
 

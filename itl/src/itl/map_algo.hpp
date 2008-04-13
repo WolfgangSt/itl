@@ -34,138 +34,138 @@ DEALINGS IN THE SOFTWARE.
 
 namespace itl
 {
-	namespace Map 
-	{
-		template<class mapT>
-		bool contained_in(const mapT& sub, const mapT& super)
-		{
-			if(&super == &sub)                   return true;
-			if(sub.empty())                      return true;
-			if(super.empty())                    return false;
-			if(super.size()    < sub.size()    ) return false;
-			if(*sub.begin()    < *super.begin()) return false;
-			if(*super.rbegin() < *sub.rbegin() ) return false;
+    namespace Map 
+    {
+        template<class mapT>
+        bool contained_in(const mapT& sub, const mapT& super)
+        {
+            if(&super == &sub)                   return true;
+            if(sub.empty())                      return true;
+            if(super.empty())                    return false;
+            if(super.size()    < sub.size()    ) return false;
+            if(*sub.begin()    < *super.begin()) return false;
+            if(*super.rbegin() < *sub.rbegin() ) return false;
 
-			typename mapT::const_iterator common_lwb_;
-			typename mapT::const_iterator common_upb_;
-			if(!Set::common_range(common_lwb_, common_upb_, sub, super))
-				return false;
+            typename mapT::const_iterator common_lwb_;
+            typename mapT::const_iterator common_upb_;
+            if(!Set::common_range(common_lwb_, common_upb_, sub, super))
+                return false;
 
-			typename mapT::const_iterator sub_ = sub.begin(), super_;
-			while(sub_ != sub.end())
-			{
-				super_ = super.find((*sub_).KEY_VALUE);
-				if(super_ == super.end()) 
-					return false;
-				else if((*sub_).CONT_VALUE != (*super_).CONT_VALUE)
-					return false;
-				sub_++;
-			}
-			return true;
-		}
+            typename mapT::const_iterator sub_ = sub.begin(), super_;
+            while(sub_ != sub.end())
+            {
+                super_ = super.find((*sub_).KEY_VALUE);
+                if(super_ == super.end()) 
+                    return false;
+                else if((*sub_).CONT_VALUE != (*super_).CONT_VALUE)
+                    return false;
+                sub_++;
+            }
+            return true;
+        }
 
-		//CL
-		//template<class mapT>
-		//void inject(mapT& result, const mapT& x2)
-		//{
-		//	if(&result != &x2)
-		//		const_FORALL(mapT, x2_, x2)
-		//			result.inject(*x2_);
-		//	else
-		//		FORALL(mapT, it, result)	
-		//			(*it).CONT_VALUE += (*it).CONT_VALUE;
-		//}
+        //CL
+        //template<class mapT>
+        //void inject(mapT& result, const mapT& x2)
+        //{
+        //    if(&result != &x2)
+        //        const_FORALL(mapT, x2_, x2)
+        //            result.inject(*x2_);
+        //    else
+        //        FORALL(mapT, it, result)    
+        //            (*it).CONT_VALUE += (*it).CONT_VALUE;
+        //}
 
-		//JODO map_intersection: es gibt mehrer Möglichkeiten der Implementierung
-		// map/insert; accu_map/inject=insert
-		template<class mapT>
-		void intersection(mapT& y, const mapT& x1, const mapT& x2)
-		{
-			mapT tmp;
-			typename mapT::const_iterator i1 = x1.begin(), i2;
+        //JODO map_intersection: es gibt mehrer Möglichkeiten der Implementierung
+        // map/insert; accu_map/inject=insert
+        template<class mapT>
+        void intersection(mapT& y, const mapT& x1, const mapT& x2)
+        {
+            mapT tmp;
+            typename mapT::const_iterator i1 = x1.begin(), i2;
 
-			while(i1 != x1.end())
-			{
-				i2 = x2.find(i1->first);
-				if(i2 != x2.end())
-				{
-					//JODO this is for collector and counter
-					tmp.insert(*i1);
-					tmp.inject(*i2); //JODO insert/inject
-				}
-				i1++;
-			}
-			tmp.swap(y);
-		}
+            while(i1 != x1.end())
+            {
+                i2 = x2.find(i1->first);
+                if(i2 != x2.end())
+                {
+                    //JODO this is for collector and counter
+                    tmp.insert(*i1);
+                    tmp.inject(*i2); //JODO insert/inject
+                }
+                i1++;
+            }
+            tmp.swap(y);
+        }
 
-		// optimized version
-		template<class mapT>
-		void intersect(mapT& result, const mapT& x1, const mapT& x2)
-		{
-			typename mapT::const_iterator common_lwb_;
-			typename mapT::const_iterator common_upb_;
+        // optimized version
+        template<class mapT>
+        void intersect(mapT& result, const mapT& x1, const mapT& x2)
+        {
+            typename mapT::const_iterator common_lwb_;
+            typename mapT::const_iterator common_upb_;
 
-			result.clear();
-			if(!Set::common_range(common_lwb_, common_upb_, x1, x2))
-				return;
+            result.clear();
+            if(!Set::common_range(common_lwb_, common_upb_, x1, x2))
+                return;
 
-			typename mapT::const_iterator x1_ = common_lwb_, x2_;
+            typename mapT::const_iterator x1_ = common_lwb_, x2_;
 
-			while(x1_ != common_upb_)
-			{
-				x2_ = x2.find((*x1_).KEY_VALUE);
-				if(x2_ != x2.end())
-				{
-					result.insert(*x1_);
-					result.inject(*x2_);
-				}
-				x1_++;
-			}
-		}
+            while(x1_ != common_upb_)
+            {
+                x2_ = x2.find((*x1_).KEY_VALUE);
+                if(x2_ != x2.end())
+                {
+                    result.insert(*x1_);
+                    result.inject(*x2_);
+                }
+                x1_++;
+            }
+        }
 
-		template<class mapT>
-		void intersect(mapT& result, const mapT& x2)
-		{
-			// result = result * x2;
-			mapT tmp;
-			intersect(tmp, result, x2);
-			tmp.swap(result);
-		}
+        template<class mapT>
+        void intersect(mapT& result, const mapT& x2)
+        {
+            // result = result * x2;
+            mapT tmp;
+            intersect(tmp, result, x2);
+            tmp.swap(result);
+        }
 
-		// optimized version
-		template<class mapT, class setT>
-		void intersect(mapT& result, const mapT& x1, const setT& x2)
-		{
-			typename mapT::const_iterator common_lwb_;
-			typename mapT::const_iterator common_upb_;
+        // optimized version
+        template<class mapT, class setT>
+        void intersect(mapT& result, const mapT& x1, const setT& x2)
+        {
+            typename mapT::const_iterator common_lwb_;
+            typename mapT::const_iterator common_upb_;
 
-			result.clear();
-			if(!Set::common_range(common_lwb_, common_upb_, x1, x2))
-				return;
+            result.clear();
+            if(!Set::common_range(common_lwb_, common_upb_, x1, x2))
+                return;
 
-			typename mapT::const_iterator x1_ = common_lwb_;
-			typename setT::const_iterator common_;
+            typename mapT::const_iterator x1_ = common_lwb_;
+            typename setT::const_iterator common_;
 
-			while(x1_ != common_upb_)
-			{
-				common_ = x2.find((*x1_).KEY_VALUE);
-				if(common_ != x2.end())
-					result.insert(*x1_);
+            while(x1_ != common_upb_)
+            {
+                common_ = x2.find((*x1_).KEY_VALUE);
+                if(common_ != x2.end())
+                    result.insert(*x1_);
 
-				x1_++;
-			}
-		}
+                x1_++;
+            }
+        }
 
-		template<class mapT, class setT>
-		void intersect(mapT& result, const setT& x2) //JODO TEST
-		{
-			// result = result * x2;
-			mapT tmp;
-			intersect(tmp, result, x2);
-			tmp.swap(result);
-		}
+        template<class mapT, class setT>
+        void intersect(mapT& result, const setT& x2) //JODO TEST
+        {
+            // result = result * x2;
+            mapT tmp;
+            intersect(tmp, result, x2);
+            tmp.swap(result);
+        }
 
-	} // namespace Map
+    } // namespace Map
 
 } // namespace itl
 

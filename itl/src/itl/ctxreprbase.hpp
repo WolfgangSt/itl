@@ -31,7 +31,7 @@ DEALINGS IN THE SOFTWARE.
 
 /*-----------------------------------------------------------------------------
 Function-templates for discrete Datatypes like int, unsigned or
-	any class that provides a ++ operator c.f. iterators
+    any class that provides a ++ operator c.f. iterators
 -----------------------------------------------------------------------------*/
 
 #ifndef __itl_REPRBASE_JOFA_000712_H__
@@ -42,48 +42,48 @@ Function-templates for discrete Datatypes like int, unsigned or
 #include <sstream>
 
 namespace itl
-{	
+{    
 
 /**
-	<b>ReprBaseT</b> serves as a base to for the representation
-	of atomic types and classes as strings.
+    <b>ReprBaseT</b> serves as a base to for the representation
+    of atomic types and classes as strings.
 
-	The function <tt>toString</tt> is defined for all atomic (built in) types
-	like <tt>int, double etc.</tt>. For types other than atomic ones namely
-	classes the function template <tt>toString</tt> calls a member function
-	<tt>asString</tt> on the class-type passed to the template.
+    The function <tt>toString</tt> is defined for all atomic (built in) types
+    like <tt>int, double etc.</tt>. For types other than atomic ones namely
+    classes the function template <tt>toString</tt> calls a member function
+    <tt>asString</tt> on the class-type passed to the template.
 
-	Thereby we can implement a general string representation for template classes
-	which is independent of the template parameter being an atomic or a class type.
-	For every object, including atomic the string converter function toString can
-	be called, provides new classes implement a memberfunction <tt>asString</tt>
+    Thereby we can implement a general string representation for template classes
+    which is independent of the template parameter being an atomic or a class type.
+    For every object, including atomic the string converter function toString can
+    be called, provides new classes implement a memberfunction <tt>asString</tt>
   
-	@author  Jofa
+    @author  Jofa
 */
 template <class TypeTV>
 class ReprBaseT
 {
 public:
-	/** String converter for all types <tt>TypeTV</tt>
+    /** String converter for all types <tt>TypeTV</tt>
 
-		E.g.: <tt>int i=5; string s = ReprBaseT<int>::toString(i);</tt>
-	*/
-	static const std::string toString(const TypeTV &);	
+        E.g.: <tt>int i=5; string s = ReprBaseT<int>::toString(i);</tt>
+    */
+    static const std::string toString(const TypeTV &);    
 };
 
 
 typedef char * CharPT;
 
 #define RETURN_AS_STRING(format, atomicValue) \
-	std::stringstream repr; \
-	repr << atomicValue; \
-	return repr.str();
+    std::stringstream repr; \
+    repr << atomicValue; \
+    return repr.str();
 
 /* Alternative macro using formated sprintf output
 #define RETURN_AS_STRING(format, atomicValue) \
-	char stringRepr[512]; \
-	sprintf(stringRepr, format, atomicValue); \
-	return stringRepr;
+    char stringRepr[512]; \
+    sprintf(stringRepr, format, atomicValue); \
+    return stringRepr;
 */
 
 template<> inline const std::string ReprBaseT<bool>::toString(const bool& x){ return x ? "true" : "false"; }
@@ -103,53 +103,53 @@ template<> inline const std::string ReprBaseT<std::string>::toString(const std::
 template <class TypeTV>
 inline const std::string ReprBaseT<TypeTV>::toString(const TypeTV& x) { return x.asString(); }
 
-	
-	// ---------------------------------------------------------------------------
-	template<class Type>
-	struct TypeAsString
-	{
-		static std::string it();
-	};
+    
+    // ---------------------------------------------------------------------------
+    template<class Type>
+    struct TypeAsString
+    {
+        static std::string it();
+    };
 
-	template<>
-	inline std::string TypeAsString<int>::it() { return "int"; }
-	template<>
-	inline std::string TypeAsString<double>::it() { return "double"; }
-	template<>
-	inline std::string TypeAsString<std::string>::it() { return "string"; }
+    template<>
+    inline std::string TypeAsString<int>::it() { return "int"; }
+    template<>
+    inline std::string TypeAsString<double>::it() { return "double"; }
+    template<>
+    inline std::string TypeAsString<std::string>::it() { return "string"; }
 
-	// ---------------------------------------------------------------------------
-	template<template<class> class Templ>
-	struct UnaryTemplateAsString
-	{
-		static std::string it();
-	};
+    // ---------------------------------------------------------------------------
+    template<template<class> class Templ>
+    struct UnaryTemplateAsString
+    {
+        static std::string it();
+    };
 
-	template <template<class>class Unary, class Type>
-	struct TypeAsString<Unary<Type> >
-	{
-		static std::string it() 
-		{ 
-			return UnaryTemplateAsString<Unary>::it()+"<"+TypeAsString<Type>::it()+">"; 
-		}
-	};
+    template <template<class>class Unary, class Type>
+    struct TypeAsString<Unary<Type> >
+    {
+        static std::string it() 
+        { 
+            return UnaryTemplateAsString<Unary>::it()+"<"+TypeAsString<Type>::it()+">"; 
+        }
+    };
 
-	// ---------------------------------------------------------------------------
-	template<template<class,class>class Templ>
-	struct BinaryTemplateAsString
-	{
-		static std::string it();
-	};
+    // ---------------------------------------------------------------------------
+    template<template<class,class>class Templ>
+    struct BinaryTemplateAsString
+    {
+        static std::string it();
+    };
 
-	template <template<class Type1, class Type2>class Binary, class Type1, class Type2>
-	struct TypeAsString<Binary<Type1, Type2> >
-	{
-		static std::string it() 
-		{ 
-			return BinaryTemplateAsString<Binary>::it()+
-				"<"+TypeAsString<Type1>::it()+","+TypeAsString<Type2>::it()+">"; 
-		}
-	};
+    template <template<class Type1, class Type2>class Binary, class Type1, class Type2>
+    struct TypeAsString<Binary<Type1, Type2> >
+    {
+        static std::string it() 
+        { 
+            return BinaryTemplateAsString<Binary>::it()+
+                "<"+TypeAsString<Type1>::it()+","+TypeAsString<Type2>::it()+">"; 
+        }
+    };
 
 } // namespace itl
 

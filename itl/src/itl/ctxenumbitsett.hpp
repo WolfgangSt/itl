@@ -34,22 +34,22 @@ DEALINGS IN THE SOFTWARE.
 namespace itl
 {
 
-	
-	template <class EnumTV, size_t EnumSizeVV>
-	class EnumBitSetT : public std::bitset<EnumSizeVV>
-	{
-	public:
-		/// Default Ctor
-		EnumBitSetT() : std::bitset<EnumSizeVV>(){}
-		
-		/// Copy Ctor
-		EnumBitSetT(const EnumBitSetT& src): std::bitset<EnumSizeVV>(src){}
+    
+    template <class EnumTV, size_t EnumSizeVV>
+    class EnumBitSetT : public std::bitset<EnumSizeVV>
+    {
+    public:
+        /// Default Ctor
+        EnumBitSetT() : std::bitset<EnumSizeVV>(){}
+        
+        /// Copy Ctor
+        EnumBitSetT(const EnumBitSetT& src): std::bitset<EnumSizeVV>(src){}
 
-		/// Construct from unsigned
-		EnumBitSetT(unsigned long val): std::bitset<EnumSizeVV>(val){}
+        /// Construct from unsigned
+        EnumBitSetT(unsigned long val): std::bitset<EnumSizeVV>(val){}
 
-		EnumBitSetT& add(int bit) {	this->set(bit); return *this;	}
-	};
+        EnumBitSetT& add(int bit) {    this->set(bit); return *this;    }
+    };
 
 }
 

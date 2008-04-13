@@ -32,14 +32,14 @@ DEALINGS IN THE SOFTWARE.
 
 #ifdef _DEBUG
 #define J_ASSERT(expr) if(!(expr)) \
-						  { throw std::exception(#expr); }
+                          { throw std::exception(#expr); }
 #else
 #define J_ASSERT(expr) ((void)0)
 #endif
 
 #ifdef _DEBUG
 #define J_ASSERT2(expr, info) if(!(expr)) \
-						  { throw std::exception(#expr); }
+                          { throw std::exception(#expr); }
 #else
 #define J_ASSERT2(expr, info) ((void)0)
 #endif
@@ -47,14 +47,14 @@ DEALINGS IN THE SOFTWARE.
 
 #ifdef _DEVEL_TEST
 #define DEV_ASSERT(expr) if(!(expr)) \
-						  { throw std::exception(#expr); }
+                          { throw std::exception(#expr); }
 #else
 #define DEV_ASSERT(expr) ((void)0)
 #endif
 
 #ifdef _DEVEL_TEST
 #define DEV_ASSERT2(expr, info) if(!(expr)) \
-						  { throw throw std::exception(#expr); }
+                          { throw throw std::exception(#expr); }
 #else
 #define DEV_ASSERT2(expr, info) ((void)0)
 #endif
@@ -73,44 +73,44 @@ DEALINGS IN THE SOFTWARE.
 
 /*JODO
 #ifdef _DEBUG
-	#define J_ASSERT(expr) if(!(expr)) \
-						  { throw AssertionViolation(__FILE__, __LINE__, #expr); }
+    #define J_ASSERT(expr) if(!(expr)) \
+                          { throw AssertionViolation(__FILE__, __LINE__, #expr); }
 #else
-	#define J_ASSERT(expr) ((void)0)
+    #define J_ASSERT(expr) ((void)0)
 #endif
 
 #ifdef _DEBUG
-	#define J_ASSERT2(expr, info) if(!(expr)) \
-						  { throw AssertionViolation(__FILE__, __LINE__, #expr, info); }
+    #define J_ASSERT2(expr, info) if(!(expr)) \
+                          { throw AssertionViolation(__FILE__, __LINE__, #expr, info); }
 #else
-	#define J_ASSERT2(expr, info) ((void)0)
+    #define J_ASSERT2(expr, info) ((void)0)
 #endif
 
 
 #ifdef _DEVEL_TEST
-	#define DEV_ASSERT(expr) if(!(expr)) \
-						  { throw AssertionViolation(__FILE__, __LINE__, #expr); }
+    #define DEV_ASSERT(expr) if(!(expr)) \
+                          { throw AssertionViolation(__FILE__, __LINE__, #expr); }
 #else
-	#define DEV_ASSERT(expr) ((void)0)
+    #define DEV_ASSERT(expr) ((void)0)
 #endif
 
 #ifdef _DEVEL_TEST
-	#define DEV_ASSERT2(expr, info) if(!(expr)) \
-						  { throw AssertionViolation(__FILE__, __LINE__, #expr, info); }
+    #define DEV_ASSERT2(expr, info) if(!(expr)) \
+                          { throw AssertionViolation(__FILE__, __LINE__, #expr, info); }
 #else
-	#define DEV_ASSERT2(expr, info) ((void)0)
+    #define DEV_ASSERT2(expr, info) ((void)0)
 #endif
 
 #ifdef _DEVEL_TEST
-	#define ON_DEV_TEST(stmt) stmt
+    #define ON_DEV_TEST(stmt) stmt
 #else
-	#define ON_DEV_TEST(stmt)
+    #define ON_DEV_TEST(stmt)
 #endif
 
 #ifdef _DEBUG
-	#define ON_DEBUG(stmt) stmt
+    #define ON_DEBUG(stmt) stmt
 #else
-	#define ON_DEBUG(stmt)
+    #define ON_DEBUG(stmt)
 #endif
 */
 

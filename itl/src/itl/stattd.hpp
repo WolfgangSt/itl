@@ -36,13 +36,13 @@ DEALINGS IN THE SOFTWARE.
 
 namespace itl
 {
-	/// Aliastyp für Aufzählungstypen von Statistik-Variablen.
-	typedef int VarEnumTD;
-	/// Wertetyp für die Codierung von Statistischen (spez. unabhängigen) Variablen
-	typedef int StatVarTD;
-	typedef int GroupVarTD;
+    /// Aliastyp für Aufzählungstypen von Statistik-Variablen.
+    typedef int VarEnumTD;
+    /// Wertetyp für die Codierung von Statistischen (spez. unabhängigen) Variablen
+    typedef int StatVarTD;
+    typedef int GroupVarTD;
 
-	const StatVarTD StatVar_undefined = -1;
+    const StatVarTD StatVar_undefined = -1;
 
 }
 

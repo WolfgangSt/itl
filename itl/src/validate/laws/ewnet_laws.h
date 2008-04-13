@@ -33,88 +33,88 @@ DEALINGS IN THE SOFTWARE.
 namespace itl
 {
 
-	class AssignmentLimitEquivalence : public LawBase<LOKI_TYPELIST_6(int,int,int,int,int,int), LOKI_TYPELIST_2(int,int) >
-	{
-	public:
-		enum InputVarIndex  { min_free, max_free, avail, occ_hsp, vollst, avail_fg };
-		enum OutputVarIndex { lhs_limit, rhs_limit };
-		
-		void setOperand_min_free(int inVal) { setInputValue<min_free>(inVal); } 
-		void setOperand_max_free(int inVal) { setInputValue<max_free>(inVal); } 
-		void setOperand_avail(int inVal)    { setInputValue<avail>(inVal); } 
-		void setOperand_occ_hsp(int inVal)  { setInputValue<occ_hsp>(inVal); } 
-		void setOperand_vollst(int inVal)   { setInputValue<vollst>(inVal); } 
-		void setOperand_avail_fg(int inVal) { setInputValue<avail_fg>(inVal); } 
+    class AssignmentLimitEquivalence : public LawBase<LOKI_TYPELIST_6(int,int,int,int,int,int), LOKI_TYPELIST_2(int,int) >
+    {
+    public:
+        enum InputVarIndex  { min_free, max_free, avail, occ_hsp, vollst, avail_fg };
+        enum OutputVarIndex { lhs_limit, rhs_limit };
+        
+        void setOperand_min_free(int inVal) { setInputValue<min_free>(inVal); } 
+        void setOperand_max_free(int inVal) { setInputValue<max_free>(inVal); } 
+        void setOperand_avail(int inVal)    { setInputValue<avail>(inVal); } 
+        void setOperand_occ_hsp(int inVal)  { setInputValue<occ_hsp>(inVal); } 
+        void setOperand_vollst(int inVal)   { setInputValue<vollst>(inVal); } 
+        void setOperand_avail_fg(int inVal) { setInputValue<avail_fg>(inVal); } 
 
-		int getLhsLimit()const { return getOutputValue<lhs_limit>(); }
-		int getRhsLimit()const { return getOutputValue<rhs_limit>(); }
+        int getLhsLimit()const { return getOutputValue<lhs_limit>(); }
+        int getRhsLimit()const { return getOutputValue<rhs_limit>(); }
 
-		int min3(int x1, int x2, int x3)
-		{
-			using namespace std;
-			return std::min<int>(x1, std::min(x2, x3));
-		}
-		int min4(int x1, int x2, int x3, int x4)
-		{
-			using namespace std;
-			return std::min<int>(x1, min3(x2, x3, x4));
-		}
+        int min3(int x1, int x2, int x3)
+        {
+            using namespace std;
+            return std::min<int>(x1, std::min(x2, x3));
+        }
+        int min4(int x1, int x2, int x3, int x4)
+        {
+            using namespace std;
+            return std::min<int>(x1, min3(x2, x3, x4));
+        }
 
-		int limits_hairy()
-		{
-			using namespace std;
-			int minFree  = getInputValue<min_free>();
-			int maxFree  = getInputValue<max_free>();
-			int Avail    = getInputValue<avail>();
-			int occHsp   = getInputValue<occ_hsp>();
-			int Vollst   = getInputValue<vollst>();
-			int availFg  = getInputValue<avail_fg>();
+        int limits_hairy()
+        {
+            using namespace std;
+            int minFree  = getInputValue<min_free>();
+            int maxFree  = getInputValue<max_free>();
+            int Avail    = getInputValue<avail>();
+            int occHsp   = getInputValue<occ_hsp>();
+            int Vollst   = getInputValue<vollst>();
+            int availFg  = getInputValue<avail_fg>();
 
-			int availHsp = Vollst - occHsp;
+            int availHsp = Vollst - occHsp;
 
-			int min0_MaxFree_Vollst = min<int>(maxFree, Vollst);
-			int min1_Avail = min(availHsp, availFg);
-			int min2_Avail = min(min0_MaxFree_Vollst, min1_Avail);
+            int min0_MaxFree_Vollst = min<int>(maxFree, Vollst);
+            int min1_Avail = min(availHsp, availFg);
+            int min2_Avail = min(min0_MaxFree_Vollst, min1_Avail);
 
-			int max3_Limit = max(minFree, min2_Avail);
-			int min4_Limit = min(max<int>(Avail,0), max3_Limit);
-			int max5_Final = max(minFree, min4_Limit);
-			
-			return max5_Final;
-		}
+            int max3_Limit = max(minFree, min2_Avail);
+            int min4_Limit = min(max<int>(Avail,0), max3_Limit);
+            int max5_Final = max(minFree, min4_Limit);
+            
+            return max5_Final;
+        }
 
-		int limits_simple()
-		{
-			using namespace std;
-			int minFree  = getInputValue<min_free>();
-			int maxFree  = getInputValue<max_free>();
-			int Avail    = getInputValue<avail>();
-			int occHsp   = getInputValue<occ_hsp>();
-			int Vollst   = getInputValue<vollst>();
-			int availFg  = getInputValue<avail_fg>();
-			int availHsp = Vollst - occHsp;
+        int limits_simple()
+        {
+            using namespace std;
+            int minFree  = getInputValue<min_free>();
+            int maxFree  = getInputValue<max_free>();
+            int Avail    = getInputValue<avail>();
+            int occHsp   = getInputValue<occ_hsp>();
+            int Vollst   = getInputValue<vollst>();
+            int availFg  = getInputValue<avail_fg>();
+            int availHsp = Vollst - occHsp;
 
-			int minAvail = min4(
-				maxFree,
-				Avail,
-				availHsp,
-				availFg
-				);
-			int totalAvail = max<int>(minFree, minAvail);
+            int minAvail = min4(
+                maxFree,
+                Avail,
+                availHsp,
+                availFg
+                );
+            int totalAvail = max<int>(minFree, minAvail);
 
-			return totalAvail;
-		}
+            return totalAvail;
+        }
 
-		bool holds()
-		{
-			setOutputValue<lhs_limit>(limits_hairy());
-			setOutputValue<rhs_limit>(limits_simple());
-			return getOutputValue<lhs_limit>() == getOutputValue<rhs_limit>();
-			return false;
-		}
+        bool holds()
+        {
+            setOutputValue<lhs_limit>(limits_hairy());
+            setOutputValue<rhs_limit>(limits_simple());
+            return getOutputValue<lhs_limit>() == getOutputValue<rhs_limit>();
+            return false;
+        }
 
-		size_t size()const { return 0; }
-	};
+        size_t size()const { return 0; }
+    };
 
 } // namespace itl
 

@@ -31,37 +31,37 @@ namespace itl
 
 /* ------------------------------------------------------------------
 class sets
-	a general and generic set interface
+    a general and generic set interface
 --------------------------------------------------------------------*/
 #ifndef __sets_H_JOFA_990223__
 #define __sets_H_JOFA_990223__
 
 /**
-	Template interface class <b>sets</b>: Defines a general interface for sets.
+    Template interface class <b>sets</b>: Defines a general interface for sets.
 
-	Template parameter <b>DomainT</b>: The set's domain-type. Type of the 
-	set's elements.
-	
-	@author  Joachim Faulhaber
+    Template parameter <b>DomainT</b>: The set's domain-type. Type of the 
+    set's elements.
+    
+    @author  Joachim Faulhaber
 */
 template <class DomainT> class sets
 {
 public:
 
-	/// Remove all elements of the set
-	virtual void clear()=0;
+    /// Remove all elements of the set
+    virtual void clear()=0;
 
-	/// Is the set empty?
-	virtual bool empty()const=0;
+    /// Is the set empty?
+    virtual bool empty()const=0;
 
-	/// Does the set contain the element x?
-	virtual bool contains(const DomainT& x)const=0;
+    /// Does the set contain the element x?
+    virtual bool contains(const DomainT& x)const=0;
 
-	/// Inserts an element x into the set
-	virtual void insert(const DomainT& x)=0;
+    /// Inserts an element x into the set
+    virtual void insert(const DomainT& x)=0;
 
-	/// Remove the element x from the set
-	virtual void subtract(const DomainT& x)=0;
+    /// Remove the element x from the set
+    virtual void subtract(const DomainT& x)=0;
 
 } ;
 

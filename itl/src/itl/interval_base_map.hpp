@@ -50,77 +50,77 @@ namespace itl
 
 /// Implements a map as a map of intervals (abstract base class)
 /**    
-	Abstract template-class <b>interval_base_map</b>
-	implements a map as a map of intervals
+    Abstract template-class <b>interval_base_map</b>
+    implements a map as a map of intervals
 
-	Template parameter <b>DomainT</b>: Domain type of the map. Also type of the
-	map's keys.
-	
-	Suitable as domain types are all datatypes that posess a partial order.
-	In particular all discrete atomic datatypes like <tt>int, short, long</tt> and
-	atomic pseudo-continuous datatypes <tt>float, double</tt> may be instantiated.
-	  
-   	Template parameter <b>CodomainT</b>: The map's codomain type or value type: Type
-	of values contained in the map.
+    Template parameter <b>DomainT</b>: Domain type of the map. Also type of the
+    map's keys.
+    
+    Suitable as domain types are all datatypes that posess a partial order.
+    In particular all discrete atomic datatypes like <tt>int, short, long</tt> and
+    atomic pseudo-continuous datatypes <tt>float, double</tt> may be instantiated.
+      
+       Template parameter <b>CodomainT</b>: The map's codomain type or value type: Type
+    of values contained in the map.
 
     Datatypes for the codomain parameter have to <b>implement</b> operations
-	<tt>+=</tt>, <tt>-=</tt>, <tt>==</tt> (equality) and <tt>CodomainT()</tt> (default constructor).
+    <tt>+=</tt>, <tt>-=</tt>, <tt>==</tt> (equality) and <tt>CodomainT()</tt> (default constructor).
 
     The default constructor <tt>CodomainT()</tt> has to contruct a neutral element
-	such that the following holds:
+    such that the following holds:
 
-	  If <tt>x = y; y += CodomainT();</tt> then <tt>x==y;</tt> and
-	  If <tt>x = y; y -= CodomainT();</tt> then <tt>x==y;</tt>
+      If <tt>x = y; y += CodomainT();</tt> then <tt>x==y;</tt> and
+      If <tt>x = y; y -= CodomainT();</tt> then <tt>x==y;</tt>
   
-	Template parameter <b>interval_type=interval<DomainT></b>: Type of interval used
-	to implement the set. The default <b>interval<DomainT></b> uses the
-	interval class that comes with this library. Own implementation of interval
-	classes are possible (but not trivial).
+    Template parameter <b>interval_type=interval<DomainT></b>: Type of interval used
+    to implement the set. The default <b>interval<DomainT></b> uses the
+    interval class that comes with this library. Own implementation of interval
+    classes are possible (but not trivial).
   
-	<b>interval_base_map</b> implements a map <tt>MapT<DomainT, CodomainT></tt> as a map
-	of intervals <tt>MapT<interval<DomainT>, CodomainT, exclusive_less<interval_type> ></tt>
+    <b>interval_base_map</b> implements a map <tt>MapT<DomainT, CodomainT></tt> as a map
+    of intervals <tt>MapT<interval<DomainT>, CodomainT, exclusive_less<interval_type> ></tt>
 
-	Interval maps <tt>interval_base_map<DomainT,CodomainT></tt> can be used similar (and in many
-	aspects exactly like) common stl-maps. Unlike to stl-maps where you store
-	a value for every key an interval map stores a contents value for an interval of
-	keys. In it's degenerated form the key intervals contain a single element
-	only. Then the interval map works like a normal stl-map. But if you work in problem
-	domains where you associate values to large contiguous intervals, interval maps
-	are very useful and efficient.
+    Interval maps <tt>interval_base_map<DomainT,CodomainT></tt> can be used similar (and in many
+    aspects exactly like) common stl-maps. Unlike to stl-maps where you store
+    a value for every key an interval map stores a contents value for an interval of
+    keys. In it's degenerated form the key intervals contain a single element
+    only. Then the interval map works like a normal stl-map. But if you work in problem
+    domains where you associate values to large contiguous intervals, interval maps
+    are very useful and efficient.
 
-	<b>Class <tt>interval_base_map</tt>  yields the following benefits: </b>
+    <b>Class <tt>interval_base_map</tt>  yields the following benefits: </b>
   
-	<ul>
-		<li> A set of intervals is conceived as the domain set of the map. 
-			The complexity involved with
-			operations on intervals maps is encapsulated. The user of the class who
-			wants to perform operations on interval maps is no more concerned
-			with questions of overlapping, joining and bordering intervals.
-		<li>
-			<b>interval_base_map</b> gives an efficient implementation of maps consisting
-			of larger contiguous chunks. Very large, even uncountably infinite maps
-			can be represented in a compact way and handled efficiently.
-	</ul>
+    <ul>
+        <li> A set of intervals is conceived as the domain set of the map. 
+            The complexity involved with
+            operations on intervals maps is encapsulated. The user of the class who
+            wants to perform operations on interval maps is no more concerned
+            with questions of overlapping, joining and bordering intervals.
+        <li>
+            <b>interval_base_map</b> gives an efficient implementation of maps consisting
+            of larger contiguous chunks. Very large, even uncountably infinite maps
+            can be represented in a compact way and handled efficiently.
+    </ul>
 
-	<b>Restrictions: </b>
-	
-	A small number of functions can only be used for <b>discrete</b> domain datatypes 
-	(<tt>short, int, Date</tt> etc.) that implement operators <tt>++</tt> and <tt>--</tt>.
+    <b>Restrictions: </b>
+    
+    A small number of functions can only be used for <b>discrete</b> domain datatypes 
+    (<tt>short, int, Date</tt> etc.) that implement operators <tt>++</tt> and <tt>--</tt>.
 
-	These functions are tagged in the documentation. Using such functions
-	for continuous domain datatypes yields compiletime errors. C.f. getting
-	the <tt>first()</tt> element of a left open interval makes sense for intervals of
-	int but not for intervals of double.
+    These functions are tagged in the documentation. Using such functions
+    for continuous domain datatypes yields compiletime errors. C.f. getting
+    the <tt>first()</tt> element of a left open interval makes sense for intervals of
+    int but not for intervals of double.
 
-	@author  Joachim Faulhaber
+    @author  Joachim Faulhaber
 */
 template
 <
     typename DomainT,
-	typename CodomainT,
-	template<class>class Interval = itl::interval,
-	template<class>class Compare  = std::less,
-	template<class>class Alloc    = std::allocator
+    typename CodomainT,
+    template<class>class Interval = itl::interval,
+    template<class>class Compare  = std::less,
+    template<class>class Alloc    = std::allocator
 >
 class interval_base_map: public maps<DomainT,CodomainT>
 {
@@ -129,531 +129,531 @@ public:
 /** @name A: Type definitions for the template class 
 */
 //@{ 
-	/// Domain type (type of the keys) of the map
-	typedef DomainT   domain_type;
-	/// Domain type (type of the keys) of the map
-	typedef CodomainT codomain_type;
-	/// basic value type
-	typedef std::pair<domain_type,codomain_type> base_value_type;
-	/// The interval type of the map
-	typedef Interval<DomainT> interval_type;
+    /// Domain type (type of the keys) of the map
+    typedef DomainT   domain_type;
+    /// Domain type (type of the keys) of the map
+    typedef CodomainT codomain_type;
+    /// basic value type
+    typedef std::pair<domain_type,codomain_type> base_value_type;
+    /// The interval type of the map
+    typedef Interval<DomainT> interval_type;
 
-	/// Comparison functor for domain values
-	typedef Compare<DomainT> domain_compare;
-	/// Comparison functor for keys
-	typedef exclusive_less<interval_type> interval_compare;
+    /// Comparison functor for domain values
+    typedef Compare<DomainT> domain_compare;
+    /// Comparison functor for keys
+    typedef exclusive_less<interval_type> interval_compare;
 
-	//JODO URG: explain differences between key_compare and interval_compare
-	typedef exclusive_less<interval_type> key_compare;
+    //JODO URG: explain differences between key_compare and interval_compare
+    typedef exclusive_less<interval_type> key_compare;
 
-	/// The allocator type of the set
-	typedef Alloc<std::pair<const interval_type, codomain_type> > 
-		allocator_type;
+    /// The allocator type of the set
+    typedef Alloc<std::pair<const interval_type, codomain_type> > 
+        allocator_type;
 
-	/// Container type for the implementation 
-	typedef itl::map<interval_type,codomain_type,exclusive_less,Alloc> ImplMapT;
+    /// Container type for the implementation 
+    typedef itl::map<interval_type,codomain_type,exclusive_less,Alloc> ImplMapT;
 
-	/// key type of the implementing container
-	typedef typename ImplMapT::key_type   key_type;
-	/// value type of the implementing container
-	typedef typename ImplMapT::value_type value_type;
-	/// data type of the implementing container
-	typedef typename ImplMapT::value_type::second_type data_type;
+    /// key type of the implementing container
+    typedef typename ImplMapT::key_type   key_type;
+    /// value type of the implementing container
+    typedef typename ImplMapT::value_type value_type;
+    /// data type of the implementing container
+    typedef typename ImplMapT::value_type::second_type data_type;
 
-	/// iterator for iteration over intervals
-	typedef typename ImplMapT::iterator iterator;
-	/// const_iterator for iteration over intervals
-	typedef typename ImplMapT::const_iterator const_iterator;
+    /// iterator for iteration over intervals
+    typedef typename ImplMapT::iterator iterator;
+    /// const_iterator for iteration over intervals
+    typedef typename ImplMapT::const_iterator const_iterator;
 
-	/// Corresponding abstract interval set type
-	typedef interval_base_set<DomainT,Interval,Compare,Alloc> interval_base_set_type;
+    /// Corresponding abstract interval set type
+    typedef interval_base_set<DomainT,Interval,Compare,Alloc> interval_base_set_type;
 
-	///JODO Make exported types consistent
-	typedef typename itl::map<DomainT,CodomainT,Compare,Alloc> atomized_type;
-	//JODO USENET Allocator type has to be *derived* from AllocT. template template parameter doesn't work.
-	// I want to pass the Allocator template
+    ///JODO Make exported types consistent
+    typedef typename itl::map<DomainT,CodomainT,Compare,Alloc> atomized_type;
+    //JODO USENET Allocator type has to be *derived* from AllocT. template template parameter doesn't work.
+    // I want to pass the Allocator template
 //@}
 
-	// B: Constructors, destructors, assignment
-	/// Default constructor for the empty map 
-	interval_base_map(): _map() {}
-	/// Copy constructor
-	interval_base_map(const interval_base_map& src): _map(src._map) {}
+    // B: Constructors, destructors, assignment
+    /// Default constructor for the empty map 
+    interval_base_map(): _map() {}
+    /// Copy constructor
+    interval_base_map(const interval_base_map& src): _map(src._map) {}
 
-	/// Virtual constructor
-	virtual interval_base_map* cons()const=0;
-	/// Virtual destruktor
-	virtual ~interval_base_map(){};
+    /// Virtual constructor
+    virtual interval_base_map* cons()const=0;
+    /// Virtual destruktor
+    virtual ~interval_base_map(){};
 
 
-	/// Assignment operator
-	interval_base_map& operator = (const interval_base_map& src) 
-	{
-		_map.ImplMapT::operator=(src._map);
-		return *this;  
-	}
+    /// Assignment operator
+    interval_base_map& operator = (const interval_base_map& src) 
+    {
+        _map.ImplMapT::operator=(src._map);
+        return *this;  
+    }
 
-	// ------------------------------------------------------------------------
-	// Interface MapIT
-	// C:
-	void clear() { _map.clear(); }
-	bool empty()const { return _map.empty(); }
+    // ------------------------------------------------------------------------
+    // Interface MapIT
+    // C:
+    void clear() { _map.clear(); }
+    bool empty()const { return _map.empty(); }
 
-	bool contains(const DomainT& x)const
-	{ 
-		typename ImplMapT::const_iterator it = _map.find(interval_type(x)); 
-		return it != _map.end(); 
-	}
+    bool contains(const DomainT& x)const
+    { 
+        typename ImplMapT::const_iterator it = _map.find(interval_type(x)); 
+        return it != _map.end(); 
+    }
 
-	bool contains(const base_value_type& x)const
-	{
-		typename ImplMapT::const_iterator it = _map.find(interval_type(x.KEY_VALUE));
-		return (it!=_map.end() && (*it).CONT_VALUE==x.CONT_VALUE);  //CodomainT::OP == 
-	}
+    bool contains(const base_value_type& x)const
+    {
+        typename ImplMapT::const_iterator it = _map.find(interval_type(x.KEY_VALUE));
+        return (it!=_map.end() && (*it).CONT_VALUE==x.CONT_VALUE);  //CodomainT::OP == 
+    }
 
-	DomainT lwb()const { return (*(_map.begin())).KEY_VALUE.lwb(); }
-	DomainT upb()const { return (*(_map.rbegin())).KEY_VALUE.upb(); }
-	// DomainT first()const { return (*(_map.begin())).KEY_VALUE.first(); } // JODO NONCONT
-	// DomainT last()const { return (*(_map.rbegin())).KEY_VALUE.last(); }// JODO NONCONT
-	interval_type first_interval()const { return (*(_map.begin())).KEY_VALUE; }
-	interval_type last_interval()const { return (*(_map.rbegin())).KEY_VALUE; }
+    DomainT lwb()const { return (*(_map.begin())).KEY_VALUE.lwb(); }
+    DomainT upb()const { return (*(_map.rbegin())).KEY_VALUE.upb(); }
+    // DomainT first()const { return (*(_map.begin())).KEY_VALUE.first(); } // JODO NONCONT
+    // DomainT last()const { return (*(_map.rbegin())).KEY_VALUE.last(); }// JODO NONCONT
+    interval_type first_interval()const { return (*(_map.begin())).KEY_VALUE; }
+    interval_type last_interval()const { return (*(_map.rbegin())).KEY_VALUE; }
 
 
 /** @name D: Virtual functions
-	@memo By overwriting these functions we can implement interval maps
-		that join neighbouring interval-bounds, or those that keep them
-		distinct.		
-	*/
+    @memo By overwriting these functions we can implement interval maps
+        that join neighbouring interval-bounds, or those that keep them
+        distinct.        
+    */
 //@{ 
-	/// Does the map contain the element the value pair <tt>x := pair(interval_type(x1,x2)const, y)</tt>
-	virtual bool contains(const value_type& x)const=0;
+    /// Does the map contain the element the value pair <tt>x := pair(interval_type(x1,x2)const, y)</tt>
+    virtual bool contains(const value_type& x)const=0;
 
-	/// Treatment of neighouring intervals on insertion
-	virtual void handle_neighbours(const typename ImplMapT::iterator& it)=0;
+    /// Treatment of neighouring intervals on insertion
+    virtual void handle_neighbours(const typename ImplMapT::iterator& it)=0;
 //@}
-	// JODO iterator inject(UniCombinatorT<CodomainT>& cmb, const value_type& vp);
+    // JODO iterator inject(UniCombinatorT<CodomainT>& cmb, const value_type& vp);
 
-	
-	// Functions that are common with interval_base_set --------------------------------
+    
+    // Functions that are common with interval_base_set --------------------------------
 
 /** @name E: Bounds and other selectors
-	*/
+    */
 //@{ 
-	// JODO: bounds of the map like interval_base_set
-	/// number of intervals
-	size_t interval_count()const { return _map.size(); }
-	size_t element_count()const { return _map.size(); }
+    // JODO: bounds of the map like interval_base_set
+    /// number of intervals
+    size_t interval_count()const { return _map.size(); }
+    size_t element_count()const { return _map.size(); }
 
-	/// enclosing Interval
-	interval_type enclosure()const { return first_interval().span(last_interval()); }
+    /// enclosing Interval
+    interval_type enclosure()const { return first_interval().span(last_interval()); }
 
-	/// Gives the domain of the map as interval set
-	void domain(interval_base_set_type& dom)const 
-	{ dom.clear(); const_FOR_IMPLMAP(it) dom.insert((*it).KEY_VALUE); } 
+    /// Gives the domain of the map as interval set
+    void domain(interval_base_set_type& dom)const 
+    { dom.clear(); const_FOR_IMPLMAP(it) dom.insert((*it).KEY_VALUE); } 
 //@}
-	
+    
 
 
 /** @name F: Tester
 */
 //@{
-	/// <tt>*this</tt> is subset of <tt>super</tt>
-	bool contained_in(const interval_base_map& super)const;
+    /// <tt>*this</tt> is subset of <tt>super</tt>
+    bool contained_in(const interval_base_map& super)const;
 
-	/// Equality
-	bool equal(const interval_base_map& x2)const
-	{ return contained_in(x2) && x2.contained_in(*this); }
+    /// Equality
+    bool equal(const interval_base_map& x2)const
+    { return contained_in(x2) && x2.contained_in(*this); }
 
-	///  <tt>*this</tt> and <tt>x2</tt> are disjoint; their intersection is empty.
-	bool disjoint_to(const interval_base_map& x2)const
-	{ return ( empty() || x2.empty() || last_interval().excl_less(x2.first_interval()) ); }
+    ///  <tt>*this</tt> and <tt>x2</tt> are disjoint; their intersection is empty.
+    bool disjoint_to(const interval_base_map& x2)const
+    { return ( empty() || x2.empty() || last_interval().excl_less(x2.first_interval()) ); }
 //@}
 
 
 /** @name G: Modificators
-	*/
+    */
 //@{ 
-	/** Insertion of a base value pair <tt>x := pair(k,y)</tt> where <tt>base_value_type:=pair<DomainT,CodomainT></tt>
-	
-		This inserts a value <tt>y</tt> for a single key <tt>k</tt> into the map.
-		If <tt>k</tt> already has a value <tt>y0</tt> associated with it, <tt>y0</tt>
-		will be incremented by <tt>y</tt>: <tt>y0 += y</tt> via operator <tt>+=</tt>
-		which has to be implemented for \ref CodomainT.
-		
-		Insertion and subtraction are reversible as follows:
-		<tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt> 		
-	*/
-	virtual void insert(const base_value_type& x) 
-	{ insert( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
+    /** Insertion of a base value pair <tt>x := pair(k,y)</tt> where <tt>base_value_type:=pair<DomainT,CodomainT></tt>
+    
+        This inserts a value <tt>y</tt> for a single key <tt>k</tt> into the map.
+        If <tt>k</tt> already has a value <tt>y0</tt> associated with it, <tt>y0</tt>
+        will be incremented by <tt>y</tt>: <tt>y0 += y</tt> via operator <tt>+=</tt>
+        which has to be implemented for \ref CodomainT.
+        
+        Insertion and subtraction are reversible as follows:
+        <tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
+    */
+    virtual void insert(const base_value_type& x) 
+    { insert( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
 
-	/** Insertion of an interval value pair <tt>x := pair(interval_type(x1,x2)const ,y)</tt>
+    /** Insertion of an interval value pair <tt>x := pair(interval_type(x1,x2)const ,y)</tt>
 
-		This inserts a value <tt>y</tt> for an interval <tt>x</tt> into the map.
+        This inserts a value <tt>y</tt> for an interval <tt>x</tt> into the map.
 
-		If no values are associated already within the range of <tt>x</tt>,
-		<tt>y</tt> will be associated to that interval.
+        If no values are associated already within the range of <tt>x</tt>,
+        <tt>y</tt> will be associated to that interval.
 
-		If there are associated values, in the range of <tt>x</tt>, then all
-		those values within the ranges of their intervals,
-		are incremented by <tt>y</tt>. This is done via operator <tt>+=</tt>
-		which has to be implemented for \ref CodomainT. 
+        If there are associated values, in the range of <tt>x</tt>, then all
+        those values within the ranges of their intervals,
+        are incremented by <tt>y</tt>. This is done via operator <tt>+=</tt>
+        which has to be implemented for \ref CodomainT. 
 
-		Insertion and subtraction are reversible as follows:
-		<tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt> 		
-	*/
-	virtual void insert(const value_type& x);
+        Insertion and subtraction are reversible as follows:
+        <tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
+    */
+    virtual void insert(const value_type& x);
 
-	void inject(const value_type& x) { insert(x); }
+    void inject(const value_type& x) { insert(x); }
 
-	/** Subtraction of a base value pair <tt>x := pair(k,y)</tt> where <tt>base_value_type:=pair<DomainT,CodomainT></tt>
+    /** Subtraction of a base value pair <tt>x := pair(k,y)</tt> where <tt>base_value_type:=pair<DomainT,CodomainT></tt>
 
-		This subtracts a value <tt>y</tt> for a single key <tt>k</tt> from the map.
-		If <tt>k</tt> already has a value <tt>y0</tt> associated with it, <tt>y0</tt>
-		will be decremented by <tt>y</tt>: <tt>y0 -= y</tt> via operator <tt>-=</tt>
-		which has to be implemented for \ref CodomainT. If <tt>y</tt> becomes
-		the neutral element \ref CodomainT() <tt>k</tt> will also be removed from
-		the map.
+        This subtracts a value <tt>y</tt> for a single key <tt>k</tt> from the map.
+        If <tt>k</tt> already has a value <tt>y0</tt> associated with it, <tt>y0</tt>
+        will be decremented by <tt>y</tt>: <tt>y0 -= y</tt> via operator <tt>-=</tt>
+        which has to be implemented for \ref CodomainT. If <tt>y</tt> becomes
+        the neutral element \ref CodomainT() <tt>k</tt> will also be removed from
+        the map.
 
-		Insertion and subtraction are reversible as follows:
-		<tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt> 		
-	*/
-	virtual	void subtract(const base_value_type& x)
-	{ subtract( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
+        Insertion and subtraction are reversible as follows:
+        <tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
+    */
+    virtual    void subtract(const base_value_type& x)
+    { subtract( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
 
-	
-	/** Subtraction of an interval value pair  <tt>x := pair(interval_type(x1,x2)const ,y)</tt> 
+    
+    /** Subtraction of an interval value pair  <tt>x := pair(interval_type(x1,x2)const ,y)</tt> 
 
-		This subtracts a value <tt>y</tt> for an interval <tt>x</tt> from the map.
+        This subtracts a value <tt>y</tt> for an interval <tt>x</tt> from the map.
 
-  		If there are associated values, in the range of <tt>x</tt>, all
-		those values within the ranges of their intervals,
-		are decremented by <tt>y</tt>. This is done via operator <tt>-=</tt>
-		which has to be implemented for \ref CodomainT. 
+          If there are associated values, in the range of <tt>x</tt>, all
+        those values within the ranges of their intervals,
+        are decremented by <tt>y</tt>. This is done via operator <tt>-=</tt>
+        which has to be implemented for \ref CodomainT. 
 
-		Insertion and subtraction are reversible as follows:
-		<tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt> 		
-	*/
-	virtual void subtract(const value_type& x);
+        Insertion and subtraction are reversible as follows:
+        <tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
+    */
+    virtual void subtract(const value_type& x);
 
-	/** Remove a value <tt>y</tt> at <tt>x</tt> from the map
+    /** Remove a value <tt>y</tt> at <tt>x</tt> from the map
 
-		We are shooting a whole at key position <tt>x</tt> into the map. The value <tt>y</tt>
-		associated whith key value <tt>x</tt> drops out. If <tt>x </tt> is part of a
-		greater interval that interval will then be divided.
-	*/
-	void erase(const DomainT& x) { erase(interval_type(x)); }
+        We are shooting a whole at key position <tt>x</tt> into the map. The value <tt>y</tt>
+        associated whith key value <tt>x</tt> drops out. If <tt>x </tt> is part of a
+        greater interval that interval will then be divided.
+    */
+    void erase(const DomainT& x) { erase(interval_type(x)); }
 
-	/** Remove all associated values within the range of the interval <tt>x</tt>
-		from the map.
+    /** Remove all associated values within the range of the interval <tt>x</tt>
+        from the map.
 
-		We shoot down an interval <tt>x</tt> from the map. All associated values within that
-		interval are dropping out of the map.
+        We shoot down an interval <tt>x</tt> from the map. All associated values within that
+        interval are dropping out of the map.
 
-		Insertion and subtraction are reversible as follows:
-		<tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt> 		
-	*/
-	void erase(const interval_type& x);
+        Insertion and subtraction are reversible as follows:
+        <tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
+    */
+    void erase(const interval_type& x);
 
-	// JODO CONTINUE
-	/** Remove an entire interval set <tt>x</tt> from the map.
+    // JODO CONTINUE
+    /** Remove an entire interval set <tt>x</tt> from the map.
 
-		We shoot down all intervals contained in the interval set <tt>x</tt>
-		from the map. All values of the map that in the range of inerval set
-		<tt>x</tt> are dropping out.
+        We shoot down all intervals contained in the interval set <tt>x</tt>
+        from the map. All values of the map that in the range of inerval set
+        <tt>x</tt> are dropping out.
 
-		So this is the most general function for removal of values from interval sets.
-	*/
-	void erase(const interval_base_set_type& x);
+        So this is the most general function for removal of values from interval sets.
+    */
+    void erase(const interval_base_set_type& x);
 
-	void erase(const interval_base_map& x);
+    void erase(const interval_base_map& x);
 
-	/** Compute the intersection of <tt>*this</tt> and the intervall <tt>x</tt>; assign
-		result to the interval map <tt>section</tt>.
+    /** Compute the intersection of <tt>*this</tt> and the intervall <tt>x</tt>; assign
+        result to the interval map <tt>section</tt>.
 
-		The result of the intersection with an interval has to be a interval map,
-		because a whole set of intervals may exist in <tt>*this</tt> within the range
-		of the interval <tt>x</tt>.
-		
-		Use the intersect function to find intervals or elements in an interval map.
+        The result of the intersection with an interval has to be a interval map,
+        because a whole set of intervals may exist in <tt>*this</tt> within the range
+        of the interval <tt>x</tt>.
+        
+        Use the intersect function to find intervals or elements in an interval map.
 
-		Given
-		
-		<tt>SplitItvMapT<int> x, sec; interval<int> i; fill x; fill i</tt>
+        Given
+        
+        <tt>SplitItvMapT<int> x, sec; interval<int> i; fill x; fill i</tt>
 
-		<tt>x.intersect(sec,i);</tt> 
+        <tt>x.intersect(sec,i);</tt> 
 
-		if <tt>i</tt> can be found completely in <tt>x</tt> then
+        if <tt>i</tt> can be found completely in <tt>x</tt> then
 
-		<tt>sec.size()==1</tt> and <tt>(*sec.begin()).first==i</tt>
+        <tt>sec.size()==1</tt> and <tt>(*sec.begin()).first==i</tt>
 
-		No find function in implemented, because all find operations can be expressed
-		as intersections.
-	*/
-	void intersect(interval_base_map& section, const interval_type& x)const;
-
-
-	void intersect(interval_base_map& section, const value_type& x)const;
-
-	/** Compute the intersection of <tt>*this</tt> and the interval set <tt>x</tt>;
-		assign result to the interval map <tt>section</tt>.	*/
-	void intersect(interval_base_map& section, const interval_base_set_type& x)const;
-
-	/** Compute the intersection of <tt>*this</tt> and the interval set <tt>x</tt>;
-		assign result to <tt>*this</tt> interval map
-
-		Call of <tt>x *= y</tt> stands for <tt>x = x intersection with y </tt>
-	*/
-	interval_base_map& operator *= (const interval_base_set_type& x);
+        No find function in implemented, because all find operations can be expressed
+        as intersections.
+    */
+    void intersect(interval_base_map& section, const interval_type& x)const;
 
 
-	/** Compute the intersection of <tt>*this</tt> and the interval map <tt>x</tt>;
-		assign result to the interval map <tt>section</tt>.	*/
-	void intersect(interval_base_map& section, const interval_base_map& x)const;
+    void intersect(interval_base_map& section, const value_type& x)const;
 
-	/** Compute the intersection of <tt>*this</tt> and the interval map <tt>x</tt>;
-		assign result to <tt>*this</tt> interval map
+    /** Compute the intersection of <tt>*this</tt> and the interval set <tt>x</tt>;
+        assign result to the interval map <tt>section</tt>.    */
+    void intersect(interval_base_map& section, const interval_base_set_type& x)const;
 
-		Call of <tt>x *= y</tt> stands for <tt>x = x intersection with y </tt>
-	*/
-	interval_base_map& operator *= (const interval_base_map& x);
+    /** Compute the intersection of <tt>*this</tt> and the interval set <tt>x</tt>;
+        assign result to <tt>*this</tt> interval map
 
-	
-	// void intersect(interval_base_map& section, const interval_base_map&)const; JODO
-	
-	/// Compute union with <tt>x</tt>
-	interval_base_map& operator +=(const interval_base_map& x)
-	{ const_FORALL(typename ImplMapT, it, x._map) insert(*it); return *this; }
-	
-	/// Compute difference with <tt>x</tt>
-	interval_base_map& operator -= (const interval_base_map& x)
-	{ const_FORALL(typename ImplMapT, it, x._map) subtract(*it); return *this; }
-	
-	/// Join bounding intervals	
-	interval_base_map& join();
-	
-	/// Join bounding intervals	and merge equivalent elements by +=
-	void merge();
-	
-	interval_base_map& scale_up(DomainT factor, DomainT max)
-	{ FORALL(typename ImplMapT, it, _map) (const_cast<interval_type&>((*it).KEY_VALUE)).scale_up(factor, max); return *this; }
-	
-	
+        Call of <tt>x *= y</tt> stands for <tt>x = x intersection with y </tt>
+    */
+    interval_base_map& operator *= (const interval_base_set_type& x);
+
+
+    /** Compute the intersection of <tt>*this</tt> and the interval map <tt>x</tt>;
+        assign result to the interval map <tt>section</tt>.    */
+    void intersect(interval_base_map& section, const interval_base_map& x)const;
+
+    /** Compute the intersection of <tt>*this</tt> and the interval map <tt>x</tt>;
+        assign result to <tt>*this</tt> interval map
+
+        Call of <tt>x *= y</tt> stands for <tt>x = x intersection with y </tt>
+    */
+    interval_base_map& operator *= (const interval_base_map& x);
+
+    
+    // void intersect(interval_base_map& section, const interval_base_map&)const; JODO
+    
+    /// Compute union with <tt>x</tt>
+    interval_base_map& operator +=(const interval_base_map& x)
+    { const_FORALL(typename ImplMapT, it, x._map) insert(*it); return *this; }
+    
+    /// Compute difference with <tt>x</tt>
+    interval_base_map& operator -= (const interval_base_map& x)
+    { const_FORALL(typename ImplMapT, it, x._map) subtract(*it); return *this; }
+    
+    /// Join bounding intervals    
+    interval_base_map& join();
+    
+    /// Join bounding intervals    and merge equivalent elements by +=
+    void merge();
+    
+    interval_base_map& scale_up(DomainT factor, DomainT max)
+    { FORALL(typename ImplMapT, it, _map) (const_cast<interval_type&>((*it).KEY_VALUE)).scale_up(factor, max); return *this; }
+    
+    
 //@}
  
 
 
 /** @name H: Interval search
-	*/
+    */
 //@{
-	/** A find function has <b>NOT</b> been implemented; Use \ref intersect
-		as a generalized find operation on interval maps.
-	
-		All find operations can be expressed by means of intersection \ref intersect
-		or \ref operator *=. Searching for an interval in an interval map yields
-		an interval map anyway in the general case.
-	*/
+    /** A find function has <b>NOT</b> been implemented; Use \ref intersect
+        as a generalized find operation on interval maps.
+    
+        All find operations can be expressed by means of intersection \ref intersect
+        or \ref operator *=. Searching for an interval in an interval map yields
+        an interval map anyway in the general case.
+    */
 //@}
 
 
 /** @name I: Interval iterators
-	*/
+    */
 //@{
-	///
-	iterator begin() { return _map.begin(); }
-	///
-	iterator end()   { return _map.end(); }
-	///
-	const_iterator begin()const { return _map.begin(); }
-	///
-	const_iterator end()const   { return _map.end(); }
+    ///
+    iterator begin() { return _map.begin(); }
+    ///
+    iterator end()   { return _map.end(); }
+    ///
+    const_iterator begin()const { return _map.begin(); }
+    ///
+    const_iterator end()const   { return _map.end(); }
 //@}
 
 
 
 /** @name M: Selection by predicates
-	*/
+    */
 //@{
 #ifdef __ITL_EXTENDED__
-	/// Keep all elements where property <tt>p</tt> holds, remove otherwise
-	interval_base_map& keep_if(const itl::PropertyT<value_type>& p){ _map.keep_if(p); return *this; }
+    /// Keep all elements where property <tt>p</tt> holds, remove otherwise
+    interval_base_map& keep_if(const itl::PropertyT<value_type>& p){ _map.keep_if(p); return *this; }
 
-	/// Remove all elements where property <tt>p</tt> holds, keep all others
-	interval_base_map& drop_if(const itl::PropertyT<value_type>& p){ _map.drop_if(p); return *this; }
+    /// Remove all elements where property <tt>p</tt> holds, keep all others
+    interval_base_map& drop_if(const itl::PropertyT<value_type>& p){ _map.drop_if(p); return *this; }
 
-	/// Copy all elements if property <tt>p</tt> holds
-	interval_base_map& copy_if( const itl::PropertyT<value_type>& p, const interval_base_map& src)
-	{ _map.copy_if(p, src._map); return *this; }
+    /// Copy all elements if property <tt>p</tt> holds
+    interval_base_map& copy_if( const itl::PropertyT<value_type>& p, const interval_base_map& src)
+    { _map.copy_if(p, src._map); return *this; }
 #endif
 
 //@}
 
 
 /** @name S: String representation
-	*/
+    */
 //@{
-	/** Convert the interval map to string (c.f. \ref ReprBaseT)
+    /** Convert the interval map to string (c.f. \ref ReprBaseT)
 
-		This string converter is based on a general converter function <tt>asString</tt>
-		and the template class \ref ReprBaseT which serves as base for string
-		representation.
-	*/
-	std::string asString() const;
+        This string converter is based on a general converter function <tt>asString</tt>
+        and the template class \ref ReprBaseT which serves as base for string
+        representation.
+    */
+    std::string asString() const;
 //@}
-	
+    
 /** @name T: For discrete domain datatypes only that implement operators <tt>++</tt> 
-		and <tt>--</tt>
-	*/
+        and <tt>--</tt>
+    */
 //@{
 
-	/** Smallest element of the map (wrt. the partial ordering on DomainT).
-		first() does not exist for continuous datatypes and open interval bounds.
-	*/
-	DomainT first()const { return (*(_map.begin())).KEY_VALUE.first(); }  // JODO NONCONT
+    /** Smallest element of the map (wrt. the partial ordering on DomainT).
+        first() does not exist for continuous datatypes and open interval bounds.
+    */
+    DomainT first()const { return (*(_map.begin())).KEY_VALUE.first(); }  // JODO NONCONT
 
-	/** Largest element of the map (wrt. the partial ordering on DomainT).
-		first() does not exist for continuous datatypes and open interval bounds.
-	*/
-	DomainT last()const { return (*(_map.rbegin())).KEY_VALUE.last(); } // JODO NONCONT
+    /** Largest element of the map (wrt. the partial ordering on DomainT).
+        first() does not exist for continuous datatypes and open interval bounds.
+    */
+    DomainT last()const { return (*(_map.rbegin())).KEY_VALUE.last(); } // JODO NONCONT
 
 
-	// JODO TEST
-	/** Number of elements in the set (cardinality). 
-		Infinite for continuous domain datatyps
-		<b>Nicht getestet</b>
-	*/
-	DomainT size()const;
+    // JODO TEST
+    /** Number of elements in the set (cardinality). 
+        Infinite for continuous domain datatyps
+        <b>Nicht getestet</b>
+    */
+    DomainT size()const;
 
-	//JODO THINK Algebraische Struktur / Zerlegung. * notwendig
-	/** Sum (using +=) of the product of interval size and interval content.
-		Caution: This function can only be applied if a multiplication of
-		DomainT and CodomainT exists.
-	*/
-	/*JODO: volume ist zu speziell. Geht nicht mit beliebigen WerteTypen für CodomainT
-	CodomainT volume()const;
-	*/
-	//JODO URGENT: volume ist zu speziell. Geht nicht mit beliebigen WerteTypen für CodomTV
-	// z.B. Faktor!
+    //JODO THINK Algebraische Struktur / Zerlegung. * notwendig
+    /** Sum (using +=) of the product of interval size and interval content.
+        Caution: This function can only be applied if a multiplication of
+        DomainT and CodomainT exists.
+    */
+    /*JODO: volume ist zu speziell. Geht nicht mit beliebigen WerteTypen für CodomainT
+    CodomainT volume()const;
+    */
+    //JODO URGENT: volume ist zu speziell. Geht nicht mit beliebigen WerteTypen für CodomTV
+    // z.B. Faktor!
 #ifdef UNISTAT
-	CodomainT volume()const;
+    CodomainT volume()const;
 #endif
 
 
 
 
-	/** Sum of associated elements of the map
-		<b>Nicht getestet</b> */
-	CodomainT sum()const;
+    /** Sum of associated elements of the map
+        <b>Nicht getestet</b> */
+    CodomainT sum()const;
 
-	/**	Set interval bounds to the type <tt>bt</tt> for intervals in the map.
+    /**    Set interval bounds to the type <tt>bt</tt> for intervals in the map.
 
-		Interval bounds of different types are created by opeations on
-		interval maps. This function allows to reset them uniformly without,
-		of course, changing their value. This is only possible for discrete
-		domain datatypes.
-	*/
-	void uniformBounds( typename interval<DomainT>::bound_types bt);
+        Interval bounds of different types are created by opeations on
+        interval maps. This function allows to reset them uniformly without,
+        of course, changing their value. This is only possible for discrete
+        domain datatypes.
+    */
+    void uniformBounds( typename interval<DomainT>::bound_types bt);
 
-	void closeLeftBounds();
+    void closeLeftBounds();
 //@}
 
-	// TESTCODE
-/*	10.07.2006 Zong
-	machte mir extreme Probleme bei der Umstallung von Faktor auf den VC8
-	wenn es doch irgendwann man wieder rein soll, bitte Bescheid sagen.
+    // TESTCODE
+/*    10.07.2006 Zong
+    machte mir extreme Probleme bei der Umstallung von Faktor auf den VC8
+    wenn es doch irgendwann man wieder rein soll, bitte Bescheid sagen.
 
-	void toSetT(itl::SetT<DomainT>& s)const
-	{ const_FOR_IMPLMAP(it) for(DomainT i=((*it).KEY_VALUE).first(); i<=((*it).CONT_VALUE).first(); i++) s.insert(i); } // JODO NONCONT
+    void toSetT(itl::SetT<DomainT>& s)const
+    { const_FOR_IMPLMAP(it) for(DomainT i=((*it).KEY_VALUE).first(); i<=((*it).CONT_VALUE).first(); i++) s.insert(i); } // JODO NONCONT
 
-	bool equal(const itl::SetT<DomainT>& x2)const
-	{ SetT<DomainT> x1; toSetT(x1); return x1.contained_in(x2) && x2.contained_in(x1); }
+    bool equal(const itl::SetT<DomainT>& x2)const
+    { SetT<DomainT> x1; toSetT(x1); return x1.contained_in(x2) && x2.contained_in(x1); }
 */
-	void recJoin();
+    void recJoin();
 
 
-	template<typename IteratorT>
-	static const key_type& key_value(IteratorT& value_){ return (*value_).first; }
+    template<typename IteratorT>
+    static const key_type& key_value(IteratorT& value_){ return (*value_).first; }
 
-	template<typename IteratorT>
-	static const data_type& data_value(IteratorT& value_){ return (*value_).second; }
+    template<typename IteratorT>
+    static const data_type& data_value(IteratorT& value_){ return (*value_).second; }
 
-	template<typename IteratorT>
-	static codomain_type codomain_value(IteratorT& value_){ return (*value_).second; }
+    template<typename IteratorT>
+    static codomain_type codomain_value(IteratorT& value_){ return (*value_).second; }
 
-	template<typename LeftIterT, typename RightIterT>
-	static bool key_less(LeftIterT& lhs_, RightIterT& rhs_) { return key_compare()((*lhs_).first, (*rhs_).first); }
+    template<typename LeftIterT, typename RightIterT>
+    static bool key_less(LeftIterT& lhs_, RightIterT& rhs_) { return key_compare()((*lhs_).first, (*rhs_).first); }
 
-	static value_type make_domain_element(const domain_type& dom_val, const codomain_type& codom_val)
-	{ return value_type(interval_type(dom_val), codom_val); }
+    static value_type make_domain_element(const domain_type& dom_val, const codomain_type& codom_val)
+    { return value_type(interval_type(dom_val), codom_val); }
 
 
 protected:
-	void matchMap(interval_base_map& matchMap, const value_type& x)const;
-	
+    void matchMap(interval_base_map& matchMap, const value_type& x)const;
+    
 protected:
-	ImplMapT _map;
+    ImplMapT _map;
 
 } ;
 
 
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::matchMap(interval_base_map& matchMap, 
-											 const value_type& x_y)const
+                                             const value_type& x_y)const
 {
-	interval_type x = x_y.KEY_VALUE;
-	typename ImplMapT::const_iterator fst_it = _map.lower_bound(x);
-	typename ImplMapT::const_iterator end_it = _map.upper_bound(x);
+    interval_type x = x_y.KEY_VALUE;
+    typename ImplMapT::const_iterator fst_it = _map.lower_bound(x);
+    typename ImplMapT::const_iterator end_it = _map.upper_bound(x);
 
-	for(typename ImplMapT::const_iterator it=fst_it; it!=end_it; it++) matchMap.insert(*it);
-	matchMap.join();
+    for(typename ImplMapT::const_iterator it=fst_it; it!=end_it; it++) matchMap.insert(*it);
+    matchMap.join();
 }
 
 
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 bool interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::contained_in(const interval_base_map& super)const
 {
-	// x2 should be larger than *this; so every element in this should be in x2
-	const_FOR_IMPLMAP(it) 
-		if(!super.contains(*it)) 
-			return false;
-	return true;
+    // x2 should be larger than *this; so every element in this should be in x2
+    const_FOR_IMPLMAP(it) 
+        if(!super.contains(*it)) 
+            return false;
+    return true;
 }
 
 
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::insert(const value_type& x)
 {
-	const interval_type& x_itv = x.KEY_VALUE;
-	// it HAS TO be a copy JODO THINK efficiency
-	CodomainT      x_val = x.CONT_VALUE; //CodomainT::OP = 
+    const interval_type& x_itv = x.KEY_VALUE;
+    // it HAS TO be a copy JODO THINK efficiency
+    CodomainT      x_val = x.CONT_VALUE; //CodomainT::OP = 
 
-	if(x_itv.empty()) return;
+    if(x_itv.empty()) return;
 
-	std::pair<typename ImplMapT::iterator,bool> insertion = _map.insert(x);
+    std::pair<typename ImplMapT::iterator,bool> insertion = _map.insert(x);
 
-	if(insertion.WAS_SUCCESSFUL)
-		handle_neighbours(insertion.ITERATOR);
-	else
-	{
-		iterator fst_it = _map.lower_bound(x_itv);
-		iterator end_it = _map.upper_bound(x_itv);
+    if(insertion.WAS_SUCCESSFUL)
+        handle_neighbours(insertion.ITERATOR);
+    else
+    {
+        iterator fst_it = _map.lower_bound(x_itv);
+        iterator end_it = _map.upper_bound(x_itv);
 
-		typename ImplMapT::iterator it=fst_it, nxt_it=fst_it, victim;
-		interval_type leftResid;  (*it).KEY_VALUE.left_surplus(leftResid, x_itv);
-		interval_type rightResid;
+        typename ImplMapT::iterator it=fst_it, nxt_it=fst_it, victim;
+        interval_type leftResid;  (*it).KEY_VALUE.left_surplus(leftResid, x_itv);
+        interval_type rightResid;
 
-		while(it!=end_it)
-		{
-			x_val += (*it).CONT_VALUE; //CodomainT::OP +=
-			
-			if((++nxt_it)==end_it) (*it).KEY_VALUE.right_surplus(rightResid, x_itv);
-			victim = it; it++; _map.erase(victim);
-		}
+        while(it!=end_it)
+        {
+            x_val += (*it).CONT_VALUE; //CodomainT::OP +=
+            
+            if((++nxt_it)==end_it) (*it).KEY_VALUE.right_surplus(rightResid, x_itv);
+            victim = it; it++; _map.erase(victim);
+        }
 
-		interval_type extended = x_itv;
-		extended.extend(leftResid).extend(rightResid);
+        interval_type extended = x_itv;
+        extended.extend(leftResid).extend(rightResid);
 
-		insert(value_type(extended, x_val));
-	}
+        insert(value_type(extended, x_val));
+    }
 }
 
 
@@ -661,35 +661,35 @@ void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::insert(const v
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::subtract(const value_type& x)
 {
-	// JODO: Test subtract
-	const interval_type& x_itv = x.KEY_VALUE;
+    // JODO: Test subtract
+    const interval_type& x_itv = x.KEY_VALUE;
 
-	if(x_itv.empty()) return;
-	iterator fst_it = _map.lower_bound(x_itv);
-	if(fst_it==_map.end()) return;
-	iterator end_it = _map.upper_bound(x_itv);
+    if(x_itv.empty()) return;
+    iterator fst_it = _map.lower_bound(x_itv);
+    if(fst_it==_map.end()) return;
+    iterator end_it = _map.upper_bound(x_itv);
 
-	typename ImplMapT::iterator it=fst_it, nxt_it=fst_it, victim;
-	interval_type leftResid; (*it).KEY_VALUE.left_surplus(leftResid,x_itv);
-	interval_type rightResid;
+    typename ImplMapT::iterator it=fst_it, nxt_it=fst_it, victim;
+    interval_type leftResid; (*it).KEY_VALUE.left_surplus(leftResid,x_itv);
+    interval_type rightResid;
 
-	while(it!=end_it)
-	{
-		if((++nxt_it)==end_it) (*it).KEY_VALUE.right_surplus(rightResid,x_itv);
+    while(it!=end_it)
+    {
+        if((++nxt_it)==end_it) (*it).KEY_VALUE.right_surplus(rightResid,x_itv);
 
-		(*it).CONT_VALUE -= x.CONT_VALUE; //CodomainT::OP -=
-		
-		if( (*it).CONT_VALUE == CodomainT() ) //CodomainT::OP ==
-		{
-			DEV_ASSERT((*it).CONT_VALUE == x.CONT_VALUE); //CodomainT::OP ==
-			victim = it; it++; _map.erase(victim);
-			// behave like DiscItvSetT in case of deletion
-			insert(value_type(leftResid,  x.CONT_VALUE )); //CodomainT::OP CodomainT(CodomainT&) CopyCtor on every value_type
-			insert(value_type(rightResid, x.CONT_VALUE ));
-		}
-		else it++;
-	}
-	
+        (*it).CONT_VALUE -= x.CONT_VALUE; //CodomainT::OP -=
+        
+        if( (*it).CONT_VALUE == CodomainT() ) //CodomainT::OP ==
+        {
+            DEV_ASSERT((*it).CONT_VALUE == x.CONT_VALUE); //CodomainT::OP ==
+            victim = it; it++; _map.erase(victim);
+            // behave like DiscItvSetT in case of deletion
+            insert(value_type(leftResid,  x.CONT_VALUE )); //CodomainT::OP CodomainT(CodomainT&) CopyCtor on every value_type
+            insert(value_type(rightResid, x.CONT_VALUE ));
+        }
+        else it++;
+    }
+    
 }
 
 
@@ -697,68 +697,68 @@ void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::subtract(const
 
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::intersect(interval_base_map& section, 
-												 const interval_type& x)const
+                                                 const interval_type& x)const
 {
-	section.clear();
-	if(x.empty()) return;
+    section.clear();
+    if(x.empty()) return;
 
-	typename ImplMapT::const_iterator fst_it = _map.lower_bound(x);
-	typename ImplMapT::const_iterator end_it = _map.upper_bound(x);
+    typename ImplMapT::const_iterator fst_it = _map.lower_bound(x);
+    typename ImplMapT::const_iterator end_it = _map.upper_bound(x);
 
-	for(typename ImplMapT::const_iterator it=fst_it; it != end_it; it++) 
-	{
-		interval_type isec; 
-		(*it).KEY_VALUE.intersect(isec, x);
+    for(typename ImplMapT::const_iterator it=fst_it; it != end_it; it++) 
+    {
+        interval_type isec; 
+        (*it).KEY_VALUE.intersect(isec, x);
 
-		if(!isec.empty())
-			section.insert( value_type(isec, (*it).CONT_VALUE) );
-	}
+        if(!isec.empty())
+            section.insert( value_type(isec, (*it).CONT_VALUE) );
+    }
 }
 
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::intersect(interval_base_map& section, 
-												 const typename interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::value_type& sectant)const
+                                                 const typename interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::value_type& sectant)const
 {
-	section.clear();
-	interval_type sectant_interval = sectant.KEY_VALUE;
-	if(sectant_interval.empty()) return;
+    section.clear();
+    interval_type sectant_interval = sectant.KEY_VALUE;
+    if(sectant_interval.empty()) return;
 
-	typename ImplMapT::const_iterator fst_it = _map.lower_bound(sectant_interval);
-	typename ImplMapT::const_iterator end_it = _map.upper_bound(sectant_interval);
+    typename ImplMapT::const_iterator fst_it = _map.lower_bound(sectant_interval);
+    typename ImplMapT::const_iterator end_it = _map.upper_bound(sectant_interval);
 
-	for(typename ImplMapT::const_iterator it=fst_it; it != end_it; it++) 
-	{
-		interval_type common_interval; 
-		(*it).KEY_VALUE.intersect(common_interval, sectant_interval);
+    for(typename ImplMapT::const_iterator it=fst_it; it != end_it; it++) 
+    {
+        interval_type common_interval; 
+        (*it).KEY_VALUE.intersect(common_interval, sectant_interval);
 
-		if(!common_interval.empty())
-		{
-			section.insert( value_type(common_interval, (*it).CONT_VALUE) );
-			section.insert( value_type(common_interval, sectant.CONT_VALUE) );
-		}
-	}
+        if(!common_interval.empty())
+        {
+            section.insert( value_type(common_interval, (*it).CONT_VALUE) );
+            section.insert( value_type(common_interval, sectant.CONT_VALUE) );
+        }
+    }
 }
 
 template <typename DomainT, typename CodomainT, template<class>class Interval, 
           template<class>class Compare, template<class>class Alloc>
 void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::
    intersect(interval_base_map& interSection, 
-			 const interval_base_set_type& sectant)const
+             const interval_base_set_type& sectant)const
 {
-	interSection.clear();
-	if(sectant.empty()) return;
+    interSection.clear();
+    if(sectant.empty()) return;
 
-	interval_base_map* aux = cons();
-	// THINK JODO optimize using the ordering: if intervalls are beyond borders we can terminate
+    interval_base_map* aux = cons();
+    // THINK JODO optimize using the ordering: if intervalls are beyond borders we can terminate
 
-	typename interval_base_set_type::const_iterator it = sectant.begin();
-	while(it != sectant.end())
-	{
-		aux->clear();
-		intersect(*aux, *it++);
-		interSection += (*aux);
-	}
-	delete aux;
+    typename interval_base_set_type::const_iterator it = sectant.begin();
+    while(it != sectant.end())
+    {
+        aux->clear();
+        intersect(*aux, *it++);
+        interSection += (*aux);
+    }
+    delete aux;
 }
 
 
@@ -766,46 +766,46 @@ template <typename DomainT, typename CodomainT, template<class>class Interval, t
 interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>& interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>
 ::operator *= (const interval_base_set_type& x)
 {
-	interval_base_map* section = cons();
-	intersect(*section, x);
-	section->_map.swap(_map);
-	delete section;
-	return *this;
+    interval_base_map* section = cons();
+    intersect(*section, x);
+    section->_map.swap(_map);
+    delete section;
+    return *this;
 }
 
 
 //JODO Section algorithms for map and set arguments are virually the same
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::
-	intersect(interval_base_map& interSection, 
-			  const interval_base_map& sectant)const
+    intersect(interval_base_map& interSection, 
+              const interval_base_map& sectant)const
 {
-	interSection.clear();
-	if(sectant.empty()) return;
+    interSection.clear();
+    if(sectant.empty()) return;
 
-	interval_base_map* aux = cons();
-	// THINK JODO optimize using the ordering: if intervalls are beyond borders we can terminate
+    interval_base_map* aux = cons();
+    // THINK JODO optimize using the ordering: if intervalls are beyond borders we can terminate
 
-	typename interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::const_iterator 
-		it = sectant.begin();
-	while(it != sectant.end())
-	{
-		aux->clear();
-		intersect(*aux, *it++);
-		interSection += (*aux);
-	}
-	delete aux;
+    typename interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::const_iterator 
+        it = sectant.begin();
+    while(it != sectant.end())
+    {
+        aux->clear();
+        intersect(*aux, *it++);
+        interSection += (*aux);
+    }
+    delete aux;
 }
 
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>& interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>
 ::operator *= (const interval_base_map& x)
 {
-	interval_base_map* section = cons();
-	intersect(*section, x);
-	section->_map.swap(_map);
-	delete section;
-	return *this;
+    interval_base_map* section = cons();
+    intersect(*section, x);
+    section->_map.swap(_map);
+    delete section;
+    return *this;
 }
 
 
@@ -813,7 +813,7 @@ interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>& interval_base_map<D
 /*
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::intersect(interval_base_map& section, 
-											  const value_type& x)const
+                                              const value_type& x)const
 {
 }
 */
@@ -824,153 +824,153 @@ void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::intersect(inte
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::recJoin()
 {
-	iterator it=_map.begin();
-	if(it==_map.end()) return;
-	iterator nxt=it; nxt++;
-	if(nxt==_map.end()) return;
+    iterator it=_map.begin();
+    if(it==_map.end()) return;
+    iterator nxt=it; nxt++;
+    if(nxt==_map.end()) return;
 
-	while(nxt != _map.end())
-	{
-		if(    (*it).KEY_VALUE.touches((*nxt).KEY_VALUE)
-			&& (*it).CONT_VALUE == (*nxt).CONT_VALUE      ) //CodomainT::OP ==
-		{
-			iterator fst_mem = it;  // hold the fist member
-			
-			// go noodling on while touchin members found
-			it++; nxt++;
-			while(     nxt != _map.end()
-					&& (*it).KEY_VALUE.touches((*nxt).KEY_VALUE)
-					&& (*it).CONT_VALUE == (*nxt).CONT_VALUE     ) //CodomainT::OP ==
-			{ it++; nxt++; }
+    while(nxt != _map.end())
+    {
+        if(    (*it).KEY_VALUE.touches((*nxt).KEY_VALUE)
+            && (*it).CONT_VALUE == (*nxt).CONT_VALUE      ) //CodomainT::OP ==
+        {
+            iterator fst_mem = it;  // hold the fist member
+            
+            // go noodling on while touchin members found
+            it++; nxt++;
+            while(     nxt != _map.end()
+                    && (*it).KEY_VALUE.touches((*nxt).KEY_VALUE)
+                    && (*it).CONT_VALUE == (*nxt).CONT_VALUE     ) //CodomainT::OP ==
+            { it++; nxt++; }
 
-			// finally we arrive at the end of a sequence of joinable intervals
-			// and it points to the last member of that sequence
-			iterator lst_mem = it, end_mem = nxt;
-			interval_type joinedInterval((*fst_mem).KEY_VALUE);
-			joinedInterval.extend((*lst_mem).KEY_VALUE);
-			CodomainT value = (*fst_mem).CONT_VALUE; //CodomainT::OP =
-			
-			_map.erase(fst_mem, end_mem);
-			_map.insert(value_type(joinedInterval, value));
+            // finally we arrive at the end of a sequence of joinable intervals
+            // and it points to the last member of that sequence
+            iterator lst_mem = it, end_mem = nxt;
+            interval_type joinedInterval((*fst_mem).KEY_VALUE);
+            joinedInterval.extend((*lst_mem).KEY_VALUE);
+            CodomainT value = (*fst_mem).CONT_VALUE; //CodomainT::OP =
+            
+            _map.erase(fst_mem, end_mem);
+            _map.insert(value_type(joinedInterval, value));
 
-			// start a new search from a new beginning
-			recJoin();
-			return;
-		}
-		else { it++; nxt++; }
-	}
+            // start a new search from a new beginning
+            recJoin();
+            return;
+        }
+        else { it++; nxt++; }
+    }
 }
 
 
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>& interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::join()
 {
-	iterator it=_map.begin();
-	if(it==_map.end()) 
-		return *this;
+    iterator it=_map.begin();
+    if(it==_map.end()) 
+        return *this;
 
-	iterator nxt=it; nxt++;
-	if(nxt==_map.end()) 
-		return *this;
+    iterator nxt=it; nxt++;
+    if(nxt==_map.end()) 
+        return *this;
 
-	while(nxt != _map.end())
-	{
-		if(    (*it).KEY_VALUE.touches((*nxt).KEY_VALUE)
-			&& (*it).CONT_VALUE == (*nxt).CONT_VALUE      ) //CodomainT::OP ==
-		{
-			iterator fst_mem = it;  // hold the fist member
-			
-			// go noodling on while touchin members found
-			it++; nxt++;
-			while(     nxt != _map.end()
-					&& (*it).KEY_VALUE.touches((*nxt).KEY_VALUE)
-					&& (*it).CONT_VALUE == (*nxt).CONT_VALUE     ) //CodomainT::OP ==
-			{ it++; nxt++; }
+    while(nxt != _map.end())
+    {
+        if(    (*it).KEY_VALUE.touches((*nxt).KEY_VALUE)
+            && (*it).CONT_VALUE == (*nxt).CONT_VALUE      ) //CodomainT::OP ==
+        {
+            iterator fst_mem = it;  // hold the fist member
+            
+            // go noodling on while touchin members found
+            it++; nxt++;
+            while(     nxt != _map.end()
+                    && (*it).KEY_VALUE.touches((*nxt).KEY_VALUE)
+                    && (*it).CONT_VALUE == (*nxt).CONT_VALUE     ) //CodomainT::OP ==
+            { it++; nxt++; }
 
-			// finally we arrive at the end of a sequence of joinable intervals
-			// and it points to the last member of that sequence
-			iterator lst_mem = it, end_mem = nxt;
-			interval_type joinedInterval((*fst_mem).KEY_VALUE);
-			joinedInterval.extend((*lst_mem).KEY_VALUE);
-			CodomainT value = (*fst_mem).CONT_VALUE; //CodomainT::OP =
-			
-			_map.erase(fst_mem, end_mem);
-			it = _map.insert(value_type(joinedInterval, value)).ITERATOR;
+            // finally we arrive at the end of a sequence of joinable intervals
+            // and it points to the last member of that sequence
+            iterator lst_mem = it, end_mem = nxt;
+            interval_type joinedInterval((*fst_mem).KEY_VALUE);
+            joinedInterval.extend((*lst_mem).KEY_VALUE);
+            CodomainT value = (*fst_mem).CONT_VALUE; //CodomainT::OP =
+            
+            _map.erase(fst_mem, end_mem);
+            it = _map.insert(value_type(joinedInterval, value)).ITERATOR;
 
-			it++; // go on for the next after the currently inserted
-			nxt=it; if(nxt!=_map.end())nxt++;
-		}
-		else { it++; nxt++; }
-	}
-	return *this;
+            it++; // go on for the next after the currently inserted
+            nxt=it; if(nxt!=_map.end())nxt++;
+        }
+        else { it++; nxt++; }
+    }
+    return *this;
 }
 
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::merge()
 {
-	iterator it=_map.begin();
-	if(it==_map.end()) return;
-	iterator nxt=it; nxt++;
-	if(nxt==_map.end()) return;
+    iterator it=_map.begin();
+    if(it==_map.end()) return;
+    iterator nxt=it; nxt++;
+    if(nxt==_map.end()) return;
 
-	while(nxt != _map.end())
-	{
-		if(    (*it).KEY_VALUE.touches((*nxt).KEY_VALUE)
-			&& (*it).CONT_VALUE == (*nxt).CONT_VALUE      ) //CodomainT::OP ==
-		{
-			iterator fst_mem = it;  // hold the fist member
-			
-			CodomainT mergedValue = (*it).CONT_VALUE; //CodomainT::OP =
-			mergedValue += (*nxt).CONT_VALUE;
+    while(nxt != _map.end())
+    {
+        if(    (*it).KEY_VALUE.touches((*nxt).KEY_VALUE)
+            && (*it).CONT_VALUE == (*nxt).CONT_VALUE      ) //CodomainT::OP ==
+        {
+            iterator fst_mem = it;  // hold the fist member
+            
+            CodomainT mergedValue = (*it).CONT_VALUE; //CodomainT::OP =
+            mergedValue += (*nxt).CONT_VALUE;
 
-			// go noodling on while touchin members found
-			it++; nxt++;
-			while(     nxt != _map.end()
-					&& (*it).KEY_VALUE.touches((*nxt).KEY_VALUE)
-					&& (*it).CONT_VALUE == (*nxt).CONT_VALUE     ) //CodomainT::OP ==
-			{ 
-				mergedValue += (*nxt).CONT_VALUE;
-				it++; nxt++; 
-			}
+            // go noodling on while touchin members found
+            it++; nxt++;
+            while(     nxt != _map.end()
+                    && (*it).KEY_VALUE.touches((*nxt).KEY_VALUE)
+                    && (*it).CONT_VALUE == (*nxt).CONT_VALUE     ) //CodomainT::OP ==
+            { 
+                mergedValue += (*nxt).CONT_VALUE;
+                it++; nxt++; 
+            }
 
-			// finally we arrive at the end of a sequence of joinable intervals
-			// and it points to the last member of that sequence
-			iterator lst_mem = it, end_mem = nxt;
-			interval_type joinedInterval((*fst_mem).KEY_VALUE);
-			joinedInterval.extend((*lst_mem).KEY_VALUE);
-			
-			_map.erase(fst_mem, end_mem);
-			it = _map.insert(value_type(joinedInterval, mergedValue)).ITERATOR;
+            // finally we arrive at the end of a sequence of joinable intervals
+            // and it points to the last member of that sequence
+            iterator lst_mem = it, end_mem = nxt;
+            interval_type joinedInterval((*fst_mem).KEY_VALUE);
+            joinedInterval.extend((*lst_mem).KEY_VALUE);
+            
+            _map.erase(fst_mem, end_mem);
+            it = _map.insert(value_type(joinedInterval, mergedValue)).ITERATOR;
 
-			it++; // go on for the next after the currently inserted
-			nxt=it; if(nxt!=_map.end())nxt++;
-		}
-		else { it++; nxt++; }
-	}
+            it++; // go on for the next after the currently inserted
+            nxt=it; if(nxt!=_map.end())nxt++;
+        }
+        else { it++; nxt++; }
+    }
 }
 
 
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 std::string interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::asString()const
 {
-	std::string res(""); 
-	const_FOR_IMPLMAP(it) {
-		std::string cur("("); 
-		cur += (*it).KEY_VALUE.asString();
-		cur += ",";
-		cur += itl::ReprBaseT<CodomainT>::toString((*it).CONT_VALUE);
-		cur += ")";
-		res += cur;
-	}
-	return res; 
+    std::string res(""); 
+    const_FOR_IMPLMAP(it) {
+        std::string cur("("); 
+        cur += (*it).KEY_VALUE.asString();
+        cur += ",";
+        cur += itl::ReprBaseT<CodomainT>::toString((*it).CONT_VALUE);
+        cur += ")";
+        res += cur;
+    }
+    return res; 
 }
 
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 DomainT interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::size()const
 {
-	DomainT size = DomainT();
-	const_FOR_IMPLMAP(it) size += (*it).KEY_VALUE.size();
-	return size;
+    DomainT size = DomainT();
+    const_FOR_IMPLMAP(it) size += (*it).KEY_VALUE.size();
+    return size;
 }
 
 #ifdef UNISTAT
@@ -978,41 +978,41 @@ DomainT interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::size()const
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 CodomainT interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::volume()const
 {
-	CodomainT vol = CodomainT();
-	const_FOR_IMPLMAP(it) 
-	{
-		CodomainT value = (*it).CONT_VALUE;
-		value *= (*it).KEY_VALUE.size();
-		vol += value;
-	}
-	return vol;
+    CodomainT vol = CodomainT();
+    const_FOR_IMPLMAP(it) 
+    {
+        CodomainT value = (*it).CONT_VALUE;
+        value *= (*it).KEY_VALUE.size();
+        vol += value;
+    }
+    return vol;
 }
 #endif
 
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 CodomainT interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::sum()const
 {
-	CodomainT sum = CodomainT();
-	const_FOR_IMPLMAP(it) 
-		sum += (*it).CONT_VALUE;
-	return sum;
+    CodomainT sum = CodomainT();
+    const_FOR_IMPLMAP(it) 
+        sum += (*it).CONT_VALUE;
+    return sum;
 }
 
 
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::uniformBounds( typename interval<DomainT>::bound_types bt)
 {
-	// I can do this only, because I am shure that the contents and the
-	// ordering < on interval is invariant wrt. this transformation on bounds
-	FOR_IMPLMAP(it) const_cast<interval_type&>((*it).KEY_VALUE).transformBounds(bt);
+    // I can do this only, because I am shure that the contents and the
+    // ordering < on interval is invariant wrt. this transformation on bounds
+    FOR_IMPLMAP(it) const_cast<interval_type&>((*it).KEY_VALUE).transformBounds(bt);
 }
 
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::closeLeftBounds()
 {
-	// I can do this only, because I am shure that the contents and the
-	// ordering < on interval is invariant wrt. this transformation on bounds
-	FOR_IMPLMAP(it) const_cast<interval_type&>((*it).KEY_VALUE).closeLeftBound();
+    // I can do this only, because I am shure that the contents and the
+    // ordering < on interval is invariant wrt. this transformation on bounds
+    FOR_IMPLMAP(it) const_cast<interval_type&>((*it).KEY_VALUE).closeLeftBound();
 }
 
 
@@ -1020,46 +1020,46 @@ void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::closeLeftBound
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::erase(const interval_type& x_itv)
 {
-	if(x_itv.empty()) return;
-	iterator fst_it = _map.lower_bound(x_itv);
-	if(fst_it==_map.end()) return;
-	iterator end_it = _map.upper_bound(x_itv);
-	
-	typename ImplMapT::iterator it=fst_it, nxt_it=fst_it, victim;
-	interval_type leftResid;   // left residual from first overlapping interval of *this
-	(*it).KEY_VALUE.left_surplus(leftResid,x_itv);
-	interval_type rightResid;  // right residual from last overlapping interval of *this
-	
-	CodomainT leftResid_ContVal = (*it).CONT_VALUE; //CodomainT::OP =
-	CodomainT rightResid_ContVal;                   //CodomainT::OP CodomainT()
-	
-	while(it!=end_it)
-	{ 
-		if((++nxt_it)==end_it) 
-		{
-			(*it).KEY_VALUE.right_surplus(rightResid,x_itv);
-			rightResid_ContVal = (*it).CONT_VALUE; //CodomainT::OP =
-		}
-		victim = it; it++; _map.erase(victim);
-	}
-	
-	insert(value_type(leftResid,  leftResid_ContVal));
-	insert(value_type(rightResid, rightResid_ContVal));
+    if(x_itv.empty()) return;
+    iterator fst_it = _map.lower_bound(x_itv);
+    if(fst_it==_map.end()) return;
+    iterator end_it = _map.upper_bound(x_itv);
+    
+    typename ImplMapT::iterator it=fst_it, nxt_it=fst_it, victim;
+    interval_type leftResid;   // left residual from first overlapping interval of *this
+    (*it).KEY_VALUE.left_surplus(leftResid,x_itv);
+    interval_type rightResid;  // right residual from last overlapping interval of *this
+    
+    CodomainT leftResid_ContVal = (*it).CONT_VALUE; //CodomainT::OP =
+    CodomainT rightResid_ContVal;                   //CodomainT::OP CodomainT()
+    
+    while(it!=end_it)
+    { 
+        if((++nxt_it)==end_it) 
+        {
+            (*it).KEY_VALUE.right_surplus(rightResid,x_itv);
+            rightResid_ContVal = (*it).CONT_VALUE; //CodomainT::OP =
+        }
+        victim = it; it++; _map.erase(victim);
+    }
+    
+    insert(value_type(leftResid,  leftResid_ContVal));
+    insert(value_type(rightResid, rightResid_ContVal));
 }
 
 
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::erase(const interval_base_set_type& x)
 {
-	const_FORALL(typename interval_base_set_type, x_, x)
-		erase(*x_);
+    const_FORALL(typename interval_base_set_type, x_, x)
+        erase(*x_);
 }
 
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::erase(const interval_base_map& x)
 {
-	const_FORALL(typename interval_base_map, x_, x)
-		erase((*x_).KEY_VALUE);
+    const_FORALL(typename interval_base_map, x_, x)
+        erase((*x_).KEY_VALUE);
 }
 
 /*
@@ -1067,41 +1067,41 @@ error C2244: 'interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::-=' :
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::operator -= (const interval_base_set_type& x)
 {
-	interval_base_set_type::const_iterator x_ = x.begin();
-	while(x_ != x.end()) subtractItv(*x_);
-	return *this;
+    interval_base_set_type::const_iterator x_ = x.begin();
+    while(x_ != x.end()) subtractItv(*x_);
+    return *this;
 }
 */
 
 
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 inline bool operator == (const interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>& lhs,
-						 const interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>& rhs)
+                         const interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>& rhs)
 {
-	//MEMO PORT: This implemetation worked with stlport, sgi and gnu 
-	// implementations of the stl. But using MSVC-implementation
-	// results in runtime error! So had to provide an independent
-	// safe implemetation.
-	//return std::equal(lhs.begin(), lhs.end(), rhs.begin());
-	//return !(lhs < rhs) && !(rhs < lhs);
-	return Set::lexicographical_equal(lhs, rhs);
+    //MEMO PORT: This implemetation worked with stlport, sgi and gnu 
+    // implementations of the stl. But using MSVC-implementation
+    // results in runtime error! So had to provide an independent
+    // safe implemetation.
+    //return std::equal(lhs.begin(), lhs.end(), rhs.begin());
+    //return !(lhs < rhs) && !(rhs < lhs);
+    return Set::lexicographical_equal(lhs, rhs);
 }
 
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 inline bool operator < (const interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>& lhs,
-						const interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>& rhs)
+                        const interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>& rhs)
 {
-	return std::lexicographical_compare(
-		lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), 
-		Compare<std::pair<Interval<DomainT>, CodomainT> >()
-		);
+    return std::lexicographical_compare(
+        lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), 
+        Compare<std::pair<Interval<DomainT>, CodomainT> >()
+        );
 }
 
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 inline bool operator <= (const interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>& lhs,
-						const interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>& rhs)
+                        const interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>& rhs)
 {
-	return lhs < rhs || lhs == rhs;
+    return lhs < rhs || lhs == rhs;
 }
 
 

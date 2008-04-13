@@ -27,7 +27,7 @@ DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
 /* ------------------------------------------------------------------
 class MultiMapT
-	a general map class that extends stl-multimaps
+    a general map class that extends stl-multimaps
 --------------------------------------------------------------------*/
 #ifndef __MULTMAPT_H_JOFA_990224__
 #define __MULTMAPT_H_JOFA_990224__
@@ -35,15 +35,15 @@ class MultiMapT
 #include <map>
 
 namespace itl
-{	
+{    
 
 template <class KeyTV, class ContTV, class CompTV = less<KeyTV> > class MultiMapT:
-	public multimap<KeyTV, ContTV, CompTV>
+    public multimap<KeyTV, ContTV, CompTV>
 {
 public:
-	// JODO: complete class definition according to map later
-	// SetT<KeyTV,CompTV> domain()const;
-	// yields the domain of this map: the set of all keys of it
+    // JODO: complete class definition according to map later
+    // SetT<KeyTV,CompTV> domain()const;
+    // yields the domain of this map: the set of all keys of it
 } ;
 
 } // namespace itl

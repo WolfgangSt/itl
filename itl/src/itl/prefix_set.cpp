@@ -35,46 +35,46 @@ using namespace itl;
 
 int prefix_set::compareStrings(int& comSize, const char* s1, const char* s2)
 {
-	int i=0;
-	while(s1[i] != NULL && s2[i] != NULL)
-	{
-		if(s1[i] < s2[i])
-		{
-			comSize = i;
-			return -1;
-		}
-		if(s1[i] > s2[i])
-		{
-			comSize = i;
-			return 1;
-		}
+    int i=0;
+    while(s1[i] != NULL && s2[i] != NULL)
+    {
+        if(s1[i] < s2[i])
+        {
+            comSize = i;
+            return -1;
+        }
+        if(s1[i] > s2[i])
+        {
+            comSize = i;
+            return 1;
+        }
 
-		// Gleichheit: weitermachen
-		i++;
-	}
+        // Gleichheit: weitermachen
+        i++;
+    }
 
-	comSize = i;
-	if(s1[i] == NULL || s2[i] == NULL)
-		return 0; // Gleichheit
-	if (s1[i] != NULL)
-		return 1; // s1 ist größer 
-	else
-		return -1; // s2 ist größer
-	
+    comSize = i;
+    if(s1[i] == NULL || s2[i] == NULL)
+        return 0; // Gleichheit
+    if (s1[i] != NULL)
+        return 1; // s1 ist größer 
+    else
+        return -1; // s2 ist größer
+    
 }
 
 
 void prefix_set::insert(const std::string& val)
 {
-	pair<iterator, bool> insertion = m_.insert(val);
-	if(!insertion.WAS_SUCCESSFUL)
-	{
-		if(val.size() < (*insertion.ITERATOR).size())
-		{
-			m_.erase(insertion.ITERATOR);
-			insert(val);
-		}
-	}
+    pair<iterator, bool> insertion = m_.insert(val);
+    if(!insertion.WAS_SUCCESSFUL)
+    {
+        if(val.size() < (*insertion.ITERATOR).size())
+        {
+            m_.erase(insertion.ITERATOR);
+            insert(val);
+        }
+    }
 }
 
 

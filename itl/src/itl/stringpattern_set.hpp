@@ -34,36 +34,36 @@ DEALINGS IN THE SOFTWARE.
 
 namespace itl
 {
-	/** stringpattern_set repraesentiert eine Menge von Strings durch
-		zwei PrefixSetTs, der zugehoerigen und der nicht zugehoerigen
-		Strings.
+    /** stringpattern_set repraesentiert eine Menge von Strings durch
+        zwei PrefixSetTs, der zugehoerigen und der nicht zugehoerigen
+        Strings.
 
-		Mit 'include' fuegt man Praefixe fuer zugehoerige Strings ein.
-		Mit 'exclude' fuegt man Praefixe fuer nicht zugehoerige Strings ein.
-		
-		stringpattern_set s;
-		s.include("Han");
-		s.include("Har");
-		s.exclude("Hara");
-		s.contains("Hans")==true;
-		s.contains("Harald")==false;
-	*/
-	class stringpattern_set
-	{
-	public:
-		void include(const string& val)
-		{ m_Includes.insert(val); }
+        Mit 'include' fuegt man Praefixe fuer zugehoerige Strings ein.
+        Mit 'exclude' fuegt man Praefixe fuer nicht zugehoerige Strings ein.
+        
+        stringpattern_set s;
+        s.include("Han");
+        s.include("Har");
+        s.exclude("Hara");
+        s.contains("Hans")==true;
+        s.contains("Harald")==false;
+    */
+    class stringpattern_set
+    {
+    public:
+        void include(const string& val)
+        { m_Includes.insert(val); }
 
-		void exclude(const string& val)
-		{ m_Excludes.insert(val); }
-		
-		bool contains(const string& val)const
-		{ return m_Includes.contains(val) && !m_Excludes.contains(val); }
-		
-	private:
-		prefix_set m_Includes;
-		prefix_set m_Excludes;
-	};
+        void exclude(const string& val)
+        { m_Excludes.insert(val); }
+        
+        bool contains(const string& val)const
+        { return m_Includes.contains(val) && !m_Excludes.contains(val); }
+        
+    private:
+        prefix_set m_Includes;
+        prefix_set m_Excludes;
+    };
 
 
 }

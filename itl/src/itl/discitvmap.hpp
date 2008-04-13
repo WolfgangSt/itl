@@ -38,21 +38,21 @@ namespace itl
 {
 
 template <class ItvDomTV, class CodomTV, class ItvTV=IntervalT<ItvDomTV> > class DiscItvMapT:
-	public  ItvMapAT<ItvDomTV,CodomTV,ItvTV>
+    public  ItvMapAT<ItvDomTV,CodomTV,ItvTV>
 {
 public:
-	DiscItvMapT(): ItvMapAT<ItvDomTV,CodomTV,ItvTV>() {}
-	DiscItvMapT(const DiscItvMapT& src): ItvMapAT<ItvDomTV,CodomTV,ItvTV>(src) {}
+    DiscItvMapT(): ItvMapAT<ItvDomTV,CodomTV,ItvTV>() {}
+    DiscItvMapT(const DiscItvMapT& src): ItvMapAT<ItvDomTV,CodomTV,ItvTV>(src) {}
 
-	virtual bool contains(const value_type& x)const;
+    virtual bool contains(const value_type& x)const;
 
-	virtual void insert(const value_type&);
-	virtual void subtract(const value_type& x);
+    virtual void insert(const value_type&);
+    virtual void subtract(const value_type& x);
 
-	virtual void handleNeighbours(const iterator& it){}
+    virtual void handleNeighbours(const iterator& it){}
 
-	void toItvSetT(ItvSetT<ItvDomTV, ItvTV>& dst)const
-	{ dst.clear(); const_FORALL(ImplMapT, it, m_map) dst.insert(*it); }
+    void toItvSetT(ItvSetT<ItvDomTV, ItvTV>& dst)const
+    { dst.clear(); const_FORALL(ImplMapT, it, m_map) dst.insert(*it); }
 
 } ;
 
@@ -61,18 +61,18 @@ public:
 template <class ItvDomTV, class CodomTV, class ItvTV>
 bool DiscItvMapT<ItvDomTV,CodomTV,ItvTV>::contains(const value_type& x_y)const
 {
-	ItvTV x = x_y.KEY_VALUE;
-	if(x.empty()) return true;
+    ItvTV x = x_y.KEY_VALUE;
+    if(x.empty()) return true;
 
-	ImplMapT::const_iterator fst_it = m_map.lower_bound(x);
-	ImplMapT::const_iterator end_it = m_map.upper_bound(x);
+    ImplMapT::const_iterator fst_it = m_map.lower_bound(x);
+    ImplMapT::const_iterator end_it = m_map.upper_bound(x);
 
-	ItvSetT<ItvDomTV,ItvTV> matchSet;
-	for(ImplMapT::const_iterator it=fst_it; it!=end_it; it++) 
-		matchSet.insert((*it).KEY_VALUE);
+    ItvSetT<ItvDomTV,ItvTV> matchSet;
+    for(ImplMapT::const_iterator it=fst_it; it!=end_it; it++) 
+        matchSet.insert((*it).KEY_VALUE);
 
-	ItvSetT<ItvDomTV,ItvTV> x_asSet; x_asSet.insert(x);
-	return x_asSet.isSubsetOf(matchSet);
+    ItvSetT<ItvDomTV,ItvTV> x_asSet; x_asSet.insert(x);
+    return x_asSet.isSubsetOf(matchSet);
 }
 
 
@@ -80,32 +80,32 @@ bool DiscItvMapT<ItvDomTV,CodomTV,ItvTV>::contains(const value_type& x_y)const
 template <class ItvDomTV, class CodomTV, class ItvTV>
 void DiscItvMapT<ItvDomTV,CodomTV,ItvTV>::insert(const value_type& x)
 {
-	/*
+    /*
 #ifdef _DEBUG
-	ItvSetT<ItvDomTV,ItvTV> clone; toItvSetT(clone);
+    ItvSetT<ItvDomTV,ItvTV> clone; toItvSetT(clone);
 #endif
-	*/
+    */
 
-	ItvMapAT<ItvDomTV,CodomTV,ItvTV>::insert(x);
+    ItvMapAT<ItvDomTV,CodomTV,ItvTV>::insert(x);
 
-	// ON_DEBUG(clone.insert(x);)
-	// J_ASSERT(isEqual(clone))
+    // ON_DEBUG(clone.insert(x);)
+    // J_ASSERT(isEqual(clone))
 }
 
 
 template <class ItvDomTV, class CodomTV, class ItvTV>
 void DiscItvMapT<ItvDomTV,CodomTV,ItvTV>::subtract(const value_type& x)
 {
-	/*
+    /*
 #ifdef _DEBUG
-	ItvSetT<ItvDomTV,ItvTV> clone; toItvSetT(clone);
+    ItvSetT<ItvDomTV,ItvTV> clone; toItvSetT(clone);
 #endif
-	*/
+    */
 
-	ItvMapAT<ItvDomTV,CodomTV,ItvTV>::subtract(x);
+    ItvMapAT<ItvDomTV,CodomTV,ItvTV>::subtract(x);
 
-	// ON_DEBUG(clone.subtract(x);)
-	// J_ASSERT(isEqual(clone))
+    // ON_DEBUG(clone.subtract(x);)
+    // J_ASSERT(isEqual(clone))
 }
 
 } // namespace itl

@@ -34,34 +34,34 @@ DEALINGS IN THE SOFTWARE.
 
 namespace itl
 {
-	template <int IVarCountV>
-	class StatVarInscriptorAT
-	{
-	protected:
-		typedef VarPermutationT<IVarCountV> IVarPermutationTD;
+    template <int IVarCountV>
+    class StatVarInscriptorAT
+    {
+    protected:
+        typedef VarPermutationT<IVarCountV> IVarPermutationTD;
 
-	public:
-		/** Die Permutation sorgt dafür, dass die Auswahl und Reihenfolge der Beschriftung
-			der unabhängigen Variablen geändert werden kann. */
-		void setIVarPermutation(const IVarPermutationTD& perm) { m_IPerm = perm; }
+    public:
+        /** Die Permutation sorgt dafür, dass die Auswahl und Reihenfolge der Beschriftung
+            der unabhängigen Variablen geändert werden kann. */
+        void setIVarPermutation(const IVarPermutationTD& perm) { m_IPerm = perm; }
 
-		/** Die Permutation sorgt dafür, dass die Auswahl und Reihenfolge der Beschriftung
-			der abhängigen Variablen geändert werden kann. */
-		void setDVarPermutation(const DVarPermutationT& perm) { m_DPerm = perm; }
+        /** Die Permutation sorgt dafür, dass die Auswahl und Reihenfolge der Beschriftung
+            der abhängigen Variablen geändert werden kann. */
+        void setDVarPermutation(const DVarPermutationT& perm) { m_DPerm = perm; }
 
-		/** Permutation der abhängigen Variablen liefern */
-		DVarPermutationT getDVarPermutation() { return m_DPerm; }
+        /** Permutation der abhängigen Variablen liefern */
+        DVarPermutationT getDVarPermutation() { return m_DPerm; }
 
-		/** Die Liste der Titel für unabhängige Variablen anfügen */
-		virtual void addIVarTitles(StringListT& headers)const=0;
+        /** Die Liste der Titel für unabhängige Variablen anfügen */
+        virtual void addIVarTitles(StringListT& headers)const=0;
 
-		/** Die Liste der Titel für unabhängige Variablen anfügen */
-		virtual void addDVarTitles(StringListT& headers)const=0;
+        /** Die Liste der Titel für unabhängige Variablen anfügen */
+        virtual void addDVarTitles(StringListT& headers)const=0;
 
-	protected:
-		IVarPermutationTD m_IPerm;
-		DVarPermutationT  m_DPerm;
-	};
+    protected:
+        IVarPermutationTD m_IPerm;
+        DVarPermutationT  m_DPerm;
+    };
 
 }
 

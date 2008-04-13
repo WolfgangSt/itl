@@ -37,11 +37,11 @@ DEALINGS IN THE SOFTWARE.
 
 namespace itl
 {
-	typedef int VarEnumTD;
-	typedef int StatVarTD;
-	typedef int GroupVarTD;
+    typedef int VarEnumTD;
+    typedef int StatVarTD;
+    typedef int GroupVarTD;
 
-	const GroupVarTD UNDEFINED_GROUP = -1;
+    const GroupVarTD UNDEFINED_GROUP = -1;
 }
 
 #endif // __itl_FixTupelConstT_JOFA_040621_H__

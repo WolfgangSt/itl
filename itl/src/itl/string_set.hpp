@@ -37,82 +37,82 @@ set of strings
 
 namespace itl
 {
-	typedef std::string StringTD;
-	typedef StringTD (StringTD::* StringSelectorFPD)()const; 
+    typedef std::string StringTD;
+    typedef StringTD (StringTD::* StringSelectorFPD)()const; 
 
-	//CL absi
-	// Compare class for Strings ignoring case
-	//struct  String_ICLess {
-	//	bool operator() (const std::string& c1, const std::string& c2) const 
-	//	{ return _stricmp(c1.c_str(), c2.c_str()) < 0; }
-	//};
-	//
-	//struct  String_Less {
-	//	bool operator() (const std::string& c1, const std::string& c2) const 
-	//	{ return c1 < c2; }
-	//};
+    //CL absi
+    // Compare class for Strings ignoring case
+    //struct  String_ICLess {
+    //    bool operator() (const std::string& c1, const std::string& c2) const 
+    //    { return _stricmp(c1.c_str(), c2.c_str()) < 0; }
+    //};
+    //
+    //struct  String_Less {
+    //    bool operator() (const std::string& c1, const std::string& c2) const 
+    //    { return c1 < c2; }
+    //};
 
-	// Compare class for Strings ignoring case
-	template<typename StringT>
-	struct  String_ICLess {
-		bool operator() (const StringT& c1, const StringT& c2) const 
-		{ return _stricmp(c1.c_str(), c2.c_str()) < 0; }
-	};
+    // Compare class for Strings ignoring case
+    template<typename StringT>
+    struct  String_ICLess {
+        bool operator() (const StringT& c1, const StringT& c2) const 
+        { return _stricmp(c1.c_str(), c2.c_str()) < 0; }
+    };
 
-	template<typename StringT>
-	struct  String_Less {
-		bool operator() (const StringT& c1, const StringT& c2) const 
-		{ return c1 < c2; }
-	};
+    template<typename StringT>
+    struct  String_Less {
+        bool operator() (const StringT& c1, const StringT& c2) const 
+        { return c1 < c2; }
+    };
 
-	// ---------------------------------------------------------------------------------
-	// sets of strings
-	// ---------------------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------
+    // sets of strings
+    // ---------------------------------------------------------------------------------
 
-	template <template<class>class Compare = std::less>
-	class string_set: public itl::set<std::string, Compare>
-	{
-	public:
-		typedef itl::set<std::string, Compare> base_type;
-		typedef typename base_type::iterator iterator;
-		typedef typename base_type::const_iterator const_iterator;
-		
-	public:
-		std::string asString(char* sep = " ")const; // JODO URG Sync 
-		std::string join(char* sep = " ")const { return asString(sep); } // JODO URG Sync 
-		void selectSet(string_set& selectees, StringSelectorFPD selector)const;
-	} ;
-
-
-	// ---------------------------------------------------------------------------------
-	// sets of strings ordered ignoring case
-	// ---------------------------------------------------------------------------------
-
-	typedef string_set<String_ICLess> ICstring_set; //CL depreciated
-	typedef string_set<String_ICLess> ICstring_setD;
-	
-
-	template <template<class>class Compare>
-	std::string string_set<Compare>::asString(char* sep)const
-	{
-		const_iterator it = this->begin();
-		if(it == this->end()) return std::string("");
-		else
-		{
-			std::string y(*it++);
-			while(it != this->end()) { y += sep; y += (*it++); }
-			return y;
-		}
-	}
+    template <template<class>class Compare = std::less>
+    class string_set: public itl::set<std::string, Compare>
+    {
+    public:
+        typedef itl::set<std::string, Compare> base_type;
+        typedef typename base_type::iterator iterator;
+        typedef typename base_type::const_iterator const_iterator;
+        
+    public:
+        std::string asString(char* sep = " ")const; // JODO URG Sync 
+        std::string join(char* sep = " ")const { return asString(sep); } // JODO URG Sync 
+        void selectSet(string_set& selectees, StringSelectorFPD selector)const;
+    } ;
 
 
-	template <template<class>class Compare>
-	void string_set<Compare>::selectSet(string_set& selectees, StringSelectorFPD selector)const
-	{
-		selectees.clear();
-		const_FORALL_THIS(it)
-			selectees.insert(((*it).*selector)());
-	}
+    // ---------------------------------------------------------------------------------
+    // sets of strings ordered ignoring case
+    // ---------------------------------------------------------------------------------
+
+    typedef string_set<String_ICLess> ICstring_set; //CL depreciated
+    typedef string_set<String_ICLess> ICstring_setD;
+    
+
+    template <template<class>class Compare>
+    std::string string_set<Compare>::asString(char* sep)const
+    {
+        const_iterator it = this->begin();
+        if(it == this->end()) return std::string("");
+        else
+        {
+            std::string y(*it++);
+            while(it != this->end()) { y += sep; y += (*it++); }
+            return y;
+        }
+    }
+
+
+    template <template<class>class Compare>
+    void string_set<Compare>::selectSet(string_set& selectees, StringSelectorFPD selector)const
+    {
+        selectees.clear();
+        const_FORALL_THIS(it)
+            selectees.insert(((*it).*selector)());
+    }
 
 } // namespace itl
 

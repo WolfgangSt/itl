@@ -37,52 +37,52 @@ DEALINGS IN THE SOFTWARE.
 namespace itl
 {
 
-	const int MAX_INPUT_ROW_SIZE = 10000;
+    const int MAX_INPUT_ROW_SIZE = 10000;
 
-	class diff_desc
-	{
-	public:
-		diff_desc(): m_SizeDiff(0), m_RowSizeDiff(0), m_Row(0), m_Col(0), m_Lhs(), m_Rhs() {}
+    class diff_desc
+    {
+    public:
+        diff_desc(): m_SizeDiff(0), m_RowSizeDiff(0), m_Row(0), m_Col(0), m_Lhs(), m_Rhs() {}
 
-		bool empty()const { 
-			return m_SizeDiff==0 && m_RowSizeDiff==0 && m_Row==0; 
-		}
+        bool empty()const { 
+            return m_SizeDiff==0 && m_RowSizeDiff==0 && m_Row==0; 
+        }
 
-		int getSizeDiff()const	{return m_SizeDiff;}
-		int getRowSizeDiff()const{return m_RowSizeDiff;}
-		int getRow()const		{return m_Row;}
-		int getcol()const		{return m_Col;}
-		std::string getLhs()const	{return m_Lhs;} 
-		std::string getRhs()const	{return m_Rhs;} 
+        int getSizeDiff()const    {return m_SizeDiff;}
+        int getRowSizeDiff()const{return m_RowSizeDiff;}
+        int getRow()const        {return m_Row;}
+        int getcol()const        {return m_Col;}
+        std::string getLhs()const    {return m_Lhs;} 
+        std::string getRhs()const    {return m_Rhs;} 
 
-		void setSizeDiff	(int SizeDiff){m_SizeDiff=SizeDiff;}
-		void setRowSizeDiff	(int RowSizeDiff){m_RowSizeDiff=RowSizeDiff;}
-		void setRow		(int Row){m_Row=Row;}
-		void setCol		(int Col){m_Col=Col;}
-		void setLhs (std::string Lhs){m_Lhs=Lhs;} 
-		void setRhs (std::string Rhs){m_Rhs=Rhs;} 
+        void setSizeDiff    (int SizeDiff){m_SizeDiff=SizeDiff;}
+        void setRowSizeDiff    (int RowSizeDiff){m_RowSizeDiff=RowSizeDiff;}
+        void setRow        (int Row){m_Row=Row;}
+        void setCol        (int Col){m_Col=Col;}
+        void setLhs (std::string Lhs){m_Lhs=Lhs;} 
+        void setRhs (std::string Rhs){m_Rhs=Rhs;} 
 
-		std::string afxReport(const std::string& file)const;
+        std::string afxReport(const std::string& file)const;
 
-	private:
-		int		m_SizeDiff;
-		int		m_RowSizeDiff;
-		int		m_Row;
-		int		m_Col;
-		std::string m_Lhs; 
-		std::string m_Rhs;
-	};
+    private:
+        int        m_SizeDiff;
+        int        m_RowSizeDiff;
+        int        m_Row;
+        int        m_Col;
+        std::string m_Lhs; 
+        std::string m_Rhs;
+    };
 
-	class string_sheet : public list<string_list>
-	{
-	public:
-		typedef list<string_list> string_sheetD;
-	public:
-		diff_desc diff(const string_sheet& rhs)const;
+    class string_sheet : public list<string_list>
+    {
+    public:
+        typedef list<string_list> string_sheetD;
+    public:
+        diff_desc diff(const string_sheet& rhs)const;
 
-		void fprint(FILE* file, const char* sep = "\t")const;
-		void fscan(std::ifstream& ifstr, const char* sep = "\t");
-	};
+        void fprint(FILE* file, const char* sep = "\t")const;
+        void fscan(std::ifstream& ifstr, const char* sep = "\t");
+    };
 }
 
 #endif // __itl_string_sheet_JOFA_050209_H__

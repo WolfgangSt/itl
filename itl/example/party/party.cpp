@@ -37,21 +37,21 @@ using namespace itl;
 
 /** Example party.cpp \file Party.cpp
 
-	Party.cpp demonstrates the possibilities of a split interval map (split_interval_map).
-	A split_interval_map maps intervals to a given content. In this case the content 
-	is a set of party guests represented by their name strings.
+    Party.cpp demonstrates the possibilities of a split interval map (split_interval_map).
+    A split_interval_map maps intervals to a given content. In this case the content 
+    is a set of party guests represented by their name strings.
 
-	As time goes by, groups of people join the party and leave later in the evening.
-	So we insert a time interval and a name set to the split_interval_map for the attendance
-	of each group of people, that come together and leave together.
+    As time goes by, groups of people join the party and leave later in the evening.
+    So we insert a time interval and a name set to the split_interval_map for the attendance
+    of each group of people, that come together and leave together.
 
-	On every overlap of intervals, the corresponding name sets are accumulated. At
-	the points of overlap the intervals are split. The accumulation of content on
-	overlap of intervals is always done via an operator += that has to be implemented
-	for the content parameter of the SpliItvMapT.
+    On every overlap of intervals, the corresponding name sets are accumulated. At
+    the points of overlap the intervals are split. The accumulation of content on
+    overlap of intervals is always done via an operator += that has to be implemented
+    for the content parameter of the SpliItvMapT.
 
-	Finally the split_interval_map contains the history of attendance and all points in
-	time, where the group of party guests changed.
+    Finally the split_interval_map contains the history of attendance and all points in
+    time, where the group of party guests changed.
 
     \include party/party.cpp
 */
@@ -66,41 +66,41 @@ typedef split_interval_map<Time, GuestsNameSetTD> PartyAttendenceHistoryTD;
 
 void party()
 {
-	GuestsNameSetTD mary_harry; 
-	mary_harry.insert("Mary");
-	mary_harry.insert("Harry");
+    GuestsNameSetTD mary_harry; 
+    mary_harry.insert("Mary");
+    mary_harry.insert("Harry");
 
-	GuestsNameSetTD diana_susan; 
-	diana_susan.insert("Diana");
-	diana_susan.insert("Susan");
+    GuestsNameSetTD diana_susan; 
+    diana_susan.insert("Diana");
+    diana_susan.insert("Susan");
 
-	GuestsNameSetTD peter; 
-	peter.insert("Peter");
+    GuestsNameSetTD peter; 
+    peter.insert("Peter");
 
-	PartyAttendenceHistoryTD party;
+    PartyAttendenceHistoryTD party;
 
-	party.insert(make_pair( rightopen_interval<Time>(Time(19,30), Time(23,00)), mary_harry) );
-	party.insert(make_pair( rightopen_interval<Time>(Time(20,10), Time(monday,0,0)), diana_susan) );
-	party.insert(make_pair( rightopen_interval<Time>(Time(22,15), Time(monday,0,30)), peter) );
+    party.insert(make_pair( rightopen_interval<Time>(Time(19,30), Time(23,00)), mary_harry) );
+    party.insert(make_pair( rightopen_interval<Time>(Time(20,10), Time(monday,0,0)), diana_susan) );
+    party.insert(make_pair( rightopen_interval<Time>(Time(22,15), Time(monday,0,30)), peter) );
 
-	PartyAttendenceHistoryTD::iterator it = party.begin();
-	while(it != party.end())
-	{
-		interval<Time> when = (*it).first;
-		// Who is at the party within the time interval 'when' ?
-		GuestsNameSetTD who = (*it++).second;
-		cout << when.asString() << ": " << who.asString() << endl;
-	}
+    PartyAttendenceHistoryTD::iterator it = party.begin();
+    while(it != party.end())
+    {
+        interval<Time> when = (*it).first;
+        // Who is at the party within the time interval 'when' ?
+        GuestsNameSetTD who = (*it++).second;
+        cout << when.asString() << ": " << who.asString() << endl;
+    }
 }
 
 
 int main()
 {
-	cout << ">> Interval Template Library: Sample party.cpp <<\n";
-	cout << "-------------------------------------------------\n";
-	party();
-	system("pause");
-	return 0;
+    cout << ">> Interval Template Library: Sample party.cpp <<\n";
+    cout << "-------------------------------------------------\n";
+    party();
+    system("pause");
+    return 0;
 }
 
 // Program output:

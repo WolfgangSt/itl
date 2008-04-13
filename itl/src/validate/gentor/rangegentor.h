@@ -27,7 +27,7 @@ DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
 /* ------------------------------------------------------------------
 class IntevalGentor
-	A random generator for Sets.
+    A random generator for Sets.
 --------------------------------------------------------------------*/
 #pragma once
 
@@ -36,47 +36,47 @@ class IntevalGentor
 
 namespace itl
 {
-	//JODO: RangeGentor is similat to ItvGentorT. RangeGentor might be replaced by ItvGentorT
-	// with some modifications applied to ItvGentorT.
+    //JODO: RangeGentor is similat to ItvGentorT. RangeGentor might be replaced by ItvGentorT
+    // with some modifications applied to ItvGentorT.
 
-	template <class Type> 
-	class RangeGentor: public RandomGentorAT<interval<Type> >
-	{
-	public:
-		virtual void some(interval<Type>& x);
-		interval<Type> last()const;
+    template <class Type> 
+    class RangeGentor: public RandomGentorAT<interval<Type> >
+    {
+    public:
+        virtual void some(interval<Type>& x);
+        interval<Type> last()const;
 
-		void setLowerBoundRange(int lwb, int upb)
-		{ setLowerBoundRange(rightopen_interval(lwb,upb)); }
-		void setLowerBoundRange(const interval<int>& range)
-		{ J_ASSERT(range.is_rightopen()||range.is_closed()); _lwbGentor.setRange(range); }
+        void setLowerBoundRange(int lwb, int upb)
+        { setLowerBoundRange(rightopen_interval(lwb,upb)); }
+        void setLowerBoundRange(const interval<int>& range)
+        { J_ASSERT(range.is_rightopen()||range.is_closed()); _lwbGentor.setRange(range); }
 
-		void setUpperBoundRange(int lwb, int upb)
-		{ setUpperBoundRange(rightopen_interval(lwb,upb)); }
-		void setUpperBoundRange(const interval<int>& range)
-		{ J_ASSERT(range.is_rightopen()||range.is_closed()); _upbGentor.setRange(range); }
+        void setUpperBoundRange(int lwb, int upb)
+        { setUpperBoundRange(rightopen_interval(lwb,upb)); }
+        void setUpperBoundRange(const interval<int>& range)
+        { J_ASSERT(range.is_rightopen()||range.is_closed()); _upbGentor.setRange(range); }
 
-	private:
-		NumberGentorT<Type>   _lwbGentor;
-		NumberGentorT<Type>   _upbGentor;
-		interval<Type>		  _last;
-	};
+    private:
+        NumberGentorT<Type>   _lwbGentor;
+        NumberGentorT<Type>   _upbGentor;
+        interval<Type>          _last;
+    };
 
-	template <class Type> 
-	void RangeGentor<Type>::some(interval<Type>& x)
-	{
-		Type lwb, upb;
-		_lwbGentor.some(lwb);
-		_upbGentor.some(upb);
-		_last = rightopen_interval(lwb, upb);
-		x = _last;
-	}
+    template <class Type> 
+    void RangeGentor<Type>::some(interval<Type>& x)
+    {
+        Type lwb, upb;
+        _lwbGentor.some(lwb);
+        _upbGentor.some(upb);
+        _last = rightopen_interval(lwb, upb);
+        x = _last;
+    }
 
-	template <class Type> 
-	interval<Type> RangeGentor<Type>::last()const
-	{
-		return _last;
-	}
+    template <class Type> 
+    interval<Type> RangeGentor<Type>::last()const
+    {
+        return _last;
+    }
 
 } // namespace itl
 

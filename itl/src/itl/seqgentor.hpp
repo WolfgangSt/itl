@@ -27,7 +27,7 @@ DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
 /* ------------------------------------------------------------------
 class SeqGentorT
-	A random generator for Sequences.
+    A random generator for Sequences.
 --------------------------------------------------------------------*/
 #ifndef __SeqGentorT_H_JOFA_000724__
 #define __SeqGentorT_H_JOFA_000724__
@@ -42,81 +42,81 @@ template <class SeqTV>
 class SeqGentorT: public RandomGentorAT<SeqTV>
 {
 public:
-	typedef typename SeqTV::value_type	ValueTypeTD;
-	typedef typename SeqTV::value_type	DomainTD;
-	typedef list<ValueTypeTD>           SampleTypeTD;
+    typedef typename SeqTV::value_type    ValueTypeTD;
+    typedef typename SeqTV::value_type    DomainTD;
+    typedef list<ValueTypeTD>           SampleTypeTD;
 
-	virtual void some(SeqTV& x);
-	void last(SeqTV& x)const;
-	void last_permuted(SeqTV& x)const;
+    virtual void some(SeqTV& x);
+    void last(SeqTV& x)const;
+    void last_permuted(SeqTV& x)const;
 
-	void setDomainGentor(RandomGentorAT<DomainTD>* gentor)
-	{ m_domainGentor = gentor; }
+    void setDomainGentor(RandomGentorAT<DomainTD>* gentor)
+    { m_domainGentor = gentor; }
 
-	void setRangeOfSampleSize(int lwb, int upb)
-	{ m_sampleSizeRange = rightopen_interval(lwb,upb); }
-	void setRangeOfSampleSize(const interval<int>& szRange)
-	{ J_ASSERT(szRange.isROpen()); m_sampleSizeRange = szRange; }
+    void setRangeOfSampleSize(int lwb, int upb)
+    { m_sampleSizeRange = rightopen_interval(lwb,upb); }
+    void setRangeOfSampleSize(const interval<int>& szRange)
+    { J_ASSERT(szRange.isROpen()); m_sampleSizeRange = szRange; }
 
-	void setUnique(bool truth) { m_unique = truth; }
+    void setUnique(bool truth) { m_unique = truth; }
 
 private:
-	RandomGentorAT<DomainTD>*	m_domainGentor;
-	interval<int>				m_sampleSizeRange;
-	SampleTypeTD				m_sample;
-	int							m_sampleSize;
-	bool						m_unique;
+    RandomGentorAT<DomainTD>*    m_domainGentor;
+    interval<int>                m_sampleSizeRange;
+    SampleTypeTD                m_sample;
+    int                            m_sampleSize;
+    bool                        m_unique;
 };
 
 
 template <class SeqTV> 
 void SeqGentorT<SeqTV>::some(SeqTV& x)
 {
-	NumberGentorT<int> intGentor;
-	x.clear();
-	m_sample.clear();
-	m_sampleSize = intGentor(m_sampleSizeRange);
+    NumberGentorT<int> intGentor;
+    x.clear();
+    m_sample.clear();
+    m_sampleSize = intGentor(m_sampleSizeRange);
 
-	for(int i=0; i<m_sampleSize; i++)
-	{
-		DomainTD key;
-		m_domainGentor->some(key);
+    for(int i=0; i<m_sampleSize; i++)
+    {
+        DomainTD key;
+        m_domainGentor->some(key);
 
-		if(m_unique)
-		{
-			typename SeqTV::iterator pos_ = std::find(x.begin(), x.end(), key);
-			if(pos_ == x.end())
-				x.push_back(key);
-		}
-		else x.push_back(key);
+        if(m_unique)
+        {
+            typename SeqTV::iterator pos_ = std::find(x.begin(), x.end(), key);
+            if(pos_ == x.end())
+                x.push_back(key);
+        }
+        else x.push_back(key);
 
-		m_sample.push_back(key);
-	}
+        m_sample.push_back(key);
+    }
 }
 
 
 template <class SeqTV> 
 void SeqGentorT<SeqTV>::last(SeqTV& x)const
 {
-	x.clear();
-	const_FORALL(typename SampleTypeTD, it, m_sample) x.insert(*it);
+    x.clear();
+    const_FORALL(typename SampleTypeTD, it, m_sample) x.insert(*it);
 }
 
 template <class SeqTV>
 void SeqGentorT<SeqTV>::last_permuted(SeqTV& x)const
 {
-	x.clear();
+    x.clear();
 
-	SampleTypeTD perm;
+    SampleTypeTD perm;
 
-	NumberGentorT<int> intGentor;
-	const_FORALL(typename SampleTypeTD, it, m_sample)
-	{
-		if( 0==intGentor(2) ) perm.push_back(*it);
-		else perm.push_front(*it);
-	}
+    NumberGentorT<int> intGentor;
+    const_FORALL(typename SampleTypeTD, it, m_sample)
+    {
+        if( 0==intGentor(2) ) perm.push_back(*it);
+        else perm.push_front(*it);
+    }
 
-	const_FORALL(typename SampleTypeTD, pit, perm) x.insert(*pit);
+    const_FORALL(typename SampleTypeTD, pit, perm) x.insert(*pit);
 }
 
 
@@ -129,14 +129,14 @@ void SeqGentorT<SeqTV>::lastSample(SampleTypeTD& sam)const
 template <class SeqTV> 
 void SeqGentorT<SeqTV>::lastSample_permuted(SampleTypeTD& sam)
 {
-	NumberGentorT<unsigned> intGentor;
-	x.clear();
-	int coin = intGentor.some(2); // gives 0 or 1
-	const_FORALL(typename SampleTypeTD, it, m_sample)
-	{
-		if( 0==intGentor.some(2) ) sam.push_back(*it);
-		else sam.push_front(*it);
-	}
+    NumberGentorT<unsigned> intGentor;
+    x.clear();
+    int coin = intGentor.some(2); // gives 0 or 1
+    const_FORALL(typename SampleTypeTD, it, m_sample)
+    {
+        if( 0==intGentor.some(2) ) sam.push_back(*it);
+        else sam.push_front(*it);
+    }
 }
 */
 

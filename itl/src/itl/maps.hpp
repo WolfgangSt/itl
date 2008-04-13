@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
 /* ------------------------------------------------------------------
 class maps
-	a general and generic set interface
+    a general and generic set interface
 --------------------------------------------------------------------*/
 #ifndef __maps_h_JOFA_990223__
 #define __maps_h_JOFA_990223__
@@ -41,38 +41,38 @@ namespace itl
 {
 
 /**  
-	Template interface-class <b>maps</b> defines a general interface
-	for maps.
+    Template interface-class <b>maps</b> defines a general interface
+    for maps.
 
-	Template-parameter <b>DomainT</b>: Domain-type or key type of the map.
-	
-	Template-parameter <b>CodomainT</b>: Codomain-typ or data type of the map.
-	
-	@author  Joachim Faulhaber
+    Template-parameter <b>DomainT</b>: Domain-type or key type of the map.
+    
+    Template-parameter <b>CodomainT</b>: Codomain-typ or data type of the map.
+    
+    @author  Joachim Faulhaber
 */
 template <class DomainT, class CodomainT> class maps
 {
 public:
-	/// base-type of the map; that is (key,value)-pairs 
-	typedef std::pair<DomainT,CodomainT> base_value_type ;
+    /// base-type of the map; that is (key,value)-pairs 
+    typedef std::pair<DomainT,CodomainT> base_value_type ;
 
-	/// Remove all elements of the map
-	virtual void clear()=0;
+    /// Remove all elements of the map
+    virtual void clear()=0;
 
-	/// Is the map empty?
-	virtual bool empty()const=0;
+    /// Is the map empty?
+    virtual bool empty()const=0;
 
-	/// Does the map contain an element for key x
-	virtual bool contains(const DomainT& x)const=0;
+    /// Does the map contain an element for key x
+    virtual bool contains(const DomainT& x)const=0;
 
-	/// Does the map contain a pair(x,y), where x is a key and y a value
-	virtual bool contains(const base_value_type& x_y)const=0;
+    /// Does the map contain a pair(x,y), where x is a key and y a value
+    virtual bool contains(const base_value_type& x_y)const=0;
 
-	/// insert a pair(x,y) into the map
-	virtual void insert  (const base_value_type& x_y)=0;
+    /// insert a pair(x,y) into the map
+    virtual void insert  (const base_value_type& x_y)=0;
 
-	/// remove a pair(x,y) from the map
-	virtual void subtract(const base_value_type& x_y)=0;
+    /// remove a pair(x,y) from the map
+    virtual void subtract(const base_value_type& x_y)=0;
 
 } ;
 

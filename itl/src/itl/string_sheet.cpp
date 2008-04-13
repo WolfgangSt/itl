@@ -34,91 +34,91 @@ using namespace itl;
 
 string diff_desc::afxReport(const string& file)const
 {
-	string msg = "Difference in:\n";
-	msg	+= file + "\n";
-	msg	+= "d_size=" + ReprBaseT<int>::toString(m_SizeDiff);
-	msg	+= "  col=" + ReprBaseT<int>::toString(m_RowSizeDiff) + "\n";
-	msg	+= "First Difference 1:ref 2:cur:\n";
-	msg	+= "First Difference 1:ref 2:cur:\n";
-	msg	+= m_Lhs + "\n";
-	msg	+= m_Rhs + "\n";
+    string msg = "Difference in:\n";
+    msg    += file + "\n";
+    msg    += "d_size=" + ReprBaseT<int>::toString(m_SizeDiff);
+    msg    += "  col=" + ReprBaseT<int>::toString(m_RowSizeDiff) + "\n";
+    msg    += "First Difference 1:ref 2:cur:\n";
+    msg    += "First Difference 1:ref 2:cur:\n";
+    msg    += m_Lhs + "\n";
+    msg    += m_Rhs + "\n";
 
-	return msg;	
+    return msg;    
 }
 
 
 void string_sheet::fprint(FILE* file, const char* sep)const
 {
-	const_FORALL_THIS(row_)
-	{
-		const string_list& row = (*row_);
-		fprintf(file, "%s\n", row.join(sep).c_str());
-	}
+    const_FORALL_THIS(row_)
+    {
+        const string_list& row = (*row_);
+        fprintf(file, "%s\n", row.join(sep).c_str());
+    }
 }
 
 void string_sheet::fscan(ifstream& infile, const char* sep)
 {
-	char rawLine[MAX_INPUT_ROW_SIZE]; //JODO flex
+    char rawLine[MAX_INPUT_ROW_SIZE]; //JODO flex
 
-	while(!infile.eof())
-	{
-		infile.getline(rawLine, MAX_INPUT_ROW_SIZE);
-		string_list row;
-		row.split(rawLine, sep);
-		push_back(row);
-	}
-	pop_back(); // Schliessende Leerzeile wegnehmen
+    while(!infile.eof())
+    {
+        infile.getline(rawLine, MAX_INPUT_ROW_SIZE);
+        string_list row;
+        row.split(rawLine, sep);
+        push_back(row);
+    }
+    pop_back(); // Schliessende Leerzeile wegnehmen
 }
 
 
 diff_desc string_sheet::diff(const string_sheet& rhs)const
 {
-	int thisSize = size();
-	int rhsSize = rhs.size();
+    int thisSize = size();
+    int rhsSize = rhs.size();
 
-	diff_desc diff;
-	diff.setSizeDiff(thisSize - rhsSize);
+    diff_desc diff;
+    diff.setSizeDiff(thisSize - rhsSize);
 
-	int rowSize = std::min(thisSize, rhsSize);
+    int rowSize = std::min(thisSize, rhsSize);
 
-	string_sheet::const_iterator thisRow_ = begin();
-	string_sheet::const_iterator rhsRow_  = rhs.begin();
+    string_sheet::const_iterator thisRow_ = begin();
+    string_sheet::const_iterator rhsRow_  = rhs.begin();
 
-	for(int rowIdx = 1; rowIdx <= rowSize; rowIdx++)
-	{
-		const string_list& thisRow = (*thisRow_);
-		const string_list& rhsRow  = (*rhsRow_);
+    for(int rowIdx = 1; rowIdx <= rowSize; rowIdx++)
+    {
+        const string_list& thisRow = (*thisRow_);
+        const string_list& rhsRow  = (*rhsRow_);
 
-		int lhsRowSize = thisRow.size();
-		int rhsRowSize = rhsRow.size();
-		if(lhsRowSize != rhsRowSize)
-		{
-			diff.setRow(rowIdx);
-			diff.setCol(std::min(lhsRowSize, rhsRowSize)+1);
-			diff.setRowSizeDiff(lhsRowSize - rhsRowSize);
-			return diff;
-		}
+        int lhsRowSize = thisRow.size();
+        int rhsRowSize = rhsRow.size();
+        if(lhsRowSize != rhsRowSize)
+        {
+            diff.setRow(rowIdx);
+            diff.setCol(std::min(lhsRowSize, rhsRowSize)+1);
+            diff.setRowSizeDiff(lhsRowSize - rhsRowSize);
+            return diff;
+        }
 
-		string_list::const_iterator lhsCol_ = thisRow.begin();
-		string_list::const_iterator rhsCol_ = rhsRow.begin();
+        string_list::const_iterator lhsCol_ = thisRow.begin();
+        string_list::const_iterator rhsCol_ = rhsRow.begin();
 
-		for(int colIdx=1; colIdx <= lhsRowSize; colIdx++)
-		{
-			if((*lhsCol_) != (*rhsCol_))
-			{
-				diff.setRow(rowIdx);
-				diff.setCol(colIdx);
-				diff.setLhs(*lhsCol_);
-				diff.setRhs(*rhsCol_);
-				return diff;
-			}
-			lhsCol_++;
-			rhsCol_++;
-		}
+        for(int colIdx=1; colIdx <= lhsRowSize; colIdx++)
+        {
+            if((*lhsCol_) != (*rhsCol_))
+            {
+                diff.setRow(rowIdx);
+                diff.setCol(colIdx);
+                diff.setLhs(*lhsCol_);
+                diff.setRhs(*rhsCol_);
+                return diff;
+            }
+            lhsCol_++;
+            rhsCol_++;
+        }
 
-		thisRow_++;
-		rhsRow_++;
-	}
+        thisRow_++;
+        rhsRow_++;
+    }
 
-	return diff;
+    return diff;
 }

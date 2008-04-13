@@ -36,115 +36,115 @@ DEALINGS IN THE SOFTWARE.
 
 namespace itl
 {
-	/** class FastVarTupelT: Die Tupel unabhängiger Variablen. Beschreiben
-		die Zellen eines n-dimensionalen Zählwürfels
+    /** class FastVarTupelT: Die Tupel unabhängiger Variablen. Beschreiben
+        die Zellen eines n-dimensionalen Zählwürfels
 
-		Zuständigkeit: Zellen eines n-dimensionalen Zählwürfels beschreiben. Als
-		Index für Merkmalskombinationsrechner dienen. (Um)Ordnen, Projizieren und
-		Gruppieren unterstützen.
+        Zuständigkeit: Zellen eines n-dimensionalen Zählwürfels beschreiben. Als
+        Index für Merkmalskombinationsrechner dienen. (Um)Ordnen, Projizieren und
+        Gruppieren unterstützen.
 
-		Zusammenarbeit: Order, Projection, Grouping, Merkmalskombinationsrecher
+        Zusammenarbeit: Order, Projection, Grouping, Merkmalskombinationsrecher
 
-		FastVarTupel ist schnell (Fast), da es als einfaches array[int] implemetiert wird
-	*/
-	template <int varCountV>
-	class FastVarTupelT
-	{
-	public:
-		/// Default Ctor. Achtung absichtlich keine Initialisierung!
-		FastVarTupelT(){};
-		/// Ctor initialisiere alle Elemente des Tupels auf einen Wert
-		FastVarTupelT(StatVarTD);
+        FastVarTupel ist schnell (Fast), da es als einfaches array[int] implemetiert wird
+    */
+    template <int varCountV>
+    class FastVarTupelT
+    {
+    public:
+        /// Default Ctor. Achtung absichtlich keine Initialisierung!
+        FastVarTupelT(){};
+        /// Ctor initialisiere alle Elemente des Tupels auf einen Wert
+        FastVarTupelT(StatVarTD);
 
-		/// Copy Ctor
-		FastVarTupelT(const FastVarTupelT&);
+        /// Copy Ctor
+        FastVarTupelT(const FastVarTupelT&);
 
-		/// Assignment
-		FastVarTupelT& operator = (const FastVarTupelT&);
+        /// Assignment
+        FastVarTupelT& operator = (const FastVarTupelT&);
 
-		/// Größe des Tupels
-		int size()const { return varCountV; }
+        /// Größe des Tupels
+        int size()const { return varCountV; }
 
-		/// Gleichheit
-		bool operator == (const FastVarTupelT&)const;
+        /// Gleichheit
+        bool operator == (const FastVarTupelT&)const;
 
-		/// Standard-Ordnung
-		bool operator < (const FastVarTupelT&)const;
+        /// Standard-Ordnung
+        bool operator < (const FastVarTupelT&)const;
 
-		/// Lesender Zugriff auf Elemente
-		StatVarTD  operator [] (int idx)const { return m_tupel[idx]; }
-		/// Modifizierender Zugriff
-		StatVarTD& operator [] (int idx) { return m_tupel[idx]; }
+        /// Lesender Zugriff auf Elemente
+        StatVarTD  operator [] (int idx)const { return m_tupel[idx]; }
+        /// Modifizierender Zugriff
+        StatVarTD& operator [] (int idx) { return m_tupel[idx]; }
 
-		///
-		std::string asString()const;
+        ///
+        std::string asString()const;
 
-	private:
-		StatVarTD m_tupel[varCountV];
-		
-	};
-
-
-	template <int varCountV>
-	itl::FastVarTupelT<varCountV>::FastVarTupelT (StatVarTD val) // vor VC8: itl::FastVarTupelT<varCountV>::FastVarTupelT<varCountV>(StatVarTD val)
-	{
-		FOREACH_VAR(idx) 
-			m_tupel[idx] = val;
-	}
-
-	template <int varCountV>
-	itl::FastVarTupelT<varCountV>::FastVarTupelT (const FastVarTupelT<varCountV>& src)
-	{
-		FOREACH_VAR(idx)
-			m_tupel[idx] = src.m_tupel[idx];
-	}
-
-	template <int varCountV>
-	FastVarTupelT<varCountV>& FastVarTupelT<varCountV>::operator = (const FastVarTupelT<varCountV>& src)
-	{
-		if(&src != this)
-		{
-			FOREACH_VAR(idx)
-				m_tupel[idx] = src.m_tupel[idx];			
-		}	
-		return *this;
-	}
+    private:
+        StatVarTD m_tupel[varCountV];
+        
+    };
 
 
-	template <int varCountV>
-	bool FastVarTupelT<varCountV>::operator == (const FastVarTupelT<varCountV>& rhs)const
-	{
-		for(int idx=0; idx < varCountV; idx++)
-			if(m_tupel[idx] != rhs.m_tupel[idx]) return false;
+    template <int varCountV>
+    itl::FastVarTupelT<varCountV>::FastVarTupelT (StatVarTD val) // vor VC8: itl::FastVarTupelT<varCountV>::FastVarTupelT<varCountV>(StatVarTD val)
+    {
+        FOREACH_VAR(idx) 
+            m_tupel[idx] = val;
+    }
 
-		return true;
-	}
+    template <int varCountV>
+    itl::FastVarTupelT<varCountV>::FastVarTupelT (const FastVarTupelT<varCountV>& src)
+    {
+        FOREACH_VAR(idx)
+            m_tupel[idx] = src.m_tupel[idx];
+    }
+
+    template <int varCountV>
+    FastVarTupelT<varCountV>& FastVarTupelT<varCountV>::operator = (const FastVarTupelT<varCountV>& src)
+    {
+        if(&src != this)
+        {
+            FOREACH_VAR(idx)
+                m_tupel[idx] = src.m_tupel[idx];            
+        }    
+        return *this;
+    }
 
 
-	template <int varCountV>
-	bool FastVarTupelT<varCountV>::operator < (const FastVarTupelT<varCountV>& rhs)const
-	{
-		FOREACH_VAR(idx)
-			if(m_tupel[idx] < rhs.m_tupel[idx]) return true;
-			else if (m_tupel[idx] > rhs.m_tupel[idx]) return false;
+    template <int varCountV>
+    bool FastVarTupelT<varCountV>::operator == (const FastVarTupelT<varCountV>& rhs)const
+    {
+        for(int idx=0; idx < varCountV; idx++)
+            if(m_tupel[idx] != rhs.m_tupel[idx]) return false;
 
-		// because all are equal
-		return false;
-	}
+        return true;
+    }
 
-	template <int varCountV>
-	std::string FastVarTupelT<varCountV>::asString()const
-	{
-		std::stringstream repr;
-		repr << "(";
-		for(int idx = 0; idx < varCountV-1; idx++)
-			repr << m_tupel[idx] << ",";
 
-		if(varCountV==0) repr << ")";
-		else repr << m_tupel[varCountV-1] << ")";
+    template <int varCountV>
+    bool FastVarTupelT<varCountV>::operator < (const FastVarTupelT<varCountV>& rhs)const
+    {
+        FOREACH_VAR(idx)
+            if(m_tupel[idx] < rhs.m_tupel[idx]) return true;
+            else if (m_tupel[idx] > rhs.m_tupel[idx]) return false;
 
-		return repr.str();
-	}
+        // because all are equal
+        return false;
+    }
+
+    template <int varCountV>
+    std::string FastVarTupelT<varCountV>::asString()const
+    {
+        std::stringstream repr;
+        repr << "(";
+        for(int idx = 0; idx < varCountV-1; idx++)
+            repr << m_tupel[idx] << ",";
+
+        if(varCountV==0) repr << ")";
+        else repr << m_tupel[varCountV-1] << ")";
+
+        return repr.str();
+    }
 
 
 } // namespace itl

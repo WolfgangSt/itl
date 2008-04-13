@@ -36,31 +36,31 @@ DEALINGS IN THE SOFTWARE.
 namespace itl
 {
 
-	class DVarPermutationT
-	{
-	private:
-		typedef vector<VarEnumTD> PermutationTD;
-	public:
-		DVarPermutationT(){}
-		DVarPermutationT(int capacity);
+    class DVarPermutationT
+    {
+    private:
+        typedef vector<VarEnumTD> PermutationTD;
+    public:
+        DVarPermutationT(){}
+        DVarPermutationT(int capacity);
 
-		int capacity()const { return m_Permutation.capacity(); }
-		int size()const { return m_Permutation.size(); }
+        int capacity()const { return m_Permutation.capacity(); }
+        int size()const { return m_Permutation.size(); }
 
-		DVarPermutationT& add(VarEnumTD var);
-		DVarPermutationT& del(int count = 1);
+        DVarPermutationT& add(VarEnumTD var);
+        DVarPermutationT& del(int count = 1);
 
-		void setIdentity();
-		DVarPermutationT& clear() { m_Permutation.clear(); return *this; }
+        void setIdentity();
+        DVarPermutationT& clear() { m_Permutation.clear(); return *this; }
 
-		/// Liefert zu einem Index der Permutation den urspruenglichen index.
-		VarEnumTD operator[] (VarEnumTD permIdx)const { return m_Permutation[permIdx]; }
+        /// Liefert zu einem Index der Permutation den urspruenglichen index.
+        VarEnumTD operator[] (VarEnumTD permIdx)const { return m_Permutation[permIdx]; }
 
-		DVarPermutationT operator() (VarEnumTD fst, VarEnumTD lst)const;
+        DVarPermutationT operator() (VarEnumTD fst, VarEnumTD lst)const;
 
-	private:
-		PermutationTD m_Permutation;
-	};
+    private:
+        PermutationTD m_Permutation;
+    };
 
 }
 

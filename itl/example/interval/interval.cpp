@@ -37,35 +37,35 @@ using namespace itl;
 
 /** Example interval.cpp \file interval.cpp
 
-	Of course much of the library code deals with intervals which are implemented
-	as class interval.
+    Of course much of the library code deals with intervals which are implemented
+    as class interval.
 
-	This program gives a very short samlpe of different interval instances.
+    This program gives a very short samlpe of different interval instances.
 
     \include interval/interval.cpp
 */
 int main()
 {
-	cout << ">> Interval Template Library: Sample interval.cpp <<\n";
-	cout << "---------------------------------------------------\n";
+    cout << ">> Interval Template Library: Sample interval.cpp <<\n";
+    cout << "---------------------------------------------------\n";
 
-	interval<int>    int_Itv  = closed_interval(3,7);
-	interval<double> sqrt_Itv = rightopen_interval(1/sqrt(2.0), sqrt(2.0));
-	interval<string> city_Itv = leftopen_interval<string>("Barcelona", "Boston");
-	interval<Time>   time_Itv = open_interval(Time(monday,8,30), Time(monday,17,20));
+    interval<int>    int_Itv  = closed_interval(3,7);
+    interval<double> sqrt_Itv = rightopen_interval(1/sqrt(2.0), sqrt(2.0));
+    interval<string> city_Itv = leftopen_interval<string>("Barcelona", "Boston");
+    interval<Time>   time_Itv = open_interval(Time(monday,8,30), Time(monday,17,20));
 
-	cout << "Interval<int>: " << int_Itv.asString() << endl;
-	cout << "Interval<double>: " << sqrt_Itv.asString() << " does " 
-		                         << string(sqrt_Itv.contains(sqrt(2.0))?"":"NOT") << " contain sqrt(2)" << endl;
-	cout << "Interval<string>: " << city_Itv.asString() << " does "  
-	                             << string(city_Itv.contains("Barcelona")?"":"NOT") << " contain 'Barcelona'" << endl;
-	cout << "Interval<string>: " << city_Itv.asString() << " does "  
-	                             << string(city_Itv.contains("Berlin")?"":"NOT") << " contain 'Berlin'" << endl;
-	cout << "Interval<Time>: " << time_Itv.asString() << endl;
+    cout << "Interval<int>: " << int_Itv.asString() << endl;
+    cout << "Interval<double>: " << sqrt_Itv.asString() << " does " 
+                                 << string(sqrt_Itv.contains(sqrt(2.0))?"":"NOT") << " contain sqrt(2)" << endl;
+    cout << "Interval<string>: " << city_Itv.asString() << " does "  
+                                 << string(city_Itv.contains("Barcelona")?"":"NOT") << " contain 'Barcelona'" << endl;
+    cout << "Interval<string>: " << city_Itv.asString() << " does "  
+                                 << string(city_Itv.contains("Berlin")?"":"NOT") << " contain 'Berlin'" << endl;
+    cout << "Interval<Time>: " << time_Itv.asString() << endl;
 
-	system("pause");
+    system("pause");
 
-	return 0;
+    return 0;
 }
 
 // Program output:

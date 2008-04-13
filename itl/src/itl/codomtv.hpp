@@ -43,51 +43,51 @@ namespace itl
 
 /// defines the signature for the template value parameter of SplitItvMapT
 /**  
-	class <b>CodomTV</b> defines the signature (functions and operations)
-	that are demanded for a value class of the interval container SplitItvT.
-	These are: Default-ctor, equality ==, += and -=.
-	
-	@author  Joachim Faulhaber
+    class <b>CodomTV</b> defines the signature (functions and operations)
+    that are demanded for a value class of the interval container SplitItvT.
+    These are: Default-ctor, equality ==, += and -=.
+    
+    @author  Joachim Faulhaber
 */
 
 class CodomTV
 {
 public:
-	/// Liefert einen Wert; in der Regel einen Nullwert oder Leerwert
-	CodomTV();
+    /// Liefert einen Wert; in der Regel einen Nullwert oder Leerwert
+    CodomTV();
 
-	/** Gleichheits Operator
+    /** Gleichheits Operator
 
-		Die Operation <tt>==</tt> muß korrekt implementiert werden. Für atomare
-		Datentypen und viele Klassen gibt bereits eine Implementierung dieser
-		Operation.
-	*/
-	bool operator == (const CodomTV& y, const CodomTV& y)const;
+        Die Operation <tt>==</tt> muß korrekt implementiert werden. Für atomare
+        Datentypen und viele Klassen gibt bereits eine Implementierung dieser
+        Operation.
+    */
+    bool operator == (const CodomTV& y, const CodomTV& y)const;
 
-	/** Additionsoperator mit der Eigenschaft <tt>x + y - y == x</tt>
+    /** Additionsoperator mit der Eigenschaft <tt>x + y - y == x</tt>
 
-		Die Operation <tt>+</tt> muß nicht explizit implementiert sein. 
-		Sie muß	nur in ihrer <tt>+=</tt> Variante zur Verfügung stehen.
-	*/
-	CodomTV& operator += (const CodomTV& y);
+        Die Operation <tt>+</tt> muß nicht explizit implementiert sein. 
+        Sie muß    nur in ihrer <tt>+=</tt> Variante zur Verfügung stehen.
+    */
+    CodomTV& operator += (const CodomTV& y);
 
-	/** Subtraktionsoperator mit der Eigenschaft <tt>x + y - y == x</tt>
+    /** Subtraktionsoperator mit der Eigenschaft <tt>x + y - y == x</tt>
 
-		Die Operation <tt>-</tt> muß nicht explizit implementiert sein.
-		Sie muß	nur in ihrer <tt>-=</tt> Variante zur Verfügung stehen.
-  		Die Eigenschaften, die <tt>+= und -=</tt> erfüllen müssen, lauten genauer 
-		
-		<tt>x = x1; x+=y; x-=y; impliziert x==x1 (1)</tt>
+        Die Operation <tt>-</tt> muß nicht explizit implementiert sein.
+        Sie muß    nur in ihrer <tt>-=</tt> Variante zur Verfügung stehen.
+          Die Eigenschaften, die <tt>+= und -=</tt> erfüllen müssen, lauten genauer 
+        
+        <tt>x = x1; x+=y; x-=y; impliziert x==x1 (1)</tt>
 
-		<tt>x = x1; x+=CodomTV(); impliziert x==x1 (2)</tt>
+        <tt>x = x1; x+=CodomTV(); impliziert x==x1 (2)</tt>
 
-		<tt>x = x1; x-=CodomTV(); impliziert x==x1 (3)</tt>
+        <tt>x = x1; x-=CodomTV(); impliziert x==x1 (3)</tt>
 
-		Die Umkehrung von (1) <tt>x - y + y == x</tt> ist nicht gefordert. Dies würde z.B.
-		von sets nicht erfüllt. Der Defaultkonstruktor CodomTV() liefert
-		ein neutrales Element bezüglich + und -
-	*/
-	CodomTV& operator -= (const CodomTV& y);
+        Die Umkehrung von (1) <tt>x - y + y == x</tt> ist nicht gefordert. Dies würde z.B.
+        von sets nicht erfüllt. Der Defaultkonstruktor CodomTV() liefert
+        ein neutrales Element bezüglich + und -
+    */
+    CodomTV& operator -= (const CodomTV& y);
 
 } ;
 

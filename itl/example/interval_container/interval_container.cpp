@@ -38,59 +38,59 @@ using namespace itl;
 
 /** Example interval_container.cpp \file interval_container.cpp
 
-	Sample file interval_container.cpp demontrates basic charactersistics of 
-	interval container objects.
+    Sample file interval_container.cpp demontrates basic charactersistics of 
+    interval container objects.
 
-	Simple interactive shells for the manipulation of interval containers can be found
-	in the 'tests.sln' project.
+    Simple interactive shells for the manipulation of interval containers can be found
+    in the 'tests.sln' project.
 
     \include interval_container/interval_container.cpp
 */
 void interval_container_basics()
 {
-	interval<Time> night_and_day = rightopen_interval(Time(monday,   20,00), Time(tuesday,  20,00));
-	interval<Time> day_and_night = rightopen_interval(Time(tuesday,   7,00), Time(wednesday, 7,00));
-	interval<Time> next_morning  = rightopen_interval(Time(wednesday, 7,00), Time(wednesday,10,00));
-	interval<Time> next_evening  = rightopen_interval(Time(wednesday,18,00), Time(wednesday,21,00));
+    interval<Time> night_and_day = rightopen_interval(Time(monday,   20,00), Time(tuesday,  20,00));
+    interval<Time> day_and_night = rightopen_interval(Time(tuesday,   7,00), Time(wednesday, 7,00));
+    interval<Time> next_morning  = rightopen_interval(Time(wednesday, 7,00), Time(wednesday,10,00));
+    interval<Time> next_evening  = rightopen_interval(Time(wednesday,18,00), Time(wednesday,21,00));
 
-	// An interval set of type interval_set joins intervals that that overlap or touch each other.
-	interval_set<Time> joinedTimes;
-	joinedTimes.insert(night_and_day);
-	joinedTimes.insert(day_and_night);
-	joinedTimes.insert(next_morning);
-	joinedTimes.insert(next_evening);
+    // An interval set of type interval_set joins intervals that that overlap or touch each other.
+    interval_set<Time> joinedTimes;
+    joinedTimes.insert(night_and_day);
+    joinedTimes.insert(day_and_night);
+    joinedTimes.insert(next_morning);
+    joinedTimes.insert(next_evening);
 
-	cout << "Joined times:    " << joinedTimes.asString() << endl;
+    cout << "Joined times:    " << joinedTimes.asString() << endl;
 
-	// A discrete interval set of type split_interval_set joins intervals that that overlap but it
-	// preserves interval borders that just touch each other. You may represent time grids 
-	// like the months of a year as a split_interval_set.
-	split_interval_set<Time> discreteTimes;
-	discreteTimes.insert(night_and_day);
-	discreteTimes.insert(day_and_night);
-	discreteTimes.insert(next_morning);
-	discreteTimes.insert(next_evening);
+    // A discrete interval set of type split_interval_set joins intervals that that overlap but it
+    // preserves interval borders that just touch each other. You may represent time grids 
+    // like the months of a year as a split_interval_set.
+    split_interval_set<Time> discreteTimes;
+    discreteTimes.insert(night_and_day);
+    discreteTimes.insert(day_and_night);
+    discreteTimes.insert(next_morning);
+    discreteTimes.insert(next_evening);
 
-	cout << "Discrete times: " << discreteTimes.asString() << endl;
+    cout << "Discrete times: " << discreteTimes.asString() << endl;
 
-	// A split interval map splits up inserted intervals on overlap and aggregates the
-	// associated quantities via the operator +=
-	split_interval_map<Time, int> overlapCounter;
-	overlapCounter.insert(make_pair(night_and_day, 1));
-	overlapCounter.insert(make_pair(day_and_night, 1));
-	overlapCounter.insert(make_pair(next_morning, 1));
-	overlapCounter.insert(make_pair(next_evening, 1));
+    // A split interval map splits up inserted intervals on overlap and aggregates the
+    // associated quantities via the operator +=
+    split_interval_map<Time, int> overlapCounter;
+    overlapCounter.insert(make_pair(night_and_day, 1));
+    overlapCounter.insert(make_pair(day_and_night, 1));
+    overlapCounter.insert(make_pair(next_morning, 1));
+    overlapCounter.insert(make_pair(next_evening, 1));
 
-	cout << "Split times:    " << overlapCounter.asString() << endl;
+    cout << "Split times:    " << overlapCounter.asString() << endl;
 }
 
 int main()
 {
-	cout << ">> Interval Template Library: Sample interval_container.cpp <<\n";
-	cout << "--------------------------------------------------------------\n";
-	interval_container_basics();
-	system("pause");
-	return 0;
+    cout << ">> Interval Template Library: Sample interval_container.cpp <<\n";
+    cout << "--------------------------------------------------------------\n";
+    interval_container_basics();
+    system("pause");
+    return 0;
 }
 
 

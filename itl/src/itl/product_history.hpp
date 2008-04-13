@@ -35,66 +35,66 @@ namespace itl
 {
 
 /**    
-	<b>Eine Klasse zur Verarbeitung von Episoden unterschiedlichen Typs in einer gemeinsamen Historie</b>
+    <b>Eine Klasse zur Verarbeitung von Episoden unterschiedlichen Typs in einer gemeinsamen Historie</b>
 
-	Template-Parameter <b>ItvDomTV</b>: Domain-Typ der History, also Typ der
-	Elemente des Definitionsbereichs (Schlüssel), die die History enthalten kann
-	(z.B. Tage, Sekunden, Monate, int u.ä.).
+    Template-Parameter <b>ItvDomTV</b>: Domain-Typ der History, also Typ der
+    Elemente des Definitionsbereichs (Schlüssel), die die History enthalten kann
+    (z.B. Tage, Sekunden, Monate, int u.ä.).
 
     Template-Parameter <b>TypeDomTV</b>: TypeDomTV ist der Definitionsbereich (Domain)
-	der Typen von Episoden, die in der Produkt-Historie verwendet werden können.
-	
-	TypeDomTV kapselt im wesentlichen einen Aufzählungstyp, der die Typen
-	von Episoden definiert, die möglich sind (Z.B. Aufenthalte, Kostenübernahmen und
-	Bettenbelegungen).
+    der Typen von Episoden, die in der Produkt-Historie verwendet werden können.
+    
+    TypeDomTV kapselt im wesentlichen einen Aufzählungstyp, der die Typen
+    von Episoden definiert, die möglich sind (Z.B. Aufenthalte, Kostenübernahmen und
+    Bettenbelegungen).
 
     product_history wird ohne weiere Umschweife direkt aus einem \ref split_interval_map
-	abgeleitet.
+    abgeleitet.
 
     Die Werte dieser Historie sind eine (Auf)sammlung oder Produkt von Episoden
-	verschiedenen Typs \ref episode_product. Die Historie solcher
-	Episodensammlungen teilt sich immer dort auf, wo irgend ein Unterschied
-	in den Episoden eintritt.
+    verschiedenen Typs \ref episode_product. Die Historie solcher
+    Episodensammlungen teilt sich immer dort auf, wo irgend ein Unterschied
+    in den Episoden eintritt.
 
-	Mit anderen Worten die ProduktHistorie enthält zusammenhängende Intervalle,
-	wo die Anzahl und Werte gesammelter Episonden konstant sind.
+    Mit anderen Worten die ProduktHistorie enthält zusammenhängende Intervalle,
+    wo die Anzahl und Werte gesammelter Episonden konstant sind.
 
     Dies ist ein universelles Werkzeug, um Mengen asynchroner Historien
-	zusammenzufassen und die feinste Darstellung als eine Historie zu
-	erhalten, die alle 'Zustandsänderungen' ihrer Teilhistorien repräsentiert.
+    zusammenzufassen und die feinste Darstellung als eine Historie zu
+    erhalten, die alle 'Zustandsänderungen' ihrer Teilhistorien repräsentiert.
 
     { H<T1>, .. , H<Ti> }  -> H<{T1, .. , Ti}>
-	
-	@author  Joachim Faulhaber
+    
+    @author  Joachim Faulhaber
 */
 template <class ItvDomTV, class TypeDomTV>
 class product_history : public split_interval_map<ItvDomTV, episode_product<ItvDomTV,TypeDomTV> >
 {
 public:
-	typedef				episode_product<ItvDomTV,TypeDomTV> EpisodeProductTD;
-	typedef				split_interval_map<ItvDomTV, EpisodeProductTD> BaseTypeTD;
-	typedef	typename	BaseTypeTD::value_type value_type;
-	typedef	typename	BaseTypeTD::interval_type IntervalTD;
-	typedef	typename	BaseTypeTD::domain_type DomainTD;
-	
-	typedef typename	BaseTypeTD::data_type data_type;
-	typedef	typename	EpisodeProductTD::EpisodePTD EpisodePTD;
-	
+    typedef                episode_product<ItvDomTV,TypeDomTV> EpisodeProductTD;
+    typedef                split_interval_map<ItvDomTV, EpisodeProductTD> BaseTypeTD;
+    typedef    typename    BaseTypeTD::value_type value_type;
+    typedef    typename    BaseTypeTD::interval_type IntervalTD;
+    typedef    typename    BaseTypeTD::domain_type DomainTD;
+    
+    typedef typename    BaseTypeTD::data_type data_type;
+    typedef    typename    EpisodeProductTD::EpisodePTD EpisodePTD;
+    
 public:
 
-	void insert(EpisodePTD epi)
-	{
-		EpisodeProductTD epiRec;
-		epiRec.insert(epi);
-		BaseTypeTD::insert(value_type(epi->interval(), epiRec));
-	}
+    void insert(EpisodePTD epi)
+    {
+        EpisodeProductTD epiRec;
+        epiRec.insert(epi);
+        BaseTypeTD::insert(value_type(epi->interval(), epiRec));
+    }
 
 protected:
-	
-	void insert(const value_type& val)
-	{
-		BaseTypeTD::insert(val);
-	}
+    
+    void insert(const value_type& val)
+    {
+        BaseTypeTD::insert(val);
+    }
 };
 
 } // namespace itl

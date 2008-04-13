@@ -27,8 +27,8 @@ DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
 /* ------------------------------------------------------------------
 class itl::map
-	a general map class that extends stl-maps
-	for concepts InplaceAddable and InplaceSubtractable
+    a general map class that extends stl-maps
+    for concepts InplaceAddable and InplaceSubtractable
 --------------------------------------------------------------------*/
 #ifndef __itl_map_h_JOFA_070519__
 #define __itl_map_h_JOFA_070519__
@@ -44,311 +44,311 @@ class itl::map
 
 namespace itl
 {
-	/*JODO move this comment to concept InplaceAddable, InplaceSubtractable, InplaceCombinable
+    /*JODO move this comment to concept InplaceAddable, InplaceSubtractable, InplaceCombinable
 
-		Many features of the itl are based on the concept, that instances of
-		template parameter are InplaceAddable(InplaceSubtractible). That is, 
-		operators += and -= are implemented.
-	*/
+        Many features of the itl are based on the concept, that instances of
+        template parameter are InplaceAddable(InplaceSubtractible). That is, 
+        operators += and -= are implemented.
+    */
 
-	/// an stl based map implementing inplace addition and subtraction operators += and -=
-	//JODO 1_0_1 documentation
-	/** 
+    /// an stl based map implementing inplace addition and subtraction operators += and -=
+    //JODO 1_0_1 documentation
+    /** 
 
-		@author Joachim Faulhaber
-	*/
-	template 
-	<
-		typename KeyT, 
-		typename DataT, 
-		template<class>class Compare = std::less,
-		template<class>class Alloc   = std::allocator 
-	>
-	class map: private std::map<KeyT, DataT, Compare<KeyT>, 
-		                        Alloc<std::pair<const KeyT, DataT> > >
-	{
-	public:
-		typedef Alloc<typename std::pair<const KeyT, DataT> >  allocator_type;
+        @author Joachim Faulhaber
+    */
+    template 
+    <
+        typename KeyT, 
+        typename DataT, 
+        template<class>class Compare = std::less,
+        template<class>class Alloc   = std::allocator 
+    >
+    class map: private std::map<KeyT, DataT, Compare<KeyT>, 
+                                Alloc<std::pair<const KeyT, DataT> > >
+    {
+    public:
+        typedef Alloc<typename std::pair<const KeyT, DataT> >  allocator_type;
 
-		typedef typename itl::map<KeyT, DataT, Compare, Alloc> type;
-		typedef typename std::map<KeyT, DataT, Compare<KeyT>, 
-			                      allocator_type>              base_type;
-		typedef typename itl::set<KeyT, Compare, Alloc >       set_type;
+        typedef typename itl::map<KeyT, DataT, Compare, Alloc> type;
+        typedef typename std::map<KeyT, DataT, Compare<KeyT>, 
+                                  allocator_type>              base_type;
+        typedef typename itl::set<KeyT, Compare, Alloc >       set_type;
 
-	public:
-		typedef KeyT                                       key_type;
-		typedef DataT                                      mapped_type;
-		typedef DataT                                      data_type;
-		typedef std::pair<const KeyT, DataT>               value_type;
-		typedef Compare<KeyT>                              key_compare;
-		typedef typename base_type::value_compare          value_compare;
+    public:
+        typedef KeyT                                       key_type;
+        typedef DataT                                      mapped_type;
+        typedef DataT                                      data_type;
+        typedef std::pair<const KeyT, DataT>               value_type;
+        typedef Compare<KeyT>                              key_compare;
+        typedef typename base_type::value_compare          value_compare;
 
-	public:
-		typedef typename base_type::pointer                pointer;
-		typedef typename base_type::const_pointer          const_pointer;
-		typedef typename base_type::reference              reference;
-		typedef typename base_type::const_reference        const_reference;
-		typedef typename base_type::iterator               iterator;
-		typedef typename base_type::const_iterator         const_iterator;
-		typedef typename base_type::size_type              size_type;
-		typedef typename base_type::difference_type        difference_type;
-		typedef typename base_type::reverse_iterator       reverse_iterator;
-		typedef typename base_type::const_reverse_iterator const_reverse_iterator;
-		
-	public:
-		map(){}
-		map(const key_compare& comp): base_type(comp){}
+    public:
+        typedef typename base_type::pointer                pointer;
+        typedef typename base_type::const_pointer          const_pointer;
+        typedef typename base_type::reference              reference;
+        typedef typename base_type::const_reference        const_reference;
+        typedef typename base_type::iterator               iterator;
+        typedef typename base_type::const_iterator         const_iterator;
+        typedef typename base_type::size_type              size_type;
+        typedef typename base_type::difference_type        difference_type;
+        typedef typename base_type::reverse_iterator       reverse_iterator;
+        typedef typename base_type::const_reverse_iterator const_reverse_iterator;
+        
+    public:
+        map(){}
+        map(const key_compare& comp): base_type(comp){}
 
-		template <class InputIterator>
-		map(InputIterator f, InputIterator l): base_type(f,l) {}
+        template <class InputIterator>
+        map(InputIterator f, InputIterator l): base_type(f,l) {}
 
-		template <class InputIterator>
-		map(InputIterator f, InputIterator l, const key_compare& comp): base_type(f,l,comp) {}
+        template <class InputIterator>
+        map(InputIterator f, InputIterator l, const key_compare& comp): base_type(f,l,comp) {}
 
-		map(const map& src): base_type::map(src){}
+        map(const map& src): base_type::map(src){}
 
-		map& operator=(const map& src) { base_type::operator=(src); return *this; } 
-		void swap(map& src) { base_type::swap(src); }
+        map& operator=(const map& src) { base_type::operator=(src); return *this; } 
+        void swap(map& src) { base_type::swap(src); }
 
-		using base_type::begin;
-		using base_type::end;
-		using base_type::rbegin;
-		using base_type::rend;
+        using base_type::begin;
+        using base_type::end;
+        using base_type::rbegin;
+        using base_type::rend;
 
-		using base_type::size;
-		using base_type::max_size;
-		using base_type::empty;
+        using base_type::size;
+        using base_type::max_size;
+        using base_type::empty;
 
-		using base_type::key_comp;
-		using base_type::value_comp;
+        using base_type::key_comp;
+        using base_type::value_comp;
 
-		using base_type::insert;
-		using base_type::erase;
-		using base_type::clear;
-		using base_type::find;
-		using base_type::count;
+        using base_type::insert;
+        using base_type::erase;
+        using base_type::clear;
+        using base_type::find;
+        using base_type::count;
 
-		using base_type::lower_bound;
-		using base_type::upper_bound;
-		using base_type::equal_range;
+        using base_type::lower_bound;
+        using base_type::upper_bound;
+        using base_type::equal_range;
 
-		using base_type::operator[];
+        using base_type::operator[];
 
-	public:
-		// --------------------------------------------------------------------
-		// itl specific extensions
+    public:
+        // --------------------------------------------------------------------
+        // itl specific extensions
 
-		//JODO concept set
-		/// Checks if a key element is in the map
-		bool contains(const KeyT& x)const { return !(find(x) == end()); }
+        //JODO concept set
+        /// Checks if a key element is in the map
+        bool contains(const KeyT& x)const { return !(find(x) == end()); }
 
-		/** Is <tt>*this</tt> contained in <tt>super</tt>? */
-		bool contained_in(const map& super)const { return Map::contained_in(*this, super); }
+        /** Is <tt>*this</tt> contained in <tt>super</tt>? */
+        bool contained_in(const map& super)const { return Map::contained_in(*this, super); }
 
-		/** Does <tt>*this</tt> contain <tt>sub</tt>? */
-		bool contains(const map& sub)const { return Map::contained_in(sub, *this); }
+        /** Does <tt>*this</tt> contain <tt>sub</tt>? */
+        bool contains(const map& sub)const { return Map::contained_in(sub, *this); }
 
-		// Default inject-function using += on CodomTV
-		iterator inject(const value_type& vp);
+        // Default inject-function using += on CodomTV
+        iterator inject(const value_type& vp);
 
-		iterator subtract(const key_type& key);
-		// Default subtract-function using -= on CodomTV
-		iterator subtract(const value_type& val);
+        iterator subtract(const key_type& key);
+        // Default subtract-function using -= on CodomTV
+        iterator subtract(const value_type& val);
 
-		//JODO concept InplaceAddable
-		/** Add a map \c x2 to this map. If an element of \c x2 already exists
-			in \c *this, add up the contents using <tt>operator +=</tt>. */
-		map& operator += (const map& x2) { Set::inject(*this, x2); return *this; }
+        //JODO concept InplaceAddable
+        /** Add a map \c x2 to this map. If an element of \c x2 already exists
+            in \c *this, add up the contents using <tt>operator +=</tt>. */
+        map& operator += (const map& x2) { Set::inject(*this, x2); return *this; }
 
-		//JODO concept InplaceSubtractable
-		/** Subtract a map \c x2 from this map. If an element of \c x2 already exists
-			in \c *this, subtract the contents using <tt>operator -=</tt>. */
-		map& operator -= (const map& x2) { Set::subtract(*this, x2); return *this; }
+        //JODO concept InplaceSubtractable
+        /** Subtract a map \c x2 from this map. If an element of \c x2 already exists
+            in \c *this, subtract the contents using <tt>operator -=</tt>. */
+        map& operator -= (const map& x2) { Set::subtract(*this, x2); return *this; }
 
-		/** Subtract a set \c x2 from this map. Every element of \c this map that
-			has a key that is element of \c x2 is deleted from the map. */
-		map& operator -= (const set_type& x2) { Set::subtract(*this, x2); return *this; }
+        /** Subtract a set \c x2 from this map. Every element of \c this map that
+            has a key that is element of \c x2 is deleted from the map. */
+        map& operator -= (const set_type& x2) { Set::subtract(*this, x2); return *this; }
 
-		//JODO
-		/** Intersect map \c x2 and \c *this.
-			So \c *this becomes the intersection of \c *this and \c x2 */
-		map& operator *= (const map& x2) { Map::intersect(*this, x2); return *this; }
+        //JODO
+        /** Intersect map \c x2 and \c *this.
+            So \c *this becomes the intersection of \c *this and \c x2 */
+        map& operator *= (const map& x2) { Map::intersect(*this, x2); return *this; }
 
-		/** Intersect set \c x2 and \c *this.
-			So \c *this becomes the intersection of \c *this and \c x2 */
-		map& operator *= (const set_type& x2) { Map::intersect(*this, x2); return *this; }
+        /** Intersect set \c x2 and \c *this.
+            So \c *this becomes the intersection of \c *this and \c x2 */
+        map& operator *= (const set_type& x2) { Map::intersect(*this, x2); return *this; }
 
-		template<typename IteratorT>
-		static const key_type& key_value(IteratorT& value_){ return (*value_).first; }
+        template<typename IteratorT>
+        static const key_type& key_value(IteratorT& value_){ return (*value_).first; }
 
-		template<typename IteratorT>
-		static const data_type& data_value(IteratorT& value_){ return (*value_).second; }
+        template<typename IteratorT>
+        static const data_type& data_value(IteratorT& value_){ return (*value_).second; }
 
-		template<typename LeftIterT, typename RightIterT>
-		static bool key_less(LeftIterT& lhs_, RightIterT& rhs_) 
-		{ return key_compare()((*lhs_).first,(*rhs_).first); }
+        template<typename LeftIterT, typename RightIterT>
+        static bool key_less(LeftIterT& lhs_, RightIterT& rhs_) 
+        { return key_compare()((*lhs_).first,(*rhs_).first); }
 
-		static value_type make_element(const key_type& key_val, const data_type& data_val)
-		{ return value_type(key_val, data_val); }
+        static value_type make_element(const key_type& key_val, const data_type& data_val)
+        { return value_type(key_val, data_val); }
 
-		//JODO: semantics implementation clash size/element_count
-		size_t element_count()const { return size(); }
+        //JODO: semantics implementation clash size/element_count
+        size_t element_count()const { return size(); }
 
 
-		//JODO concept StringRepresentable
-		/** Represent this map as string */
-		std::string asString()const;
+        //JODO concept StringRepresentable
+        /** Represent this map as string */
+        std::string asString()const;
 
 #ifdef __ITL_EXTENDED__
-		/** Keep the elements in *this map to which property \c hasProperty applies. 
-		Erase all the rest. */
-		map& keep_if(const PropertyT<value_type>& hasProperty);
+        /** Keep the elements in *this map to which property \c hasProperty applies. 
+        Erase all the rest. */
+        map& keep_if(const PropertyT<value_type>& hasProperty);
 
-		/** Erase the elements in *this map to which property \c hasProperty applies. 
-		Keep all the rest. */
-		map& drop_if(const PropertyT<value_type>& hasProperty);
+        /** Erase the elements in *this map to which property \c hasProperty applies. 
+        Keep all the rest. */
+        map& drop_if(const PropertyT<value_type>& hasProperty);
 
-		/** Copy the elements in map \c src to which property \c hasProperty applies 
-		into \c *this map. */
-		map& copy_if(const PropertyT<value_type>& hasProperty, const map& src);
+        /** Copy the elements in map \c src to which property \c hasProperty applies 
+        into \c *this map. */
+        map& copy_if(const PropertyT<value_type>& hasProperty, const map& src);
 #endif
-	};
+    };
 
 
-	template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
-	inline bool operator == (const itl::map<KeyT,DataT,Compare,Alloc>& lhs,
-							 const itl::map<KeyT,DataT,Compare,Alloc>& rhs)
-	{
-		typedef std::map<KeyT,DataT,Compare<KeyT>,Alloc<KeyT> > base_type;
-		return operator==((const base_type&)lhs, (const base_type&)rhs);
-	}
-	
-	template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
-	inline bool operator < (const itl::map<KeyT,DataT,Compare,Alloc>& lhs,
-		const itl::map<KeyT,DataT,Compare,Alloc>& rhs)
-	{
-		typedef std::map<KeyT,DataT,Compare<KeyT>,Alloc<KeyT> > base_type;
-		return operator<((const base_type&)lhs, (const base_type&)rhs);
-	}
+    template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
+    inline bool operator == (const itl::map<KeyT,DataT,Compare,Alloc>& lhs,
+                             const itl::map<KeyT,DataT,Compare,Alloc>& rhs)
+    {
+        typedef std::map<KeyT,DataT,Compare<KeyT>,Alloc<KeyT> > base_type;
+        return operator==((const base_type&)lhs, (const base_type&)rhs);
+    }
+    
+    template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
+    inline bool operator < (const itl::map<KeyT,DataT,Compare,Alloc>& lhs,
+        const itl::map<KeyT,DataT,Compare,Alloc>& rhs)
+    {
+        typedef std::map<KeyT,DataT,Compare<KeyT>,Alloc<KeyT> > base_type;
+        return operator<((const base_type&)lhs, (const base_type&)rhs);
+    }
 
-	template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
-	inline bool operator <= (const itl::map<KeyT,DataT,Compare,Alloc>& lhs,
-		const itl::map<KeyT,DataT,Compare,Alloc>& rhs)
-	{
-		typedef std::map<KeyT,DataT,Compare<KeyT>,Alloc<KeyT> > base_type;
-		return operator<=((const base_type&)lhs, (const base_type&)rhs);
-	}
+    template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
+    inline bool operator <= (const itl::map<KeyT,DataT,Compare,Alloc>& lhs,
+        const itl::map<KeyT,DataT,Compare,Alloc>& rhs)
+    {
+        typedef std::map<KeyT,DataT,Compare<KeyT>,Alloc<KeyT> > base_type;
+        return operator<=((const base_type&)lhs, (const base_type&)rhs);
+    }
 
 
-	template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
-	typename map<KeyT,DataT,Compare,Alloc>::iterator
-		map<KeyT,DataT,Compare,Alloc>::inject(const value_type& val)
-	{
-		if(val.CONT_VALUE == DataT())
-			return end();
+    template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
+    typename map<KeyT,DataT,Compare,Alloc>::iterator
+        map<KeyT,DataT,Compare,Alloc>::inject(const value_type& val)
+    {
+        if(val.CONT_VALUE == DataT())
+            return end();
 
-		std::pair<iterator, bool> insertion = insert(val);
+        std::pair<iterator, bool> insertion = insert(val);
 
-		if( insertion.WAS_SUCCESSFUL )
-			return insertion.ITERATOR ;
-		else
-		{
-			iterator it = insertion.ITERATOR;
-			(*it).CONT_VALUE += val.CONT_VALUE;
+        if( insertion.WAS_SUCCESSFUL )
+            return insertion.ITERATOR ;
+        else
+        {
+            iterator it = insertion.ITERATOR;
+            (*it).CONT_VALUE += val.CONT_VALUE;
 
-			if((*it).CONT_VALUE == DataT()) //neutron absorbtion
-			{
-				erase(it);
-				return end();
-			}
-			else
-				return it ;
-		}
-	}
+            if((*it).CONT_VALUE == DataT()) //neutron absorbtion
+            {
+                erase(it);
+                return end();
+            }
+            else
+                return it ;
+        }
+    }
 
-	template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
-	typename map<KeyT,DataT,Compare,Alloc>::iterator
-		map<KeyT,DataT,Compare,Alloc>::subtract(const key_type& key)
-	{
-		iterator it_ = find(key);
-		if(it_ != end())
-			erase(it_);
+    template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
+    typename map<KeyT,DataT,Compare,Alloc>::iterator
+        map<KeyT,DataT,Compare,Alloc>::subtract(const key_type& key)
+    {
+        iterator it_ = find(key);
+        if(it_ != end())
+            erase(it_);
 
-		return end();
-	}
+        return end();
+    }
 
-	template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
-	typename map<KeyT,DataT,Compare,Alloc>::iterator
-		map<KeyT,DataT,Compare,Alloc>::subtract(const value_type& val)
-	{
-		iterator it_ = find(val.KEY_VALUE);
-		if(it_ != end())
-		{
-			(*it_).CONT_VALUE -= val.CONT_VALUE;
+    template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
+    typename map<KeyT,DataT,Compare,Alloc>::iterator
+        map<KeyT,DataT,Compare,Alloc>::subtract(const value_type& val)
+    {
+        iterator it_ = find(val.KEY_VALUE);
+        if(it_ != end())
+        {
+            (*it_).CONT_VALUE -= val.CONT_VALUE;
 
-			if((*it_).CONT_VALUE == DataT()) //neutron absorbtion
-			{
-				erase(it_);
-				return end();
-			}
-			else
-				return it_;
-		}
+            if((*it_).CONT_VALUE == DataT()) //neutron absorbtion
+            {
+                erase(it_);
+                return end();
+            }
+            else
+                return it_;
+        }
 
-		return it_;
-	}
+        return it_;
+    }
 
-	template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
-	std::string map<KeyT,DataT,Compare,Alloc>::asString()const
-	{ 
-		std::string repr;
-		const_FORALL_THIS(it) {
-			std::string elem("(");
-			elem += ReprBaseT<KeyT>::toString((*it).KEY_VALUE);
-			elem += "->";
-			elem += ReprBaseT<DataT>::toString((*it).CONT_VALUE);
-			elem += ")";
+    template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
+    std::string map<KeyT,DataT,Compare,Alloc>::asString()const
+    { 
+        std::string repr;
+        const_FORALL_THIS(it) {
+            std::string elem("(");
+            elem += ReprBaseT<KeyT>::toString((*it).KEY_VALUE);
+            elem += "->";
+            elem += ReprBaseT<DataT>::toString((*it).CONT_VALUE);
+            elem += ")";
 
-			repr += elem;
-		}
-		return repr;
-	}
+            repr += elem;
+        }
+        return repr;
+    }
 
 
 #ifdef __ITL_EXTENDED__
-	template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
-	map<KeyT,DataT,Compare,Alloc>& map<KeyT,DataT,Compare,Alloc>
-		::drop_if(const PropertyT<value_type>& hasProperty)
-	{
-		iterator it = begin(), victim;
-		while(it != end())
-			if ( hasProperty(*it) ) { victim = it++; erase(victim); } else ++it;
-		return *this;
-	}
+    template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
+    map<KeyT,DataT,Compare,Alloc>& map<KeyT,DataT,Compare,Alloc>
+        ::drop_if(const PropertyT<value_type>& hasProperty)
+    {
+        iterator it = begin(), victim;
+        while(it != end())
+            if ( hasProperty(*it) ) { victim = it++; erase(victim); } else ++it;
+        return *this;
+    }
 
-	template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
-	map<KeyT,DataT,Compare,Alloc>& map<KeyT,DataT,Compare,Alloc>
-		::keep_if(const PropertyT<value_type>& hasProperty)
-	{
-		iterator it = begin(), victim;
-		while(it != end())
-			if ( !hasProperty(*it) ) { victim = it++; erase(victim); } else ++it;
-		return *this;
-	}
+    template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
+    map<KeyT,DataT,Compare,Alloc>& map<KeyT,DataT,Compare,Alloc>
+        ::keep_if(const PropertyT<value_type>& hasProperty)
+    {
+        iterator it = begin(), victim;
+        while(it != end())
+            if ( !hasProperty(*it) ) { victim = it++; erase(victim); } else ++it;
+        return *this;
+    }
 
-	template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
-	map<KeyT,DataT,Compare,Alloc>& map<KeyT,DataT,Compare,Alloc>
-		::copy_if(const PropertyT<value_type>& hasProperty, const map<KeyT,DataT,Compare,Alloc>& src)
-	{
-		if(this == &src) return keep_if(hasProperty);
-		// otherwise
-		clear();
-		const_iterator it = src.begin();
-		while(it != src.end()) {
-			if ( hasProperty(*it) ) insert(*it); it++;
-		}
-		return *this;
-	}
+    template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
+    map<KeyT,DataT,Compare,Alloc>& map<KeyT,DataT,Compare,Alloc>
+        ::copy_if(const PropertyT<value_type>& hasProperty, const map<KeyT,DataT,Compare,Alloc>& src)
+    {
+        if(this == &src) return keep_if(hasProperty);
+        // otherwise
+        clear();
+        const_iterator it = src.begin();
+        while(it != src.end()) {
+            if ( hasProperty(*it) ) insert(*it); it++;
+        }
+        return *this;
+    }
 #endif
 
 } // namespace itl

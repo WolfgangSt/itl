@@ -37,52 +37,52 @@ namespace itl
 {
 
 
-	template <int varCountV>
-	class var_tuple_inscriptor
-	{
-	private:
-		typedef var_tuple<varCountV> var_tupleT;
-		typedef var_permutation<varCountV> var_permutationT;
-		typedef MapT<int,int> OmissionMapTD;
+    template <int varCountV>
+    class var_tuple_inscriptor
+    {
+    private:
+        typedef var_tuple<varCountV> var_tupleT;
+        typedef var_permutation<varCountV> var_permutationT;
+        typedef MapT<int,int> OmissionMapTD;
 
-	public:
-		/** Die Permutation sorgt dafür, dass die Auswahl und Reihenfolge der Beschriftung
-			geändert werden kann. */
-		void setPermutation(const var_permutationT& perm) { m_Perm = perm; }
-		var_permutationT getPermutation()const { return m_Perm; }
+    public:
+        /** Die Permutation sorgt dafür, dass die Auswahl und Reihenfolge der Beschriftung
+            geändert werden kann. */
+        void setPermutation(const var_permutationT& perm) { m_Perm = perm; }
+        var_permutationT getPermutation()const { return m_Perm; }
 
-		/** Konvertiere einen Tupel von Werten unabhängiger Variablen in eine StringListe
-			von Beschriftungen: Diese dient als Zeilenbeschriftung für Statistikblätter
-			der Excelausgabe.
+        /** Konvertiere einen Tupel von Werten unabhängiger Variablen in eine StringListe
+            von Beschriftungen: Diese dient als Zeilenbeschriftung für Statistikblätter
+            der Excelausgabe.
 
-			'changeVar' ist der Index der Variablen, die sich bei einer Iteration aendert.
-			So haben wir die Moeglichkeit nur VariablenLabels bei Aenderung auszugeben.
-			changeVar=0 fuehrt dazu, dass alle Variablenabels fuer ein Tulel ausgegeben
-			werden.
-		*/
-		virtual void getValueLabels(StringListT& valueLabels, const var_tupleT& tup, 
-									VarEnumTD changeVar, int grade)const=0;
+            'changeVar' ist der Index der Variablen, die sich bei einer Iteration aendert.
+            So haben wir die Moeglichkeit nur VariablenLabels bei Aenderung auszugeben.
+            changeVar=0 fuehrt dazu, dass alle Variablenabels fuer ein Tulel ausgegeben
+            werden.
+        */
+        virtual void getValueLabels(StringListT& valueLabels, const var_tupleT& tup, 
+                                    VarEnumTD changeVar, int grade)const=0;
 
-		/** Die Liste der Variablentitel anfügen */
-		virtual void addVarTitles(StringListT& headers)const=0;
+        /** Die Liste der Variablentitel anfügen */
+        virtual void addVarTitles(StringListT& headers)const=0;
 
-		/** Nach der Variable 'permVar' werden 'count' spalten leer gelassen */
-		void addOmission(int permVar, int count)
-		{ m_Omissions[permVar] = count; }
+        /** Nach der Variable 'permVar' werden 'count' spalten leer gelassen */
+        void addOmission(int permVar, int count)
+        { m_Omissions[permVar] = count; }
 
-		int omissionCount(int permVar)const 
-		{ 
-			OmissionMapTD::const_iterator count_ = m_Omissions.find(permVar);
-			if(count_ == m_Omissions.end())
-				return 0;
-			else
-				return (*count_).CONT_VALUE;
-		}
+        int omissionCount(int permVar)const 
+        { 
+            OmissionMapTD::const_iterator count_ = m_Omissions.find(permVar);
+            if(count_ == m_Omissions.end())
+                return 0;
+            else
+                return (*count_).CONT_VALUE;
+        }
 
-	protected:
-		var_permutationT m_Perm;
-		OmissionMapTD	 m_Omissions;
-	};
+    protected:
+        var_permutationT m_Perm;
+        OmissionMapTD     m_Omissions;
+    };
 
 }
 

@@ -29,10 +29,10 @@ DEALINGS IN THE SOFTWARE.
 
 /* ------------------------------------------------------------------
 class MapGentorT
-	A random generator for Maps.
-	ContainerGentorT does not cover maps, because its
-	value_type contains const parts so void some(value_type& x)
-	can NOT be implemented 
+    A random generator for Maps.
+    ContainerGentorT does not cover maps, because its
+    value_type contains const parts so void some(value_type& x)
+    can NOT be implemented 
 --------------------------------------------------------------------*/
 #ifndef __MAPGENTOR_H_JOFA_000724__
 #define __MAPGENTOR_H_JOFA_000724__
@@ -47,87 +47,87 @@ template <class MapTV>
 class MapGentorT: public RandomGentorAT<MapTV>
 {
 public:
-	typedef typename MapTV::value_type	ValueTypeTD;
-	typedef typename MapTV::key_type	DomainTD;
-	typedef typename MapTV::data_type	CodomainTD;
-	typedef list<ValueTypeTD>	SampleTypeTD;
+    typedef typename MapTV::value_type    ValueTypeTD;
+    typedef typename MapTV::key_type    DomainTD;
+    typedef typename MapTV::data_type    CodomainTD;
+    typedef list<ValueTypeTD>    SampleTypeTD;
 
-	MapGentorT(): p_domainGentor(NULL), p_codomainGentor(NULL) {}
-	~MapGentorT() { delete p_domainGentor; delete p_codomainGentor; }
+    MapGentorT(): p_domainGentor(NULL), p_codomainGentor(NULL) {}
+    ~MapGentorT() { delete p_domainGentor; delete p_codomainGentor; }
 
-	virtual void some(MapTV& x);
-	void last(MapTV& x)const;
-	void last_permuted(MapTV& x)const;
+    virtual void some(MapTV& x);
+    void last(MapTV& x)const;
+    void last_permuted(MapTV& x)const;
 
-	void setDomainGentor(RandomGentorAT<DomainTD>* gentor)
-	{ 
-		if(p_domainGentor)
-			delete p_domainGentor;
-		p_domainGentor = gentor; 
-	}
-	void setCodomainGentor(RandomGentorAT<CodomainTD>* gentor)
-	{ 
-		if(p_codomainGentor)
-			delete p_codomainGentor;
-		p_codomainGentor = gentor; 
-	}
+    void setDomainGentor(RandomGentorAT<DomainTD>* gentor)
+    { 
+        if(p_domainGentor)
+            delete p_domainGentor;
+        p_domainGentor = gentor; 
+    }
+    void setCodomainGentor(RandomGentorAT<CodomainTD>* gentor)
+    { 
+        if(p_codomainGentor)
+            delete p_codomainGentor;
+        p_codomainGentor = gentor; 
+    }
 
-	void setRangeOfSampleSize(int lwb, int upb)
-	{ m_sampleSizeRange = rightopen_interval(lwb,upb); }
-	void setRangeOfSampleSize(const interval<int>& szRange)
-	{ J_ASSERT(szRange.is_rightopen()); m_sampleSizeRange = szRange; }
+    void setRangeOfSampleSize(int lwb, int upb)
+    { m_sampleSizeRange = rightopen_interval(lwb,upb); }
+    void setRangeOfSampleSize(const interval<int>& szRange)
+    { J_ASSERT(szRange.is_rightopen()); m_sampleSizeRange = szRange; }
 
 private:
-	RandomGentorAT<DomainTD>*		p_domainGentor;
-	RandomGentorAT<CodomainTD>*		p_codomainGentor;
-	interval<int>					m_sampleSizeRange;
-	SampleTypeTD					m_sample;
-	int								m_sampleSize;
+    RandomGentorAT<DomainTD>*        p_domainGentor;
+    RandomGentorAT<CodomainTD>*        p_codomainGentor;
+    interval<int>                    m_sampleSizeRange;
+    SampleTypeTD                    m_sample;
+    int                                m_sampleSize;
 };
 
 
 template <class MapTV> 
 void MapGentorT<MapTV>::some(MapTV& x)
 {
-	NumberGentorT<int> intGentor;
-	x.clear();
-	m_sample.clear();
-	m_sampleSize = intGentor(m_sampleSizeRange);
+    NumberGentorT<int> intGentor;
+    x.clear();
+    m_sample.clear();
+    m_sampleSize = intGentor(m_sampleSizeRange);
 
-	for(int i=0; i<m_sampleSize; i++)
-	{
-		DomainTD key;
-		p_domainGentor->some(key);
-		CodomainTD val;
-		p_codomainGentor->some(val);
-		x.inject(ValueTypeTD(key,val));
-		m_sample.push_back(ValueTypeTD(key,val));
-	}
+    for(int i=0; i<m_sampleSize; i++)
+    {
+        DomainTD key;
+        p_domainGentor->some(key);
+        CodomainTD val;
+        p_codomainGentor->some(val);
+        x.inject(ValueTypeTD(key,val));
+        m_sample.push_back(ValueTypeTD(key,val));
+    }
 }
 
 
 template <class MapTV> 
 void MapGentorT<MapTV>::last(MapTV& x)const
 {
-	x.clear();
-	const_FORALL(typename SampleTypeTD, it, m_sample) x.insert(*it);
+    x.clear();
+    const_FORALL(typename SampleTypeTD, it, m_sample) x.insert(*it);
 }
 
 template <class MapTV>
 void MapGentorT<MapTV>::last_permuted(MapTV& x)const
 {
-	x.clear();
+    x.clear();
 
-	SampleTypeTD perm;
+    SampleTypeTD perm;
 
-	NumberGentorT<int> intGentor;
-	const_FORALL(typename SampleTypeTD, it, m_sample)
-	{
-		if( 0==intGentor(2) ) perm.push_back(*it);
-		else perm.push_front(*it);
-	}
+    NumberGentorT<int> intGentor;
+    const_FORALL(typename SampleTypeTD, it, m_sample)
+    {
+        if( 0==intGentor(2) ) perm.push_back(*it);
+        else perm.push_front(*it);
+    }
 
-	const_FORALL(typename SampleTypeTD, pit, perm) x.insert(*pit);
+    const_FORALL(typename SampleTypeTD, pit, perm) x.insert(*pit);
 }
 
 
@@ -140,14 +140,14 @@ void MapGentorT<MapTV>::lastSample(SampleTypeTD& sam)const
 template <class MapTV> 
 void MapGentorT<MapTV>::lastSample_permuted(SampleTypeTD& sam)
 {
-	NumberGentorT<unsigned> intGentor;
-	x.clear();
-	int coin = intGentor.some(2); // gives 0 or 1
-	const_FORALL(typename SampleTypeTD, it, m_sample)
-	{
-		if( 0==intGentor.some(2) ) sam.push_back(*it);
-		else sam.push_front(*it);
-	}
+    NumberGentorT<unsigned> intGentor;
+    x.clear();
+    int coin = intGentor.some(2); // gives 0 or 1
+    const_FORALL(typename SampleTypeTD, it, m_sample)
+    {
+        if( 0==intGentor.some(2) ) sam.push_back(*it);
+        else sam.push_front(*it);
+    }
 }
 */
 

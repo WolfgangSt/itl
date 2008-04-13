@@ -27,7 +27,7 @@ DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------------
 Function-templates for discrete Datatypes like int, unsigned or
-	any class that provides a ++ operator c.f. iterators
+    any class that provides a ++ operator c.f. iterators
 -----------------------------------------------------------------------------*/
 
 #ifndef __DISCRETE_JOFA_000711_H__

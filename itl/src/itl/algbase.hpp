@@ -34,53 +34,53 @@ namespace itl
 {
 
 /**
-	<b>Basic algebraic properties to use with template programming</b>
+    <b>Basic algebraic properties to use with template programming</b>
 
-	@author  Joachim Faulhaber
+    @author  Joachim Faulhaber
 */
 template <class TypeTV>
 class AlgBaseT
 {
 public:
-	/** Null or empty value of a datatype.
+    /** Null or empty value of a datatype.
 
-		Neutral element of a datatype with respect to a basic operation <tt>+</tt>.
-		This commonly is a null or empty value which is best associated with
-		the default constructor in most cases.
-	*/
-	static TypeTV neutron();
+        Neutral element of a datatype with respect to a basic operation <tt>+</tt>.
+        This commonly is a null or empty value which is best associated with
+        the default constructor in most cases.
+    */
+    static TypeTV neutron();
 
-	/** One-value or singleton-value a datatype. 
+    /** One-value or singleton-value a datatype. 
 
-		Neutral element of a datatype with respect to an operation <tt>*</tt>.
-		This is a value that denotes 'oneness'. For many c++ classes such
-		a value does not exist. We need the <tt>AlgBaseT<T>::unon()</tt> to
-		denote an empty Interval independent of it's domain-type <tt>T</tt> as
-		<tt>IntervalT<T>( AlgBaseT<T>::unon(), AlgBaseT<T>::neutron() )</tt>
+        Neutral element of a datatype with respect to an operation <tt>*</tt>.
+        This is a value that denotes 'oneness'. For many c++ classes such
+        a value does not exist. We need the <tt>AlgBaseT<T>::unon()</tt> to
+        denote an empty Interval independent of it's domain-type <tt>T</tt> as
+        <tt>IntervalT<T>( AlgBaseT<T>::unon(), AlgBaseT<T>::neutron() )</tt>
 
-		Using <tt>AlgBaseT<T>::unon()</tt> one can assign one-values to a
-		template parameter T.
+        Using <tt>AlgBaseT<T>::unon()</tt> one can assign one-values to a
+        template parameter T.
 
-		\code
-		template <class T> class A {
-			void f() { T t; t = AlgBaseT<T>::unon(); -- dependent on the instance of T
-			                                         -- t=1; t=1.0; t=SetT(x);
-		}
-		\endcode
-	*/
-	static TypeTV unon();
+        \code
+        template <class T> class A {
+            void f() { T t; t = AlgBaseT<T>::unon(); -- dependent on the instance of T
+                                                     -- t=1; t=1.0; t=SetT(x);
+        }
+        \endcode
+    */
+    static TypeTV unon();
 
-	/** Is this type atomic (built in)? <tt>(bool, char, int, etc.)</tt>
+    /** Is this type atomic (built in)? <tt>(bool, char, int, etc.)</tt>
 
-		E.g.: <tt>if(AlgBaseT<T>::isAtomic()) -- T is atomic</tt>
-	*/
-	static bool isAtomic();
+        E.g.: <tt>if(AlgBaseT<T>::isAtomic()) -- T is atomic</tt>
+    */
+    static bool isAtomic();
 
-	/** Is this type continuous ? <tt>(float, double, etc.)</tt> 
+    /** Is this type continuous ? <tt>(float, double, etc.)</tt> 
 
-		E.g.: <tt>if(AlgBaseT<T>::isContinuous()) -- T is continuous</tt>
-	*/
-	static bool isContinuous();
+        E.g.: <tt>if(AlgBaseT<T>::isContinuous()) -- T is continuous</tt>
+    */
+    static bool isContinuous();
 };
 
 

@@ -35,291 +35,291 @@ DEALINGS IN THE SOFTWARE.
 namespace itl
 {
 
-	/*  Monoid: (M,+,0) with .+.: M x M -> M   has these axioms
-		(1) Associativity
-		(2) Neutral element
-		A commutative monoid or abelian monoid has also
-		(3) Commutativity
-	*/
+    /*  Monoid: (M,+,0) with .+.: M x M -> M   has these axioms
+        (1) Associativity
+        (2) Neutral element
+        A commutative monoid or abelian monoid has also
+        (3) Commutativity
+    */
 
-	template <typename Type>
-	class AdditionNeutrality : public LawBase<LOKI_TYPELIST_1(Type), LOKI_TYPELIST_1(Type)> 
-	{
-	public:
-		std::string name()const { return "Addition Neutrality"; }
-		std::string formula()const { return "a + 0 == 0"; }
+    template <typename Type>
+    class AdditionNeutrality : public LawBase<LOKI_TYPELIST_1(Type), LOKI_TYPELIST_1(Type)> 
+    {
+    public:
+        std::string name()const { return "Addition Neutrality"; }
+        std::string formula()const { return "a + 0 == 0"; }
 
-		std::string typeString()const
-		{
-			return "Neutrality<"+TypeAsString<Type>::it()+",+,0>";
-		}
+        std::string typeString()const
+        {
+            return "Neutrality<"+TypeAsString<Type>::it()+",+,0>";
+        }
 
-	public:
-		bool holds()
-		{
-			Type inVal = this->template getInputValue<0>();
-			Type outVal = inVal + Type();
-			this->template setOutputValue<0>(outVal);
-			return inVal == outVal;
-		}
+    public:
+        bool holds()
+        {
+            Type inVal = this->template getInputValue<0>();
+            Type outVal = inVal + Type();
+            this->template setOutputValue<0>(outVal);
+            return inVal == outVal;
+        }
 
-		size_t size()const;
+        size_t size()const;
 
-		void setValue(const Type& inVal) { this->template setInputValue<0>(inVal); }
-		Type getResult()const { return this->template getOutputValue<0>(); }
-	};
+        void setValue(const Type& inVal) { this->template setInputValue<0>(inVal); }
+        Type getResult()const { return this->template getOutputValue<0>(); }
+    };
 
-	template <> size_t AdditionNeutrality<int>::size()const 
-	{ return getInputValue<0>(); }
+    template <> size_t AdditionNeutrality<int>::size()const 
+    { return getInputValue<0>(); }
 
-	template <class Type> size_t AdditionNeutrality<Type>::size()const 
-	{ return this->template getInputValue<0>().size(); };
+    template <class Type> size_t AdditionNeutrality<Type>::size()const 
+    { return this->template getInputValue<0>().size(); };
 
-	template <typename Type>
-	class AdditionCommutativity : public LawBase<LOKI_TYPELIST_2(Type,Type), LOKI_TYPELIST_2(Type,Type)> 
-	{
-		/** a + b == b + a 
-		Input  = (a := inVal1, b := inVal2)
-		Output = (sum_lhs, sum_rhs)
-		*/
-	public:
-		std::string name()const { return "Addition Commutativity"; }
-		std::string formula()const { return "a + b == b + a"; }
+    template <typename Type>
+    class AdditionCommutativity : public LawBase<LOKI_TYPELIST_2(Type,Type), LOKI_TYPELIST_2(Type,Type)> 
+    {
+        /** a + b == b + a 
+        Input  = (a := inVal1, b := inVal2)
+        Output = (sum_lhs, sum_rhs)
+        */
+    public:
+        std::string name()const { return "Addition Commutativity"; }
+        std::string formula()const { return "a + b == b + a"; }
 
-		std::string typeString()const
-		{
-			return "Commutativity<"+TypeAsString<Type>::it()+",+>";
-		}
+        std::string typeString()const
+        {
+            return "Commutativity<"+TypeAsString<Type>::it()+",+>";
+        }
 
-	public:
-		enum InputVarIndex  { operand_a, operand_b };
-		enum OutputVarIndex { lhs_sum, rhs_sum };
+    public:
+        enum InputVarIndex  { operand_a, operand_b };
+        enum OutputVarIndex { lhs_sum, rhs_sum };
 
-		void setOperand_a(const Type& inVal) { this->template setInputValue<operand_a>(inVal); }
-		void setOperand_b(const Type& inVal) { this->template setInputValue<operand_b>(inVal); }
-		void setOperands(const Type& inVal_a, const Type& inVal_b) 
-		{ this->template setInputValue<operand_b>(inVal_a); this->template setInputValue<operand_b>(inVal_b); }
+        void setOperand_a(const Type& inVal) { this->template setInputValue<operand_a>(inVal); }
+        void setOperand_b(const Type& inVal) { this->template setInputValue<operand_b>(inVal); }
+        void setOperands(const Type& inVal_a, const Type& inVal_b) 
+        { this->template setInputValue<operand_b>(inVal_a); this->template setInputValue<operand_b>(inVal_b); }
 
-		Type getLhsSum()const { return this->template getOutputValue<lhs_sum>(); }
-		Type getRhsSum()const { return this->template getOutputValue<rhs_sum>(); }
+        Type getLhsSum()const { return this->template getOutputValue<lhs_sum>(); }
+        Type getRhsSum()const { return this->template getOutputValue<rhs_sum>(); }
 
-		bool holds()
-		{
-			this->template setOutputValue<lhs_sum>(this->template getInputValue<operand_a>() + this->template getInputValue<operand_b>());
-			this->template setOutputValue<rhs_sum>(this->template getInputValue<operand_b>() + this->template getInputValue<operand_a>());
-			return this->template getOutputValue<lhs_sum>() == this->template getOutputValue<rhs_sum>();
-		}
+        bool holds()
+        {
+            this->template setOutputValue<lhs_sum>(this->template getInputValue<operand_a>() + this->template getInputValue<operand_b>());
+            this->template setOutputValue<rhs_sum>(this->template getInputValue<operand_b>() + this->template getInputValue<operand_a>());
+            return this->template getOutputValue<lhs_sum>() == this->template getOutputValue<rhs_sum>();
+        }
 
-		size_t size()const 
-		{ 
-			return value_size<Type>::get(this->template getInputValue<operand_a>())+
-				   value_size<Type>::get(this->template getInputValue<operand_b>());
-		}
-	};
-
-
-	template <typename TypeA, typename TypeB>
-	class MixedAdditionCommutativity : public LawBase<LOKI_TYPELIST_2(TypeA,TypeB), LOKI_TYPELIST_2(TypeB,TypeB)> 
-	{
-		/** a + b == b + a 
-		Input  = (a := inVal1, b := inVal2)
-		Output = (sum_lhs, sum_rhs)
-		*/
-	public:
-		std::string name()const { return "Mixed Addition Commutativity"; }
-		std::string formula()const { return "a + b == b + a for A a; B b; +: A x B -> B"; }
-
-		std::string typeString()const
-		{
-			return "Commutativity<"+TypeAsString<TypeA>::it()+","
-				                   +TypeAsString<TypeB>::it()+",+>";
-		}
-
-	public:
-		enum InputVarIndex  { operand_a, operand_b };
-		enum OutputVarIndex { lhs_sum, rhs_sum };
-
-		void setOperand_a(const TypeA& inVal) { this->template setInputValue<operand_a>(inVal); }
-		void setOperand_b(const TypeB& inVal) { this->template setInputValue<operand_b>(inVal); }
-		void setOperands(const TypeA& inVal_a, const TypeB& inVal_b) 
-		{ this->template setInputValue<operand_b>(inVal_a); this->template setInputValue<operand_b>(inVal_b); }
-
-		TypeB getLhsSum()const { return this->template getOutputValue<lhs_sum>(); }
-		TypeB getRhsSum()const { return this->template getOutputValue<rhs_sum>(); }
-
-		bool holds()
-		{
-			this->template setOutputValue<lhs_sum>(this->template getInputValue<operand_a>() + this->template getInputValue<operand_b>());
-			this->template setOutputValue<rhs_sum>(this->template getInputValue<operand_b>() + this->template getInputValue<operand_a>());
-			return this->template getOutputValue<lhs_sum>() == this->template getOutputValue<rhs_sum>();
-		}
-
-		size_t size()const 
-		{ 
-			return value_size<TypeA>::get(this->template getInputValue<operand_a>())+
-				   value_size<TypeB>::get(this->template getInputValue<operand_b>());
-		}
-
-	};
+        size_t size()const 
+        { 
+            return value_size<Type>::get(this->template getInputValue<operand_a>())+
+                   value_size<Type>::get(this->template getInputValue<operand_b>());
+        }
+    };
 
 
-	// ---------------------------------------------------------------------------
-	// Inplace variant of laws for operator o=
-	// ---------------------------------------------------------------------------
-	//JODO MEMO USENET: Kein Patternmatching auf templateparameter-level! Beispiel
-	// TypeAsString!
-	//template <typename Type, template<class>class Accumulator = InplacePlus, int aux=0>
-	template <typename Type, template<class>class Accumulator = InplacePlus, template<class>class NeutronT = Neutron>
-	class InplaceNeutrality : public LawBase<LOKI_TYPELIST_1(Type), LOKI_TYPELIST_1(Type)>
-	{
-		/** a o 0 == a computed as
-		l=a; l o= 0; => l==a 
-		Input  = (a := inVal1)
-		Output = (lhs_result)
-		*/
-	public:
-		std::string name()const { return "Inplace Op Neutrality"; }
-		std::string formula()const { return "a o 0 == a 'inplace'"; }
+    template <typename TypeA, typename TypeB>
+    class MixedAdditionCommutativity : public LawBase<LOKI_TYPELIST_2(TypeA,TypeB), LOKI_TYPELIST_2(TypeB,TypeB)> 
+    {
+        /** a + b == b + a 
+        Input  = (a := inVal1, b := inVal2)
+        Output = (sum_lhs, sum_rhs)
+        */
+    public:
+        std::string name()const { return "Mixed Addition Commutativity"; }
+        std::string formula()const { return "a + b == b + a for A a; B b; +: A x B -> B"; }
 
-		std::string typeString()const
-		{
-			return "Neutrality<"+TypeAsString<Type>::it()+","
-							    +UnaryTemplateAsString<Accumulator>::it()+","
-				                +UnaryTemplateAsString<NeutronT>::it()+">";
-		}
+        std::string typeString()const
+        {
+            return "Commutativity<"+TypeAsString<TypeA>::it()+","
+                                   +TypeAsString<TypeB>::it()+",+>";
+        }
 
-	public:
+    public:
+        enum InputVarIndex  { operand_a, operand_b };
+        enum OutputVarIndex { lhs_sum, rhs_sum };
 
-		enum InputVarIndex  { operand_a, operand_b };
-		enum OutputVarIndex { lhs_result, rhs_result };
+        void setOperand_a(const TypeA& inVal) { this->template setInputValue<operand_a>(inVal); }
+        void setOperand_b(const TypeB& inVal) { this->template setInputValue<operand_b>(inVal); }
+        void setOperands(const TypeA& inVal_a, const TypeB& inVal_b) 
+        { this->template setInputValue<operand_b>(inVal_a); this->template setInputValue<operand_b>(inVal_b); }
 
-		void setOperand_a(const Type& inVal) { this->template setInputValue<operand_a>(inVal); }
+        TypeB getLhsSum()const { return this->template getOutputValue<lhs_sum>(); }
+        TypeB getRhsSum()const { return this->template getOutputValue<rhs_sum>(); }
 
-		Type getLhsResult()const { return this->template getOutputValue<lhs_result>(); }
+        bool holds()
+        {
+            this->template setOutputValue<lhs_sum>(this->template getInputValue<operand_a>() + this->template getInputValue<operand_b>());
+            this->template setOutputValue<rhs_sum>(this->template getInputValue<operand_b>() + this->template getInputValue<operand_a>());
+            return this->template getOutputValue<lhs_sum>() == this->template getOutputValue<rhs_sum>();
+        }
 
-		size_t size()const 
-		{ 
-			return value_size<Type>::get(this->template getInputValue<operand_a>());
-		}
+        size_t size()const 
+        { 
+            return value_size<TypeA>::get(this->template getInputValue<operand_a>())+
+                   value_size<TypeB>::get(this->template getInputValue<operand_b>());
+        }
 
-		bool holds()
-		{
-			Type lhs = this->template getInputValue<operand_a>();
-			Accumulator<Type>()(lhs, Neutron<Type>()());
-			this->template setOutputValue<lhs_result>(lhs);
-			return lhs == this->template getInputValue<operand_a>();
-		}
-	};
+    };
 
 
-	template <typename Type, template<class>class Accumulator = InplacePlus>
-	class InplaceAssociativity : public LawBase<LOKI_TYPELIST_3(Type,Type,Type), LOKI_TYPELIST_2(Type,Type)>
-	{
-		/** (a o b) o c == a o (b o c) 'inplace'
-		Input  = (a := inVal1, b := inVal2, c := inVal3)
-		Output = (sum_lhs, sum_rhs)
-		*/
-	public:
-		std::string name()const { return "Inplace Associativity"; }
-		std::string formula()const { return "(a o b) o c == a o (b o c) 'inplace'"; }
+    // ---------------------------------------------------------------------------
+    // Inplace variant of laws for operator o=
+    // ---------------------------------------------------------------------------
+    //JODO MEMO USENET: Kein Patternmatching auf templateparameter-level! Beispiel
+    // TypeAsString!
+    //template <typename Type, template<class>class Accumulator = InplacePlus, int aux=0>
+    template <typename Type, template<class>class Accumulator = InplacePlus, template<class>class NeutronT = Neutron>
+    class InplaceNeutrality : public LawBase<LOKI_TYPELIST_1(Type), LOKI_TYPELIST_1(Type)>
+    {
+        /** a o 0 == a computed as
+        l=a; l o= 0; => l==a 
+        Input  = (a := inVal1)
+        Output = (lhs_result)
+        */
+    public:
+        std::string name()const { return "Inplace Op Neutrality"; }
+        std::string formula()const { return "a o 0 == a 'inplace'"; }
 
-		std::string typeString()const
-		{
-			return "Associativity<"+TypeAsString<Type>::it()+","
-							       +UnaryTemplateAsString<Accumulator>::it()+">";
-		}
+        std::string typeString()const
+        {
+            return "Neutrality<"+TypeAsString<Type>::it()+","
+                                +UnaryTemplateAsString<Accumulator>::it()+","
+                                +UnaryTemplateAsString<NeutronT>::it()+">";
+        }
 
-	public:
+    public:
 
-		enum InputVarIndex  { operand_a, operand_b, operand_c };
-		enum OutputVarIndex { lhs_sum, rhs_sum };
+        enum InputVarIndex  { operand_a, operand_b };
+        enum OutputVarIndex { lhs_result, rhs_result };
 
-		void setOperand_a(const Type& inVal) { this->template setInputValue<operand_a>(inVal); }
-		void setOperand_b(const Type& inVal) { this->template setInputValue<operand_b>(inVal); }
-		void setOperand_c(const Type& inVal) { this->template setInputValue<operand_c>(inVal); }
-		void setOperands(const Type& inVal_a, const Type& inVal_b, const Type& inVal_c) 
-		{ this->template setInputValue<operand_b>(inVal_a); this->template setInputValue<operand_b>(inVal_b); this->template setInputValue<operand_b>(inVal_c); }
+        void setOperand_a(const Type& inVal) { this->template setInputValue<operand_a>(inVal); }
 
-		Type getLhsSum()const { return this->template getOutputValue<lhs_sum>(); }
-		Type getRhsSum()const { return this->template getOutputValue<rhs_sum>(); }
+        Type getLhsResult()const { return this->template getOutputValue<lhs_result>(); }
 
-		size_t size()const 
-		{ 
-			return 
-				value_size<Type>::get(this->template getInputValue<operand_a>())+
-				value_size<Type>::get(this->template getInputValue<operand_b>())+
-				value_size<Type>::get(this->template getInputValue<operand_b>());
-		}
+        size_t size()const 
+        { 
+            return value_size<Type>::get(this->template getInputValue<operand_a>());
+        }
 
-		bool holds()
-		{
-			Type lsum = this->template getInputValue<operand_a>();
-			Accumulator<Type>()(lsum, this->template getInputValue<operand_b>());
-			Accumulator<Type>()(lsum, this->template getInputValue<operand_c>());
-
-			Type rsum = this->template getInputValue<operand_a>();
-			Type b_plus_c = this->template getInputValue<operand_b>();
-			Accumulator<Type>()(b_plus_c, this->template getInputValue<operand_c>());
-			Accumulator<Type>()(rsum, b_plus_c);
-
-			this->template setOutputValue<lhs_sum>(lsum);
-			this->template setOutputValue<rhs_sum>(rsum);
-
-			return lsum == rsum;
-		}
-	};
+        bool holds()
+        {
+            Type lhs = this->template getInputValue<operand_a>();
+            Accumulator<Type>()(lhs, Neutron<Type>()());
+            this->template setOutputValue<lhs_result>(lhs);
+            return lhs == this->template getInputValue<operand_a>();
+        }
+    };
 
 
-	template <typename Type, template<class>class Accumulator = InplacePlus>
-	class InplaceCommutativity : public LawBase<LOKI_TYPELIST_2(Type,Type), LOKI_TYPELIST_2(Type,Type)>
-	{
-		/** a o b == b o a computed as
-		lsum=a; lsum+=b; rsum=b; rsum+=a => lsum==rsum 
-		Input  = (a := inVal1, b := inVal2)
-		Output = (sum_lhs, sum_rhs)
-		*/
-	public:
-		std::string name()const { return "Inplace Commutativity"; }
-		std::string formula()const { return "a o b == b o a 'inplace'"; }
+    template <typename Type, template<class>class Accumulator = InplacePlus>
+    class InplaceAssociativity : public LawBase<LOKI_TYPELIST_3(Type,Type,Type), LOKI_TYPELIST_2(Type,Type)>
+    {
+        /** (a o b) o c == a o (b o c) 'inplace'
+        Input  = (a := inVal1, b := inVal2, c := inVal3)
+        Output = (sum_lhs, sum_rhs)
+        */
+    public:
+        std::string name()const { return "Inplace Associativity"; }
+        std::string formula()const { return "(a o b) o c == a o (b o c) 'inplace'"; }
 
-		std::string typeString()const
-		{
-			return "Commutativity<"+TypeAsString<Type>::it()+","
-			                       +UnaryTemplateAsString<Accumulator>::it()+">";
-		}
+        std::string typeString()const
+        {
+            return "Associativity<"+TypeAsString<Type>::it()+","
+                                   +UnaryTemplateAsString<Accumulator>::it()+">";
+        }
 
-	public:
+    public:
 
-		enum InputVarIndex  { operand_a, operand_b };
-		enum OutputVarIndex { lhs_sum, rhs_sum };
+        enum InputVarIndex  { operand_a, operand_b, operand_c };
+        enum OutputVarIndex { lhs_sum, rhs_sum };
 
-		void setOperand_a(const Type& inVal) { this->template setInputValue<operand_a>(inVal); }
-		void setOperand_b(const Type& inVal) { this->template setInputValue<operand_b>(inVal); }
-		void setOperands(const Type& inVal_a, const Type& inVal_b) 
-		{ this->template setInputValue<operand_b>(inVal_a); this->template setInputValue<operand_b>(inVal_b); }
+        void setOperand_a(const Type& inVal) { this->template setInputValue<operand_a>(inVal); }
+        void setOperand_b(const Type& inVal) { this->template setInputValue<operand_b>(inVal); }
+        void setOperand_c(const Type& inVal) { this->template setInputValue<operand_c>(inVal); }
+        void setOperands(const Type& inVal_a, const Type& inVal_b, const Type& inVal_c) 
+        { this->template setInputValue<operand_b>(inVal_a); this->template setInputValue<operand_b>(inVal_b); this->template setInputValue<operand_b>(inVal_c); }
 
-		Type getLhsSum()const { return this->template getOutputValue<lhs_sum>(); }
-		Type getRhsSum()const { return this->template getOutputValue<rhs_sum>(); }
+        Type getLhsSum()const { return this->template getOutputValue<lhs_sum>(); }
+        Type getRhsSum()const { return this->template getOutputValue<rhs_sum>(); }
 
-		size_t size()const 
-		{ 
-			return value_size<Type>::get(this->template getInputValue<operand_a>())+
-				value_size<Type>::get(this->template getInputValue<operand_b>());
-		}
+        size_t size()const 
+        { 
+            return 
+                value_size<Type>::get(this->template getInputValue<operand_a>())+
+                value_size<Type>::get(this->template getInputValue<operand_b>())+
+                value_size<Type>::get(this->template getInputValue<operand_b>());
+        }
 
-		bool holds()
-		{
-			Type lsum = this->template getInputValue<operand_a>();
-			lsum += this->template getInputValue<operand_b>();
-			Type rsum = this->template getInputValue<operand_b>();
-			rsum += this->template getInputValue<operand_a>();
+        bool holds()
+        {
+            Type lsum = this->template getInputValue<operand_a>();
+            Accumulator<Type>()(lsum, this->template getInputValue<operand_b>());
+            Accumulator<Type>()(lsum, this->template getInputValue<operand_c>());
 
-			this->template setOutputValue<lhs_sum>(lsum);
-			this->template setOutputValue<rhs_sum>(rsum);
+            Type rsum = this->template getInputValue<operand_a>();
+            Type b_plus_c = this->template getInputValue<operand_b>();
+            Accumulator<Type>()(b_plus_c, this->template getInputValue<operand_c>());
+            Accumulator<Type>()(rsum, b_plus_c);
 
-			return lsum == rsum;
-		}
-	};
+            this->template setOutputValue<lhs_sum>(lsum);
+            this->template setOutputValue<rhs_sum>(rsum);
+
+            return lsum == rsum;
+        }
+    };
+
+
+    template <typename Type, template<class>class Accumulator = InplacePlus>
+    class InplaceCommutativity : public LawBase<LOKI_TYPELIST_2(Type,Type), LOKI_TYPELIST_2(Type,Type)>
+    {
+        /** a o b == b o a computed as
+        lsum=a; lsum+=b; rsum=b; rsum+=a => lsum==rsum 
+        Input  = (a := inVal1, b := inVal2)
+        Output = (sum_lhs, sum_rhs)
+        */
+    public:
+        std::string name()const { return "Inplace Commutativity"; }
+        std::string formula()const { return "a o b == b o a 'inplace'"; }
+
+        std::string typeString()const
+        {
+            return "Commutativity<"+TypeAsString<Type>::it()+","
+                                   +UnaryTemplateAsString<Accumulator>::it()+">";
+        }
+
+    public:
+
+        enum InputVarIndex  { operand_a, operand_b };
+        enum OutputVarIndex { lhs_sum, rhs_sum };
+
+        void setOperand_a(const Type& inVal) { this->template setInputValue<operand_a>(inVal); }
+        void setOperand_b(const Type& inVal) { this->template setInputValue<operand_b>(inVal); }
+        void setOperands(const Type& inVal_a, const Type& inVal_b) 
+        { this->template setInputValue<operand_b>(inVal_a); this->template setInputValue<operand_b>(inVal_b); }
+
+        Type getLhsSum()const { return this->template getOutputValue<lhs_sum>(); }
+        Type getRhsSum()const { return this->template getOutputValue<rhs_sum>(); }
+
+        size_t size()const 
+        { 
+            return value_size<Type>::get(this->template getInputValue<operand_a>())+
+                value_size<Type>::get(this->template getInputValue<operand_b>());
+        }
+
+        bool holds()
+        {
+            Type lsum = this->template getInputValue<operand_a>();
+            lsum += this->template getInputValue<operand_b>();
+            Type rsum = this->template getInputValue<operand_b>();
+            rsum += this->template getInputValue<operand_a>();
+
+            this->template setOutputValue<lhs_sum>(lsum);
+            this->template setOutputValue<rhs_sum>(rsum);
+
+            return lsum == rsum;
+        }
+    };
 
 } // namespace itl
 

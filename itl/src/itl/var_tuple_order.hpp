@@ -40,119 +40,119 @@ DEALINGS IN THE SOFTWARE.
 namespace itl
 {
 
-	// template <typename VarTupleT> class var_permutation {};
+    // template <typename VarTupleT> class var_permutation {};
 
-	template <typename VarTupleT>
-	class var_tuple_order : public std::binary_function<VarTupleT, VarTupleT, bool>
-	{
-	public:
-		enum { varCountV = VarTupleT::var_count };
-		typedef var_permutation<varCountV>	var_permutationT;
-		typedef grouping<varCountV>		    groupingT;
-		typedef group_order<varCountV>		group_orderT;
+    template <typename VarTupleT>
+    class var_tuple_order : public std::binary_function<VarTupleT, VarTupleT, bool>
+    {
+    public:
+        enum { varCountV = VarTupleT::var_count };
+        typedef var_permutation<varCountV>    var_permutationT;
+        typedef grouping<varCountV>            groupingT;
+        typedef group_order<varCountV>        group_orderT;
 
-		var_tuple_order();
-		var_tuple_order(const var_tuple_order&, const var_permutationT&);
+        var_tuple_order();
+        var_tuple_order(const var_tuple_order&, const var_permutationT&);
 
-		bool operator() (const VarTupleT& x1, const VarTupleT& x2)const;
+        bool operator() (const VarTupleT& x1, const VarTupleT& x2)const;
 
-		/** Index des ersten Unterschieds zweier Tupel (gemäss der permutierten Reihenfolge).
-			Die permutierte Reihenfolge ist ja die jeweils gültige Reihenfolge.		*/
-		VarEnumTD indexOfFirstDifference(const VarTupleT& x1, const VarTupleT& x2)const;
+        /** Index des ersten Unterschieds zweier Tupel (gemäss der permutierten Reihenfolge).
+            Die permutierte Reihenfolge ist ja die jeweils gültige Reihenfolge.        */
+        VarEnumTD indexOfFirstDifference(const VarTupleT& x1, const VarTupleT& x2)const;
 
-		void setPermutation(const var_permutationT& perm) { m_Permutation = perm; }
-		var_permutationT getPermutation()const { return m_Permutation; }
+        void setPermutation(const var_permutationT& perm) { m_Permutation = perm; }
+        var_permutationT getPermutation()const { return m_Permutation; }
 
-		void setGroupOrder(group_orderT* order) { m_Grouping.setGrouper(order, order->getVarIndex()); }
+        void setGroupOrder(group_orderT* order) { m_Grouping.setGrouper(order, order->getVarIndex()); }
 
-		/** Liefert den reduzierten Aggregationsgrad einer Teilordnung, die in *this enthalten ist. */
-		int gradeReduct(int grade, const var_tuple_order& subOrder)const 
-		{ return m_Permutation.gradeReduct(grade, subOrder.getPermutation()); }
+        /** Liefert den reduzierten Aggregationsgrad einer Teilordnung, die in *this enthalten ist. */
+        int gradeReduct(int grade, const var_tuple_order& subOrder)const 
+        { return m_Permutation.gradeReduct(grade, subOrder.getPermutation()); }
 
-	private:
-		// Permutation can also express projection. All independent vars not included in
-		// the permutation are switched off
-		var_permutationT m_Permutation;
+    private:
+        // Permutation can also express projection. All independent vars not included in
+        // the permutation are switched off
+        var_permutationT m_Permutation;
 
-		// Conditional and unconditional Grouping
-		groupingT		 m_Grouping;
-	};
+        // Conditional and unconditional Grouping
+        groupingT         m_Grouping;
+    };
 
-	template <typename VarTupleT>
-	itl::var_tuple_order<VarTupleT>::var_tuple_order ()
-	{
-		m_Permutation.setIdentity();
-	}
+    template <typename VarTupleT>
+    itl::var_tuple_order<VarTupleT>::var_tuple_order ()
+    {
+        m_Permutation.setIdentity();
+    }
 
-	template <typename VarTupleT>
-	itl::var_tuple_order<VarTupleT>::var_tuple_order (const var_tuple_order& order, const var_permutationT& perm):
-		m_Grouping(order.m_Grouping), m_Permutation(perm)
-	{}
+    template <typename VarTupleT>
+    itl::var_tuple_order<VarTupleT>::var_tuple_order (const var_tuple_order& order, const var_permutationT& perm):
+        m_Grouping(order.m_Grouping), m_Permutation(perm)
+    {}
 
-	
-	template <typename VarTupleT>
-	bool itl::var_tuple_order<VarTupleT>::operator() (const VarTupleT& x1, const VarTupleT& x2)const
-	{
-		FORALL_VEC(permIdx, m_Permutation)
-		{
-			int idx = m_Permutation[permIdx];
+    
+    template <typename VarTupleT>
+    bool itl::var_tuple_order<VarTupleT>::operator() (const VarTupleT& x1, const VarTupleT& x2)const
+    {
+        FORALL_VEC(permIdx, m_Permutation)
+        {
+            int idx = m_Permutation[permIdx];
 
-			// Den Pointer der Gruppierungsordnung besorgen
-			const group_orderT* groupedLess = m_Grouping[idx];
+            // Den Pointer der Gruppierungsordnung besorgen
+            const group_orderT* groupedLess = m_Grouping[idx];
 
-			if(groupedLess == NULL)
-			{
-				if(x1[idx] < x2[idx])
-					return true;
-				if(x1[idx] > x2[idx])
-					return false;
-				// OTHERWISE (x1[idx] == x2[idx]): proceed to next variable
-			}
-			else
-			{
-				if((*groupedLess)(x1,x2))
-					return true;
-				if((*groupedLess)(x2,x1))
-					return false;
-				// OTHERWISE x1 and x2 belong to same group. Proceed to next var
-			}
-			
-		}
-		// All components are equal
-		return false;
-	}
+            if(groupedLess == NULL)
+            {
+                if(x1[idx] < x2[idx])
+                    return true;
+                if(x1[idx] > x2[idx])
+                    return false;
+                // OTHERWISE (x1[idx] == x2[idx]): proceed to next variable
+            }
+            else
+            {
+                if((*groupedLess)(x1,x2))
+                    return true;
+                if((*groupedLess)(x2,x1))
+                    return false;
+                // OTHERWISE x1 and x2 belong to same group. Proceed to next var
+            }
+            
+        }
+        // All components are equal
+        return false;
+    }
 
-	template <typename VarTupleT>
-	VarEnumTD itl::var_tuple_order<VarTupleT>::indexOfFirstDifference(const VarTupleT& x1, const VarTupleT& x2)const
-	{
-		FORALL_VEC(permIdx, m_Permutation)
-		{
-			int idx = m_Permutation[permIdx];
+    template <typename VarTupleT>
+    VarEnumTD itl::var_tuple_order<VarTupleT>::indexOfFirstDifference(const VarTupleT& x1, const VarTupleT& x2)const
+    {
+        FORALL_VEC(permIdx, m_Permutation)
+        {
+            int idx = m_Permutation[permIdx];
 
-			// Den Pointer der Gruppierungsordnung besorgen
-			const group_orderT* groupedLess = m_Grouping[idx];
+            // Den Pointer der Gruppierungsordnung besorgen
+            const group_orderT* groupedLess = m_Grouping[idx];
 
-			if(groupedLess == NULL)
-			{
-				if(x1[idx] < x2[idx])
-					return permIdx;
-				if(x1[idx] > x2[idx])
-					return permIdx;
-				// OTHERWISE (x1[idx] == x2[idx]): proceed to next variable
-			}
-			else
-			{
-				if((*groupedLess)(x1,x2))
-					return  permIdx;
-				if((*groupedLess)(x2,x1))
-					return  permIdx;
-				// OTHERWISE x1 and x2 belong to same group. Proceed to next var
-			}
-			
-		}
-		// All components are equal
-		return UNDEFINED_INDEX;
-	}
+            if(groupedLess == NULL)
+            {
+                if(x1[idx] < x2[idx])
+                    return permIdx;
+                if(x1[idx] > x2[idx])
+                    return permIdx;
+                // OTHERWISE (x1[idx] == x2[idx]): proceed to next variable
+            }
+            else
+            {
+                if((*groupedLess)(x1,x2))
+                    return  permIdx;
+                if((*groupedLess)(x2,x1))
+                    return  permIdx;
+                // OTHERWISE x1 and x2 belong to same group. Proceed to next var
+            }
+            
+        }
+        // All components are equal
+        return UNDEFINED_INDEX;
+    }
 
 }
 

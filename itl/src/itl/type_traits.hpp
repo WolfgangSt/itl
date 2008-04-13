@@ -30,25 +30,25 @@ DEALINGS IN THE SOFTWARE.
 
 namespace itl
 {
-	/** This file covers type traits that have to be used within law validaton.	*/
-	// JODO amalgamate type_traits with AlgBase and ReprBase
+    /** This file covers type traits that have to be used within law validaton.    */
+    // JODO amalgamate type_traits with AlgBase and ReprBase
 
 
-	template <typename Type>
-	Type abs(Type val) { return val < 0 ? -val : val; }
+    template <typename Type>
+    Type abs(Type val) { return val < 0 ? -val : val; }
 
-	template<typename Type>	class value_size
-	{
-	public:
-		//REV static std::size_type get(const Type& val);
-		static int get(const Type& val);
-	};
+    template<typename Type>    class value_size
+    {
+    public:
+        //REV static std::size_type get(const Type& val);
+        static int get(const Type& val);
+    };
 
-	template<> int value_size<int>::get(const int& val) { return abs(val); }
-	template<> int value_size<double>::get(const double& val) { return static_cast<int>(abs(val)); }
+    template<> int value_size<int>::get(const int& val) { return abs(val); }
+    template<> int value_size<double>::get(const double& val) { return static_cast<int>(abs(val)); }
 
-	template <typename Type> 
-	inline int value_size<Type>::get(const Type& val){ return static_cast<int>(val.size()); }
+    template <typename Type> 
+    inline int value_size<Type>::get(const Type& val){ return static_cast<int>(val.size()); }
 
 } // namespace itl
 

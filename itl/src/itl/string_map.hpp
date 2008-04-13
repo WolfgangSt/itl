@@ -33,26 +33,26 @@ DEALINGS IN THE SOFTWARE.
 #include <string>
 
 namespace itl
-{	
-	template <class CodomTV, class CompTV=less<std::string> >
-		class string_map : public MapT<std::string, CodomTV, CompTV>
-	{
-	};
-	
-	/// Compair class for Strings ingnoring case
-	struct  string_ICLess {
-		bool operator() (const std::string& c1, const std::string& c2) const 
-		{ 
-			//return c1.stricmp(c2)<0; //JODO URG
-			return c1 < c2; //JODO URG
-		}
-	};
-	
-	/// A template map class that's keys are handled case insensitive
-	template <class CodomTV>
-		class ICstring_map : public itl::string_map<CodomTV, string_ICLess>
-	{
-	};
+{    
+    template <class CodomTV, class CompTV=less<std::string> >
+        class string_map : public MapT<std::string, CodomTV, CompTV>
+    {
+    };
+    
+    /// Compair class for Strings ingnoring case
+    struct  string_ICLess {
+        bool operator() (const std::string& c1, const std::string& c2) const 
+        { 
+            //return c1.stricmp(c2)<0; //JODO URG
+            return c1 < c2; //JODO URG
+        }
+    };
+    
+    /// A template map class that's keys are handled case insensitive
+    template <class CodomTV>
+        class ICstring_map : public itl::string_map<CodomTV, string_ICLess>
+    {
+    };
 
 } // namespace itl
 

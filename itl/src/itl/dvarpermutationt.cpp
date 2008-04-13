@@ -34,38 +34,38 @@ using namespace itl;
 
 DVarPermutationT::DVarPermutationT(int capacity)
 {
-	m_Permutation.reserve(capacity);
+    m_Permutation.reserve(capacity);
 }
 
 
 void DVarPermutationT::setIdentity()
 {
-	m_Permutation.resize(capacity());
-	for(int idx=0; idx < size(); idx++)
-		m_Permutation[idx] = idx;
+    m_Permutation.resize(capacity());
+    for(int idx=0; idx < size(); idx++)
+        m_Permutation[idx] = idx;
 }
 
 DVarPermutationT& DVarPermutationT::add(VarEnumTD var) 
 {
-	if(size() < capacity())
-		m_Permutation.push_back(var); 
-	return *this;
+    if(size() < capacity())
+        m_Permutation.push_back(var); 
+    return *this;
 }
 
 DVarPermutationT& DVarPermutationT::del(int count) // = 1 default 
 {
-	int back = atomin(count, size());
-	for(int idx=0; idx < back; idx++)
-		m_Permutation.pop_back();
-	return *this;
+    int back = atomin(count, size());
+    for(int idx=0; idx < back; idx++)
+        m_Permutation.pop_back();
+    return *this;
 }
 
 DVarPermutationT DVarPermutationT::operator() (VarEnumTD fst, VarEnumTD lst)const
 {
-	DVarPermutationT perm;
-	for(VarEnumTD idx = fst; idx < lst; idx++)
-		perm.add((*this)[idx]);
+    DVarPermutationT perm;
+    for(VarEnumTD idx = fst; idx < lst; idx++)
+        perm.add((*this)[idx]);
 
-	return perm;
+    return perm;
 }
 

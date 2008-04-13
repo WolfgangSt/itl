@@ -27,7 +27,7 @@ DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
 /* ------------------------------------------------------------------
 Combinators
-	a general classes for Combinators
+    a general classes for Combinators
 --------------------------------------------------------------------*/
 #ifndef __itl_CMBTOR_H_JOFA_990302__
 #define __itl_CMBTOR_H_JOFA_990302__
@@ -41,41 +41,41 @@ template <class ALPHA>
 class UniCombinatorT
 {
 public:
-	virtual ALPHA operator() (const ALPHA& a1, const ALPHA& a2)=0;
+    virtual ALPHA operator() (const ALPHA& a1, const ALPHA& a2)=0;
 } ;
 
 template <class ALPHA>
 class UnifierT : public UniCombinatorT<ALPHA>
 {
 public:
-	ALPHA operator() (const ALPHA& x1, const ALPHA& x2)
-	{ ALPHA y(x1); y += x2; return y; }
-	// { ALPHA y; ::Union(y,x1,x2); return y; }
+    ALPHA operator() (const ALPHA& x1, const ALPHA& x2)
+    { ALPHA y(x1); y += x2; return y; }
+    // { ALPHA y; ::Union(y,x1,x2); return y; }
 } ;
 
 template <class ALPHA>
 class SubtractorT : public UniCombinatorT<ALPHA>
 {
 public:
-	ALPHA operator() (const ALPHA& x1, const ALPHA& x2)
-	{ ALPHA y(x1); y -= x2; return y; }
+    ALPHA operator() (const ALPHA& x1, const ALPHA& x2)
+    { ALPHA y(x1); y -= x2; return y; }
 } ;
 
 template <class ALPHA>
 class IntersectorT : public UniCombinatorT<ALPHA>
 {
 public:
-	ALPHA operator() (const ALPHA& x1, const ALPHA& x2)
-	{ ALPHA y(x1); y *= x2; return y; }
+    ALPHA operator() (const ALPHA& x1, const ALPHA& x2)
+    { ALPHA y(x1); y *= x2; return y; }
 } ;
 
 template <class ALPHA>
 class AppenderT : public UniCombinatorT<ALPHA>
 {
 public:
-	ALPHA operator() (const ALPHA& x1, const ALPHA& x2)
-	{ ALPHA y(x1); y.append(x2); return y; }
-	// { ALPHA y; ::Union(y,x1,x2); return y; }
+    ALPHA operator() (const ALPHA& x1, const ALPHA& x2)
+    { ALPHA y(x1); y.append(x2); return y; }
+    // { ALPHA y; ::Union(y,x1,x2); return y; }
 } ;
 
 
@@ -87,8 +87,8 @@ template <class ALPHA>
 class AccumulatorT  // InplaceCombinatorT
 {
 public:
-	virtual ALPHA& operator()(ALPHA& y, const ALPHA& x)const=0; 
-	// combine may be destructuve on x, like stl's list<T>::slice, so no const
+    virtual ALPHA& operator()(ALPHA& y, const ALPHA& x)const=0; 
+    // combine may be destructuve on x, like stl's list<T>::slice, so no const
 } ;
 
 
@@ -97,8 +97,8 @@ template <class ALPHA>
 class AppenderAT : public AccumulatorT<ALPHA>
 {
 public:
-	ALPHA& operator()(ALPHA& y, const ALPHA& x)const
-	{ y.append(x); return y; }
+    ALPHA& operator()(ALPHA& y, const ALPHA& x)const
+    { y.append(x); return y; }
 } ;
 
 
@@ -111,8 +111,8 @@ template <class ALPHA>
 class DestrAccumulatorAT  // InplaceCombinatorT
 {
 public:
-	virtual ALPHA& operator()(ALPHA& y, ALPHA& x)const=0; 
-	// combine may be destructuve on x, like stl's list<T>::slice, so no const
+    virtual ALPHA& operator()(ALPHA& y, ALPHA& x)const=0; 
+    // combine may be destructuve on x, like stl's list<T>::slice, so no const
 } ;
 
 
@@ -120,8 +120,8 @@ template <class ALPHA>
 class DestrAppenderIT : public AccumulatorT<ALPHA>
 {
 public:
-	ALPHA& operator()(ALPHA& y, ALPHA& x)const
-	{ y.destrAppend(x); return y; }
+    ALPHA& operator()(ALPHA& y, ALPHA& x)const
+    { y.destrAppend(x); return y; }
 } ;
 
 } // namespace itl
