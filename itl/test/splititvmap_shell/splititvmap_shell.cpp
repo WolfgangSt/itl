@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------+
-Copyright (c) 2007: Joachim Faulhaber
+Copyright (c) 2007-2008: Joachim Faulhaber
 +-----------------------------------------------------------------------------+
 Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
 +-----------------------------------------------------------------------------+
@@ -157,7 +157,6 @@ int main()
     cout << ">> Interval Template Library: Test splititvmap_shell.cpp <<\n";
     cout << "-----------------------------------------------------------\n";
     mapTestShell< split_interval_map<int, int> >();
-    system("pause");
 
     return 0;
 }

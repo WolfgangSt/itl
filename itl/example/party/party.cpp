@@ -99,7 +99,6 @@ int main()
     cout << ">> Interval Template Library: Sample party.cpp <<\n";
     cout << "-------------------------------------------------\n";
     party();
-    system("pause");
     return 0;
 }
 

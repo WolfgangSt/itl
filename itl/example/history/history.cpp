@@ -239,7 +239,6 @@ int main()
     cout << ">> Interval Template Library: Sample history.cpp <<\n";
     cout << "---------------------------------------------------\n";
     medical_file();
-    system("pause");
     return 0;
 }
 

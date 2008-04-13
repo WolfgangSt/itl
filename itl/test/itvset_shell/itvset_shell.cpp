@@ -143,7 +143,6 @@ int main()
     cout << ">> Interval Template Library: Test itvset_shell.cpp <<\n";
     cout << "------------------------------------------------------\n";
     setTestShell< interval_set<int> >();
-    system("pause");
 
     return 0;
 }

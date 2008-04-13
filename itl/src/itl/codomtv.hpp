@@ -34,10 +34,6 @@ Es soll und muß niemals in Projekte includiert werden!
 
 #pragma message(__LOC__"Don't include this file (it served to document template patameter only)!")
 
-// JODO URG besseren Namen für dieses Interface finden!
-// RevTV reverse combinable
-// RevCmbTV
-
 namespace itl
 {
 

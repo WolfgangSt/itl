@@ -140,10 +140,10 @@ public:
 
     /// Comparison functor for domain values
     typedef Compare<DomainT> domain_compare;
-    /// Comparison functor for keys
+    /// Comparison functor for intervals which are keys as well
     typedef exclusive_less<interval_type> interval_compare;
 
-    //JODO URG: explain differences between key_compare and interval_compare
+    /// Comparison functor for keys
     typedef exclusive_less<interval_type> key_compare;
 
     /// The allocator type of the set
@@ -528,11 +528,6 @@ public:
         Caution: This function can only be applied if a multiplication of
         DomainT and CodomainT exists.
     */
-    /*JODO: volume ist zu speziell. Geht nicht mit beliebigen WerteTypen für CodomainT
-    CodomainT volume()const;
-    */
-    //JODO URGENT: volume ist zu speziell. Geht nicht mit beliebigen WerteTypen für CodomTV
-    // z.B. Faktor!
 #ifdef UNISTAT
     CodomainT volume()const;
 #endif

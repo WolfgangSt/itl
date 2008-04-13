@@ -46,7 +46,6 @@ namespace itl
 
     @author Joachim Faulhaber
     */
-    //JODO URG In separates file
     template <class Type>
     class TypeAsString<itl::set<Type> >
     {

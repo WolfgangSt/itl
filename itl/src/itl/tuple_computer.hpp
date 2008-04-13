@@ -386,13 +386,12 @@ namespace itl
                                    split_interval_map<TimeTV, CounteeTV> >
     {
     public:
-        typedef split_interval_map<TimeTV, CounteeTV> counter_type;
+        typedef split_interval_map<TimeTV, CounteeTV>        counter_type;
         typedef tuple_computer_base<varCountV, counter_type> base_type;
-        typedef typename base_type::var_tuple_type var_tuple_type;
-        typedef typename base_type::key_compare key_compare;
-        typedef itl::set<var_tuple_type, var_tuple_order> tuple_set_type;
-        typedef split_interval_map<TimeTV, CounteeTV> counter_type;
-        typedef typename base_type::key_type var_tuple_type;
+        typedef typename base_type::var_tuple_type           var_tuple_type;
+        typedef typename base_type::key_compare              key_compare;
+        typedef itl::set<var_tuple_type, var_tuple_order>    tuple_set_type;
+        typedef split_interval_map<TimeTV, CounteeTV>        counter_type;
         typedef typename base_type::counter_type::IntervalTD IntervalTD;
 
     private:

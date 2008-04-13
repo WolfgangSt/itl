@@ -89,7 +89,6 @@ int main()
     cout << ">> Interval Template Library: Sample interval_container.cpp <<\n";
     cout << "--------------------------------------------------------------\n";
     interval_container_basics();
-    system("pause");
     return 0;
 }
 

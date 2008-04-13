@@ -132,7 +132,6 @@ using namespace itl;
 //{
 //    using namespace Loki;
 //    //tuple<LOKI_TYPELIST_1(int)> sgl_int;
-//    //JODO URG: tuple<NullType> mtpl;
 //
 //}
 //

@@ -99,7 +99,6 @@ int main()
     cout << ">> Interval Template Library: Sample overlap_counter.cpp <<\n";
     cout << "-----------------------------------------------------------\n";
     overlap_counter();
-    system("pause");
     return 0;
 }
 

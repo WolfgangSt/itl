@@ -1,7 +1,5 @@
 // verify.cpp : Definiert den Einstiegspunkt für die Konsolenanwendung.
 //
-#define ITL_VALIDATE //JODO URG REMOVE after finding a better way
-
 #include <iostream>
 #include <stdio.h>
 #include <lokixt/Tuple.h>

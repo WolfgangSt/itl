@@ -27,9 +27,9 @@ DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
 #include <iostream>
 #include <string>
+#include <math.h>
 #include <itl/ctxreprbase.hpp>
 #include <itl/itl_interval.hpp>
-#include <math.h>
 #include "../toytime.h"
 
 using namespace std;
@@ -62,8 +62,6 @@ int main()
     cout << "Interval<string>: " << city_Itv.asString() << " does "  
                                  << string(city_Itv.contains("Berlin")?"":"NOT") << " contain 'Berlin'" << endl;
     cout << "Interval<Time>: " << time_Itv.asString() << endl;
-
-    system("pause");
 
     return 0;
 }

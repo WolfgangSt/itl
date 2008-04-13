@@ -251,7 +251,6 @@ int main()
     accumulate_for_sex();
     accumulate_except_for_sex();
     accumulate_the_total();
-    system("pause");
     return 0;
 }
 

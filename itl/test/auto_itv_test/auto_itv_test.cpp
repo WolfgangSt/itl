@@ -156,7 +156,6 @@ int main()
 
     // Test programmed properties on a sample of generated split_interval_map<double,int>
     // autoPropertyTest_SplitItvMap_double_int();
-    system("pause");
 
     return 0;
 }

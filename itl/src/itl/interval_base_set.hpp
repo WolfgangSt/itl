@@ -126,9 +126,8 @@ public:
     /// Comparison functor for intervals
     typedef exclusive_less<interval_type> interval_compare;
 
-    //JODO URG: explain differences between key_compare and interval_compare
+    /// Comparison functor for keys
     typedef exclusive_less<interval_type> key_compare;
-    //CL? typedef Compare<Interval<DomainT> > key_compare;
 
     /// The allocator type of the set
     typedef Alloc<interval_type> allocator_type;
@@ -392,7 +391,7 @@ public:
 
     template<typename LeftIterT, typename RightIterT>
     static bool key_less(LeftIterT& lhs_, RightIterT& rhs_) 
-    { return key_compare()(*lhs_, *rhs_); } //JODO URG: which order is correct exclusive_less or std::less
+    { return key_compare()(*lhs_, *rhs_); }
 
     static value_type make_domain_element(const domain_type& dom_val, const codomain_type& codom_val)
     { return value_type(interval_type(dom_val)); }

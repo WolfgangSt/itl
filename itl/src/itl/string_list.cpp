@@ -30,15 +30,12 @@ DEALINGS IN THE SOFTWARE.
 /*---------------------------------------------------------------------------------
 A general list of strings
 ---------------------------------------------------------------------------------*/
-#include "stdafx.h" //JODO URG stdafx scheiss
+#include "stdafx.h" //JODO URG stdafx
 //#include "d:\opensrc\itl\devel\devel\stdafx.h"
 #include <itl/string_list.hpp>
 
 using namespace std;
 using namespace itl;
-
-//JODO URG: string_list probably also other String<Cont>T implementations are broken due to erasure of class CTX::stringT!!
-//JODO URG: Must implement missing functionality via global functions or introduce itl::string.
 
 string_list::string_list(const char* const deno[], int nOfDeno): list<std::string>()
 {

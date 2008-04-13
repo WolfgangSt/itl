@@ -25,9 +25,9 @@ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
-/*------------------------------------------------------------------------------------
+/*-----------------------------------------------------------------------------
     Macro definitions for useful and abstract notations e.g. iteration headers
-------------------------------------------------------------------------------------*/
+-----------------------------------------------------------------------------*/
 #ifndef  __itl_NOTATE_H_JOFA_990119__
 #define  __itl_NOTATE_H_JOFA_990119__
 

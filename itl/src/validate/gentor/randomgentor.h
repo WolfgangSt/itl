@@ -1,9 +1,5 @@
 #pragma once
 
-//JODO: class TypeAsString how can it be located best.  
-// ITL_VALIDATE is only a temporary compiler flag to switch it on for validation only
-#define ITL_VALIDATE
-
 
 #include <itl/numbergentor.hpp>
 #include <itl/setgentor.hpp>
@@ -11,7 +7,6 @@
 #include <itl/itvgentor.hpp>
 #include <itl/interval_set.hpp>
 #include <itl/split_interval_set.hpp>
-//CL #include <itl/joint_interval_map.hpp>
 #include <itl/split_interval_map.hpp>
 #include <validate/gentor/gentorprofile.h>
 
