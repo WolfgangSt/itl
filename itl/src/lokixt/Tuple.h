@@ -791,7 +791,7 @@ namespace Loki
 
             static std::string Do(const TupleT& obj)
             {
-                return itl::ReprBaseT<HeadType>::toString(get<0>(obj));
+                return itl::value<HeadType>::toString(get<0>(obj));
             }
         };
 
@@ -803,7 +803,7 @@ namespace Loki
 
             static std::string Do(const TupleT& obj)
             {
-                return itl::ReprBaseT<HeadType>::toString(get<0>(obj)) 
+                return itl::value<HeadType>::toString(get<0>(obj)) 
                        + ", " + Stringer<TailClass, i-1>::Do(obj);
             }
         };
@@ -883,7 +883,7 @@ namespace Loki
         {
             static std::string apply(const SourceT& src)
             {
-                return itl::ReprBaseT<SourceT>::toString(src);
+                return itl::value<SourceT>::toString(src);
             }
         };
 
@@ -1053,7 +1053,7 @@ namespace Loki
     {
         static std::string apply(const SrcT& obj) 
         { 
-            return itl::ReprBaseT<SrcT>::toString(obj); 
+            return itl::value<SrcT>::toString(obj); 
         }
     };
 

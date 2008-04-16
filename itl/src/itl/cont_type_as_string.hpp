@@ -36,7 +36,7 @@ for concepts InplaceAddable and InplaceSubtractable
 #include <string>
 #include <itl/itl_set.hpp>
 #include <itl/itl_map.hpp>
-#include <itl/ctxreprbase.hpp>
+#include <itl/value.hpp>
 
 namespace itl
 {

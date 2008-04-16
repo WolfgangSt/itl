@@ -111,7 +111,7 @@ template <typename TypeT> struct Mappi
     std::string asString()const 
     {
         std::string result("mappi: ");
-        result += ReprBaseT<TypeT>::toString(_value);
+        result += value<TypeT>::toString(_value);
         return result;
     }
     TypeT _value;

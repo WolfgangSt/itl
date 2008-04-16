@@ -35,7 +35,7 @@ for concepts InplaceAddable and InplaceSubtractable
 
 #include <string>
 #include <set>
-#include <itl/ctxreprbase.hpp>
+#include <itl/value.hpp>
 #include <itl/set_algo.hpp>
 #include <itl/ctxpred.hpp>
 
@@ -254,8 +254,8 @@ namespace itl
         if(it_ == end()) return std::string();
         else
         {
-            std::string y = ReprBaseT<KeyT>::toString(*it_++);
-            while(it_ != end()) { y += sep; y += ReprBaseT<KeyT>::toString(*it_++); }
+            std::string y = value<KeyT>::toString(*it_++);
+            while(it_ != end()) { y += sep; y += value<KeyT>::toString(*it_++); }
             return y;
         }
     }

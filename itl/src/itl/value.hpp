@@ -88,14 +88,14 @@ typedef char * CharPT;
 
 template<> inline const std::string value<bool>::toString(const bool& x){ return x ? "true" : "false"; }
 template<> inline const std::string value<char>::toString(const char& x){ RETURN_AS_STRING("%c", x); }
-template<> inline const std::string value<short>::toString (const short& x) { RETURN_AS_STRING("%d", x); }
-template<> inline const std::string value<int>::toString (const int& x) { RETURN_AS_STRING("%d", x);   }
+template<> inline const std::string value<short>::toString(const short& x) { RETURN_AS_STRING("%d", x); }
+template<> inline const std::string value<int>::toString(const int& x) { RETURN_AS_STRING("%d", x);   }
 template<> inline const std::string value<long>::toString(const long& x) { RETURN_AS_STRING("%ld", x);   }
-template<> inline const std::string value<unsigned char>::toString (const unsigned char& x) { RETURN_AS_STRING("%uc", x);   }
-template<> inline const std::string value<unsigned short>::toString (const unsigned short& x) { RETURN_AS_STRING("%hu", x);   }
-template<> inline const std::string value<unsigned int>::toString (const unsigned int& x) { RETURN_AS_STRING("%u", x);   }
+template<> inline const std::string value<unsigned char>::toString(const unsigned char& x) { RETURN_AS_STRING("%uc", x);   }
+template<> inline const std::string value<unsigned short>::toString(const unsigned short& x) { RETURN_AS_STRING("%hu", x);   }
+template<> inline const std::string value<unsigned int>::toString(const unsigned int& x) { RETURN_AS_STRING("%u", x);   }
 template<> inline const std::string value<unsigned long>::toString(const unsigned long& x) { RETURN_AS_STRING("%lu", x);   }
-template<> inline const std::string value<float>::toString (const float& x) { RETURN_AS_STRING("%f", x);   }
+template<> inline const std::string value<float>::toString(const float& x) { RETURN_AS_STRING("%f", x);   }
 template<> inline const std::string value<double>::toString(const double& x) { RETURN_AS_STRING("%lf", x);   }
 template<> inline const std::string value<CharPT>::toString(const CharPT & x) { RETURN_AS_STRING("%s", x);   }
 template<> inline const std::string value<std::string>::toString(const std::string& x) { return x; }

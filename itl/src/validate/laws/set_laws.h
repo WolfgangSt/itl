@@ -28,7 +28,7 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __itl_set_laws_h_JOFA_071124__
 #define __itl_set_laws_h_JOFA_071124__
 
-#include <itl/ctxreprbase.hpp>
+#include <itl/value.hpp>
 #include <itl/type_traits.hpp> //JODO ReprBase and/or type_traits
 #include <validate/law.h>
 #include <itl/functors.hpp>

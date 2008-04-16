@@ -491,10 +491,10 @@ public:
 /** @name S: String representation
     */
 //@{
-    /** Convert the interval map to string (c.f. \ref ReprBaseT)
+    /** Convert the interval map to string (c.f. \ref value)
 
         This string converter is based on a general converter function <tt>asString</tt>
-        and the template class \ref ReprBaseT which serves as base for string
+        and the template class \ref value which serves as base for string
         representation.
     */
     std::string asString() const;
@@ -953,7 +953,7 @@ std::string interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::asStrin
         std::string cur("("); 
         cur += (*it).KEY_VALUE.asString();
         cur += ",";
-        cur += itl::ReprBaseT<CodomainT>::toString((*it).CONT_VALUE);
+        cur += itl::value<CodomainT>::toString((*it).CONT_VALUE);
         cur += ")";
         res += cur;
     }

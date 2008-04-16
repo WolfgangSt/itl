@@ -39,7 +39,7 @@ class itl::list
 #include <list>
 #include <algorithm>
 #include <itl/j_assert.hpp>
-#include <itl/ctxreprbase.hpp>
+#include <itl/value.hpp>
 #include <itl/set_algo.hpp>
 #include <itl/ctxpred.hpp>
 
@@ -421,12 +421,12 @@ namespace itl
         if(it == end()) return std::string("");
         else
         {
-            std::string y = ReprBaseT<DataT>::toString(*it);
+            std::string y = value<DataT>::toString(*it);
             it++;
             while(it != end()) 
             { 
                 y+=sep; 
-                y += ReprBaseT<DataT>::toString(*it); 
+                y += value<DataT>::toString(*it); 
                 it++; 
             }
             return y;

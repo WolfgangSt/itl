@@ -36,7 +36,7 @@ class itl::cop
 
 #include <string>
 #include <itl/notate.hpp>
-#include <itl/ctxreprbase.hpp>
+#include <itl/value.hpp>
 #include <itl/ctxpred.hpp>
 #include <itl/map_algo.hpp>
 #include <map>
@@ -292,9 +292,9 @@ namespace itl
         std::string repr;
         const_FORALL_THIS(it) {
             std::string elem("(");
-            elem += ReprBaseT<KeyT>::toString((*it).KEY_VALUE);
+            elem += value<KeyT>::toString((*it).KEY_VALUE);
             elem += "->";
-            elem += ReprBaseT<DataT>::toString((*it).CONT_VALUE);
+            elem += value<DataT>::toString((*it).CONT_VALUE);
             elem += ")";
 
             repr += elem;

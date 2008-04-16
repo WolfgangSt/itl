@@ -28,7 +28,7 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __itl_functors_H_JOFA_080315__
 #define __itl_functors_H_JOFA_080315__
 
-#include <itl/ctxreprbase.hpp>
+#include <itl/value.hpp>
 
 namespace itl
 {

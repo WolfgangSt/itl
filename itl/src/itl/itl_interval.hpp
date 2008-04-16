@@ -35,7 +35,7 @@ DEALINGS IN THE SOFTWARE.
 #include <string>
 #include <itl/discrete.hpp>
 #include <itl/algbase.hpp>
-#include <itl/ctxreprbase.hpp>
+#include <itl/value.hpp>
 #include <itl/j_assert.hpp>
 
 #define BOUND_VAL first
@@ -794,9 +794,9 @@ const std::string interval<DataT>::asString()const
     itvRep += leftbound_open() ? "(" : "[" ;
     // if(AlgBaseT<DataT>::isAtomic()) 
     {
-        itvRep += itl::ReprBaseT<DataT>::toString(_lwb);
+        itvRep += itl::value<DataT>::toString(_lwb);
         itvRep += ",";
-        itvRep += itl::ReprBaseT<DataT>::toString(_upb);
+        itvRep += itl::value<DataT>::toString(_upb);
 
     }
 
