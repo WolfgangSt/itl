@@ -140,8 +140,8 @@ namespace itl
             output_tuple outVars;
             violation.getInstance(inVars, outVars);
             std::cout << "Violation of: " << _law.typeString() << std::endl;
-            std::cout <<  inVars.asString() << std::endl;
-            std::cout << outVars.asString() << std::endl;
+            std::cout <<  inVars.as_string() << std::endl;
+            std::cout << outVars.as_string() << std::endl;
 
             violation.debug_holds();
         }
@@ -168,7 +168,7 @@ namespace itl
         typename LawT::input_tuple input_values;
         _law.getInputInstance(input_values);
         //JODO think about more general mechanics of pregress reporting here
-        std::cout << "SomeValues " << input_values.asString() << std::endl;
+        std::cout << "SomeValues " << input_values.as_string() << std::endl;
     }
 
     template <class LawT, template<typename>class GentorT>

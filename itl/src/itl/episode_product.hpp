@@ -160,7 +160,7 @@ public:
     }
     
 
-    std::string asString()const
+    std::string as_string()const
     {
         std::string str;
         const_iterator it = this->begin();
@@ -169,13 +169,13 @@ public:
             return std::string("");
         else
         {
-            std::string str( TypeDomTV::asString((*it).KEY_VALUE) );
-            str += ("{"+((*it).CONT_VALUE).asString()+"}");
+            std::string str( TypeDomTV::as_string((*it).KEY_VALUE) );
+            str += ("{"+((*it).CONT_VALUE).as_string()+"}");
             it++;
             
             while(it != this->end()) {
-                str += ", "; str += TypeDomTV::asString((*it).KEY_VALUE);
-                str += ("{"+((*it).CONT_VALUE).asString()+"}");
+                str += ", "; str += TypeDomTV::as_string((*it).KEY_VALUE);
+                str += ("{"+((*it).CONT_VALUE).as_string()+"}");
                 it++;
             }
             return str;
@@ -242,7 +242,7 @@ public:
         return BaseTD::insert(value_type(type,sglSet)).WAS_SUCCESSFUL;
     }
 
-    std::string asString()const
+    std::string as_string()const
     {
         std::string str;
         const_iterator it = begin();
@@ -250,13 +250,13 @@ public:
         if(it==end()) return std::string("");
         else
         {
-            std::string str( TypeDomTV::asString((*it).KEY_VALUE) );
-            str += ("{"+((*it).CONT_VALUE).asString()+"}");
+            std::string str( TypeDomTV::as_string((*it).KEY_VALUE) );
+            str += ("{"+((*it).CONT_VALUE).as_string()+"}");
             it++;
             
             while(it != end()) {
-                str += ", "; str += TypeDomTV::asString((*it).KEY_VALUE);
-                str += ("{"+((*it).CONT_VALUE).asString()+"}");
+                str += ", "; str += TypeDomTV::as_string((*it).KEY_VALUE);
+                str += ("{"+((*it).CONT_VALUE).as_string()+"}");
                 it++;
             }
             return str;

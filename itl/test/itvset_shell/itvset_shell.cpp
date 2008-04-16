@@ -86,8 +86,8 @@ void setTestShell()
                     // SetTV::IntervalTD itv = rightOpenInterval(lwb,upb);
                     m1.insert(itv);
 
-                    cout << "+" << itv.asString().c_str() << " =" << endl;
-                    cout << "{" << m1.asString() << "}" << endl;
+                    cout << "+" << itv.as_string().c_str() << " =" << endl;
+                    cout << "{" << m1.as_string() << "}" << endl;
 
                 }
                 break;
@@ -102,15 +102,15 @@ void setTestShell()
                     tmp.insert(itv);
                     m1 -= tmp;
 
-                    cout << "-" << itv.asString().c_str()<<" =" << endl;
-                    cout << "{" << m1.asString() << "}" << endl;
+                    cout << "-" << itv.as_string().c_str()<<" =" << endl;
+                    cout << "{" << m1.as_string() << "}" << endl;
 
                 }
                 break;
             case 'j':
                 {
                     m1.join();
-                    cout << "{" << m1.asString() << "}" << endl;
+                    cout << "{" << m1.as_string() << "}" << endl;
                 }
                 break;
             case 's':

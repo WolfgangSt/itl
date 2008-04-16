@@ -106,7 +106,7 @@ public:
 
     void some(NumTV& x) { x = (*this)(m_valueRange); }
 
-    std::string asString()const { return "NumberGentorT";}
+    std::string as_string()const { return "NumberGentorT";}
 
 private:
     interval<NumTV> m_valueRange;

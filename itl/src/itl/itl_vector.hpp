@@ -214,7 +214,7 @@ namespace itl
         using base_type::operator[];
         ptr_vector& operator += (const ptr_vector& rhs);
 
-        std::string asString(std::string(DataT::*asStr)()const, const char* sep=" ")const;
+        std::string as_string(std::string(DataT::*asStr)()const, const char* sep=" ")const;
         bool contains(DataT*)const;
         ptr_vector<DataT,AllocT>& clone(const ptr_vector&);
         bool append_unique(DataT*);
@@ -247,7 +247,7 @@ namespace itl
     }    
     
     template <typename DataT, typename AllocT>
-    std::string ptr_vector<DataT,AllocT>::asString(std::string(DataT::*asStr)()const, const char* sep /* =" " */)const
+    std::string ptr_vector<DataT,AllocT>::as_string(std::string(DataT::*asStr)()const, const char* sep /* =" " */)const
     {
         const_iterator it=begin();
         if(it == end()) return stringT("");

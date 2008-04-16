@@ -117,7 +117,7 @@ void accumulate_identical_tupel()
     evaluate_by_tupel_insertion(amountCube);
     // Show result
     cout << "accumulate_identical_tupel(): (female, 17, annorexia)->2 all other tupels->1" << endl;
-    cout << amountCube.asString() << endl;
+    cout << amountCube.as_string() << endl;
     cout << "----------------------------------------------------------------------------" << endl;
 }
 
@@ -170,7 +170,7 @@ void accumulate_for_grouped_age()
 
     cout << "accumulate_for_grouped_age():" << endl;
     cout << "(fem,yng,anrx)->2 (fem,yng,strk)->1 (mle,old,anrx)->1 (mle,old,strk)->2" << endl;
-    cout << amountCube.asString() << endl;
+    cout << amountCube.as_string() << endl;
     cout << "----------------------------------------------------------------------------" << endl;
 }
 
@@ -193,7 +193,7 @@ void accumulate_for_sex()
     evaluate_by_tupel_insertion(amountCube);
 
     cout << "accumulate_for_sex(): (female,-,-)->3 (male,-,-)->3 " << endl;
-    cout << amountCube.asString() << endl;
+    cout << amountCube.as_string() << endl;
     cout << "----------------------------------------------------------------------------" << endl;
 }
 
@@ -214,7 +214,7 @@ void accumulate_except_for_sex()
 
     cout << "accumulate_except_for_sex():" << endl;
     cout << "(-,yng,anrx)->2 (-,yng,strk)->1 (-,old,anrx)->1 (-,old,strk)->2" << endl;
-    cout << amountCube.asString() << endl;
+    cout << amountCube.as_string() << endl;
     cout << "----------------------------------------------------------------------------" << endl;
 }
 
@@ -233,7 +233,7 @@ void accumulate_the_total()
     evaluate_by_tupel_insertion(amountCube);
 
     cout << "accumulate_the_total():(-,-,-)->6" << endl;
-    cout << amountCube.asString() << endl;
+    cout << amountCube.as_string() << endl;
     cout << "----------------------------------------------------------------------------" << endl;
 }
 

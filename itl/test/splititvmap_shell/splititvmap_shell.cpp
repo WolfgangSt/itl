@@ -92,8 +92,8 @@ void mapTestShell()
                         itv = typename MapTV::interval_type(lwb,upb);
                     m1.insert(make_pair(itv,val));
 
-                    cout << "+" << itv.asString().c_str()<<" "<<val<< " =" << endl;
-                    cout << "{" << m1.asString() << "}" << endl;
+                    cout << "+" << itv.as_string().c_str()<<" "<<val<< " =" << endl;
+                    cout << "{" << m1.as_string() << "}" << endl;
 
                 }
                 break;
@@ -105,8 +105,8 @@ void mapTestShell()
                         itv = typename MapTV::interval_type(lwb,upb);
                     m1.subtract(make_pair(itv,val));
 
-                    cout << "-" << itv.asString().c_str()<<" "<<val<< " =" << endl;
-                    cout << "{" << m1.asString() << "}" << endl;
+                    cout << "-" << itv.as_string().c_str()<<" "<<val<< " =" << endl;
+                    cout << "{" << m1.as_string() << "}" << endl;
 
                 }
                 break;
@@ -119,15 +119,15 @@ void mapTestShell()
                     split_interval_set<typename MapTV::domain_type> sgl(itv);
                     m1.erase(itv);
 
-                    cout << "_" << itv.asString().c_str()<<" "<< " =" << endl;
-                    cout << "{" << m1.asString() << "}" << endl;
+                    cout << "_" << itv.as_string().c_str()<<" "<< " =" << endl;
+                    cout << "{" << m1.as_string() << "}" << endl;
 
                 }
                 break;
             case 'j':
                 {
                     m1.join();
-                    cout << "{" << m1.asString() << "}" << endl;
+                    cout << "{" << m1.as_string() << "}" << endl;
                 }
                 break;
             case 's':

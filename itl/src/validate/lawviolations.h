@@ -177,8 +177,8 @@ namespace itl
             typename LawT::output_tuple outVars;
             violation.getInstance(inVars, outVars);
             std::cout << "Violation of: " << violation.typeString() << std::endl;
-            std::cout <<  inVars.asString() << std::endl;
-            std::cout << outVars.asString() << std::endl;
+            std::cout <<  inVars.as_string() << std::endl;
+            std::cout << outVars.as_string() << std::endl;
         }
 
 

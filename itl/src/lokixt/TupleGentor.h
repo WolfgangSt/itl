@@ -107,7 +107,7 @@ namespace Loki
     {
     public:
         typedef TupleGentor<Types, 0> BaseClass;
-        std::string asString()const;
+        std::string as_string()const;
     };
 
     // ---------------------------------------------------------------------------
@@ -200,7 +200,7 @@ namespace Loki
 
         static std::string Do(H& obj)
         {
-            return itl::value<HeadType>::toString(get<0>(obj));
+            return itl::value<HeadType>::to_string(get<0>(obj));
         }
     };
 
@@ -212,7 +212,7 @@ namespace Loki
 
         static std::string Do(H& obj)
         {
-            return itl::value<HeadType>::toString(get<0>(obj)) 
+            return itl::value<HeadType>::to_string(get<0>(obj)) 
                    + ", " + Stringer<TailClass, i-1>::Do(obj);
         }
     };
@@ -224,7 +224,7 @@ namespace Loki
     }
 
     template <typename Types>
-    std::string Tupl<Types>::asString()const
+    std::string Tupl<Types>::as_string()const
     {
         //JODO In order to work with const selector functions I need to
         // implement a const ValueGetter version
@@ -281,7 +281,7 @@ namespace Loki
     {
         static std::string apply(const SourceT& src)
         {
-            return itl::value<SourceT>::toString(src);
+            return itl::value<SourceT>::to_string(src);
         }
     };
 

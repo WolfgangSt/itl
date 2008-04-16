@@ -36,7 +36,7 @@ class itl::cop
 
 #include <string>
 #include <itl/notate.hpp>
-#include <itl/value.hpp>
+#include <itl/itl_value.hpp>
 #include <itl/ctxpred.hpp>
 #include <itl/map_algo.hpp>
 #include <map>
@@ -183,7 +183,7 @@ namespace itl
 
         //JODO concept StringRepresentable
         /** Represent this cop as string */
-        std::string asString()const;
+        std::string as_string()const;
 
         /** Keep the elements in *this cop to which property \c hasProperty applies. 
             Erase all the rest. */
@@ -287,14 +287,14 @@ namespace itl
     }
 
     template <typename KeyT, typename DataT, typename CompareT, typename AllocT>
-    std::string cop<KeyT,DataT,CompareT,AllocT>::asString()const
+    std::string cop<KeyT,DataT,CompareT,AllocT>::as_string()const
     { 
         std::string repr;
         const_FORALL_THIS(it) {
             std::string elem("(");
-            elem += value<KeyT>::toString((*it).KEY_VALUE);
+            elem += value<KeyT>::to_string((*it).KEY_VALUE);
             elem += "->";
-            elem += value<DataT>::toString((*it).CONT_VALUE);
+            elem += value<DataT>::to_string((*it).CONT_VALUE);
             elem += ")";
 
             repr += elem;

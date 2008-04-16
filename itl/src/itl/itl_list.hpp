@@ -39,7 +39,7 @@ class itl::list
 #include <list>
 #include <algorithm>
 #include <itl/j_assert.hpp>
-#include <itl/value.hpp>
+#include <itl/itl_value.hpp>
 #include <itl/set_algo.hpp>
 #include <itl/ctxpred.hpp>
 
@@ -146,7 +146,7 @@ namespace itl
 
         //JODO concept StringRepresentable
         /** Represent this list as a string */
-        std::string asString(const char* sep = " ")const;
+        std::string as_string(const char* sep = " ")const;
 
         /** Function add is mainly a convenience function allowing for a compact
             denotation of lists like in:
@@ -415,18 +415,18 @@ namespace itl
 
 
     template <typename DataT, template<class>class Alloc>
-    std::string list<DataT,Alloc>::asString(const char* sep /* =" " */)const
+    std::string list<DataT,Alloc>::as_string(const char* sep /* =" " */)const
     {
         const_iterator it=begin();
         if(it == end()) return std::string("");
         else
         {
-            std::string y = value<DataT>::toString(*it);
+            std::string y = value<DataT>::to_string(*it);
             it++;
             while(it != end()) 
             { 
                 y+=sep; 
-                y += value<DataT>::toString(*it); 
+                y += value<DataT>::to_string(*it); 
                 it++; 
             }
             return y;

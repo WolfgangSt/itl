@@ -95,7 +95,7 @@ namespace itl
 
 
         ListTD asList()const;
-        std::string asString()const;
+        std::string as_string()const;
 
     private:
         VarEnumTD m_Permutation[varCountV];
@@ -203,15 +203,15 @@ namespace itl
     }
 
     template <int varCountV>
-    std::string var_permutation<varCountV>::asString()const
+    std::string var_permutation<varCountV>::as_string()const
     {
         std::string repr = "[";
         int idx = 0;
         if(m_Size>0)
-            repr += value<VarEnumTD>::toString(m_Permutation[idx++]);
+            repr += value<VarEnumTD>::to_string(m_Permutation[idx++]);
 
         while(idx<m_Size)
-            repr += value<VarEnumTD>::toString(m_Permutation[idx++]);
+            repr += value<VarEnumTD>::to_string(m_Permutation[idx++]);
 
         repr += "]";
 

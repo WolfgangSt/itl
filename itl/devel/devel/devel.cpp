@@ -90,7 +90,7 @@ using namespace itl;
 //    people = residents;
 //    people += guests;
 //
-//    cout << people.asString() << endl;
+//    cout << people.as_string() << endl;
 //}
 //
 //
@@ -105,19 +105,19 @@ using namespace itl;
 //    big.add("My").add("big").add("is").add("light");
 //    shine.add("big").add("light").add("and").add("shines");
 //
-//    cout << ball.asString() << endl;
-//    cout << big.asString() << endl;
+//    cout << ball.as_string() << endl;
+//    cout << big.as_string() << endl;
 //    cout << endl;
 //
 //    ball.interlace(big);
-//    cout << ball.asString() << endl;
+//    cout << ball.as_string() << endl;
 //
 //    cout << endl;
-//    cout << shine.asString() << endl;
+//    cout << shine.as_string() << endl;
 //    ball.interlace(shine);
 //
 //    cout << endl;
-//    cout << ball.asString() << endl;
+//    cout << ball.as_string() << endl;
 //}
 //
 //void test_itl_list()
@@ -125,7 +125,7 @@ using namespace itl;
 //    typedef itl::list<string> ItlListT;
 //    string balls = "my  ball  is  blue";
 //    string_list ball; ball.split(balls);
-//    cout << ball.asString() << endl;
+//    cout << ball.as_string() << endl;
 //}
 //
 //void test_tuple()
@@ -149,7 +149,7 @@ using namespace itl;
 //
 //    splip *= iset;
 //
-//    cout << splip.asString() << endl;
+//    cout << splip.as_string() << endl;
 //
 //}
 //
@@ -227,22 +227,22 @@ void tmp_test_map()
     itl::set<int> y;
     y.insert(3);
     y.insert(5);
-    cout << y.asString() << endl;
+    cout << y.as_string() << endl;
 
     itl::map<int,int> my;
     my.insert(make_pair(3,3));
     my.insert(make_pair(5,3));
-    cout << my.asString() << endl;
+    cout << my.as_string() << endl;
 
     itl::interval_set<int> is;
     is.insert(rightopen_interval(1,3));
     is.insert(rightopen_interval(3,5));
-    cout << is.asString() << endl;
+    cout << is.as_string() << endl;
 
     itl::split_interval_map<int,int> im;
     im.insert(make_pair(rightopen_interval(1,6), 1));
     im.insert(make_pair(rightopen_interval(4,8), 1));
-    cout << im.asString() << endl;
+    cout << im.as_string() << endl;
 }
 
 int _tmain(int argc, _TCHAR* argv[])

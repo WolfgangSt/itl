@@ -493,11 +493,11 @@ public:
 //@{
     /** Convert the interval map to string (c.f. \ref value)
 
-        This string converter is based on a general converter function <tt>asString</tt>
+        This string converter is based on a general converter function <tt>as_string</tt>
         and the template class \ref value which serves as base for string
         representation.
     */
-    std::string asString() const;
+    std::string as_string() const;
 //@}
     
 /** @name T: For discrete domain datatypes only that implement operators <tt>++</tt> 
@@ -946,14 +946,14 @@ void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::merge()
 
 
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-std::string interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::asString()const
+std::string interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::as_string()const
 {
     std::string res(""); 
     const_FOR_IMPLMAP(it) {
         std::string cur("("); 
-        cur += (*it).KEY_VALUE.asString();
+        cur += (*it).KEY_VALUE.as_string();
         cur += ",";
-        cur += itl::value<CodomainT>::toString((*it).CONT_VALUE);
+        cur += itl::value<CodomainT>::to_string((*it).CONT_VALUE);
         cur += ")";
         res += cur;
     }

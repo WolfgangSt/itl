@@ -27,7 +27,7 @@ DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
 #include <stdio.h>
 #include <iostream>
-#include <itl/value.hpp>
+#include <itl/itl_value.hpp>
 #include <itl/string_set.hpp>
 #include <itl/split_interval_map.hpp>
 #include "../toytime.h"
@@ -89,7 +89,7 @@ void party()
         interval<Time> when = (*it).first;
         // Who is at the party within the time interval 'when' ?
         GuestsNameSetTD who = (*it++).second;
-        cout << when.asString() << ": " << who.asString() << endl;
+        cout << when.as_string() << ": " << who.as_string() << endl;
     }
 }
 

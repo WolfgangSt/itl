@@ -1,8 +1,6 @@
 /*----------------------------------------------------------------------------+
 Copyright (c) 2007-2008: Joachim Faulhaber
 +-----------------------------------------------------------------------------+
-Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
-+-----------------------------------------------------------------------------+
 Boost Software License - Version 1.0 - August 17th, 2003
 
 Permission is hereby granted, free of charge, to any person or organization
@@ -34,76 +32,15 @@ Function-templates for discrete Datatypes like int, unsigned or
     any class that provides a ++ operator c.f. iterators
 -----------------------------------------------------------------------------*/
 
-#ifndef __itl_REPRBASE_JOFA_000712_H__
-#define __itl_REPRBASE_JOFA_000712_H__
+#ifndef __itl_TYPE_JOFA_080416_H__
+#define __itl_TYPE_JOFA_080416_H__
 
 #include <stdio.h>
 #include <string>
 #include <sstream>
 
 namespace itl
-{    
-
-/**
-    <b>value</b> serves as a base to for the representation
-    of atomic types and classes as strings.
-
-    The function <tt>toString</tt> is defined for all atomic (built in) types
-    like <tt>int, double etc.</tt>. For types other than atomic ones namely
-    classes the function template <tt>toString</tt> calls a member function
-    <tt>asString</tt> on the class-type passed to the template.
-
-    Thereby we can implement a general string representation for template classes
-    which is independent of the template parameter being an atomic or a class type.
-    For every object, including atomic the string converter function toString can
-    be called, provides new classes implement a memberfunction <tt>asString</tt>
-  
-    @author  Jofa
-*/
-template <class TypeTV>
-class value
-{
-public:
-    /** String converter for all types <tt>TypeTV</tt>
-
-        E.g.: <tt>int i=5; string s = value<int>::toString(i);</tt>
-    */
-    static const std::string toString(const TypeTV &);    
-};
-
-
-typedef char * CharPT;
-
-#define RETURN_AS_STRING(format, atomicValue) \
-    std::stringstream repr; \
-    repr << atomicValue; \
-    return repr.str();
-
-/* Alternative macro using formated sprintf output
-#define RETURN_AS_STRING(format, atomicValue) \
-    char stringRepr[512]; \
-    sprintf(stringRepr, format, atomicValue); \
-    return stringRepr;
-*/
-
-template<> inline const std::string value<bool>::toString(const bool& x){ return x ? "true" : "false"; }
-template<> inline const std::string value<char>::toString(const char& x){ RETURN_AS_STRING("%c", x); }
-template<> inline const std::string value<short>::toString(const short& x) { RETURN_AS_STRING("%d", x); }
-template<> inline const std::string value<int>::toString(const int& x) { RETURN_AS_STRING("%d", x);   }
-template<> inline const std::string value<long>::toString(const long& x) { RETURN_AS_STRING("%ld", x);   }
-template<> inline const std::string value<unsigned char>::toString(const unsigned char& x) { RETURN_AS_STRING("%uc", x);   }
-template<> inline const std::string value<unsigned short>::toString(const unsigned short& x) { RETURN_AS_STRING("%hu", x);   }
-template<> inline const std::string value<unsigned int>::toString(const unsigned int& x) { RETURN_AS_STRING("%u", x);   }
-template<> inline const std::string value<unsigned long>::toString(const unsigned long& x) { RETURN_AS_STRING("%lu", x);   }
-template<> inline const std::string value<float>::toString(const float& x) { RETURN_AS_STRING("%f", x);   }
-template<> inline const std::string value<double>::toString(const double& x) { RETURN_AS_STRING("%lf", x);   }
-template<> inline const std::string value<CharPT>::toString(const CharPT & x) { RETURN_AS_STRING("%s", x);   }
-template<> inline const std::string value<std::string>::toString(const std::string& x) { return x; }
-
-template <class TypeTV>
-inline const std::string value<TypeTV>::toString(const TypeTV& x) { return x.asString(); }
-
-    
+{        
     // ------------------------------------------------------------------------
     template<class Type>
     struct TypeAsString

@@ -63,7 +63,7 @@ namespace itl
             Insert 0 or empty values for all tupels which are not in *this.    */
         virtual void alignFor(const tuple_set_type& domain)=0;
 
-        virtual std::string asString()const=0;
+        virtual std::string as_string()const=0;
     };
 
 
@@ -219,7 +219,7 @@ namespace itl
     */
     //@{
         ///
-        std::string asString()const { return m_map.asString(); }
+        std::string as_string()const { return m_map.as_string(); }
     //@}
 
 

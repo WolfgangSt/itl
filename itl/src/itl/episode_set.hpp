@@ -92,18 +92,18 @@ public:
 public:
     bool isMonoTyped()const;
 
-    std::string asString(const char* sep = " ")const
+    std::string as_string(const char* sep = " ")const
     {
         const_iterator it = this->begin();
         
         if(it == this->end()) return std::string("");
         else
         {
-            std::string y = (**it).asString(); it++;
+            std::string y = (**it).as_string(); it++;
             while(it != this->end()) 
             { 
                 y += sep; 
-                y += (**it).asString(); 
+                y += (**it).as_string(); 
                 it++; 
             }
             return y;

@@ -272,7 +272,7 @@ namespace itl
         const_FORALL(DateComputerTD, rec_, cmp)
         {
             var_tuple<IVarsV> tupel = (*rec_).KEY_VALUE; 
-            printf("%s->%s\n", tupel.asString().c_str(), (*rec_).CONT_VALUE.asString().c_str());
+            printf("%s->%s\n", tupel.as_string().c_str(), (*rec_).CONT_VALUE.as_string().c_str());
         }
     }
 
@@ -294,7 +294,7 @@ namespace itl
                 int freq = (*it_).CONT_VALUE;
                 sums.insert(tupel, freq);
             }
-            //printf("%s->%s\n", tupel.asString().c_str(), (*rec_).CONT_VALUE.asString().c_str());
+            //printf("%s->%s\n", tupel.as_string().c_str(), (*rec_).CONT_VALUE.as_string().c_str());
         }
     }
     

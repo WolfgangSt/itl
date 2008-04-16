@@ -51,7 +51,7 @@ public:
     int asInt()const { return m_time; }
     std::string getDayString()const { return daynames[getDay()]; }
 
-    std::string asString()const
+    std::string as_string()const
     {
         const int MAX_TIMESTING_LEN = 256;
         char repr[MAX_TIMESTING_LEN];

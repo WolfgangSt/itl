@@ -28,7 +28,7 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __itl_set_laws_h_JOFA_071124__
 #define __itl_set_laws_h_JOFA_071124__
 
-#include <itl/value.hpp>
+#include <itl/itl_value.hpp>
 #include <itl/type_traits.hpp> //JODO ReprBase and/or type_traits
 #include <validate/law.h>
 #include <itl/functors.hpp>
@@ -303,30 +303,30 @@ namespace itl
             Type a_plus_b = this->template getInputValue<operand_a>();
             a_plus_b += this->template getInputValue<operand_b>();
 
-            std::cout << "a_plus_b=" << a_plus_b.asString() << std::endl;
+            std::cout << "a_plus_b=" << a_plus_b.as_string() << std::endl;
 
             Type a_sec_b = this->template getInputValue<operand_a>();
             a_sec_b *= this->template getInputValue<operand_b>();
 
-            std::cout << "a_sec_b=" << a_sec_b.asString() << std::endl;
+            std::cout << "a_sec_b=" << a_sec_b.as_string() << std::endl;
 
             Type lhs = a_plus_b;
             lhs -= a_sec_b;
 
-            std::cout << "lhs=" << lhs.asString() << std::endl;
+            std::cout << "lhs=" << lhs.as_string() << std::endl;
 
             // --- right hand side -----------------------
             Type a_minus_b = this->template getInputValue<operand_a>();
             a_minus_b -= this->template getInputValue<operand_b>();
-            std::cout << "a_minus_b=" << a_minus_b.asString() << std::endl;
+            std::cout << "a_minus_b=" << a_minus_b.as_string() << std::endl;
 
             Type b_minus_a = this->template getInputValue<operand_b>();
             b_minus_a -= this->template getInputValue<operand_a>();
-            std::cout << "b_minus_a=" << b_minus_a.asString() << std::endl;
+            std::cout << "b_minus_a=" << b_minus_a.as_string() << std::endl;
 
             Type rhs = a_minus_b;
             rhs += b_minus_a;
-            std::cout << "rhs=" << rhs.asString() << std::endl;
+            std::cout << "rhs=" << rhs.as_string() << std::endl;
 
             this->template setOutputValue<lhs_result>(lhs);
             this->template setOutputValue<rhs_result>(rhs);

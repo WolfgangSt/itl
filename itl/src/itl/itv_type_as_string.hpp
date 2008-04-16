@@ -38,7 +38,7 @@ for concepts InplaceAddable and InplaceSubtractable
 #include <itl/split_interval_set.hpp>
 //CL #include <itl/joint_interval_map.hpp>
 #include <itl/split_interval_map.hpp>
-#include <itl/value.hpp>
+#include <itl/itl_value.hpp>
 
 namespace itl
 {

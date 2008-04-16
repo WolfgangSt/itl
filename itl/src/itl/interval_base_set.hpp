@@ -344,8 +344,8 @@ public:
     */
 //@{
     /// Interval-set as string
-    const std::string asString()const
-    { std::string res(""); const_FOR_IMPL(it) res += (*it).asString(); return res; }
+    const std::string as_string()const
+    { std::string res(""); const_FOR_IMPL(it) res += (*it).as_string(); return res; }
 //@}
 
     

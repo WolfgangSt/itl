@@ -35,7 +35,7 @@ for concepts InplaceAddable and InplaceSubtractable
 
 #include <string>
 #include <set>
-#include <itl/value.hpp>
+#include <itl/itl_value.hpp>
 #include <itl/set_algo.hpp>
 #include <itl/ctxpred.hpp>
 
@@ -155,7 +155,7 @@ namespace itl
 
         //JODO concept StringRepresentable
         /** Represent this set as a string */
-        std::string asString(const char* sep = " ")const;
+        std::string as_string(const char* sep = " ")const;
 
         /** Keep the elements in *this set to which property \c hasProperty applies. 
         Erase all the rest. */
@@ -247,15 +247,15 @@ namespace itl
     }
 
     template <typename KeyT, template<class>class Compare, template<class>class Alloc>
-    std::string set<KeyT,Compare,Alloc>::asString(const char* sep)const
+    std::string set<KeyT,Compare,Alloc>::as_string(const char* sep)const
     { 
         const_iterator it_ = begin();
         
         if(it_ == end()) return std::string();
         else
         {
-            std::string y = value<KeyT>::toString(*it_++);
-            while(it_ != end()) { y += sep; y += value<KeyT>::toString(*it_++); }
+            std::string y = value<KeyT>::to_string(*it_++);
+            while(it_ != end()) { y += sep; y += value<KeyT>::to_string(*it_++); }
             return y;
         }
     }

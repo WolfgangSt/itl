@@ -31,7 +31,7 @@ DEALINGS IN THE SOFTWARE.
 #define __itl_set_algo_H_JOFA_990225__
 
 #include <itl/notate.hpp>
-//CL #include <itl/itl_algo.hpp>
+#include <itl/itl_type.hpp>
 
 /*
 <b>SetAlgo </b>

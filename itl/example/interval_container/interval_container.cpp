@@ -60,7 +60,7 @@ void interval_container_basics()
     joinedTimes.insert(next_morning);
     joinedTimes.insert(next_evening);
 
-    cout << "Joined times:    " << joinedTimes.asString() << endl;
+    cout << "Joined times:    " << joinedTimes.as_string() << endl;
 
     // A discrete interval set of type split_interval_set joins intervals that that overlap but it
     // preserves interval borders that just touch each other. You may represent time grids 
@@ -71,7 +71,7 @@ void interval_container_basics()
     discreteTimes.insert(next_morning);
     discreteTimes.insert(next_evening);
 
-    cout << "Discrete times: " << discreteTimes.asString() << endl;
+    cout << "Discrete times: " << discreteTimes.as_string() << endl;
 
     // A split interval map splits up inserted intervals on overlap and aggregates the
     // associated quantities via the operator +=
@@ -81,7 +81,7 @@ void interval_container_basics()
     overlapCounter.insert(make_pair(next_morning, 1));
     overlapCounter.insert(make_pair(next_evening, 1));
 
-    cout << "Split times:    " << overlapCounter.asString() << endl;
+    cout << "Split times:    " << overlapCounter.as_string() << endl;
 }
 
 int main()

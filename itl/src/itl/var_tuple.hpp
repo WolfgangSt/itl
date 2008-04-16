@@ -81,7 +81,7 @@ namespace itl
         StatVarTD& operator [] (int idx) { return m_tupel[idx]; }
 
         ///
-        std::string asString()const;
+        std::string as_string()const;
 
     private:
         StatVarTD m_tupel[varCountV];
@@ -137,7 +137,7 @@ namespace itl
     }
 
     template <int varCountV>
-    std::string var_tuple<varCountV>::asString()const
+    std::string var_tuple<varCountV>::as_string()const
     {
         std::stringstream repr;
         repr << "(";

@@ -27,7 +27,7 @@ DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
 #include <stdio.h>
 #include <iostream>
-#include <itl/value.hpp>
+#include <itl/itl_value.hpp>
 #include <itl/string_set.hpp>
 #include <itl/split_interval_map.hpp>
 
@@ -63,9 +63,9 @@ void print_overlaps(const OverlapCounterTD& counter)
         interval<int> itv = (*it).first;
         int overlaps_count = (*it).second;
         if(overlaps_count == 1)
-            cout << "in interval " << itv.asString() << " intervals do not overlap" << endl;
+            cout << "in interval " << itv.as_string() << " intervals do not overlap" << endl;
         else
-            cout << "in interval " << itv.asString() << ": "<< overlaps_count << " intervals overlap" << endl;
+            cout << "in interval " << itv.as_string() << ": "<< overlaps_count << " intervals overlap" << endl;
     }
 }
 
@@ -75,19 +75,19 @@ void overlap_counter()
     interval<int> itv;
 
     itv = rightopen_interval(4,8);
-    cout << "-- inserting " << itv.asString() << " -------------------------------------------" << endl;
+    cout << "-- inserting " << itv.as_string() << " -------------------------------------------" << endl;
     overlap_counter.insert(OverlapCounterTD::value_type(itv, 1));
     print_overlaps(overlap_counter);
     cout << "--------------------------------------------------------------" << endl;
 
     itv = rightopen_interval(6,9);
-    cout << "-- inserting " << itv.asString() << " -------------------------------------------" << endl;
+    cout << "-- inserting " << itv.as_string() << " -------------------------------------------" << endl;
     overlap_counter.insert(OverlapCounterTD::value_type(itv, 1));
     print_overlaps(overlap_counter);
     cout << "--------------------------------------------------------------" << endl;
 
     itv = rightopen_interval(1,9);
-    cout << "-- inserting " << itv.asString() << " -------------------------------------------" << endl;
+    cout << "-- inserting " << itv.as_string() << " -------------------------------------------" << endl;
     overlap_counter.insert(OverlapCounterTD::value_type(itv, 1));
     print_overlaps(overlap_counter);
     cout << "--------------------------------------------------------------" << endl;

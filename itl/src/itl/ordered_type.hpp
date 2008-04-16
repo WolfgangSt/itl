@@ -82,7 +82,7 @@ public:
     // virtual bool operator < (const ordered_type& x2)const=0;
 
     /// string representation
-    virtual std::string asString()const=0 ;
+    virtual std::string as_string()const=0 ;
 };
 
 

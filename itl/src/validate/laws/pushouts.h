@@ -28,7 +28,7 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __itl_pushouts_h_JOFA_071124__
 #define __itl_pushouts_h_JOFA_071124__
 
-#include <itl/value.hpp>
+#include <itl/itl_value.hpp>
 #include <itl/type_traits.hpp> //JODO ReprBase and/or type_traits
 #include <validate/law.h>
 

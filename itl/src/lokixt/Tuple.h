@@ -45,7 +45,8 @@ DEALINGS IN THE SOFTWARE.
 #include "loki/EmptyType.h"
 #include "lokixt/TypelistGentor.h"
 
-#include "itl/ctxreprbase.hpp" 
+#include "itl/itl_value.hpp" 
+#include "itl/itl_type.hpp" 
 
 
 
@@ -501,7 +502,7 @@ namespace Loki
         typename TL::TypeAt<Types, index>::Result get()const
         { return Loki::tup::get<index>(*this); }
 
-        std::string asString()const { return Stringify(*this); }
+        std::string as_string()const { return Stringify(*this); }
 
         //JODO Does not work for empty tuples
         HeadType reduce()const { return tup::reduce(*this); }
@@ -791,7 +792,7 @@ namespace Loki
 
             static std::string Do(const TupleT& obj)
             {
-                return itl::value<HeadType>::toString(get<0>(obj));
+                return itl::value<HeadType>::to_string(get<0>(obj));
             }
         };
 
@@ -803,7 +804,7 @@ namespace Loki
 
             static std::string Do(const TupleT& obj)
             {
-                return itl::value<HeadType>::toString(get<0>(obj)) 
+                return itl::value<HeadType>::to_string(get<0>(obj)) 
                        + ", " + Stringer<TailClass, i-1>::Do(obj);
             }
         };
@@ -883,7 +884,7 @@ namespace Loki
         {
             static std::string apply(const SourceT& src)
             {
-                return itl::value<SourceT>::toString(src);
+                return itl::value<SourceT>::to_string(src);
             }
         };
 
@@ -1053,7 +1054,7 @@ namespace Loki
     {
         static std::string apply(const SrcT& obj) 
         { 
-            return itl::value<SrcT>::toString(obj); 
+            return itl::value<SrcT>::to_string(obj); 
         }
     };
 

@@ -28,7 +28,7 @@ DEALINGS IN THE SOFTWARE.
 #include <iostream>
 #include <string>
 #include <math.h>
-#include <itl/value.hpp>
+#include <itl/itl_value.hpp>
 #include <itl/itl_interval.hpp>
 #include "../toytime.h"
 
@@ -54,14 +54,14 @@ int main()
     interval<string> city_Itv = leftopen_interval<string>("Barcelona", "Boston");
     interval<Time>   time_Itv = open_interval(Time(monday,8,30), Time(monday,17,20));
 
-    cout << "Interval<int>: " << int_Itv.asString() << endl;
-    cout << "Interval<double>: " << sqrt_Itv.asString() << " does " 
+    cout << "Interval<int>: " << int_Itv.as_string() << endl;
+    cout << "Interval<double>: " << sqrt_Itv.as_string() << " does " 
                                  << string(sqrt_Itv.contains(sqrt(2.0))?"":"NOT") << " contain sqrt(2)" << endl;
-    cout << "Interval<string>: " << city_Itv.asString() << " does "  
+    cout << "Interval<string>: " << city_Itv.as_string() << " does "  
                                  << string(city_Itv.contains("Barcelona")?"":"NOT") << " contain 'Barcelona'" << endl;
-    cout << "Interval<string>: " << city_Itv.asString() << " does "  
+    cout << "Interval<string>: " << city_Itv.as_string() << " does "  
                                  << string(city_Itv.contains("Berlin")?"":"NOT") << " contain 'Berlin'" << endl;
-    cout << "Interval<Time>: " << time_Itv.asString() << endl;
+    cout << "Interval<Time>: " << time_Itv.as_string() << endl;
 
     return 0;
 }

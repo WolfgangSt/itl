@@ -108,10 +108,10 @@ void test_Validater()
 template <typename TypeT> struct Mappi
 {
 
-    std::string asString()const 
+    std::string as_string()const 
     {
         std::string result("mappi: ");
-        result += value<TypeT>::toString(_value);
+        result += value<TypeT>::to_string(_value);
         return result;
     }
     TypeT _value;
@@ -144,14 +144,14 @@ void test_Tuple()
     //t_i2.map<RefTwiceFun, t_int2>(t_i2_twice);
     t_i2.map<RefTwiceFun>(t_i2_twice);
 
-    cout << t_i2.asString() << endl;
-    cout << t_i2_twice.asString() << endl;
+    cout << t_i2.as_string() << endl;
+    cout << t_i2_twice.as_string() << endl;
 
     tm_int2 tm_i2;
     refer<0>(tm_i2) = Mappi<int>(8);
     refer<1>(tm_i2) = Mappi<int>(11);
 
-    cout << tm_i2.asString() << endl;
+    cout << tm_i2.as_string() << endl;
 }
 
 void test_Law()
@@ -185,7 +185,7 @@ void test_rangegentor()
     {
         interval<int> itv;
         itvG.some(itv);
-        printf("%s%s\n", itv.asString().c_str(), itv.empty()?" mt":"");
+        printf("%s%s\n", itv.as_string().c_str(), itv.empty()?" mt":"");
     }
 }
 
@@ -251,8 +251,8 @@ void test_misc()
 
     Interval::cluster(iset, eset);
 
-    cout << eset.asString() << endl;
-    cout << iset.asString() << endl;
+    cout << eset.as_string() << endl;
+    cout << iset.as_string() << endl;
 }
 
 int main()

@@ -78,8 +78,8 @@ namespace itl
         typedef typename base_type::const_iterator const_iterator;
         
     public:
-        std::string asString(char* sep = " ")const; // JODO URG Sync 
-        std::string join(char* sep = " ")const { return asString(sep); } // JODO URG Sync 
+        std::string as_string(char* sep = " ")const; // JODO URG Sync 
+        std::string join(char* sep = " ")const { return as_string(sep); } // JODO URG Sync 
         void selectSet(string_set& selectees, StringSelectorFPD selector)const;
     } ;
 
@@ -93,7 +93,7 @@ namespace itl
     
 
     template <template<class>class Compare>
-    std::string string_set<Compare>::asString(char* sep)const
+    std::string string_set<Compare>::as_string(char* sep)const
     {
         const_iterator it = this->begin();
         if(it == this->end()) return std::string("");

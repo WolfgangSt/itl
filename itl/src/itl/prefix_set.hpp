@@ -85,7 +85,7 @@ namespace itl
         const_iterator find(const std::string& val)const { return m_.find(val); }
         bool contains(const std::string& val)const { return m_.find(val)!=m_.end();    }
 
-        std::string asString()const { return m_.asString(); }
+        std::string as_string()const { return m_.as_string(); }
 
     private:
         string_set<PrefixLess> m_;

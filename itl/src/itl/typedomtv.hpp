@@ -46,7 +46,7 @@ namespace itl
 
     Daher ist die wichtigste Komponente von TypeDomTV die Definition
     dieses Aufzählungstyps TypeDomTV::DomainET. Daneben gibt es noch
-    eine Funktion asString zur Repräsentation von Typen als strings.
+    eine Funktion as_string zur Repräsentation von Typen als strings.
 
     @author  Joachim Faulhaber
 */
@@ -59,7 +59,7 @@ public:
     typedef enum {} DomainET;
 
     /// String-Repräsentation
-    static string asString(DomainET val);
+    static string as_string(DomainET val);
 } ;
 
 } // namespace itl

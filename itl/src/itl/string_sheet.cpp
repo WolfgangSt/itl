@@ -27,7 +27,7 @@ DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
 #include <stdafx.h>
 #include "string_sheet.h"
-#include <itl/value.hpp>
+#include <itl/itl_value.hpp>
 
 using namespace itl;
 
@@ -36,8 +36,8 @@ string diff_desc::afxReport(const string& file)const
 {
     string msg = "Difference in:\n";
     msg    += file + "\n";
-    msg    += "d_size=" + value<int>::toString(m_SizeDiff);
-    msg    += "  col=" + value<int>::toString(m_RowSizeDiff) + "\n";
+    msg    += "d_size=" + value<int>::to_string(m_SizeDiff);
+    msg    += "  col=" + value<int>::to_string(m_RowSizeDiff) + "\n";
     msg    += "First Difference 1:ref 2:cur:\n";
     msg    += "First Difference 1:ref 2:cur:\n";
     msg    += m_Lhs + "\n";

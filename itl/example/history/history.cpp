@@ -27,7 +27,7 @@ DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
 #include <stdio.h>
 #include <iostream>
-#include <itl/value.hpp>
+#include <itl/itl_value.hpp>
 #include <itl/string_set.hpp>
 #include <itl/split_interval_map.hpp>
 #include "../toytime.h"
@@ -114,7 +114,7 @@ public:
     typedef enum domainET DomainET;
 
     /// string representation of the episode types
-    static std::string asString(DomainET val)
+    static std::string as_string(DomainET val)
     {
         switch(val)
         {
@@ -154,7 +154,7 @@ public:
     { return m_value==dynamic_cast<const HospitalEpisodesAT*>(x2)->m_value; }
 
     /// String representation
-    virtual std::string asString()const { return m_value; }
+    virtual std::string as_string()const { return m_value; }
 
 private:
     // For sake of simplicity the value of the example episodes is text
@@ -229,7 +229,7 @@ void medical_file()
         interval<Time> when = (*it).first;
         HospitalEventTD what = (*it).second;
 
-        cout << when.asString() << ": " << what.asString() << endl;
+        cout << when.as_string() << ": " << what.as_string() << endl;
         ++it;
     }
 }

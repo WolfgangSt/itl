@@ -34,8 +34,8 @@ Function-templates for discrete Datatypes like int, unsigned or
     any class that provides a ++ operator c.f. iterators
 -----------------------------------------------------------------------------*/
 
-#ifndef __itl_REPRBASE_JOFA_000712_H__
-#define __itl_REPRBASE_JOFA_000712_H__
+#ifndef __itl_VALUE_JOFA_000712_H__
+#define __itl_VALUE_JOFA_000712_H__
 
 #include <stdio.h>
 #include <string>
@@ -88,68 +88,20 @@ typedef char * CharPT;
 
 template<> inline const std::string value<bool>::to_string(const bool& x){ return x ? "true" : "false"; }
 template<> inline const std::string value<char>::to_string(const char& x){ RETURN_AS_STRING("%c", x); }
-template<> inline const std::string value<short>::to_string (const short& x) { RETURN_AS_STRING("%d", x); }
-template<> inline const std::string value<int>::to_string (const int& x) { RETURN_AS_STRING("%d", x);   }
+template<> inline const std::string value<short>::to_string(const short& x) { RETURN_AS_STRING("%d", x); }
+template<> inline const std::string value<int>::to_string(const int& x) { RETURN_AS_STRING("%d", x);   }
 template<> inline const std::string value<long>::to_string(const long& x) { RETURN_AS_STRING("%ld", x);   }
-template<> inline const std::string value<unsigned char>::to_string (const unsigned char& x) { RETURN_AS_STRING("%uc", x);   }
-template<> inline const std::string value<unsigned short>::to_string (const unsigned short& x) { RETURN_AS_STRING("%hu", x);   }
-template<> inline const std::string value<unsigned int>::to_string (const unsigned int& x) { RETURN_AS_STRING("%u", x);   }
+template<> inline const std::string value<unsigned char>::to_string(const unsigned char& x) { RETURN_AS_STRING("%uc", x);   }
+template<> inline const std::string value<unsigned short>::to_string(const unsigned short& x) { RETURN_AS_STRING("%hu", x);   }
+template<> inline const std::string value<unsigned int>::to_string(const unsigned int& x) { RETURN_AS_STRING("%u", x);   }
 template<> inline const std::string value<unsigned long>::to_string(const unsigned long& x) { RETURN_AS_STRING("%lu", x);   }
-template<> inline const std::string value<float>::to_string (const float& x) { RETURN_AS_STRING("%f", x);   }
+template<> inline const std::string value<float>::to_string(const float& x) { RETURN_AS_STRING("%f", x);   }
 template<> inline const std::string value<double>::to_string(const double& x) { RETURN_AS_STRING("%lf", x);   }
 template<> inline const std::string value<CharPT>::to_string(const CharPT & x) { RETURN_AS_STRING("%s", x);   }
 template<> inline const std::string value<std::string>::to_string(const std::string& x) { return x; }
 
 template <class TypeTV>
 inline const std::string value<TypeTV>::to_string(const TypeTV& x) { return x.as_string(); }
-
-    
-    // ------------------------------------------------------------------------
-    template<class Type>
-    struct TypeAsString
-    {
-        static std::string it();
-    };
-
-    template<>
-    inline std::string TypeAsString<int>::it() { return "int"; }
-    template<>
-    inline std::string TypeAsString<double>::it() { return "double"; }
-    template<>
-    inline std::string TypeAsString<std::string>::it() { return "string"; }
-
-    // ------------------------------------------------------------------------
-    template<template<class> class Templ>
-    struct UnaryTemplateAsString
-    {
-        static std::string it();
-    };
-
-    template <template<class>class Unary, class Type>
-    struct TypeAsString<Unary<Type> >
-    {
-        static std::string it() 
-        { 
-            return UnaryTemplateAsString<Unary>::it()+"<"+TypeAsString<Type>::it()+">"; 
-        }
-    };
-
-    // ---------------------------------------------------------------------------
-    template<template<class,class>class Templ>
-    struct BinaryTemplateAsString
-    {
-        static std::string it();
-    };
-
-    template <template<class Type1, class Type2>class Binary, class Type1, class Type2>
-    struct TypeAsString<Binary<Type1, Type2> >
-    {
-        static std::string it() 
-        { 
-            return BinaryTemplateAsString<Binary>::it()+
-                "<"+TypeAsString<Type1>::it()+","+TypeAsString<Type2>::it()+">"; 
-        }
-    };
 
 } // namespace itl
 

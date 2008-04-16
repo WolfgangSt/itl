@@ -35,7 +35,7 @@ class itl::map
 
 #include <string>
 #include <itl/notate.hpp>
-#include <itl/value.hpp>
+#include <itl/itl_value.hpp>
 #include <itl/ctxpred.hpp>
 #include <itl/itl_set.hpp>
 #include <itl/map_algo.hpp>
@@ -197,7 +197,7 @@ namespace itl
 
         //JODO concept StringRepresentable
         /** Represent this map as string */
-        std::string asString()const;
+        std::string as_string()const;
 
 #ifdef __ITL_EXTENDED__
         /** Keep the elements in *this map to which property \c hasProperty applies. 
@@ -299,14 +299,14 @@ namespace itl
     }
 
     template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
-    std::string map<KeyT,DataT,Compare,Alloc>::asString()const
+    std::string map<KeyT,DataT,Compare,Alloc>::as_string()const
     { 
         std::string repr;
         const_FORALL_THIS(it) {
             std::string elem("(");
-            elem += value<KeyT>::toString((*it).KEY_VALUE);
+            elem += value<KeyT>::to_string((*it).KEY_VALUE);
             elem += "->";
-            elem += value<DataT>::toString((*it).CONT_VALUE);
+            elem += value<DataT>::to_string((*it).CONT_VALUE);
             elem += ")";
 
             repr += elem;
