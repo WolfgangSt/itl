@@ -190,13 +190,13 @@ public:
     /// Constants for intervalbounds
     enum BoundTypesT {
         /// Both open: <tt>(x,y)</tt>
-        OPEN                    = 0x0, 
+        OPEN                     = 0x0, 
         /// Left open right closed: <tt>(x,y]</tt>
         LEFT_OPEN                = 0x1, 
         /// Left closed right open: <tt>[x,y)</tt>
-        RIGHT_OPEN                = 0x2,
+        RIGHT_OPEN               = 0x2,
         /// Both closed: <tt>[x,y]</tt>
-        CLOSED                    = 0x3,
+        CLOSED                   = 0x3,
     } ;
 
     // public?
@@ -222,9 +222,9 @@ public:
 */
 //@{
     /// Lower bound of the interval
-    DataT lwb()const { return _lwb; }
+    DataT lower_bound()const { return _lwb; }
     /// Upper bound of the interval
-    DataT upb()const { return _upb; }
+    DataT upper_bound()const { return _upb; }
     /// Typ of interval bounds
     bound_types boundtypes()const { return _boundtypes; }
 //@}
@@ -340,7 +340,7 @@ public:
         Bordertypes according to the lower bound of *this and the upper bound of rhs.
     */
     interval span(const interval& rhs)const
-    { return interval(lwb(), rhs.upb(), span(boundtypes(), rhs.boundtypes()));    }
+    { return interval(_lwb, rhs._upb, span(boundtypes(), rhs.boundtypes()));    }
 
     interval& left_subtract(const interval& x2);
 //@}
@@ -469,15 +469,14 @@ typename interval<DataT>::bound_types interval<DataT>::succession_bounds()const
 template <class DataT>
 bool interval<DataT>::empty()const
 {
-    // JODO simplify after test
-    if(rightbound_closed() && leftbound_closed()) return upb() <  lwb();
-    if(rightbound_open()   && leftbound_closed()) return upb() <= lwb();
-    if(rightbound_closed() && leftbound_open())   return upb() <= lwb();
+    if(rightbound_closed() && leftbound_closed()) return _upb <  _lwb;
+    if(rightbound_open()   && leftbound_closed()) return _upb <= _lwb;
+    if(rightbound_closed() && leftbound_open())   return _upb <= _lwb;
 
     // OTHERWISE (rightbound_open() && leftbound_open())
     if(AlgBaseT<DataT>::isContinuous())   
-                                                  return upb() <= lwb();
-                                             else return upb() <= succ(lwb());
+                                                  return _upb <= _lwb;
+                                             else return _upb <= succ(_lwb);
 }
 
 // NOTE structural similarities between empty and exclusive_less! 
@@ -485,69 +484,69 @@ bool interval<DataT>::empty()const
 template <class DataT>
 bool interval<DataT>::exclusive_less(const interval& x2)const
 {
-    if(rightbound_closed() && x2.leftbound_closed()) return upb() <  x2.lwb();
-    if(rightbound_open()   && x2.leftbound_closed()) return upb() <= x2.lwb();
-    if(rightbound_closed() && x2.leftbound_open() )  return upb() <= x2.lwb();
+    if(rightbound_closed() && x2.leftbound_closed()) return _upb <  x2._lwb;
+    if(rightbound_open()   && x2.leftbound_closed()) return _upb <= x2._lwb;
+    if(rightbound_closed() && x2.leftbound_open() )  return _upb <= x2._lwb;
 
     // OTHERWISE (rightbound_open()  && x2.leftbound_open())
     if(AlgBaseT<DataT>::isContinuous())   
-                                                     return upb() <= x2.lwb();
-                                                else return upb() <= succ(x2.lwb());
+                                                     return _upb <= x2._lwb;
+                                                else return _upb <= succ(x2._lwb);
 }
 
 
 template <class DataT>
 bool interval<DataT>::lwb_less(const interval& x2)const
 {
-    if(leftbound_closed() && x2.leftbound_closed()) return lwb() <  x2.lwb();
-    if(leftbound_open()   && x2.leftbound_open())   return lwb() <  x2.lwb();
-    if(leftbound_closed() && x2.leftbound_open())   return lwb() <= x2.lwb();
+    if(leftbound_closed() && x2.leftbound_closed()) return _lwb <  x2._lwb;
+    if(leftbound_open()   && x2.leftbound_open())   return _lwb <  x2._lwb;
+    if(leftbound_closed() && x2.leftbound_open())   return _lwb <= x2._lwb;
 
     // OTHERWISE (leftbound_open()  && x2.leftbound_closed())
     if(AlgBaseT<DataT>::isContinuous())   
-                                    return       lwb() <  x2.lwb();
-                               else return succ(lwb()) <  x2.lwb();
+                                    return       _lwb <  x2._lwb;
+                               else return succ(_lwb) <  x2._lwb;
 }
 
 template <class DataT>
 bool interval<DataT>::upb_less(const interval& x2)const
 {
-    if(rightbound_closed() && x2.rightbound_closed()) return upb() <  x2.upb();
-    if(rightbound_open()   && x2.rightbound_open())   return upb() <  x2.upb();
-    if(rightbound_open()   && x2.rightbound_closed()) return upb() <= x2.upb();
+    if(rightbound_closed() && x2.rightbound_closed()) return _upb <  x2._upb;
+    if(rightbound_open()   && x2.rightbound_open())   return _upb <  x2._upb;
+    if(rightbound_open()   && x2.rightbound_closed()) return _upb <= x2._upb;
 
     // OTHERWISE (rightbound_closed()  && x2.rightbound_open())
     if(AlgBaseT<DataT>::isContinuous())   
-                                     return      upb()  <  x2.upb();
-                                else return    succ(upb()) <  x2.upb();
+                                     return      _upb  <  x2._upb;
+                                else return    succ(_upb) <  x2._upb;
 }
 
 
 template <class DataT>
 bool interval<DataT>::lwb_less_equal(const interval& x2)const
 {
-    if(leftbound_closed() && x2.leftbound_closed()) return lwb() <= x2.lwb();
-    if(leftbound_open()  && x2.leftbound_open())  return lwb() <= x2.lwb();
-    if(leftbound_open() &&  x2.leftbound_closed()) return lwb() <  x2.lwb();
+    if(leftbound_closed() && x2.leftbound_closed()) return _lwb <= x2._lwb;
+    if(leftbound_open()  && x2.leftbound_open())  return _lwb <= x2._lwb;
+    if(leftbound_open() &&  x2.leftbound_closed()) return _lwb <  x2._lwb;
 
     // OTHERWISE (leftbound_closed() && x2.leftbound_open())
     if(AlgBaseT<DataT>::isContinuous()) 
-                                          return lwb() <= x2.lwb();
-                                     else return lwb() <= succ(x2.lwb());
+                                          return _lwb <= x2._lwb;
+                                     else return _lwb <= succ(x2._lwb);
 }
 
 
 template <class DataT>
 bool interval<DataT>::upb_less_equal(const interval& x2)const
 {
-    if(rightbound_closed() && x2.rightbound_closed()) return upb() <= x2.upb();
-    if(rightbound_open()  && x2.rightbound_open())  return upb() <= x2.upb();
-    if(rightbound_closed() && x2.rightbound_open())  return upb() <  x2.upb();
+    if(rightbound_closed() && x2.rightbound_closed()) return _upb <= x2._upb;
+    if(rightbound_open()  && x2.rightbound_open())  return _upb <= x2._upb;
+    if(rightbound_closed() && x2.rightbound_open())  return _upb <  x2._upb;
 
     // OTHERWISE (rightbound_open()  && x2.rightbound_closed())
     if(AlgBaseT<DataT>::isContinuous())   
-                                            return upb() <= x2.upb();
-                                       else return upb() <= succ(x2.upb());
+                                            return _upb <= x2._upb;
+                                       else return _upb <= succ(x2._upb);
 }
 
 
@@ -556,8 +555,8 @@ bool interval<DataT>::upb_less_equal(const interval& x2)const
 template <class DataT>
 bool interval<DataT>::lwb_equal(const interval& x2)const
 {
-    if(leftbound_closed() && x2.leftbound_closed()) return lwb() == x2.lwb();
-    if(leftbound_open()  && x2.leftbound_open())  return lwb() == x2.lwb();
+    if(leftbound_closed() && x2.leftbound_closed()) return _lwb == x2._lwb;
+    if(leftbound_open()  && x2.leftbound_open())  return _lwb == x2._lwb;
 
     if(AlgBaseT<DataT>::isContinuous())
     {
@@ -569,8 +568,9 @@ bool interval<DataT>::lwb_equal(const interval& x2)const
     }
     else
     {
-        if(leftbound_open() &&  x2.leftbound_closed()) return succ(lwb()) ==      x2.lwb();
-                                         else return      lwb()  == succ(x2.lwb());
+        if(leftbound_open() &&  x2.leftbound_closed()) 
+             return succ(_lwb) ==      x2._lwb;
+        else return      _lwb  == succ(x2._lwb);
     }
 }
 
@@ -579,8 +579,8 @@ bool interval<DataT>::lwb_equal(const interval& x2)const
 template <class DataT>
 bool interval<DataT>::upb_equal(const interval& x2)const
 {
-    if(rightbound_closed() && x2.rightbound_closed()) return upb() == x2.upb();
-    if(rightbound_open()  && x2.rightbound_open())  return upb() == x2.upb();
+    if(rightbound_closed() && x2.rightbound_closed()) return _upb == x2._upb;
+    if(rightbound_open()  && x2.rightbound_open())  return _upb == x2._upb;
 
     if(AlgBaseT<DataT>::isContinuous())
     {
@@ -592,8 +592,9 @@ bool interval<DataT>::upb_equal(const interval& x2)const
     }
     else
     {
-        if(rightbound_closed() && x2.rightbound_open())  return succ(upb()) ==      x2.upb();
-                                           else return      upb()  == succ(x2.upb());
+        if(rightbound_closed() && x2.rightbound_open())  
+		     return succ(_upb) ==      x2._upb;
+        else return      _upb  == succ(x2._upb);
     }
 }
 
@@ -603,18 +604,18 @@ template <class DataT>
 typename interval<DataT>::BoundT interval<DataT>::lwb_min(const interval& x2)const
 {
     if( x2.lwb_less(*this) )
-        return BoundT(x2.lwb(), x2.boundtypes());
+        return BoundT(x2._lwb, x2.boundtypes());
     else
-        return BoundT(lwb(), boundtypes());
+        return BoundT(_lwb, boundtypes());
 }
 
 template <class DataT>
 typename interval<DataT>::BoundT interval<DataT>::upb_max(const interval& x2)const
 {
     if( upb_less(x2) )
-        return BoundT(x2.upb(), x2.boundtypes());
+        return BoundT(x2._upb, x2.boundtypes());
     else
-        return BoundT(upb(), boundtypes());
+        return BoundT(_upb, boundtypes());
 }
 
 
@@ -623,31 +624,31 @@ template <class DataT>
 typename interval<DataT>::BoundT interval<DataT>::lwb_max(const interval& x2)const
 {
     if( lwb_less(x2) )
-        return BoundT(x2.lwb(), x2.boundtypes());
+        return BoundT(x2._lwb, x2.boundtypes());
     else
-        return BoundT(lwb(), boundtypes());
+        return BoundT(_lwb, boundtypes());
 }
 
 template <class DataT>
 typename interval<DataT>::BoundT interval<DataT>::upb_min(const interval& x2)const
 {
     if( x2.upb_less(*this) )
-        return BoundT(x2.upb(), x2.boundtypes());
+        return BoundT(x2._upb, x2.boundtypes());
     else
-        return BoundT(upb(), boundtypes());
+        return BoundT(_upb, boundtypes());
 }
 
 
 template <class DataT>
 typename interval<DataT>::BoundT interval<DataT>::upb_leftOf(const interval& x2)const
 {
-    return BoundT(x2.lwb(), x2.succession_bounds());
+    return BoundT(x2._lwb, x2.succession_bounds());
 }
 
 template <class DataT>
 typename interval<DataT>::BoundT interval<DataT>::lwb_rightOf(const interval& x2)const
 {
-    return BoundT(x2.upb(), x2.succession_bounds());
+    return BoundT(x2._upb, x2.succession_bounds());
 }
 
 
@@ -655,15 +656,15 @@ typename interval<DataT>::BoundT interval<DataT>::lwb_rightOf(const interval& x2
 template <class DataT>
 bool interval<DataT>::touches(const interval& x2)const
 {
-    if(rightbound_open()  && x2.leftbound_closed()) return upb() == x2.lwb();
-    if(rightbound_closed() && x2.leftbound_open())  return upb() == x2.lwb();
+    if(rightbound_open()  && x2.leftbound_closed()) return _upb == x2._lwb;
+    if(rightbound_closed() && x2.leftbound_open())  return _upb == x2._lwb;
 
     if(AlgBaseT<DataT>::isContinuous()) {
         // ... sie konnten zusammen nicht kommen
         return false;
     } else {
-        if(rightbound_closed() && x2.leftbound_closed()) return succ(upb()) == x2.lwb();
-        if(rightbound_open()  && x2.leftbound_open() ) return upb() == succ(x2.lwb());
+        if(rightbound_closed() && x2.leftbound_closed()) return succ(_upb) == x2._lwb;
+        if(rightbound_open()  && x2.leftbound_open() ) return _upb == succ(x2._lwb);
         return false;
     }
 }
@@ -671,10 +672,10 @@ bool interval<DataT>::touches(const interval& x2)const
 template <class DataT>
 bool interval<DataT>::contains(const DataT& x)const
 {
-    if(rightbound_closed() && leftbound_closed()) return lwb() <= x && x <= upb();
-    if(rightbound_closed() && leftbound_open() )    return lwb() <  x && x <= upb();
-    if(rightbound_open()  && leftbound_closed()) return lwb() <= x && x <  upb();
-                                        return lwb() <  x && x <  upb();
+    if(rightbound_closed() && leftbound_closed()) return _lwb <= x && x <= _upb;
+    if(rightbound_closed() && leftbound_open()  ) return _lwb <  x && x <= _upb;
+    if(rightbound_open()   && leftbound_closed()) return _lwb <= x && x <  _upb;
+                                                  return _lwb <  x && x <  _upb;
 }
 
 template <class DataT>
@@ -686,11 +687,13 @@ template <class DataT>
 interval<DataT>& interval<DataT>::extend(const interval<DataT>& x2)
 {
     if(x2.empty()) return *this;
-    else if(empty()) {
-        // JODO THINK keeping border types necessary ?
-        *this = x2; return *this;
-    }
-    else {
+    else if(empty())
+	{
+        *this = x2; 
+        return *this;
+	}
+    else 
+    {
         set_lwb(lwb_min(x2));
         set_upb(upb_max(x2));
         return *this; 
@@ -748,7 +751,7 @@ interval<DataT>& interval<DataT>::scale_down(DataT factor)
 template <class DataT>
 interval<DataT>& interval<DataT>::left_subtract(const interval& x2)
 {
-    set_lwb( BoundT(x2.upb(), x2.succession_bounds()) );
+    set_lwb( BoundT(x2._upb, x2.succession_bounds()) );
     return *this; 
 }
 
@@ -765,7 +768,7 @@ template <class DataT>
 void interval<DataT>::left_surplus(interval<DataT>& lsur, const interval<DataT>& x2)const
 {
     if(lwb_less(x2)) {
-        lsur.set_lwb( BoundT(lwb(),boundtypes()) ); 
+        lsur.set_lwb( BoundT(_lwb,boundtypes()) ); 
         lsur.set_upb( upb_leftOf(x2) );   // (toUpb(pred(x2.first()))); 
     }
     else lsur.clear();
@@ -776,7 +779,7 @@ void interval<DataT>::right_surplus(interval<DataT>& rsur, const interval<DataT>
 {
     if(x2.upb_less(*this)) {
         rsur.set_lwb(lwb_rightOf(x2)); 
-        rsur.set_upb( BoundT(upb(),boundtypes()) );
+        rsur.set_upb( BoundT(_upb,boundtypes()) );
     }
     else rsur.clear();
 }
@@ -791,9 +794,9 @@ const std::string interval<DataT>::asString()const
     itvRep += leftbound_open() ? "(" : "[" ;
     // if(AlgBaseT<DataT>::isAtomic()) 
     {
-        itvRep += itl::ReprBaseT<DataT>::toString(lwb());
+        itvRep += itl::ReprBaseT<DataT>::toString(_lwb);
         itvRep += ",";
-        itvRep += itl::ReprBaseT<DataT>::toString(upb());
+        itvRep += itl::ReprBaseT<DataT>::toString(_upb);
 
     }
 

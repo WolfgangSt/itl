@@ -167,7 +167,7 @@ namespace itl
             // NumberGentorT<int> intGentor;
             ItvGentorT<int>* itvGentor = new ItvGentorT<int>;
             interval<int> valRange = GentorProfileSgl::it()->range_interval_int();
-            itvGentor->setValueRange(valRange.lwb(), valRange.upb());
+            itvGentor->setValueRange(valRange.lower_bound(), valRange.upper_bound());
             itvGentor->setMaxIntervalLength(GentorProfileSgl::it()->maxIntervalLength()); //JODO
             gentor.setDomainGentor(itvGentor);
         }
@@ -184,7 +184,7 @@ namespace itl
             // NumberGentorT<int> intGentor;
             ItvGentorT<double>* itvGentor = new ItvGentorT<double>;
             interval<double> valRange = GentorProfileSgl::it()->range_interval_double();
-            itvGentor->setValueRange(valRange.lwb(), valRange.upb());
+            itvGentor->setValueRange(valRange.lower_bound(), valRange.upper_bound());
             itvGentor->setMaxIntervalLength(GentorProfileSgl::it()->maxIntervalLength()); //JODO
             gentor.setDomainGentor(itvGentor);
         }
@@ -205,7 +205,7 @@ namespace itl
             // NumberGentorT<int> intGentor;
             ItvGentorT<int>* itvGentor = new ItvGentorT<int>;
             interval<int> valRange = GentorProfileSgl::it()->range_interval_int();
-            itvGentor->setValueRange(valRange.lwb(), valRange.upb());
+            itvGentor->setValueRange(valRange.lower_bound(), valRange.upper_bound());
             itvGentor->setMaxIntervalLength(GentorProfileSgl::it()->maxIntervalLength()); //JODO
             gentor.setDomainGentor(itvGentor);
         }
@@ -222,7 +222,7 @@ namespace itl
             // NumberGentorT<int> intGentor;
             ItvGentorT<double>* itvGentor = new ItvGentorT<double>;
             interval<double> valRange = GentorProfileSgl::it()->range_interval_double();
-            itvGentor->setValueRange(valRange.lwb(), valRange.upb());
+            itvGentor->setValueRange(valRange.lower_bound(), valRange.upper_bound());
             itvGentor->setMaxIntervalLength(GentorProfileSgl::it()->maxIntervalLength()); //JODO
             gentor.setDomainGentor(itvGentor);
         }
@@ -358,7 +358,7 @@ namespace itl
     //        // NumberGentorT<int> intGentor;
     //        ItvGentorT<int>* itvGentor = new ItvGentorT<int>;
     //        interval<int> valRange = GentorProfileSgl::it()->range_interval_int();
-    //        itvGentor->setValueRange(valRange.lwb(), valRange.upb());
+    //        itvGentor->setValueRange(valRange.lower_bound(), valRange.upper_bound());
     //        itvGentor->setMaxIntervalLength(GentorProfileSgl::it()->maxIntervalLength()); //JODO
 
     //        NumberGentorT<int>* codomainGentor = new NumberGentorT<int>;
@@ -386,7 +386,7 @@ namespace itl
             // NumberGentorT<int> intGentor;
             ItvGentorT<int>* itvGentor = new ItvGentorT<int>;
             interval<int> valRange = GentorProfileSgl::it()->range_interval_int();
-            itvGentor->setValueRange(valRange.lwb(), valRange.upb());
+            itvGentor->setValueRange(valRange.lower_bound(), valRange.upper_bound());
             itvGentor->setMaxIntervalLength(GentorProfileSgl::it()->maxIntervalLength()); //JODO
 
             NumberGentorT<double>* codomainGentor = new NumberGentorT<double>;
@@ -412,7 +412,7 @@ namespace itl
             // NumberGentorT<int> intGentor;
             ItvGentorT<double>* itvGentor = new ItvGentorT<double>;
             interval<double> valRange = GentorProfileSgl::it()->range_interval_double();
-            itvGentor->setValueRange(valRange.lwb(), valRange.upb());
+            itvGentor->setValueRange(valRange.lower_bound(), valRange.upper_bound());
             itvGentor->setMaxIntervalLength(GentorProfileSgl::it()->maxIntervalLength()); //JODO
 
             NumberGentorT<int>* codomainGentor = new NumberGentorT<int>;

@@ -212,9 +212,9 @@ public:
     */
 //@{ 
     /// lower bound of all intervals in the set
-    DomainT lwb()const { return (*(_set.begin())).lwb(); }
+    DomainT lower_bound()const { return (*(_set.begin())).lower_bound(); }
     /// upper bound of all intervals in the set
-    DomainT upb()const { return (*(_set.rbegin())).upb(); }
+    DomainT upper_bound()const { return (*(_set.rbegin())).upper_bound(); }
 
     /// first (smallest) interval in the set
     interval_type first_interval()const { return (*(_set.begin())); }

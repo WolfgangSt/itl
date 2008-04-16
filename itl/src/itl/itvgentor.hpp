@@ -76,11 +76,11 @@ void ItvGentorT<ItvDomTV,ItvTV>::some(ItvTV& x)
     }
     else if(upOrDown==0) {
         ItvDomTV up 
-            = m_ItvDomTVGentor(x1, static_cast<ItvDomTV>(std::min(m_valueRange.upb(), x1+m_maxIntervalLength)));
+            = m_ItvDomTVGentor(x1, static_cast<ItvDomTV>(std::min(m_valueRange.upper_bound(), x1+m_maxIntervalLength)));
         x.set(x1, up, bndTypes);
     } else {
         ItvDomTV low 
-            = m_ItvDomTVGentor(static_cast<ItvDomTV>(std::max(m_valueRange.lwb(), x1-m_maxIntervalLength)), x1);
+            = m_ItvDomTVGentor(static_cast<ItvDomTV>(std::max(m_valueRange.lower_bound(), x1-m_maxIntervalLength)), x1);
         x.set(low, x1, bndTypes);
     }
 };

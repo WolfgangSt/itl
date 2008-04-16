@@ -211,8 +211,8 @@ public:
         return (it!=_map.end() && (*it).CONT_VALUE==x.CONT_VALUE);  //CodomainT::OP == 
     }
 
-    DomainT lwb()const { return (*(_map.begin())).KEY_VALUE.lwb(); }
-    DomainT upb()const { return (*(_map.rbegin())).KEY_VALUE.upb(); }
+    DomainT lower_bound()const { return (*(_map.begin())).KEY_VALUE.lower_bound(); }
+    DomainT upper_bound()const { return (*(_map.rbegin())).KEY_VALUE.upper_bound(); }
     // DomainT first()const { return (*(_map.begin())).KEY_VALUE.first(); } // JODO NONCONT
     // DomainT last()const { return (*(_map.rbegin())).KEY_VALUE.last(); }// JODO NONCONT
     interval_type first_interval()const { return (*(_map.begin())).KEY_VALUE; }
