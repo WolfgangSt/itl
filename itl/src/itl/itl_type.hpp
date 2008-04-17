@@ -40,13 +40,99 @@ Function-templates for discrete Datatypes like int, unsigned or
 #include <sstream>
 
 namespace itl
-{        
+{
+	template <class IncrementableT>
+	inline IncrementableT succ(IncrementableT x) { return ++x; }
+
+	template <class DecrementableT>
+	inline DecrementableT pred(DecrementableT x) { return --x; }
+
     // ------------------------------------------------------------------------
     template<class Type>
     struct type
     {
+		/** Null or empty value of a datatype.
+
+			Neutral element of a datatype with respect to a basic operation 
+			<tt>+</tt>.	This commonly is a null or empty value which is best 
+			associated with the default constructor in most cases.
+		*/
+		static Type neutron();
+
+		/** One-value or singleton-value a datatype. 
+
+			Neutral element of a datatype with respect to an operation <tt>*</tt>.
+			This is a value that denotes 'oneness'. For many c++ classes such
+			a value does not exist. We need the <tt>type<T>::unon()</tt> to
+			denote an empty Interval independent of it's domain-type <tt>T</tt> as
+			<tt>IntervalT<T>( type<T>::unon(), type<T>::neutron() )</tt>
+
+			Using <tt>type<T>::unon()</tt> one can assign one-values to a
+			template parameter T.
+
+			\code
+			template <class T> class A {
+				void f() { T t; t = type<T>::unon(); -- dependent on the instance of T
+														 -- t=1; t=1.0; t=SetT(x);
+			}
+			\endcode
+		*/
+		static Type unon();
+
+		/** Is this type atomic (built in)? <tt>(bool, char, int, etc.)</tt>
+
+			E.g.: <tt>if(type<T>::is_atomic()) -- T is atomic</tt>
+		*/
+		static bool is_atomic();
+
+		/** Is this type continuous ? <tt>(float, double, etc.)</tt> 
+
+			E.g.: <tt>if(type<T>::is_continuous()) -- T is continuous</tt>
+		*/
+		static bool is_continuous();
+
+		/** Represent the type by a string which is it's typename */
         static std::string to_string();
     };
+
+
+	template <class Type>
+	inline Type type<Type>::neutron() { return Type(); }
+
+	template<> inline float  type<float>::unon()  { return 1.0; }
+	template<> inline double type<double>::unon() { return 1.0; }
+
+	template <class Type>
+	inline Type type<Type>::unon() { return succ(Type()); }
+
+
+	template<> inline bool type<bool>::is_atomic() { return true; }
+	template<> inline bool type<char>::is_atomic() { return true; }
+
+	template<> inline bool type<short>::is_atomic() { return true; }
+	template<> inline bool type<int>::is_atomic() { return true; }
+	template<> inline bool type<long>::is_atomic() { return true; }
+
+	template<> inline bool type<unsigned char>::is_atomic() { return true; }
+	template<> inline bool type<unsigned short>::is_atomic() { return true; }
+	template<> inline bool type<unsigned int>::is_atomic() { return true; }
+	template<> inline bool type<unsigned long>::is_atomic() { return true; }
+
+	template<> inline bool type<float>::is_atomic() { return true; }
+	template<> inline bool type<double>::is_atomic() { return true; }
+
+	template<> inline bool type<char*>::is_atomic() { return true; }
+
+	template <class Type>
+	inline bool type<Type>::is_atomic() { return false; }
+
+
+	template<> inline bool type<float>::is_continuous() { return true; }
+	template<> inline bool type<double>::is_continuous() { return true; }
+
+	template <class Type>
+	inline bool type<Type>::is_continuous() { return false; }
+
 
     template<>
     inline std::string type<int>::to_string() { return "int"; }

@@ -33,8 +33,7 @@ DEALINGS IN THE SOFTWARE.
 #include <functional>
 #include <limits>
 #include <string>
-#include <itl/discrete.hpp>
-#include <itl/algbase.hpp>
+#include <itl/itl_type.hpp>
 #include <itl/itl_value.hpp>
 #include <itl/j_assert.hpp>
 
@@ -206,7 +205,7 @@ public:
 
     // JODO unon() dokumentieren
     /// Default constructor; yields an empty interval <tt>[1,0]</tt>
-    interval() : _lwb(AlgBaseT<DataT>::unon()), _upb(DataT()), _boundtypes(CLOSED) {}
+    interval() : _lwb(type<DataT>::unon()), _upb(DataT()), _boundtypes(CLOSED) {}
     /// Constructor for a closed singleton interval <tt>[val,val]</tt>
     interval(const DataT& val) : 
         _lwb(val), _upb(val), _boundtypes(CLOSED) {}
@@ -297,7 +296,7 @@ public:
 //@{
     /// Set the interval empty
     void clear()
-    { set_lwb(AlgBaseT<DataT>::unon()); set_upb(DataT()); _boundtypes=CLOSED; }
+    { set_lwb(type<DataT>::unon()); set_upb(DataT()); _boundtypes=CLOSED; }
 
     /// Set the intervals values
     interval& set(const DataT& lw, const DataT& up, bound_types bt) 
@@ -474,7 +473,7 @@ bool interval<DataT>::empty()const
     if(rightbound_closed() && leftbound_open())   return _upb <= _lwb;
 
     // OTHERWISE (rightbound_open() && leftbound_open())
-    if(AlgBaseT<DataT>::isContinuous())   
+    if(type<DataT>::is_continuous())   
                                                   return _upb <= _lwb;
                                              else return _upb <= succ(_lwb);
 }
@@ -489,7 +488,7 @@ bool interval<DataT>::exclusive_less(const interval& x2)const
     if(rightbound_closed() && x2.leftbound_open() )  return _upb <= x2._lwb;
 
     // OTHERWISE (rightbound_open()  && x2.leftbound_open())
-    if(AlgBaseT<DataT>::isContinuous())   
+    if(type<DataT>::is_continuous())   
                                                      return _upb <= x2._lwb;
                                                 else return _upb <= succ(x2._lwb);
 }
@@ -503,7 +502,7 @@ bool interval<DataT>::lwb_less(const interval& x2)const
     if(leftbound_closed() && x2.leftbound_open())   return _lwb <= x2._lwb;
 
     // OTHERWISE (leftbound_open()  && x2.leftbound_closed())
-    if(AlgBaseT<DataT>::isContinuous())   
+    if(type<DataT>::is_continuous())   
                                     return       _lwb <  x2._lwb;
                                else return succ(_lwb) <  x2._lwb;
 }
@@ -516,7 +515,7 @@ bool interval<DataT>::upb_less(const interval& x2)const
     if(rightbound_open()   && x2.rightbound_closed()) return _upb <= x2._upb;
 
     // OTHERWISE (rightbound_closed()  && x2.rightbound_open())
-    if(AlgBaseT<DataT>::isContinuous())   
+    if(type<DataT>::is_continuous())   
                                      return      _upb  <  x2._upb;
                                 else return    succ(_upb) <  x2._upb;
 }
@@ -530,7 +529,7 @@ bool interval<DataT>::lwb_less_equal(const interval& x2)const
     if(leftbound_open() &&  x2.leftbound_closed()) return _lwb <  x2._lwb;
 
     // OTHERWISE (leftbound_closed() && x2.leftbound_open())
-    if(AlgBaseT<DataT>::isContinuous()) 
+    if(type<DataT>::is_continuous()) 
                                           return _lwb <= x2._lwb;
                                      else return _lwb <= succ(x2._lwb);
 }
@@ -544,7 +543,7 @@ bool interval<DataT>::upb_less_equal(const interval& x2)const
     if(rightbound_closed() && x2.rightbound_open())  return _upb <  x2._upb;
 
     // OTHERWISE (rightbound_open()  && x2.rightbound_closed())
-    if(AlgBaseT<DataT>::isContinuous())   
+    if(type<DataT>::is_continuous())   
                                             return _upb <= x2._upb;
                                        else return _upb <= succ(x2._upb);
 }
@@ -558,7 +557,7 @@ bool interval<DataT>::lwb_equal(const interval& x2)const
     if(leftbound_closed() && x2.leftbound_closed()) return _lwb == x2._lwb;
     if(leftbound_open()  && x2.leftbound_open())  return _lwb == x2._lwb;
 
-    if(AlgBaseT<DataT>::isContinuous())
+    if(type<DataT>::is_continuous())
     {
         // mimimal (maximal) values of intervals of continuous values are never equal, if
         // they have different bound types. Interestingly this seems to be true only
@@ -582,7 +581,7 @@ bool interval<DataT>::upb_equal(const interval& x2)const
     if(rightbound_closed() && x2.rightbound_closed()) return _upb == x2._upb;
     if(rightbound_open()  && x2.rightbound_open())  return _upb == x2._upb;
 
-    if(AlgBaseT<DataT>::isContinuous())
+    if(type<DataT>::is_continuous())
     {
         // mimimal (maximal) values of intervals of continuous values are never equal, if
         // they have different bound types. Interestingly this seems to be true only
@@ -659,7 +658,7 @@ bool interval<DataT>::touches(const interval& x2)const
     if(rightbound_open()  && x2.leftbound_closed()) return _upb == x2._lwb;
     if(rightbound_closed() && x2.leftbound_open())  return _upb == x2._lwb;
 
-    if(AlgBaseT<DataT>::isContinuous()) {
+    if(type<DataT>::is_continuous()) {
         // ... sie konnten zusammen nicht kommen
         return false;
     } else {
@@ -792,7 +791,7 @@ const std::string interval<DataT>::as_string()const
     std::string lwbRep, ubpRep;
 
     itvRep += leftbound_open() ? "(" : "[" ;
-    // if(AlgBaseT<DataT>::isAtomic()) 
+    // if(type<DataT>::is_atomic()) 
     {
         itvRep += itl::value<DataT>::to_string(_lwb);
         itvRep += ",";
@@ -824,8 +823,8 @@ template <class DataT>
 DataT interval<DataT>::size()const
 { 
     if(empty()) return DataT(); 
-    else if(AlgBaseT<DataT>::isContinuous()) return _upb - _lwb;
-    else return last() - first() + AlgBaseT<DataT>::unon(); 
+    else if(type<DataT>::is_continuous()) return _upb - _lwb;
+    else return last() - first() + type<DataT>::unon(); 
 }
 
 template <class DataT>

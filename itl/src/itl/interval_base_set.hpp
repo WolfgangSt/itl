@@ -736,7 +736,12 @@ template <typename DomainT, template<class>class Interval, template<class>class 
 inline bool operator == (const interval_base_set<DomainT,Interval,Compare,Alloc>& lhs,
                          const interval_base_set<DomainT,Interval,Compare,Alloc>& rhs)
 {
-    return std::equal(lhs.begin(), lhs.end(), rhs.begin());
+    //MEMO PORT: This implemetation worked with stlport, sgi and gnu 
+    // implementations of the stl. But using MSVC-implementation
+    // results in runtime error! So I had to provide an independent
+    // safe implemetation.
+    //return std::equal(lhs.begin(), lhs.end(), rhs.begin());
+    return Set::lexicographical_equal(lhs, rhs);
 }
 
 template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>

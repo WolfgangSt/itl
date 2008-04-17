@@ -553,7 +553,7 @@ namespace itl
         {
             _lawChoice.setSize(Laws_size);
             _lawChoice.setMaxWeights(100);
-            const bool morphism_exists   = !AlgBaseT<typename Type::domain_type>::isContinuous();
+            const bool morphism_exists   = !type<typename Type::domain_type>::is_continuous();
             const int  morphism_share    = 15;
             _lawChoice[inplaceSetLaws]   = morphism_exists ? 100 - morphism_share : 100;
             _lawChoice[homomorphismLaws] = 100 - _lawChoice[inplaceSetLaws];
@@ -615,7 +615,7 @@ namespace itl
         {
             _lawChoice.setSize(Laws_size);
             _lawChoice.setMaxWeights(100);
-            const bool morphism_exists    = !AlgBaseT<typename Type::domain_type>::isContinuous();
+            const bool morphism_exists    = !type<typename Type::domain_type>::is_continuous();
             const int  morphism_share     = 20;
             _lawChoice[inplaceSetBaseLaws]= morphism_exists ? 100 - morphism_share : 100;
             _lawChoice[homomorphismLaws]  = 100 - _lawChoice[inplaceSetBaseLaws];

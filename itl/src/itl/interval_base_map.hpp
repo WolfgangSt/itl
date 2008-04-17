@@ -1075,10 +1075,9 @@ inline bool operator == (const interval_base_map<DomainT,CodomainT,Interval,Comp
 {
     //MEMO PORT: This implemetation worked with stlport, sgi and gnu 
     // implementations of the stl. But using MSVC-implementation
-    // results in runtime error! So had to provide an independent
+    // results in runtime error! So I had to provide an independent
     // safe implemetation.
     //return std::equal(lhs.begin(), lhs.end(), rhs.begin());
-    //return !(lhs < rhs) && !(rhs < lhs);
     return Set::lexicographical_equal(lhs, rhs);
 }
 
