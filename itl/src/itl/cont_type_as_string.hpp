@@ -47,19 +47,19 @@ namespace itl
     @author Joachim Faulhaber
     */
     template <class Type>
-    class TypeAsString<itl::set<Type> >
+    class type<itl::set<Type> >
     {
     public:
-        static std::string it() 
-        { return "itl::set<"+ TypeAsString<Type>::it() +">"; }
+        static std::string to_string()
+        { return "itl::set<"+ type<Type>::to_string() +">"; }
     };
 
     template <class KeyT, class DataT>
-    class TypeAsString<itl::map<KeyT,DataT> >
+    class type<itl::map<KeyT,DataT> >
     {
     public:
-        static std::string it() 
-        { return "itl::map<"+ TypeAsString<KeyT>::it() + "," + TypeAsString<DataT>::it() +">"; }
+        static std::string to_string()
+        { return "itl::map<"+ type<KeyT>::to_string() + "," + type<DataT>::to_string() +">"; }
     };
 
 } // namespace itl

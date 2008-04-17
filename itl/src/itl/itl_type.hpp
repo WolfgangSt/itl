@@ -43,48 +43,48 @@ namespace itl
 {        
     // ------------------------------------------------------------------------
     template<class Type>
-    struct TypeAsString
+    struct type
     {
-        static std::string it();
+        static std::string to_string();
     };
 
     template<>
-    inline std::string TypeAsString<int>::it() { return "int"; }
+    inline std::string type<int>::to_string() { return "int"; }
     template<>
-    inline std::string TypeAsString<double>::it() { return "double"; }
+    inline std::string type<double>::to_string() { return "double"; }
     template<>
-    inline std::string TypeAsString<std::string>::it() { return "string"; }
+    inline std::string type<std::string>::to_string() { return "string"; }
 
     // ------------------------------------------------------------------------
     template<template<class> class Templ>
-    struct UnaryTemplateAsString
+    struct unary_template
     {
-        static std::string it();
+        static std::string to_string();
     };
 
     template <template<class>class Unary, class Type>
-    struct TypeAsString<Unary<Type> >
+    struct type<Unary<Type> >
     {
-        static std::string it() 
+        static std::string to_string()
         { 
-            return UnaryTemplateAsString<Unary>::it()+"<"+TypeAsString<Type>::it()+">"; 
+            return unary_template<Unary>::to_string()+"<"+type<Type>::to_string()+">"; 
         }
     };
 
     // ---------------------------------------------------------------------------
     template<template<class,class>class Templ>
-    struct BinaryTemplateAsString
+    struct binary_template
     {
-        static std::string it();
+        static std::string to_string();
     };
 
     template <template<class Type1, class Type2>class Binary, class Type1, class Type2>
-    struct TypeAsString<Binary<Type1, Type2> >
+    struct type<Binary<Type1, Type2> >
     {
-        static std::string it() 
+        static std::string to_string()
         { 
-            return BinaryTemplateAsString<Binary>::it()+
-                "<"+TypeAsString<Type1>::it()+","+TypeAsString<Type2>::it()+">"; 
+            return binary_template<Binary>::to_string()+
+                "<"+type<Type1>::to_string()+","+type<Type2>::to_string()+">"; 
         }
     };
 

@@ -227,8 +227,8 @@ void test_typevalidater()
 
 void test_stringify()
 {
-    cout << TypeAsString<int>::it() << endl;
-    cout << TypeAsString<itl::set<int> >::it() << endl;
+    cout << type<int>::to_string() << endl;
+    cout << type<itl::set<int> >::to_string() << endl;
 }
 
 void test_realmvalidater()

@@ -51,7 +51,7 @@ namespace itl
     };
 
     template<>
-    inline std::string UnaryTemplateAsString<itl::std_equal>::it()  { return "=="; }
+    inline std::string unary_template<itl::std_equal>::to_string()  { return "=="; }
 
     template <class setT> struct element_equal : std::binary_function<setT, setT, bool>
     {
@@ -62,7 +62,7 @@ namespace itl
     };
 
     template<>
-    inline std::string UnaryTemplateAsString<itl::element_equal>::it()  { return "="; }
+    inline std::string unary_template<itl::element_equal>::to_string()  { return "="; }
 
     /** Functor class contained_in implements the subset relation. 
     <tt>contained_in(sub, super)</tt> is true if <tt>sub</tt> is contained in <tt>super</tt> */

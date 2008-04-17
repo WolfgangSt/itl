@@ -59,10 +59,10 @@ namespace itl
         std::string typeString()const
         {
             return
-                "Pushout<"+TypeAsString<SourceT>::it()+","
-                          +TypeAsString<TargetT>::it()+","
-                          +BinaryTemplateAsString<FunctionT>::it()+","
-                          +UnaryTemplateAsString<OperatorT>::it()+">";
+                "Pushout<"+type<SourceT>::to_string()+","
+                          +type<TargetT>::to_string()+","
+                          +binary_template<FunctionT>::to_string()+","
+                          +unary_template<OperatorT>::to_string()+">";
         }
 
     public:

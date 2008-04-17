@@ -39,7 +39,7 @@ namespace itl
     };
 
     template<>
-    inline std::string UnaryTemplateAsString<Neutron>::it() { return "0"; }
+    inline std::string unary_template<Neutron>::to_string() { return "0"; }
 
     template <typename Type> struct InplacePlus
     {
@@ -48,7 +48,7 @@ namespace itl
     };
 
     template<>
-    inline std::string UnaryTemplateAsString<InplacePlus>::it() { return "+="; }
+    inline std::string unary_template<InplacePlus>::to_string() { return "+="; }
 
     template <typename Type> struct InplaceMinus
     {
@@ -57,7 +57,7 @@ namespace itl
     };
 
     template<>
-    inline std::string UnaryTemplateAsString<InplaceMinus>::it() { return "-="; }
+    inline std::string unary_template<InplaceMinus>::to_string() { return "-="; }
 
     template <typename Type> struct InplaceStar
     {
@@ -66,7 +66,7 @@ namespace itl
     };
 
     template<>
-    inline std::string UnaryTemplateAsString<InplaceStar>::it() { return "*="; }
+    inline std::string unary_template<InplaceStar>::to_string() { return "*="; }
 
 } // namespace itl
 

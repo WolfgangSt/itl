@@ -49,36 +49,27 @@ namespace itl
     @author Joachim Faulhaber
     */
     template <class Type>
-    class TypeAsString<itl::interval_set<Type> >
+    class type<itl::interval_set<Type> >
     {
     public:
-        static std::string it() 
-        { return "interval_set<"+ TypeAsString<Type>::it() +">"; }
+        static std::string to_string()
+        { return "interval_set<"+ type<Type>::to_string() +">"; }
     };
 
     template <class Type>
-    class TypeAsString<itl::split_interval_set<Type> >
+    class type<itl::split_interval_set<Type> >
     {
     public:
-        static std::string it() 
-        { return "splt_itv_set<"+ TypeAsString<Type>::it() +">"; }
+        static std::string to_string()
+        { return "splt_itv_set<"+ type<Type>::to_string() +">"; }
     };
 
-    //CL
-    //template <class KeyT, class DataT>
-    //class TypeAsString<itl::joint_interval_map<KeyT,DataT> >
-    //{
-    //public:
-    //    static std::string it() 
-    //    { return "joint_interval_map<"+ TypeAsString<KeyT>::it() + "," + TypeAsString<DataT>::it() +">"; }
-    //};
-
     template <class KeyT, class DataT>
-    class TypeAsString<itl::split_interval_map<KeyT,DataT> >
+    class type<itl::split_interval_map<KeyT,DataT> >
     {
     public:
-        static std::string it() 
-        { return "splt_itv_map<"+ TypeAsString<KeyT>::it() + "," + TypeAsString<DataT>::it() +">"; }
+        static std::string to_string()
+        { return "splt_itv_map<"+ type<KeyT>::to_string() + "," + type<DataT>::to_string() +">"; }
     };
 
 } // namespace itl

@@ -46,8 +46,8 @@ namespace itl
 
         std::string typeString()const
         {
-            return "Reflexivity<"+TypeAsString<Type>::it()+","
-                                 +UnaryTemplateAsString<Relation>::it()+">";
+            return "Reflexivity<"+type<Type>::to_string()+","
+                                 +unary_template<Relation>::to_string()+">";
         }
 
     public:
@@ -62,11 +62,11 @@ namespace itl
     };
 
     template<> 
-    std::string UnaryTemplateAsString<std::less_equal>::it()  { return "<="; }
+    std::string unary_template<std::less_equal>::to_string()  { return "<="; }
     template<> 
-    std::string UnaryTemplateAsString<std::less>::it()        { return "<"; }
+    std::string unary_template<std::less>::to_string()        { return "<"; }
     template<> 
-    std::string UnaryTemplateAsString<itl::contained_in>::it(){ return "C="; }
+    std::string unary_template<itl::contained_in>::to_string(){ return "C="; }
 
     // ---------------------------------------------------------------------------
     template <typename Type, template<class>class Relation>
@@ -78,8 +78,8 @@ namespace itl
 
         std::string typeString()const
         {
-            return "Irreflexivity<"+TypeAsString<Type>::it()+","
-                                   +UnaryTemplateAsString<Relation>::it()+">";
+            return "Irreflexivity<"+type<Type>::to_string()+","
+                                   +unary_template<Relation>::to_string()+">";
         }
 
     public:
@@ -107,8 +107,8 @@ namespace itl
 
         std::string typeString()const
         {
-            return "Antisymmetry<"+TypeAsString<Type>::it()+"," 
-                                  +UnaryTemplateAsString<Relation>::it()+">";
+            return "Antisymmetry<"+type<Type>::to_string()+"," 
+                                  +unary_template<Relation>::to_string()+">";
         }
 
     public:
@@ -142,8 +142,8 @@ namespace itl
 
         std::string typeString()const
         {
-            return "Antisymmetry2<"+TypeAsString<Type>::it()+","
-                                   +UnaryTemplateAsString<Relation>::it()+">";
+            return "Antisymmetry2<"+type<Type>::to_string()+","
+                                   +unary_template<Relation>::to_string()+">";
         }
 
     public:
@@ -178,8 +178,8 @@ namespace itl
 
         std::string typeString()const
         {
-            return "Transitivity<"+TypeAsString<Type>::it()+","
-                                  +UnaryTemplateAsString<Relation>::it()+">";
+            return "Transitivity<"+type<Type>::to_string()+","
+                                  +unary_template<Relation>::to_string()+">";
         }
 
     public:

@@ -51,7 +51,7 @@ namespace itl
 
         std::string typeString()const
         {
-            return "UnionInvertability<"+TypeAsString<Type>::it()+">";
+            return "UnionInvertability<"+type<Type>::to_string()+">";
         }
 
     public:
@@ -87,9 +87,9 @@ namespace itl
 
         std::string typeString()const
         {
-            return "Distributivity<"+TypeAsString<Type>::it()+","
-                                    +UnaryTemplateAsString<Operator1>::it()+","
-                                    +UnaryTemplateAsString<Operator2>::it()+">";
+            return "Distributivity<"+type<Type>::to_string()+","
+                                    +unary_template<Operator1>::to_string()+","
+                                    +unary_template<Operator2>::to_string()+">";
         }
 
     public:
@@ -147,10 +147,10 @@ namespace itl
 
         std::string typeString()const
         {
-            return "DeMorgan<"+TypeAsString<Type>::it()+","
-                              +UnaryTemplateAsString<Operator1>::it()+","
-                              +UnaryTemplateAsString<Operator2>::it()+","
-                              +UnaryTemplateAsString<Equality>::it()+">";
+            return "DeMorgan<"+type<Type>::to_string()+","
+                              +unary_template<Operator1>::to_string()+","
+                              +unary_template<Operator2>::to_string()+","
+                              +unary_template<Equality>::to_string()+">";
         }
 
     public:
@@ -207,9 +207,9 @@ namespace itl
 
         std::string typeString()const
         {
-            return "RightDistributivity<"+TypeAsString<Type>::it()+","
-                                         +UnaryTemplateAsString<Operator1>::it()+","
-                                         +UnaryTemplateAsString<Operator2>::it()+">";
+            return "RightDistributivity<"+type<Type>::to_string()+","
+                                         +unary_template<Operator1>::to_string()+","
+                                         +unary_template<Operator2>::to_string()+">";
         }
 
     public:
@@ -264,7 +264,7 @@ namespace itl
 
         std::string typeString()const
         {
-            return "SymmetricDifference<"+TypeAsString<Type>::it()+">";
+            return "SymmetricDifference<"+type<Type>::to_string()+">";
         }
 
     public:
@@ -357,7 +357,7 @@ namespace itl
 
         std::string typeString()const
         {
-            return "SectionAbsorbtion<"+TypeAsString<MapT>::it()+">";
+            return "SectionAbsorbtion<"+type<MapT>::to_string()+">";
         }
 
     public:

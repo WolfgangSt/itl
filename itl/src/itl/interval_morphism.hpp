@@ -83,9 +83,9 @@ namespace itl
 
 
     template<> 
-    inline std::string BinaryTemplateAsString<Interval::Atomize>::it() { return "@"; }
+    inline std::string binary_template<Interval::Atomize>::to_string() { return "@"; }
     template<> 
-    inline std::string BinaryTemplateAsString<Interval::Cluster>::it() { return "&"; }
+    inline std::string binary_template<Interval::Cluster>::to_string() { return "&"; }
 
 } // namespace itl
 

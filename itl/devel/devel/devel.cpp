@@ -155,19 +155,19 @@ using namespace itl;
 //
 //// --- TypeToString -----------------------------------------------------------
 //template <typename Type>
-//struct TypeToString{ static std::string it(); };
+//struct TypeToString{ static std::string to_string()
 //
 //template <typename Type>
-//struct TypeToString2{ static std::string it(); };
+//struct TypeToString2{ static std::string to_string()
 //
 //std::string TypeToString<int>::it(){ return "int"; }
 //std::string TypeToString<double>::it(){ return "double"; }
 //
 //template <template<class>class UnaryTemplate>
-//struct UnaryTemplateToString{ static std::string it(); };
+//struct UnaryTemplateToString{ static std::string to_string()
 //
 //template <template<class,class>class BinaryTemplate>
-//struct BinaryTemplateToString{ static std::string it(); };
+//struct BinaryTemplateToString{ static std::string to_string()
 //
 //template <class T> struct MyUnary {};
 //
@@ -181,14 +181,14 @@ using namespace itl;
 //template<template<class>class UnaryTemplate, typename T>
 //struct TypeToString<UnaryTemplate<T> >
 //{
-//    static std::string it()
+//    static std::string to_string()
 //    {
 //        return UnaryTemplateToString<UnaryTemplate>::it() + "<" + TypeToString<T>::it() + ">";
 //    }
 //};
 //
 //template <template<int, template<class>class>class UnaryTemplate2>
-//struct UnaryTemplate2ToString{ static std::string it(); };
+//struct UnaryTemplate2ToString{ static std::string to_string()
 //
 //template <int, template<class>class Tpl> struct MyUnary2 {};
 //
@@ -197,7 +197,7 @@ using namespace itl;
 //template<template<int, template<class>class>class UnaryTemplate2, template<class>class Tpl>
 //struct TypeToString<UnaryTemplate2<1, Tpl> >
 //{
-//    static std::string it()
+//    static std::string to_string()
 //    {
 //        return UnaryTemplate2ToString<UnaryTemplate2>::it() + "<" + UnaryTemplateToString<Tpl>::it() + ">";
 //    }
@@ -207,7 +207,9 @@ using namespace itl;
 //template<template<int, template<class>class>class BinaryTemplate2, template<class>class Tpl>
 //struct TypeToString<BinaryTemplate2<2, Tpl> >
 //{
-//    static std::string it()
+//    static std::string to_string()
+
+static std::string to_string()
 //    {
 //        return UnaryTemplate2ToString<BinaryTemplate2>::it() + "<1*" + " some " + ">";
 //    }
