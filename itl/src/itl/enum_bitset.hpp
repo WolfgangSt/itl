@@ -1,6 +1,8 @@
 /*----------------------------------------------------------------------------+
 Copyright (c) 2007-2008: Joachim Faulhaber
 +-----------------------------------------------------------------------------+
+Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
++-----------------------------------------------------------------------------+
 Boost Software License - Version 1.0 - August 17th, 2003
 
 Permission is hereby granted, free of charge, to any person or organization
@@ -25,44 +27,35 @@ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
-/* ------------------------------------------------------------------
-class itl::set
-a general set class that extends stl-sets
-for concepts InplaceAddable and InplaceSubtractable
---------------------------------------------------------------------*/
-#ifndef __itl_cont_type_as_string_h_JOFA_070519__
-#define __itl_cont_type_as_string_h_JOFA_070519__
+#ifndef __itl_enum_bitset_JOFA_021204_H__
+#define __itl_enum_bitset_JOFA_021204_H__
 
-#include <string>
-#include <itl/itl_set.hpp>
-#include <itl/itl_map.hpp>
-#include <itl/itl_value.hpp>
+#include <bitset>
+#include <itl/notate.hpp>
 
 namespace itl
 {
-    //JODO 1_0_1 documentation
-    /// an stl based set implementing inplace addition and subtraction operators += and -=
-    /** 
 
-    @author Joachim Faulhaber
-    */
-    template <class Type>
-    class type<itl::set<Type> >
+    
+    template <class EnumT, size_t EnumSize>
+    class enum_bitset: public std::bitset<EnumSize>
     {
     public:
-        static std::string to_string()
-        { return "itl::set<"+ type<Type>::to_string() +">"; }
+        /// Default Ctor
+        enum_bitset() : std::bitset<EnumSize>(){}
+        
+        /// Copy Ctor
+        enum_bitset(const enum_bitset& src): std::bitset<EnumSize>(src){}
+
+        /// Construct from unsigned
+        enum_bitset(unsigned long val): std::bitset<EnumSize>(val){}
+
+        /** Add the bit 'bit' to the set. This enables shorthand notation
+            myBitSet.add(bit_1).add(bit_2). ... .add(bit_n); */
+        enum_bitset& add(int bit){this->set(bit); return *this;}
     };
 
-    template <class KeyT, class DataT>
-    class type<itl::map<KeyT,DataT> >
-    {
-    public:
-        static std::string to_string()
-        { return "itl::map<"+ type<KeyT>::to_string() + "," + type<DataT>::to_string() +">"; }
-    };
+}
 
-} // namespace itl
-
-#endif // __itl_cont_type_as_string_h_JOFA_070519__
+#endif // __itl_enum_bitset_JOFA_021204_H__
 

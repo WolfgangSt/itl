@@ -28,7 +28,7 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __StatVarDescT_JOFA_040614_H__
 #define __StatVarDescT_JOFA_040614_H__
 
-#include <itl/ctxenumbitsett.hpp>
+#include <itl/enum_bitset.hpp>
 
 namespace itl
 {
@@ -57,7 +57,7 @@ namespace itl
         StatVarPropertyET_size
     };
 
-    typedef EnumBitSetT<StatVarPropertyET, StatVarPropertyET_size> StatVarPropertySetTD ; 
+    typedef enum_bitset<StatVarPropertyET, StatVarPropertyET_size> StatVarPropertySetTD ; 
 
 
     /** class StatVarDescT: Beschreibung der Eigenschaften von Variablen einer Statistik 

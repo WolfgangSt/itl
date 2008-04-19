@@ -41,7 +41,7 @@ class itl::list
 #include <itl/j_assert.hpp>
 #include <itl/itl_value.hpp>
 #include <itl/set_algo.hpp>
-#include <itl/ctxpred.hpp>
+#include <itl/predicates.hpp>
 
 
 namespace itl
@@ -142,7 +142,7 @@ namespace itl
         list& operator += (const list& tail) { splice(end(), list(tail)); return *this; }
 
         /** yields true if any of the elements in \c *this has the property \c prop */
-        bool any(const PropertyT<DataT>& prop)const;
+        bool any(const property<DataT>& prop)const;
 
         //JODO concept StringRepresentable
         /** Represent this list as a string */
@@ -406,7 +406,7 @@ namespace itl
 
     // THINK: here codereplication occurs at the next level of abstraction (cf. SetT)
     template <typename DataT, template<class>class Alloc>
-    bool list<DataT,Alloc>::any(const PropertyT<DataT>& pred)const
+    bool list<DataT,Alloc>::any(const property<DataT>& pred)const
     {
         const_iterator it = begin();
         while(it != end() && ! pred(*it)) ++it;

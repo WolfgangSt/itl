@@ -37,7 +37,7 @@ for concepts InplaceAddable and InplaceSubtractable
 #include <set>
 #include <itl/itl_value.hpp>
 #include <itl/set_algo.hpp>
-#include <itl/ctxpred.hpp>
+#include <itl/predicates.hpp>
 
 
 namespace itl
@@ -159,15 +159,15 @@ namespace itl
 
         /** Keep the elements in *this set to which property \c hasProperty applies. 
         Erase all the rest. */
-        set& keep_if(const PropertyT<value_type>& hasProperty);
+        set& keep_if(const property<value_type>& hasProperty);
 
         /** Erase the elements in *this set to which property \c hasProperty applies. 
         Keep all the rest. */
-        set& drop_if(const PropertyT<value_type>& hasProperty);
+        set& drop_if(const property<value_type>& hasProperty);
 
         /** Copy the elements in set \c src to which property \c hasProperty applies 
         into \c *this set. */
-        set& copy_if(const PropertyT<value_type>& hasProperty, const set& src);
+        set& copy_if(const property<value_type>& hasProperty, const set& src);
 
         template<typename IteratorT>
         static const key_type& key_value(IteratorT& value_){ return (*value_); }
@@ -263,7 +263,7 @@ namespace itl
 
     template <typename KeyT, template<class>class Compare, template<class>class Alloc>
     set<KeyT,Compare,Alloc>& set<KeyT,Compare,Alloc>
-        ::drop_if(const PropertyT<value_type>& hasProperty)
+        ::drop_if(const property<value_type>& hasProperty)
     {
         iterator it = begin(), victim;
         while(it != end())
@@ -273,7 +273,7 @@ namespace itl
 
     template <typename KeyT, template<class>class Compare, template<class>class Alloc>
     set<KeyT,Compare,Alloc>& set<KeyT,Compare,Alloc>
-        ::keep_if(const PropertyT<value_type>& hasProperty)
+        ::keep_if(const property<value_type>& hasProperty)
     {
         iterator it = begin(), victim;
         while(it != end())
@@ -283,7 +283,7 @@ namespace itl
 
     template <typename KeyT, template<class>class Compare, template<class>class Alloc>
     set<KeyT,Compare,Alloc>& set<KeyT,Compare,Alloc>
-        ::copy_if(const PropertyT<value_type>& hasProperty, const set<KeyT,Compare,Alloc>& src)
+        ::copy_if(const property<value_type>& hasProperty, const set<KeyT,Compare,Alloc>& src)
     {
         if(this == &src) return keep_if(hasProperty);
         // otherwise
@@ -294,6 +294,15 @@ namespace itl
         }
         return *this;
     }
+
+
+    template <class Type>
+    class type<itl::set<Type> >
+    {
+    public:
+        static std::string to_string()
+        { return "itl::set<"+ type<Type>::to_string() +">"; }
+    };
 
 } // namespace itl
 

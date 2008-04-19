@@ -5,8 +5,8 @@
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "interval template library"
-PROJECT_NUMBER         = "itl 1.0.0"
-OUTPUT_DIRECTORY       = D:/opensrc/itl/doc
+PROJECT_NUMBER         = "itl 2.0.0"
+OUTPUT_DIRECTORY       = E:/cygwin/home/jofa/dev/sf/itl/trunk/itl/doc
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
 BRIEF_MEMBER_DESC      = YES
@@ -83,7 +83,7 @@ WARN_LOGFILE           =
 #---------------------------------------------------------------------------
 # configuration options related to the input files
 #---------------------------------------------------------------------------
-INPUT                  = D:/opensrc/itl
+INPUT                  = E:/cygwin/home/jofa/dev/sf/itl/trunk/itl/
 INPUT_ENCODING         = UTF-8
 FILE_PATTERNS          = *.c \
                          *.cc \
@@ -117,7 +117,7 @@ EXCLUDE                =
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       = 
 EXCLUDE_SYMBOLS        = 
-EXAMPLE_PATH           = ./sample
+EXAMPLE_PATH           = ./example
 EXAMPLE_PATTERNS       = *
 EXAMPLE_RECURSIVE      = NO
 IMAGE_PATH             = 

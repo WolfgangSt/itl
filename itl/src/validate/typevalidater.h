@@ -275,8 +275,8 @@ namespace itl
             case inplacePlusAssociativity:   return new LawValidater<InplaceAssociativity<Type>, RandomGentor>;
             case inplacePlusNeutrality:         return new LawValidater<InplaceNeutrality<Type>, RandomGentor>;
             case inplacePlusCommutativity:   return new LawValidater<InplaceCommutativity<Type>, RandomGentor>;
-            case inplaceStarAssociativity:   return new LawValidater<InplaceAssociativity<Type, InplaceStar>, RandomGentor>;
-            case inplaceStarCommutativity:   return new LawValidater<InplaceCommutativity<Type, InplaceStar>, RandomGentor>;
+            case inplaceStarAssociativity:   return new LawValidater<InplaceAssociativity<Type, inplace_star>, RandomGentor>;
+            case inplaceStarCommutativity:   return new LawValidater<InplaceCommutativity<Type, inplace_star>, RandomGentor>;
             case inplaceSymmetricDifference: return new LawValidater<InplaceSymmetricDifference<Type>, RandomGentor>;
             default: return NULL;
             }
@@ -420,12 +420,12 @@ namespace itl
             {
             case inplaceSetBaseLaws:          return InplaceSetBaseValidater<Type>::chooseValidater();
             case inplaceUnionInvertability:   return new LawValidater<InplaceUnionInvertability<Type>, RandomGentor>;
-            case inplacePlusDistributivity:   return new LawValidater<InplaceDistributivity<Type, InplacePlus, InplaceStar>, RandomGentor>;
-            case inplaceStarDistributivity:   return new LawValidater<InplaceDistributivity<Type, InplaceStar, InplacePlus>, RandomGentor>;
-            case inplacePlusDashRightDistrib: return new LawValidater<InplaceRightDistributivity<Type, InplacePlus, InplaceMinus>, RandomGentor>;
-            case inplaceStarDashRightDistrib: return new LawValidater<InplaceRightDistributivity<Type, InplaceStar, InplaceMinus>, RandomGentor>;
-            case inplacePlusDeMorgan:         return new LawValidater<InplaceDeMorgan<Type, InplacePlus, InplaceStar, itl::element_equal>, RandomGentor>;
-            case inplaceStarDeMorgan:         return new LawValidater<InplaceDeMorgan<Type, InplaceStar, InplacePlus, itl::element_equal>, RandomGentor>;
+            case inplacePlusDistributivity:   return new LawValidater<InplaceDistributivity<Type, inplace_plus, inplace_star>, RandomGentor>;
+            case inplaceStarDistributivity:   return new LawValidater<InplaceDistributivity<Type, inplace_star, inplace_plus>, RandomGentor>;
+            case inplacePlusDashRightDistrib: return new LawValidater<InplaceRightDistributivity<Type, inplace_plus, inplace_minus>, RandomGentor>;
+            case inplaceStarDashRightDistrib: return new LawValidater<InplaceRightDistributivity<Type, inplace_star, inplace_minus>, RandomGentor>;
+            case inplacePlusDeMorgan:         return new LawValidater<InplaceDeMorgan<Type, inplace_plus, inplace_star, itl::element_equal>, RandomGentor>;
+            case inplaceStarDeMorgan:         return new LawValidater<InplaceDeMorgan<Type, inplace_star, inplace_plus, itl::element_equal>, RandomGentor>;
             default: return NULL;
             }
         }
@@ -498,15 +498,15 @@ namespace itl
                                     Type, 
                                     typename Type::atomized_type, 
                                     Interval::Atomize, 
-                                    InplacePlus
+                                    inplace_plus
                                >,                                
                                RandomGentor
                            >();
-            case atomize_minus: return new LawValidater<BinaryPushout<Type, typename Type::atomized_type, Interval::Atomize, InplaceMinus>, RandomGentor>();
-            case atomize_star:  return new LawValidater<BinaryPushout<Type, typename Type::atomized_type, Interval::Atomize, InplaceStar>,  RandomGentor>();
-            case cluster_plus:    return new LawValidater<BinaryPushout<typename Type::atomized_type, Type, Interval::Cluster, InplacePlus>,  RandomGentor>();
-            case cluster_minus: return new LawValidater<BinaryPushout<typename Type::atomized_type, Type, Interval::Cluster, InplaceMinus>, RandomGentor>();
-            case cluster_star:  return new LawValidater<BinaryPushout<typename Type::atomized_type, Type, Interval::Cluster, InplaceStar>,  RandomGentor>();
+            case atomize_minus: return new LawValidater<BinaryPushout<Type, typename Type::atomized_type, Interval::Atomize, inplace_minus>, RandomGentor>();
+            case atomize_star:  return new LawValidater<BinaryPushout<Type, typename Type::atomized_type, Interval::Atomize, inplace_star>,  RandomGentor>();
+            case cluster_plus:    return new LawValidater<BinaryPushout<typename Type::atomized_type, Type, Interval::Cluster, inplace_plus>,  RandomGentor>();
+            case cluster_minus: return new LawValidater<BinaryPushout<typename Type::atomized_type, Type, Interval::Cluster, inplace_minus>, RandomGentor>();
+            case cluster_star:  return new LawValidater<BinaryPushout<typename Type::atomized_type, Type, Interval::Cluster, inplace_star>,  RandomGentor>();
             default: return NULL;
             }
         }

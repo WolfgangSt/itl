@@ -32,7 +32,7 @@ DEALINGS IN THE SOFTWARE.
 #include <itl/itl_map.hpp>
 #include <itl/string_list.hpp>
 #include <itl/string_sheet.hpp>
-#include <itl/ctxenumbitsett.hpp>
+#include <itl/enum_bitset.hpp>
 
 namespace itl
 {

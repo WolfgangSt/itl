@@ -29,15 +29,14 @@ DEALINGS IN THE SOFTWARE.
 #define __itl_MAPALGO_H_JOFA_990225__
 
 #include <itl/notate.hpp>
-//CL #include <itl/itl_algo.hpp>
 #include <itl/set_algo.hpp>
 
 namespace itl
 {
     namespace Map 
     {
-        template<class mapT>
-        bool contained_in(const mapT& sub, const mapT& super)
+        template<class MapType>
+        bool contained_in(const MapType& sub, const MapType& super)
         {
             if(&super == &sub)                   return true;
             if(sub.empty())                      return true;
@@ -46,12 +45,12 @@ namespace itl
             if(*sub.begin()    < *super.begin()) return false;
             if(*super.rbegin() < *sub.rbegin() ) return false;
 
-            typename mapT::const_iterator common_lwb_;
-            typename mapT::const_iterator common_upb_;
+            typename MapType::const_iterator common_lwb_;
+            typename MapType::const_iterator common_upb_;
             if(!Set::common_range(common_lwb_, common_upb_, sub, super))
                 return false;
 
-            typename mapT::const_iterator sub_ = sub.begin(), super_;
+            typename MapType::const_iterator sub_ = sub.begin(), super_;
             while(sub_ != sub.end())
             {
                 super_ = super.find((*sub_).KEY_VALUE);
@@ -64,25 +63,13 @@ namespace itl
             return true;
         }
 
-        //CL
-        //template<class mapT>
-        //void inject(mapT& result, const mapT& x2)
-        //{
-        //    if(&result != &x2)
-        //        const_FORALL(mapT, x2_, x2)
-        //            result.inject(*x2_);
-        //    else
-        //        FORALL(mapT, it, result)    
-        //            (*it).CONT_VALUE += (*it).CONT_VALUE;
-        //}
-
         //JODO map_intersection: es gibt mehrer Möglichkeiten der Implementierung
         // map/insert; accu_map/inject=insert
-        template<class mapT>
-        void intersection(mapT& y, const mapT& x1, const mapT& x2)
+        template<class MapType>
+        void intersection(MapType& y, const MapType& x1, const MapType& x2)
         {
-            mapT tmp;
-            typename mapT::const_iterator i1 = x1.begin(), i2;
+            MapType tmp;
+            typename MapType::const_iterator i1 = x1.begin(), i2;
 
             while(i1 != x1.end())
             {
@@ -99,17 +86,17 @@ namespace itl
         }
 
         // optimized version
-        template<class mapT>
-        void intersect(mapT& result, const mapT& x1, const mapT& x2)
+        template<class MapType>
+        void intersect(MapType& result, const MapType& x1, const MapType& x2)
         {
-            typename mapT::const_iterator common_lwb_;
-            typename mapT::const_iterator common_upb_;
+            typename MapType::const_iterator common_lwb_;
+            typename MapType::const_iterator common_upb_;
 
             result.clear();
             if(!Set::common_range(common_lwb_, common_upb_, x1, x2))
                 return;
 
-            typename mapT::const_iterator x1_ = common_lwb_, x2_;
+            typename MapType::const_iterator x1_ = common_lwb_, x2_;
 
             while(x1_ != common_upb_)
             {
@@ -123,28 +110,28 @@ namespace itl
             }
         }
 
-        template<class mapT>
-        void intersect(mapT& result, const mapT& x2)
+        template<class MapType>
+        void intersect(MapType& result, const MapType& x2)
         {
             // result = result * x2;
-            mapT tmp;
+            MapType tmp;
             intersect(tmp, result, x2);
             tmp.swap(result);
         }
 
         // optimized version
-        template<class mapT, class setT>
-        void intersect(mapT& result, const mapT& x1, const setT& x2)
+        template<class MapType, class SetType>
+        void intersect(MapType& result, const MapType& x1, const SetType& x2)
         {
-            typename mapT::const_iterator common_lwb_;
-            typename mapT::const_iterator common_upb_;
+            typename MapType::const_iterator common_lwb_;
+            typename MapType::const_iterator common_upb_;
 
             result.clear();
             if(!Set::common_range(common_lwb_, common_upb_, x1, x2))
                 return;
 
-            typename mapT::const_iterator x1_ = common_lwb_;
-            typename setT::const_iterator common_;
+            typename MapType::const_iterator x1_ = common_lwb_;
+            typename SetType::const_iterator common_;
 
             while(x1_ != common_upb_)
             {
@@ -156,11 +143,11 @@ namespace itl
             }
         }
 
-        template<class mapT, class setT>
-        void intersect(mapT& result, const setT& x2) //JODO TEST
+        template<class MapType, class SetType>
+        void intersect(MapType& result, const SetType& x2) //JODO TEST
         {
             // result = result * x2;
-            mapT tmp;
+            MapType tmp;
             intersect(tmp, result, x2);
             tmp.swap(result);
         }

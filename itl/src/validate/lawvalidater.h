@@ -5,8 +5,6 @@
 #include <lokixt/Tuple.h>
 #include <itl/itl_set.hpp>
 #include <itl/itl_map.hpp>
-#include <itl/cont_type_as_string.hpp>
-#include <itl/itv_type_as_string.hpp>
 #include <validate/gentor/randomgentor.h>
 
 #include <validate/laws/monoid.h>

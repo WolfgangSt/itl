@@ -42,20 +42,20 @@ void test_Validater()
     GentorProfileSgl::it()->set_maxIntervalLength(5);
 
 
-    typedef BinaryPushout<itl::split_interval_map<int,double>, itl::map<int,double>, Interval::Atomize, InplacePlus>
+    typedef BinaryPushout<itl::split_interval_map<int,double>, itl::map<int,double>, Interval::Atomize, inplace_plus>
         Map_Atomize_Union_DiagramT;
     LawValidater<Map_Atomize_Union_DiagramT, RandomGentor> map_atomize_plus_pushout;
     map_atomize_plus_pushout.setTrialsCount(1000);
     map_atomize_plus_pushout.run();
 
-    typedef BinaryPushout<itl::map<int,double>, itl::split_interval_map<int,double>, Interval::Cluster, InplaceStar>
+    typedef BinaryPushout<itl::map<int,double>, itl::split_interval_map<int,double>, Interval::Cluster, inplace_star>
         Map_Cluster_Intersect_DiagramT;
     LawValidater<Map_Cluster_Intersect_DiagramT, RandomGentor> map_cluster_star_pushout;
     map_cluster_star_pushout.setTrialsCount(1000);
     map_cluster_star_pushout.run();
 
 
-    //typedef BinaryPushout<itl::interval_set<int>, itl::set<int>, Interval::Atomize, InplacePlus>
+    //typedef BinaryPushout<itl::interval_set<int>, itl::set<int>, Interval::Atomize, inplace_plus>
     //    Set_Atomize_Union_DiagramT;
     //LawValidater<Set_Atomize_Union_DiagramT, RandomGentor> set_atomize_plus_pushout;
     //set_atomize_plus_pushout.setTrialsCount(1000);
@@ -63,13 +63,13 @@ void test_Validater()
     //set_atomize_plus_pushout.run();
     //cout << "set_atomize_plus_pushout.run() feddich" << endl;
 
-    //typedef BinaryPushout<itl::set<int>, itl::interval_set<int>, Interval::Cluster, InplaceStar>
+    //typedef BinaryPushout<itl::set<int>, itl::interval_set<int>, Interval::Cluster, inplace_star>
     //    Set_Cluster_Intersect_DiagramT;
     //LawValidater<Set_Cluster_Intersect_DiagramT, RandomGentor> set_cluster_star_pushout;
     //set_cluster_star_pushout.setTrialsCount(1000);
     //set_cluster_star_pushout.run();
 
-    //LawValidater<AtomizePushout<itl::interval_set<int>, itl::set<int>, InplaceStar>, RandomGentor> tester_star_pushout;
+    //LawValidater<AtomizePushout<itl::interval_set<int>, itl::set<int>, inplace_star>, RandomGentor> tester_star_pushout;
     //tester_star_pushout.setTrialsCount(1000);
     //tester_star_pushout.run();
 

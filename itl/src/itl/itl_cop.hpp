@@ -37,7 +37,7 @@ class itl::cop
 #include <string>
 #include <itl/notate.hpp>
 #include <itl/itl_value.hpp>
-#include <itl/ctxpred.hpp>
+#include <itl/predicates.hpp>
 #include <itl/map_algo.hpp>
 #include <map>
 
@@ -187,15 +187,15 @@ namespace itl
 
         /** Keep the elements in *this cop to which property \c hasProperty applies. 
             Erase all the rest. */
-        cop& keep_if(const PropertyT<value_type>& hasProperty);
+        cop& keep_if(const property<value_type>& hasProperty);
 
         /** Erase the elements in *this cop to which property \c hasProperty applies. 
             Keep all the rest. */
-        cop& drop_if(const PropertyT<value_type>& hasProperty);
+        cop& drop_if(const property<value_type>& hasProperty);
 
         /** Copy the elements in cop \c src to which property \c hasProperty applies 
             into \c *this cop. */
-        cop& copy_if(const PropertyT<value_type>& hasProperty, const cop& src);
+        cop& copy_if(const property<value_type>& hasProperty, const cop& src);
 
         template<typename IteratorT>
         static const KeyT& key_value(IteratorT& value_){ return (*value_).first; }
@@ -305,7 +305,7 @@ namespace itl
 
     template <typename KeyT, typename DataT, typename CompareT, typename AllocT>
     cop<KeyT,DataT,CompareT,AllocT>& cop<KeyT,DataT,CompareT,AllocT>
-        ::drop_if(const PropertyT<value_type>& hasProperty)
+        ::drop_if(const property<value_type>& hasProperty)
     {
         iterator it = begin(), victim;
         while(it != end())
@@ -315,7 +315,7 @@ namespace itl
 
     template <typename KeyT, typename DataT, typename CompareT, typename AllocT>
     cop<KeyT,DataT,CompareT,AllocT>& cop<KeyT,DataT,CompareT,AllocT>
-        ::keep_if(const PropertyT<value_type>& hasProperty)
+        ::keep_if(const property<value_type>& hasProperty)
     {
         iterator it = begin(), victim;
         while(it != end())
@@ -325,7 +325,7 @@ namespace itl
 
     template <typename KeyT, typename DataT, typename CompareT, typename AllocT>
     cop<KeyT,DataT,CompareT,AllocT>& cop<KeyT,DataT,CompareT,AllocT>
-        ::copy_if(const PropertyT<value_type>& hasProperty, const cop<KeyT,DataT,CompareT,AllocT>& src)
+        ::copy_if(const property<value_type>& hasProperty, const cop<KeyT,DataT,CompareT,AllocT>& src)
     {
         if(this == &src) return keep_if(hasProperty);
         // otherwise

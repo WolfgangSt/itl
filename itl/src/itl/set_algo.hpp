@@ -32,6 +32,7 @@ DEALINGS IN THE SOFTWARE.
 
 #include <itl/notate.hpp>
 #include <itl/itl_type.hpp>
+#include <itl/predicates.hpp>
 
 /*
 <b>SetAlgo </b>
@@ -41,49 +42,6 @@ used with other set-implementations like e.g. hash_set.
 
 namespace itl
 {
-    //JODO where to move equalities
-    template <class setT> struct std_equal : std::binary_function<setT, setT, bool>
-    {
-        bool operator()(const setT& lhs, const setT& rhs)const
-        {
-            return lhs == rhs;
-        }
-    };
-
-    template<>
-    inline std::string unary_template<itl::std_equal>::to_string()  { return "=="; }
-
-    template <class setT> struct element_equal : std::binary_function<setT, setT, bool>
-    {
-        bool operator()(const setT& lhs, const setT& rhs)const
-        {
-            return is_element_equal(lhs, rhs);
-        }
-    };
-
-    template<>
-    inline std::string unary_template<itl::element_equal>::to_string()  { return "="; }
-
-    /** Functor class contained_in implements the subset relation. 
-    <tt>contained_in(sub, super)</tt> is true if <tt>sub</tt> is contained in <tt>super</tt> */
-    template<class setT> struct contained_in : std::binary_function<setT, setT, bool>
-    {
-        bool operator()(const setT& sub, const setT& super)const
-        {
-            return sub.contained_in(super);
-        }
-    };
-
-    /** Functor class containes implements the superset relation. 
-    <tt>containes(super, sub)</tt> is true if <tt>super</tt> containes <tt>sub</tt> */
-    template<class setT> struct containes : std::binary_function<setT, setT, bool>
-    {
-        bool operator()(const setT& super, const setT& sub)const
-        {
-            return super.containes(sub);
-        }
-    };
-
 
     namespace Set
     {
@@ -150,8 +108,8 @@ namespace itl
 
         /** Function template <tt>contained_in</tt> implements the subset relation. 
         <tt>contained_in(sub, super)</tt> is true if <tt>sub</tt> is contained in <tt>super</tt> */
-        template<class setT>
-        bool contained_in(const setT& sub, const setT& super)
+        template<class SetType>
+        bool contained_in(const SetType& sub, const SetType& super)
         {
             if(&super == &sub)                   return true;
             if(sub.empty())                      return true;
@@ -159,12 +117,12 @@ namespace itl
             if(*sub.begin()    < *super.begin()) return false;
             if(*super.rbegin() < *sub.rbegin() ) return false;
 
-            typename setT::const_iterator common_lwb_;
-            typename setT::const_iterator common_upb_;
+            typename SetType::const_iterator common_lwb_;
+            typename SetType::const_iterator common_upb_;
             if(!common_range(common_lwb_, common_upb_, sub, super))
                 return false;
 
-            typename setT::const_iterator sub_ = common_lwb_, super_;
+            typename SetType::const_iterator sub_ = common_lwb_, super_;
             while(sub_ != common_upb_)
             {
                 super_ = super.find(*sub_++);
@@ -176,16 +134,16 @@ namespace itl
 
         /** Function template <tt>lexicographical_equal</tt> implements 
         lexicographical equality. */
-        template<class setT>
-        bool lexicographical_equal(const setT& left, const setT& right)
+        template<class SetType>
+        bool lexicographical_equal(const SetType& left, const SetType& right)
         {
             if(&left == &right)        return true;
             if(left.element_count() != right.element_count()) 
                 return false;
 
             // so we have two sorted containers with equal element counts
-            typename setT::const_iterator left_  = left.begin();
-            typename setT::const_iterator right_ = right.begin();
+            typename SetType::const_iterator left_  = left.begin();
+            typename SetType::const_iterator right_ = right.begin();
 
             while(left_ != left.end())
             {
@@ -200,17 +158,17 @@ namespace itl
 
 
         /** */
-        template<class setT>
-        void intersect(setT& result, const setT& x1, const setT& x2)
+        template<class SetType>
+        void intersect(SetType& result, const SetType& x1, const SetType& x2)
         {
-            typename setT::const_iterator common_lwb_;
-            typename setT::const_iterator common_upb_;
+            typename SetType::const_iterator common_lwb_;
+            typename SetType::const_iterator common_upb_;
 
             result.clear();
             if(!common_range(common_lwb_, common_upb_, x1, x2))
                 return;
 
-            typename setT::const_iterator x1_ = common_lwb_, x2_;
+            typename SetType::const_iterator x1_ = common_lwb_, x2_;
 
             while(x1_ != common_upb_)
             {
@@ -220,25 +178,25 @@ namespace itl
             }
         }
 
-        template<class setT>
-        void intersect(setT& result, const setT& x2)
+        template<class SetType>
+        void intersect(SetType& result, const SetType& x2)
         {
-            setT tmp;
+            SetType tmp;
             intersect(tmp, result, x2);
             tmp.swap(result);
         }
 
 
-        template<class setT>
-        bool disjoint(const setT& x1, const setT& x2)
+        template<class SetType>
+        bool disjoint(const SetType& x1, const SetType& x2)
         {
-            typename setT::const_iterator common_lwb_;
-            typename setT::const_iterator common_upb_;
+            typename SetType::const_iterator common_lwb_;
+            typename SetType::const_iterator common_upb_;
 
             if(!common_range(common_lwb_, common_upb_, x1, x2))
                 return true;
 
-            typename setT::const_iterator x1_ = common_lwb_, x2_;
+            typename SetType::const_iterator x1_ = common_lwb_, x2_;
 
             while(x1_ != common_upb_)
             {
@@ -249,11 +207,11 @@ namespace itl
             return true;    
         }
 
-        template<class setT>
-        void subtract(setT& result, const setT& x1, const setT& x2)
+        template<class SetType>
+        void subtract(SetType& result, const SetType& x1, const SetType& x2)
         {
-            setT temp;
-            typename setT::const_iterator x1_ = x1.begin(), x2_;
+            SetType temp;
+            typename SetType::const_iterator x1_ = x1.begin(), x2_;
 
             if(&x1 != &x2)
                 while(x1_ != x1.end())

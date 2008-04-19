@@ -73,7 +73,7 @@ namespace itl
     };
 
     // ---------------------------------------------------------------------------
-    template <typename Type, template<class>class Operator1 = InplacePlus, template<class>class Operator2 = InplaceStar>
+    template <typename Type, template<class>class Operator1 = inplace_plus, template<class>class Operator2 = inplace_star>
     class InplaceDistributivity : public LawBase<LOKI_TYPELIST_3(Type,Type,Type), LOKI_TYPELIST_2(Type,Type)>
     {
         /** a + (b * c) == (a + b) * (a + c)
@@ -131,8 +131,8 @@ namespace itl
     };
 
     // ---------------------------------------------------------------------------
-    template <typename Type, template<class>class Operator1 = InplacePlus, 
-                             template<class>class Operator2 = InplaceStar, 
+    template <typename Type, template<class>class Operator1 = inplace_plus, 
+                             template<class>class Operator2 = inplace_star, 
                              template<class>class Equality = itl::std_equal>
     class InplaceDeMorgan : public LawBase<LOKI_TYPELIST_3(Type,Type,Type), LOKI_TYPELIST_2(Type,Type)>
     {
@@ -193,7 +193,7 @@ namespace itl
     };
 
     // ---------------------------------------------------------------------------
-    template <typename Type, template<class>class Operator1 = InplacePlus, template<class>class Operator2 = InplaceMinus>
+    template <typename Type, template<class>class Operator1 = inplace_plus, template<class>class Operator2 = inplace_minus>
     class InplaceRightDistributivity : public LawBase<LOKI_TYPELIST_3(Type,Type,Type), LOKI_TYPELIST_2(Type,Type)>
     {
         /** (a + b) - c == (a - c) + (b - c)

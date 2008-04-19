@@ -592,7 +592,7 @@ bool interval<DataT>::upb_equal(const interval& x2)const
     else
     {
         if(rightbound_closed() && x2.rightbound_open())  
-		     return succ(_upb) ==      x2._upb;
+             return succ(_upb) ==      x2._upb;
         else return      _upb  == succ(x2._upb);
     }
 }
@@ -687,10 +687,10 @@ interval<DataT>& interval<DataT>::extend(const interval<DataT>& x2)
 {
     if(x2.empty()) return *this;
     else if(empty())
-	{
+    {
         *this = x2; 
         return *this;
-	}
+    }
     else 
     {
         set_lwb(lwb_min(x2));

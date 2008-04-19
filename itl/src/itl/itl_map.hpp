@@ -36,7 +36,7 @@ class itl::map
 #include <string>
 #include <itl/notate.hpp>
 #include <itl/itl_value.hpp>
-#include <itl/ctxpred.hpp>
+#include <itl/predicates.hpp>
 #include <itl/itl_set.hpp>
 #include <itl/map_algo.hpp>
 #include <map>
@@ -199,19 +199,17 @@ namespace itl
         /** Represent this map as string */
         std::string as_string()const;
 
-#ifdef __ITL_EXTENDED__
         /** Keep the elements in *this map to which property \c hasProperty applies. 
         Erase all the rest. */
-        map& keep_if(const PropertyT<value_type>& hasProperty);
+        map& keep_if(const property<value_type>& hasProperty);
 
         /** Erase the elements in *this map to which property \c hasProperty applies. 
         Keep all the rest. */
-        map& drop_if(const PropertyT<value_type>& hasProperty);
+        map& drop_if(const property<value_type>& hasProperty);
 
         /** Copy the elements in map \c src to which property \c hasProperty applies 
         into \c *this map. */
-        map& copy_if(const PropertyT<value_type>& hasProperty, const map& src);
-#endif
+        map& copy_if(const property<value_type>& hasProperty, const map& src);
     };
 
 
@@ -315,10 +313,9 @@ namespace itl
     }
 
 
-#ifdef __ITL_EXTENDED__
     template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
     map<KeyT,DataT,Compare,Alloc>& map<KeyT,DataT,Compare,Alloc>
-        ::drop_if(const PropertyT<value_type>& hasProperty)
+        ::drop_if(const property<value_type>& hasProperty)
     {
         iterator it = begin(), victim;
         while(it != end())
@@ -328,7 +325,7 @@ namespace itl
 
     template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
     map<KeyT,DataT,Compare,Alloc>& map<KeyT,DataT,Compare,Alloc>
-        ::keep_if(const PropertyT<value_type>& hasProperty)
+        ::keep_if(const property<value_type>& hasProperty)
     {
         iterator it = begin(), victim;
         while(it != end())
@@ -338,7 +335,7 @@ namespace itl
 
     template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
     map<KeyT,DataT,Compare,Alloc>& map<KeyT,DataT,Compare,Alloc>
-        ::copy_if(const PropertyT<value_type>& hasProperty, const map<KeyT,DataT,Compare,Alloc>& src)
+        ::copy_if(const property<value_type>& hasProperty, const map<KeyT,DataT,Compare,Alloc>& src)
     {
         if(this == &src) return keep_if(hasProperty);
         // otherwise
@@ -349,7 +346,15 @@ namespace itl
         }
         return *this;
     }
-#endif
+
+
+    template <class KeyT, class DataT>
+    class type<itl::map<KeyT,DataT> >
+    {
+    public:
+        static std::string to_string()
+        { return "itl::map<"+ type<KeyT>::to_string() + "," + type<DataT>::to_string() +">"; }
+    };
 
 } // namespace itl
 

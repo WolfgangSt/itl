@@ -101,7 +101,7 @@ separate episode data to a history object.
     an enumeration type and a common value type for all episodes of a given
     problem domain to work on.
 */
-class HospitalTypeDomT // implicit public: TypeDomTV
+class HospitalTypeDomain // implicit public: TypeDomTV
 {
 public:
     /** All episode classes for the hospital sample share a common value type ValueBaseTD
@@ -127,38 +127,38 @@ public:
 
 /** Base class for all episodes of the sample hospital problem domain. 
     An episode is an object that has an interval and a value.          */
-class HospitalEpisodesAT : public typed_episode<Time, HospitalTypeDomT>
+class HospitalEpisodes : public typed_episode<Time, HospitalTypeDomain>
 {
 public:
-    /// The domain type of intervals used by HospitalEpisodesAT is (toy)Time
+    /// The domain type of intervals used by HospitalEpisodes is (toy)Time
     typedef Time ItvDomTD;
-    /// Type of the intervals used by HospitalEpisodesAT
-    typedef itl::interval<ItvDomTD> IntervalTD;
+    /// Type of the intervals used by HospitalEpisodes
+    typedef itl::interval<Time> IntervalTD;
 
 public:
     /// Construct an episode from interval and value
-    HospitalEpisodesAT(const IntervalTD& itv, const std::string& val):
+    HospitalEpisodes(const IntervalTD& itv, const std::string& val):
         m_itv(itv), m_value(val) 
     {}
 
     /// Every episode has an interval
     virtual IntervalTD interval()const { return m_itv; }
 
-    void setValue(const HospitalTypeDomT::ValueBaseTD& val) { m_value = val; }
+    void setValue(const HospitalTypeDomain::ValueBaseTD& val) { m_value = val; }
 
-    virtual const HospitalTypeDomT::ValueBaseTD* value()const { return &m_value; }
+    virtual const HospitalTypeDomain::ValueBaseTD* value()const { return &m_value; }
     //virtual std::string* value()const { return (std::string*)&m_value; }
 
     /// Equality of values
-    virtual bool isValueEqual(const ordered_type<HospitalTypeDomT>* x2)const
-    { return m_value==dynamic_cast<const HospitalEpisodesAT*>(x2)->m_value; }
+    virtual bool isValueEqual(const ordered_type<HospitalTypeDomain>* x2)const
+    { return m_value==dynamic_cast<const HospitalEpisodes*>(x2)->m_value; }
 
     /// String representation
     virtual std::string as_string()const { return m_value; }
 
 private:
     // For sake of simplicity the value of the example episodes is text
-    HospitalTypeDomT::ValueBaseTD m_value;
+    HospitalTypeDomain::ValueBaseTD m_value;
     IntervalTD m_itv;
 };
 
@@ -167,39 +167,39 @@ private:
 // ----------------------------------------------------------------------------
 
 /// Diagnoses
-class DiagnosisEpiT : public HospitalEpisodesAT
+class DiagnosisEpiT : public HospitalEpisodes
 {
 public:
     DiagnosisEpiT(Time begin, Time end, const std::string& val)
-        : HospitalEpisodesAT(rightopen_interval(begin,end),val){}
+        : HospitalEpisodes(rightopen_interval(begin,end),val){}
 
-    HospitalTypeDomT::DomainET type()const { return HospitalTypeDomT::diagnosis; }
+    HospitalTypeDomain::DomainET type()const { return HospitalTypeDomain::diagnosis; }
 };
 
 /// Wards
-class WardEpiT : public HospitalEpisodesAT
+class WardEpiT : public HospitalEpisodes
 {
 public:
     WardEpiT(Time begin, Time end, const std::string& val)
-        : HospitalEpisodesAT(rightopen_interval(begin,end),val){}
+        : HospitalEpisodes(rightopen_interval(begin,end),val){}
 
-    HospitalTypeDomT::DomainET type()const { return HospitalTypeDomT::ward; }
+    HospitalTypeDomain::DomainET type()const { return HospitalTypeDomain::ward; }
 };
 
 // ----------------------------------------------------------------------------
 /** Having defined hospital episodes, we can build a history class for
     by instatiation of the product_history template class. */
-class HospitalProductHistoryT : public product_history<Time, HospitalTypeDomT>
+class HospitalProductHistory : public product_history<Time, HospitalTypeDomain>
 {    
 public:
-    typedef product_history<Time, HospitalTypeDomT> BaseTypeTD;
-    typedef episode_product<Time, HospitalTypeDomT> ValueTypeTD;
+    typedef product_history<Time, HospitalTypeDomain> BaseTypeTD;
+    typedef episode_product<Time, HospitalTypeDomain> ValueTypeTD;
     typedef BaseTypeTD::IntervalTD IntervalTD;
     typedef BaseTypeTD::DomainTD DomainTD;
 };
 
 /// We may call a single entry in that history a hospital event.
-typedef HospitalProductHistoryT::ValueTypeTD HospitalEventTD;
+typedef HospitalProductHistory::ValueTypeTD HospitalEventTD;
 
 void medical_file()
 {
@@ -212,7 +212,7 @@ void medical_file()
     WardEpiT      radiology     (Time(monday, 22,30), Time(monday, 22,50), "radiology");
     WardEpiT      ward_A        (Time(monday, 22,50), Time(tuesday, 7,20), "ward_A");
 
-    HospitalProductHistoryT history;
+    HospitalProductHistory history;
 
     history.insert(&susp_cran_frac);
     history.insert(&alc_intox);
@@ -223,7 +223,7 @@ void medical_file()
     history.insert(&radiology);
     history.insert(&ward_A);
 
-    HospitalProductHistoryT::iterator it = history.begin();
+    HospitalProductHistory::iterator it = history.begin();
     while(it != history.end())
     {
         interval<Time> when = (*it).first;

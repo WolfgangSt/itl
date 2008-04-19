@@ -33,40 +33,40 @@ DEALINGS IN THE SOFTWARE.
 namespace itl
 {
 
-    template <typename Type> struct Neutron
+    template <typename Type> struct neutron
     {
         inline Type operator()()const { return Type(); }
     };
 
     template<>
-    inline std::string unary_template<Neutron>::to_string() { return "0"; }
+    inline std::string unary_template<neutron>::to_string() { return "0"; }
 
-    template <typename Type> struct InplacePlus
+    template <typename Type> struct inplace_plus
     {
         void operator()(Type& object, const Type& operand)const
         { object += operand; }
     };
 
     template<>
-    inline std::string unary_template<InplacePlus>::to_string() { return "+="; }
+    inline std::string unary_template<inplace_plus>::to_string() { return "+="; }
 
-    template <typename Type> struct InplaceMinus
+    template <typename Type> struct inplace_minus
     {
         void operator()(Type& object, const Type& operand)const
         { object -= operand; }
     };
 
     template<>
-    inline std::string unary_template<InplaceMinus>::to_string() { return "-="; }
+    inline std::string unary_template<inplace_minus>::to_string() { return "-="; }
 
-    template <typename Type> struct InplaceStar
+    template <typename Type> struct inplace_star
     {
         void operator()(Type& object, const Type& operand)const
         { object *= operand; }
     };
 
     template<>
-    inline std::string unary_template<InplaceStar>::to_string() { return "*="; }
+    inline std::string unary_template<inplace_star>::to_string() { return "*="; }
 
 } // namespace itl
 

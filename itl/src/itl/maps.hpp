@@ -34,9 +34,6 @@ class maps
 #ifndef __maps_h_JOFA_990223__
 #define __maps_h_JOFA_990223__
 
-#include <map>
-#include <itl/ctxpred.hpp>
-
 namespace itl
 {
 

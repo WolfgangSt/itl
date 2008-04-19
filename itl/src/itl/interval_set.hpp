@@ -315,12 +315,21 @@ typename interval_set<DomainT,Interval,Compare,Alloc>::iterator
 }
 
 
-template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-inline bool is_element_equal(const interval_set<DomainT,Interval,Compare,Alloc>& lhs,
-                             const interval_set<DomainT,Interval,Compare,Alloc>& rhs)
-{
-    return std::equal(lhs.begin(), lhs.end(), rhs.begin());
-}
+    template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+    inline bool is_element_equal(const interval_set<DomainT,Interval,Compare,Alloc>& lhs,
+                                 const interval_set<DomainT,Interval,Compare,Alloc>& rhs)
+    {
+        return std::equal(lhs.begin(), lhs.end(), rhs.begin());
+    }
+
+    template <class Type>
+    class type<itl::interval_set<Type> >
+    {
+    public:
+        static std::string to_string()
+        { return "interval_set<"+ type<Type>::to_string() +">"; }
+    };
+
 
 
 } // namespace itl

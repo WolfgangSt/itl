@@ -168,8 +168,8 @@ namespace itl
     // ---------------------------------------------------------------------------
     //JODO MEMO USENET: Kein Patternmatching auf templateparameter-level! Beispiel
     // TypeAsString!
-    //template <typename Type, template<class>class Accumulator = InplacePlus, int aux=0>
-    template <typename Type, template<class>class Accumulator = InplacePlus, template<class>class NeutronT = Neutron>
+    //template <typename Type, template<class>class Accumulator = inplace_plus, int aux=0>
+    template <typename Type, template<class>class Accumulator = inplace_plus, template<class>class NeutronT = neutron>
     class InplaceNeutrality : public LawBase<LOKI_TYPELIST_1(Type), LOKI_TYPELIST_1(Type)>
     {
         /** a o 0 == a computed as
@@ -205,14 +205,14 @@ namespace itl
         bool holds()
         {
             Type lhs = this->template getInputValue<operand_a>();
-            Accumulator<Type>()(lhs, Neutron<Type>()());
+            Accumulator<Type>()(lhs, neutron<Type>()());
             this->template setOutputValue<lhs_result>(lhs);
             return lhs == this->template getInputValue<operand_a>();
         }
     };
 
 
-    template <typename Type, template<class>class Accumulator = InplacePlus>
+    template <typename Type, template<class>class Accumulator = inplace_plus>
     class InplaceAssociativity : public LawBase<LOKI_TYPELIST_3(Type,Type,Type), LOKI_TYPELIST_2(Type,Type)>
     {
         /** (a o b) o c == a o (b o c) 'inplace'
@@ -270,7 +270,7 @@ namespace itl
     };
 
 
-    template <typename Type, template<class>class Accumulator = InplacePlus>
+    template <typename Type, template<class>class Accumulator = inplace_plus>
     class InplaceCommutativity : public LawBase<LOKI_TYPELIST_2(Type,Type), LOKI_TYPELIST_2(Type,Type)>
     {
         /** a o b == b o a computed as

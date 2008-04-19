@@ -42,7 +42,7 @@ using namespace itl;
 
     This program gives a very short samlpe of different interval instances.
 
-    \include interval/interval.cpp
+    \include example/interval/interval.cpp
 */
 int main()
 {
