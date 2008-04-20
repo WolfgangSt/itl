@@ -27,8 +27,8 @@ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
-#ifndef __typed_episode_h_JOFA_011015_H__
-#define __typed_episode_h_JOFA_011015_H__
+#ifndef __itl_typed_episode_hpp_JOFA_011015_H__
+#define __itl_typed_episode_hpp_JOFA_011015_H__
 
 #include <itl/itl_interval.hpp>
 #include <itl/ordered_type.hpp>
@@ -36,6 +36,7 @@ DEALINGS IN THE SOFTWARE.
 namespace itl
 {
 
+/// Serves as a base class for the decomposition of histories in episodes
 /**  
     <b>Episoden-Intercace</b>
 
@@ -43,7 +44,7 @@ namespace itl
   
     @author  Joachim Faulhaber
 */
-template <class ItvDomTV>
+template <class TimeT>
 class episode_interface
 {
 public:
@@ -52,28 +53,27 @@ public:
     virtual ~episode_interface(){}
 
     /// das Intervall der Episode
-    virtual interval<ItvDomTV> interval()const=0;
-
-    // der Wert der Episode is dann dat Ding selba
+    virtual itl::interval<TimeT> interval()const=0;
 };
 
+/// typed_episode is an episode that can be ordered wrt. it's type
 /**  
     <b>ein Episode mit Typ dazu</b>
 
-    Die Klasse TypesEpisodeAT ist nach Typ sortierbar, denn sie 
-    implementiert \ref OrderedTypeAT. Ausserdem ist es eine Episode, denn
+    Die Klasse typed_episode ist nach Typ sortierbar, denn sie 
+    implementiert \ref ordered_type. Ausserdem ist es eine Episode, denn
     sie implementiert \ref episode_interface.
   
     @author  Joachim Faulhaber
 */
-template <class ItvDomTV, class TypeDomTV>
-class typed_episode : public ordered_type_base<TypeDomTV>, public episode_interface<ItvDomTV>
+template <class TimeT, class TypeDomain>
+class typed_episode : public ordered_type_base<TypeDomain>, public episode_interface<TimeT>
 {
 };
 
 } // namespace itl
 
-#endif // __typed_episode_h_JOFA_011015_H__
+#endif // __itl_typed_episode_hpp_JOFA_011015_H__
 
 
 

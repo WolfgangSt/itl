@@ -69,14 +69,14 @@ namespace itl
 
     \subsection party_subsec Party
 
-    Party demonstrates the possibilities of a <em>split interval map</em> (SplitItvMapT).
+    Party demonstrates the possibilities of a <em>split interval map</em> (split_interval_map).
     In party.cpp the change of guests of a party in time is calculated using a 
-    \ref SplitItvMapT simply by inserting pairs of intervals and guest sets into the SplitItvMapT.
+    \ref split_interval_map simply by inserting pairs of intervals and guest sets into the split_interval_map.
     \n \n
 
     \subsection overlap_counter_subsec Overlap counter
 
-    The most basic application of a SplitItvMapT is a counter counting
+    The most basic application of a split_interval_map is a counter counting
     the number of overlaps of intervals inserted into it as shown in overlap_counter.cpp.
     \n \n
 
@@ -93,7 +93,7 @@ namespace itl
 
     \subsection history_subsec History
 
-    History is a more sophisticated application of a SplitItvMapT to decompose
+    History is a more sophisticated application of a split_interval_map to decompose
     data in time. Sample history.cpp shows how we can monitor a set of attributes in a history.
     \n \n
 
@@ -882,32 +882,32 @@ inline bool operator < (const interval<DataT>& lhs, const interval<DataT>& rhs)
 }
 
 
-
+/// Comparison functor on intervals implementing an overlap free less 
 /**    
     <b>Template-Klasse exclusive_less: Comparison Functor for Intervals</b>
 
-       Template parameter <b>ItvTV</b>: needs to implement the boolean function
+       Template parameter <b>IntervalType</b>: needs to implement the boolean function
 
-    <tt>bool ItvTV::exclusive_less(ItvTV x2)const; </tt>
+    <tt>bool IntervalType::exclusive_less(IntervalType x2)const; </tt>
     
     <b>exclusive_less</b> implements a strict weak ordering that serves to
     sort sets and maps of intervals \ref ItvSetT, \ref DiscItvSetT and \ref 
-    SplitItvMapT. 
+    split_interval_map. 
     
-    Function <tt>bool ItvTV::exclusive_less(ItvTV x2)const; </tt> is true if every
+    Function <tt>bool IntervalType::exclusive_less(IntervalType x2)const; </tt> is true if every
     element of the interval <tt>*this</tt> is less than any element of <tt>x2</tt>
-
-    <tt>exclusive_less</tt> could indeed be defined as <tt>operator < </tt> on class interval
-    which will be done in the next relase.
 
     @author  Joachim Faulhaber
 */
-template <class ItvTV>
+template <class IntervalType>
 struct exclusive_less {
     /** Operator <tt>operator()</tt> implements a strict weak ordering on intervals. */
-    bool operator()(const ItvTV& x1, const ItvTV& x2)const
+    bool operator()(const IntervalType& x1, const IntervalType& x2)const
     { return x1.exclusive_less(x2); }
 };
+
+//JODO USENET: It is not a strict weak ordering because the induced equality in not 
+// even an equivalence. Still the relation works completely well!
 
 } // namespace itl
 

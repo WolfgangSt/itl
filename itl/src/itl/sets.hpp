@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------+
-Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
+Copyright (c) 2007-2008: Joachim Faulhaber
 +-----------------------------------------------------------------------------+
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -26,6 +26,8 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
 
+#include <itl/itl_concepts.hpp>
+
 namespace itl
 {
 
@@ -36,6 +38,7 @@ class sets
 #ifndef __sets_H_JOFA_990223__
 #define __sets_H_JOFA_990223__
 
+/// interface template for sets
 /**
     Template interface class <b>sets</b>: Defines a general interface for sets.
 
@@ -47,6 +50,9 @@ class sets
 template <class DomainT> class sets
 {
 public:
+
+	/// virtual destructor
+	virtual ~sets(){}
 
     /// Remove all elements of the set
     virtual void clear()=0;

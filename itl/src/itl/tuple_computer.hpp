@@ -37,11 +37,11 @@ DEALINGS IN THE SOFTWARE.
 namespace itl
 {
 
-    template <int varCountV>
+    template <int VarCount>
     class tuple_computer_interface
     {
     public:
-        typedef var_tuple<varCountV> var_tuple_type;
+        typedef var_tuple<VarCount> var_tuple_type;
         typedef var_tuple_order<var_tuple_type> tuple_order_type;
         typedef itl::set<var_tuple_type, var_tuple_order> tuple_set_type;
 
@@ -82,16 +82,16 @@ namespace itl
         the tuple computer is summed by v, if the tuple t is already contained in
         the tuple_computer_base.
 
-        Template parameter varCountV defines the size of the tuples.
+        Template parameter VarCount defines the size of the tuples.
 
         Template parameter CounterT is the value type of the tuple_computer_base.
         Those are the values to aggregated.
     */
-    template <int varCountV, class CounterT>
-    class tuple_computer_base : public tuple_computer_interface<varCountV>
+    template <int VarCount, class CounterT>
+    class tuple_computer_base : public tuple_computer_interface<VarCount>
     {
     public:
-        typedef tuple_computer_interface<varCountV> base_type;
+        typedef tuple_computer_interface<VarCount> base_type;
         typedef typename base_type::tuple_set_type tuple_set_type;
 
     public:
@@ -99,7 +99,7 @@ namespace itl
     /** @name A: Type definitions for the template class 
     */
     //@{ 
-        typedef var_tuple<varCountV> var_tuple_type;
+        typedef var_tuple<VarCount> var_tuple_type;
         typedef var_tuple_order<var_tuple_type> tuple_order_type;
         /// Container type for the implementation 
         typedef itl::map<var_tuple_type, CounterT, var_tuple_order> ImplMapTD;
@@ -240,24 +240,24 @@ namespace itl
     };
 
 
-    template <int varCountV, class CounterT>
-    void tuple_computer_base<varCountV, CounterT>::domain(tuple_set_type& domain)const
+    template <int VarCount, class CounterT>
+    void tuple_computer_base<VarCount, CounterT>::domain(tuple_set_type& domain)const
     {
         domain.clear();
         addDomain(domain);
     }
 
 
-    template <int varCountV, class CounterT>
-    void tuple_computer_base<varCountV, CounterT>::addDomain(tuple_set_type& domain)const
+    template <int VarCount, class CounterT>
+    void tuple_computer_base<VarCount, CounterT>::addDomain(tuple_set_type& domain)const
     {
         const_FORALL_THIS(tupel_)
             domain.insert((*tupel_).KEY_VALUE);
     }
 
 
-    template <int varCountV, class CounterT>
-    void tuple_computer_base<varCountV, CounterT>::insert(const value_type& val)
+    template <int VarCount, class CounterT>
+    void tuple_computer_base<VarCount, CounterT>::insert(const value_type& val)
     {
         std::pair<typename ImplMapTD::iterator,bool> insertion = m_map.insert(val);
 
@@ -272,21 +272,21 @@ namespace itl
     // Instanzen regeln.
     // ------------------------------------------------------------------------
 
-    /// Aggregates values (amounts) associated to tuples. 
+    /// An amount_tuple_computer aggregates values (amounts) associated to tuples. 
     /** amount_tuple_computer is a TupleComputer that aggregates amounts
         associated to tuples.
 
-        Template parameter varCountV defines the size of the used tuples.
+        Template parameter VarCount defines the size of the used tuples.
 
-        CounteeTV is the amount type, the type that is aggrgated.
+        CounteeT is the amount type, the type that is aggrgated.
         Usually this shall be a numeric type. Yet it can also be
         intantiated with any +=summable class type.
     */
-    template <int varCountV, class CounteeTV>
-        class amount_tuple_computer : public tuple_computer_base<varCountV, CounteeTV>
+    template <int VarCount, class CounteeT>
+        class amount_tuple_computer : public tuple_computer_base<VarCount, CounteeT>
     {
     public:
-        typedef tuple_computer_base<varCountV, CounteeTV> base_type;
+        typedef tuple_computer_base<VarCount, CounteeT> base_type;
         typedef typename base_type::key_type var_tuple_type;
         typedef typename base_type::key_type key_type;
         typedef typename base_type::key_compare key_compare;
@@ -303,18 +303,18 @@ namespace itl
     public:
         // Special interface that can not be expressed by TupelComputerT
 
-        void load(const tuple_computer_interface<varCountV>& srcI);
+        void load(const tuple_computer_interface<VarCount>& srcI);
 
         void alignFor(const tuple_set_type& domain)
         {
             const_FORALL(typename tuple_set_type, it_, domain)
-                insert(*it_, CounteeTV());
+                insert(*it_, CounteeT());
         }
 
     };
 
-    template <int varCountV, class CounterT>
-    void amount_tuple_computer<varCountV, CounterT>::load(const tuple_computer_interface<varCountV>& srcI)
+    template <int VarCount, class CounterT>
+    void amount_tuple_computer<VarCount, CounterT>::load(const tuple_computer_interface<VarCount>& srcI)
     {
         const amount_tuple_computer& src = dynamic_cast<const amount_tuple_computer&>(srcI);
         const_FORALL(typename amount_tuple_computer, it_, src)
@@ -324,23 +324,23 @@ namespace itl
 
 
     // ------------------------------------------------------------------------
+    /// A date_tuple_computer aggregates points in time (dates) associated to tuples. 
     /** class date_tuple_computer: Merkmalskombinationsrechner (flavor: Zeitpunktrechner) 
 
         Jedem Tupel (Merkmalskombination) wird ein Map assoziiert, das Zeitpunkte
         (Dates) zählen kann. 
     */
-    template <int varCountV, class TimeTV, class CounteeTV>
+    template <int VarCount, class TimeT, class CounteeT>
     class date_tuple_computer : 
-        public tuple_computer_base<varCountV, itl::map<TimeTV, CounteeTV> >
+        public tuple_computer_base<VarCount, itl::map<TimeT, CounteeT> >
     {
     public:
-        typedef itl::map<TimeTV, CounteeTV> counter_type;
-        typedef tuple_computer_base<varCountV, counter_type> base_type;
+        typedef typename itl::map<TimeT, CounteeT> counter_type;
+        typedef tuple_computer_base<VarCount, counter_type> base_type;
         typedef typename base_type::var_tuple_type var_tuple_type;
         typedef typename base_type::key_compare key_compare;
         typedef typename itl::set<var_tuple_type, var_tuple_order> 
                 tuple_set_type;
-        typedef typename itl::map<TimeTV, CounteeTV> counter_type;
 
     public:
         // Default Ctor
@@ -353,7 +353,7 @@ namespace itl
     public:
         // Special interface that can not be expressed by TupelComputerT
         
-        void load(const tuple_computer_interface<varCountV>& srcI);
+        void load(const tuple_computer_interface<VarCount>& srcI);
 
         void alignFor(const tuple_set_type& domain)
         {
@@ -363,8 +363,8 @@ namespace itl
 
     };
 
-    template <int varCountV, class TimeTV, class CounteeTV>
-    void date_tuple_computer<varCountV,TimeTV,CounteeTV>::load(const tuple_computer_interface<varCountV>& srcI)
+    template <int VarCount, class TimeT, class CounteeT>
+    void date_tuple_computer<VarCount,TimeT,CounteeT>::load(const tuple_computer_interface<VarCount>& srcI)
     {
         const date_tuple_computer& src = dynamic_cast<const date_tuple_computer&>(srcI);
         const_FORALL(typename date_tuple_computer, it_, src)
@@ -374,28 +374,29 @@ namespace itl
 
 
     // ------------------------------------------------------------------------
-    /** class interval_tuple_computer: Merkmalskombinationsrechner (flavor: Zeitraumrechner) 
-        Jedem Tupel (Merkmalskombination) wird ein SlitItvMap assoziiert, das 
-        Zeiträume (Itv=Interval) zählen kann. Genauer gesagt werden Zustände
-        gezählt, die für einen Zeitraum anhalten. Bei Überlappungen der Zeiträume
-        müssen die die Häufigkeiten im SplitItvMap entsprechend aufaddiert werden.
+	/// Aggregates intervals associated to tuples
+    /** class interval_tuple_computer: Merkmalskombinationsrechner (flavor: 
+	    Zeitraumrechner). Jedem Tupel (Merkmalskombination) wird ein 
+		split_interval_map assoziiert, das Zeiträume (Itv=Interval) zählen
+		kann. Genauer gesagt werden Zustände gezählt, die für einen Zeitraum
+		anhalten. Bei Überlappungen der Zeiträume müssen die die Häufigkeiten
+		im split_interval_map entsprechend aufaddiert werden.
     */
-    template <int varCountV, class TimeTV, class CounteeTV>
+    template <int VarCount, class TimeT, class CounteeT>
     class interval_tuple_computer : 
-        public tuple_computer_base<varCountV, 
-                                   split_interval_map<TimeTV, CounteeTV> >
+        public tuple_computer_base<VarCount, 
+                                   split_interval_map<TimeT, CounteeT> >
     {
     public:
-        typedef split_interval_map<TimeTV, CounteeTV>        counter_type;
-        typedef tuple_computer_base<varCountV, counter_type> base_type;
+        typedef split_interval_map<TimeT, CounteeT>          counter_type;
+        typedef tuple_computer_base<VarCount, counter_type>  base_type;
         typedef typename base_type::var_tuple_type           var_tuple_type;
         typedef typename base_type::key_compare              key_compare;
         typedef itl::set<var_tuple_type, var_tuple_order>    tuple_set_type;
-        typedef split_interval_map<TimeTV, CounteeTV>        counter_type;
-        typedef typename base_type::counter_type::IntervalTD IntervalTD;
+        typedef typename base_type::counter_type::interval_type interval_type;
 
     private:
-        typedef itl::map<TimeTV, CounteeTV> DateMapTD;
+        typedef itl::map<TimeT, CounteeT> DateMapTD;
 
     public:
         // Default Ctor
@@ -408,7 +409,7 @@ namespace itl
     public:
         // Special interface that can not be expressed by TupelComputerT
 
-        void load(const tuple_computer_interface<varCountV>& srcI);
+        void load(const tuple_computer_interface<VarCount>& srcI);
 
         // Eine Menge von ZeitPUNKTEN einfügen. Diese werden in Intervalle gewandelt
         void insertDateMap(const var_tuple_type tup, const DateMapTD& date);
@@ -421,23 +422,23 @@ namespace itl
     };
 
 
-    template <int varCountV, class TimeTV, class CounteeTV>
-    void interval_tuple_computer<varCountV,TimeTV,CounteeTV>::load(const tuple_computer_interface<varCountV>& srcI)
+    template <int VarCount, class TimeT, class CounteeT>
+    void interval_tuple_computer<VarCount,TimeT,CounteeT>::load(const tuple_computer_interface<VarCount>& srcI)
     {
         const interval_tuple_computer& src = dynamic_cast<const interval_tuple_computer&>(srcI);
         const_FORALL(typename interval_tuple_computer, it_, src)
             insert(*it_);
     }
 
-    template <int varCountV, class TimeTV, class CounteeTV>
-    void interval_tuple_computer<varCountV,TimeTV,CounteeTV>::insertDateMap(const var_tuple_type tup, const DateMapTD& date)
+    template <int VarCount, class TimeT, class CounteeT>
+    void interval_tuple_computer<VarCount,TimeT,CounteeT>::insertDateMap(const var_tuple_type tup, const DateMapTD& date)
     {
         counter_type itvCounter;
         const_FORALL(typename DateMapTD, date_, date)
         {
             itvCounter.insert(
                 counter_type::value_type(
-                    counter_type::IntervalTD((*date_).KEY_VALUE, (*date_).KEY_VALUE), 
+                    counter_type::interval_type((*date_).KEY_VALUE, (*date_).KEY_VALUE), 
                     (*date_).CONT_VALUE
                     )
                 );
@@ -460,7 +461,7 @@ namespace itl
         {
             itvMap.insert(
                 ItvMapTD::value_type(
-                    ItvMapTD::IntervalTD((*date_).KEY_VALUE, (*date_).KEY_VALUE), 
+                    ItvMapTD::interval_type((*date_).KEY_VALUE, (*date_).KEY_VALUE), 
                     (*date_).CONT_VALUE
                     )
                 );

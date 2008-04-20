@@ -36,42 +36,40 @@ namespace itl
 {
 
 /**  
-    Objekte, die nach einem (Aufzählungs-)Typ ordenbar sind
+    class template <b>ordered_type</b> defines objects
+    that can be ordered by an enumeration type that
+	is associated to the template parameter TypeDomain.
+	Every object of this class exposes a value of
+	that enumeration type by a function <b>type()</b>
 
-    Ok, ordenbar klingt sonderbar. Gemeint ist, daß es eine Ordnung von
-    Objekten dieser Klasse gibt, dadurch, dass jedes Element der Klasse
-    als <tt>type()</tt> den Wert eines Aufzählungstyps \ref TypeDomTV::DomainET
-    liefern kann. Dieser Typ-Wert erlaubt es Objekte dieser Klasse (z.B. in
-    Containern) zu sortieren.
-  
     @author  Joachim Faulhaber
 */
-template <class TypeDomTV>
+template <class TypeDomain>
 class ordered_type
 {
 public:
     typedef ordered_type* OrderedTypePIT;
 
 public:
-    /// virtual dtor: cave leakem
+    /// virtual destructors to avoid memory leaks
     virtual ~ordered_type(){}
-    /// gib deinen typ an
-    virtual typename TypeDomTV::DomainET type()const=0;
+    /// the objects type
+    virtual typename TypeDomain::DomainET type()const=0;
 
-    /// 
-    virtual const typename TypeDomTV::ValueBaseTD* value()const=0;
+    /// the objects value
+    virtual const typename TypeDomain::ValueBaseTD* value()const=0;
 
-    /// Kleiner Relation auf dem Typ
+	/// Comparison on type level
     virtual bool isLessOnType(const ordered_type* x2)const=0;
-    /// Typ-Äquivalenz <tt>this->type()==x2->type()</tt>
+    /// Equivalece relation <tt>this->type()==x2->type()</tt>
     virtual bool isTypeEquivalent(const ordered_type* x2)const=0;
 
-    /// comparisons on value level
+	/// comparisons on value level
     virtual bool isEqual(const ordered_type* x2)const=0;  
 
     virtual bool isLess(const ordered_type* x2)const=0;  
     
-    /// equality on value-level
+    /// equality on value-level using == operator
     virtual bool operator == (const ordered_type& x2)const=0;
     
     //JODO Aufrufmechnismus für stl::container operator ==.verstehen
@@ -86,30 +84,30 @@ public:
 };
 
 
-template <class TypeDomTV>
-class ordered_type_base : public ordered_type<TypeDomTV>
+template <class TypeDomain>
+class ordered_type_base : public ordered_type<TypeDomain>
 {
 public:
-    typedef ordered_type<TypeDomTV>* OrderedTypeOfDomPIT;
+    typedef ordered_type<TypeDomain>* OrderedTypeOfDomPIT;
 
 public:
-    virtual bool isLessOnType (const ordered_type<TypeDomTV>* x2)const 
+    virtual bool isLessOnType (const ordered_type<TypeDomain>* x2)const 
     { return this->type() < x2->type(); }
-    virtual bool isTypeEquivalent (const ordered_type<TypeDomTV>* x2)const 
+    virtual bool isTypeEquivalent (const ordered_type<TypeDomain>* x2)const 
     { return this->type() == x2->type(); }
 
     // comparisons on value level
-    bool isEqual(const ordered_type<TypeDomTV>* x2)const
+    bool isEqual(const ordered_type<TypeDomain>* x2)const
     { 
         return isTypeEquivalent(x2) && isValueEqual(x2); 
     }
 
-    bool operator == (const ordered_type<TypeDomTV>& x2)const 
+    bool operator == (const ordered_type<TypeDomain>& x2)const 
     {
         return isEqual(&x2); 
     } 
 
-    bool isLess(const ordered_type<TypeDomTV>* x2)const
+    bool isLess(const ordered_type<TypeDomain>* x2)const
     { 
         return this < x2; 
     }
@@ -122,12 +120,12 @@ public:
     */
 
     /*KEEP JODO Einfplegen
-    bool isLess(const ordered_type<TypeDomTV>* x2)const
+    bool isLess(const ordered_type<TypeDomain>* x2)const
     { 
         return isLessOnType(x2) && isValueLess(x2); 
     }
 
-    bool operator < (const ordered_type<TypeDomTV>& x2)const 
+    bool operator < (const ordered_type<TypeDomain>& x2)const 
     {
         return isLess(&x2);
     }
@@ -135,10 +133,10 @@ public:
 
 protected:
     /// Gleichheit der Werte
-    virtual bool isValueEqual(const ordered_type<TypeDomTV>* x2)const=0;
+    virtual bool isValueEqual(const ordered_type<TypeDomain>* x2)const=0;
 
     //KEEP JODO Einfplegen
-    //virtual bool isValueLess(const ordered_type<TypeDomTV>* x2)const=0;
+    //virtual bool isValueLess(const ordered_type<TypeDomain>* x2)const=0;
 };
 
 } // namespace itl

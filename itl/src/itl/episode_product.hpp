@@ -27,8 +27,8 @@ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
-#ifndef __episode_product_h_JOFA_011005_H__
-#define __episode_product_h_JOFA_011005_H__
+#ifndef __itl_episode_product_hpp_JOFA_011005_H__
+#define __itl_episode_product_hpp_JOFA_011005_H__
 
 #include <itl/itl_map.hpp>
 #include <itl/episode_set.hpp>
@@ -36,6 +36,7 @@ DEALINGS IN THE SOFTWARE.
 namespace itl
 {
 
+/// A collection (product) of episodes of different types that do not change for a period of time
 /**    
     <b>Eine Klasse zur Sammlung von Episoden unterschiedlichen Typs</b>
 
@@ -47,21 +48,21 @@ namespace itl
 
     { T1->e1, ... , Tn->en }. Es müssen also nicht alle Komponenten vorhanden sein.
 
-    Template-Parameter <b>ItvDomTV</b>: Domain-Typ der Episoden-Intervalle
+    Template-Parameter <b>TimeT</b>: Domain-Typ der Episoden-Intervalle
     (z.B. Tage, Sekunden, Monate, int u.ä.). Episoden haben ja ein Intervall, das
     Anfang und Ende der Episode angibt.
   
-    Template-Parameter <b>TypeDomTV</b>: TypeDomTV ist der Definitionsbereich (Domain)
+    Template-Parameter <b>TypeDomain</b>: TypeDomain ist der Definitionsbereich (Domain)
     der Typen von Episoden, die in der Produkt-Historie verwendet werden können.
     
     Ein Episoden-Produkt ist ein Map (partielle Abbildung). Der Definitionbereich
-    des Map ist ein Aufzählungstyp TypeDomTV::DomainET. Das Map ist hierdurch auf ganz
+    des Map ist ein Aufzählungstyp TypeDomain::DomainET. Das Map ist hierdurch auf ganz
     spezifische Werte und eine maximale Anzahl beschränkt.
 
     Der Wertebereich (CoDomain) sind Mengen von Episoden. Diese Episoden sind
     'getypte' \ref TypedEpisodeT, die ihren Typ kennen. Eine Episode aus einer 
     Episodenmenge ei
-    hat immer den gleichen Typ aus TypeDomTV::DomainET wie ihr Schlüssels Ti 
+    hat immer den gleichen Typ aus TypeDomain::DomainET wie ihr Schlüssels Ti 
     eines Wertepaares (Ti, ei).
 
     Im Kontext von Produkthistorien repräsentieren die Episoden-Mengen die
@@ -86,15 +87,15 @@ namespace itl
     @author  Joachim Faulhaber
 */
 
-template <class ItvDomTV, class TypeDomTV>
-class episode_product : public itl::map<typename TypeDomTV::DomainET, episode_set<ItvDomTV,TypeDomTV> >
+template <class TimeT, class TypeDomain>
+class episode_product : public itl::map<typename TypeDomain::DomainET, episode_set<TimeT,TypeDomain> >
 {
 public:
-    typedef itl::map<typename TypeDomTV::DomainET, episode_set<ItvDomTV,TypeDomTV> > base_type;
+    typedef itl::map<typename TypeDomain::DomainET, episode_set<TimeT,TypeDomain> > base_type;
     typedef    typename base_type::value_type value_type;
     typedef    typename base_type::data_type data_type;
     typedef    typename base_type::data_type EpisodeSetTD;
-    typedef    typename episode_set<ItvDomTV,TypeDomTV>::value_type EpisodePTD;
+    typedef    typename episode_set<TimeT,TypeDomain>::value_type EpisodePTD;
     typedef typename base_type::iterator iterator;
     typedef typename base_type::const_iterator const_iterator;
     
@@ -102,7 +103,7 @@ public:
 
     /// Zu einem Episoden-Typ wird ein Pointer auf die erste Episode einer Episoden-Menge 
     ///    zurückgegeben. Wenn die Menge leer ist liefert die Funktion NULL.
-    EpisodePTD getFirst(typename TypeDomTV::DomainET type)const
+    EpisodePTD getFirst(typename TypeDomain::DomainET type)const
     {
         const_iterator epiSet_ = find(type);
         if(epiSet_ == this->end()) 
@@ -110,7 +111,7 @@ public:
         else return *((*epiSet_).CONT_VALUE.begin());
     }
 
-    EpisodePTD getLast(typename TypeDomTV::DomainET type)const
+    EpisodePTD getLast(typename TypeDomain::DomainET type)const
     {
         const_iterator epiSet_ = find(type);
         if(epiSet_ == this->end())
@@ -118,7 +119,7 @@ public:
         else return *((*epiSet_).CONT_VALUE.rbegin());
     }
 
-    EpisodeSetTD* getEpisodeSetPtr(typename TypeDomTV::DomainET type)
+    EpisodeSetTD* getEpisodeSetPtr(typename TypeDomain::DomainET type)
     {
         iterator epiSet_ = find(type);
         if(epiSet_ == this->end()) 
@@ -126,7 +127,7 @@ public:
         else return &((*epiSet_).CONT_VALUE);
     }
     
-    int size(typename TypeDomTV::DomainET type)const
+    int size(typename TypeDomain::DomainET type)const
     {
         const_iterator epiSet_ = find(type);
         if(epiSet_ == this->end()) 
@@ -138,15 +139,15 @@ public:
     {
         EpisodeSetTD sglSet;
         sglSet.insert(pEpisode);
-        typename TypeDomTV::DomainET type = pEpisode->type();
+        typename TypeDomain::DomainET type = pEpisode->type();
         return base_type::insert(value_type(type,sglSet)).WAS_SUCCESSFUL;
     }
 
-    void leftAlignedEpisodes(episode_product& syncProd, const ItvDomTV& start)
+    void leftAlignedEpisodes(episode_product& syncProd, const TimeT& start)
     {
         const_FORALL_THIS(elem_)
         {
-            TypeDomTV type = (*elem_).KEY_VALUE;
+            TypeDomain type = (*elem_).KEY_VALUE;
             EpisodeSetTD& epiSet = (*elem_).KEY_VALUE;
             
             EpisodeSetTD syncSet;
@@ -169,12 +170,12 @@ public:
             return std::string("");
         else
         {
-            std::string str( TypeDomTV::as_string((*it).KEY_VALUE) );
+            std::string str( TypeDomain::as_string((*it).KEY_VALUE) );
             str += ("{"+((*it).CONT_VALUE).as_string()+"}");
             it++;
             
             while(it != this->end()) {
-                str += ", "; str += TypeDomTV::as_string((*it).KEY_VALUE);
+                str += ", "; str += TypeDomain::as_string((*it).KEY_VALUE);
                 str += ("{"+((*it).CONT_VALUE).as_string()+"}");
                 it++;
             }
@@ -190,15 +191,15 @@ public:
     eingepflegt werden (eigentlich nur StatPflege)
 NOTE MEMO DESIGN USING PRIVATE INHERITENCE
 
-template <class ItvDomTV, class TypeDomTV>
-class episode_product : private itl::MapT<TypeDomTV::DomainET, episode_set<ItvDomTV,TypeDomTV> >
+template <class TimeT, class TypeDomain>
+class episode_product : private itl::MapT<TypeDomain::DomainET, episode_set<TimeT,TypeDomain> >
 {
 public:
-    typedef itl::MapT<TypeDomTV::DomainET, episode_set<ItvDomTV,TypeDomTV> > BaseTD;
+    typedef itl::MapT<TypeDomain::DomainET, episode_set<TimeT,TypeDomain> > BaseTD;
     typedef BaseTD::value_type value_type;
     typedef BaseTD::data_type data_type;
     typedef BaseTD::data_type EpisodeSetTD;
-    typedef episode_set<ItvDomTV,TypeDomTV>::value_type EpisodePTD;
+    typedef episode_set<TimeT,TypeDomain>::value_type EpisodePTD;
 
     typedef BaseTD::iterator iterator;
     typedef BaseTD::const_iterator const_iterator;
@@ -216,7 +217,7 @@ public:
 
     /// Zu einem Episoden-Typ wird ein Pointer auf die erste Episode einer Episoden-Menge 
     ///    zurückgegeben. Wenn die Menge leer ist liefert die Funktion NULL.
-    EpisodePTD getFirst(TypeDomTV::DomainET type)const
+    EpisodePTD getFirst(TypeDomain::DomainET type)const
     {
         const_iterator epiSet_ = find(type);
         if(epiSet_==end()) return NULL;
@@ -225,7 +226,7 @@ public:
 
     int size()const { return BaseTD::size(); }
     
-    int size(TypeDomTV::DomainET type)const
+    int size(TypeDomain::DomainET type)const
     {
         const_iterator epiSet_ = find(type);
         if(epiSet_==end()) return 0;
@@ -238,7 +239,7 @@ public:
     {
         EpisodeSetTD sglSet;
         sglSet.insert(pEpisode);
-        TypeDomTV::DomainET type = pEpisode->type();
+        TypeDomain::DomainET type = pEpisode->type();
         return BaseTD::insert(value_type(type,sglSet)).WAS_SUCCESSFUL;
     }
 
@@ -250,12 +251,12 @@ public:
         if(it==end()) return std::string("");
         else
         {
-            std::string str( TypeDomTV::as_string((*it).KEY_VALUE) );
+            std::string str( TypeDomain::as_string((*it).KEY_VALUE) );
             str += ("{"+((*it).CONT_VALUE).as_string()+"}");
             it++;
             
             while(it != end()) {
-                str += ", "; str += TypeDomTV::as_string((*it).KEY_VALUE);
+                str += ", "; str += TypeDomain::as_string((*it).KEY_VALUE);
                 str += ("{"+((*it).CONT_VALUE).as_string()+"}");
                 it++;
             }
@@ -266,14 +267,14 @@ public:
 };
 
 
-template <class ItvDomTV, class TypeDomTV>
-inline bool operator == (const episode_product<ItvDomTV,TypeDomTV>& lhs,
-                         const episode_product<ItvDomTV,TypeDomTV>& rhs)
+template <class TimeT, class TypeDomain>
+inline bool operator == (const episode_product<TimeT,TypeDomain>& lhs,
+                         const episode_product<TimeT,TypeDomain>& rhs)
 {
     if(lhs.size() != rhs.size())
         return false;
 
-    episode_product<ItvDomTV,TypeDomTV>::const_iterator lhs_ = lhs.begin(), rhs_ = rhs.begin();
+    episode_product<TimeT,TypeDomain>::const_iterator lhs_ = lhs.begin(), rhs_ = rhs.begin();
 
     while(lhs_ != lhs.end())
     {
@@ -291,6 +292,6 @@ inline bool operator == (const episode_product<ItvDomTV,TypeDomTV>& lhs,
 
 } // namespace itl
 
-#endif // __episode_product_h_JOFA_011005_H__
+#endif // __itl_episode_product_hpp_JOFA_011005_H__
 
 

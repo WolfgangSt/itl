@@ -378,7 +378,7 @@ public:
 
         Given
         
-        <tt>SplitItvMapT<int> x, sec; interval<int> i; fill x; fill i</tt>
+        <tt>split_interval_map<int> x, sec; interval<int> i; fill x; fill i</tt>
 
         <tt>x.intersect(sec,i);</tt> 
 

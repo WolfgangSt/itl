@@ -27,8 +27,8 @@ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
-#ifndef __episode_set_h_JOFA_011015_H__
-#define __episode_set_h_JOFA_011015_H__
+#ifndef __itl_episode_set_hpp_JOFA_011015_H__
+#define __itl_episode_set_hpp_JOFA_011015_H__
 
 #include <string>
 #include <itl/itl_set.hpp>
@@ -36,20 +36,6 @@ DEALINGS IN THE SOFTWARE.
 
 namespace itl
 {
-
-    //CL absi
-    //template <class ItvDomTV, class TypeDomTV>
-    //class Less_TypedEpisodeATP
-    //{
-    //public:
-    //    typedef typed_episode<ItvDomTV, TypeDomTV>* typed_episode_ptr;
-
-    //    bool operator ()(const typed_episode_ptr& rhs, const typed_episode_ptr& lhs)const
-    //    {
-    //        return rhs->isLess(lhs);
-    //    }
-    //};
-
     template <typename EpisodePointer>
     class Less_TypedEpisodeATP
     {
@@ -60,32 +46,32 @@ namespace itl
         }
     };
 
-
+/// A set of episodes
 /**    
     <b>Eine Menge von Episoden</b>
 
-    Template-Parameter <b>ItvDomTV</b>: Domain-Typ der Episoden-Intervalle
+    Template-Parameter <b>TimeT</b>: Domain-Typ der Episoden-Intervalle
     (z.B. Tage, Sekunden, Monate, int u.ä.). Episoden haben ja ein Intervall, das
     Anfang und Ende der Episode angibt.
 
-    Template-Parameter <b>TypeDomTV</b>: TypeDomTV ist der Definitionsbereich (Domain)
+    Template-Parameter <b>TypeDomain</b>: TypeDomain ist der Definitionsbereich (Domain)
     der Typen von Episoden, die in der Menge verwendet werden können.
 
     Die Episonden-Menge darf nur Episoden enthalten, die vom gleichen
     Episoden-Typ sind. Dieser Episodentyp wird durch einen Wert aus dem
-    Template-Parameter TypeDomTV repräsentiert.
+    Template-Parameter TypeDomain repräsentiert.
 
     JODO: Diese Eigenschaft sollte man durch eine geeignete Implementierung
     der Klasse sicherstellen. Enfällt bislang wg. Zeitmangels
 
     @author  Joachim Faulhaber
 */
-template <class ItvDomTV, class TypeDomTV>
-class episode_set : public itl::set<typed_episode<ItvDomTV, TypeDomTV>*, Less_TypedEpisodeATP > 
+template <class TimeT, class TypeDomain>
+class episode_set : public itl::set<typed_episode<TimeT, TypeDomain>*, Less_TypedEpisodeATP > 
 {
-    // all elements must have the same type from TypeDomTV
+    // all elements must have the same type from TypeDomain
 public:
-    typedef itl::set<typed_episode<ItvDomTV, TypeDomTV>*, Less_TypedEpisodeATP > base_type;
+    typedef itl::set<typed_episode<TimeT, TypeDomain>*, Less_TypedEpisodeATP > base_type;
     typedef typename base_type::iterator iterator;
     typedef typename base_type::const_iterator const_iterator;
     
@@ -114,14 +100,14 @@ public:
 
 //JODO Aufrufmechnismus für stl::container operator ==.verstehen. Eigener
 // == operator sollte überflüssig sein. Korrektes Type-Konzept für Pointertypen etc.
-template <class ItvDomTV, class TypeDomTV>
-inline bool operator == (const episode_set<ItvDomTV,TypeDomTV>& lhs,
-                         const episode_set<ItvDomTV,TypeDomTV>& rhs)
+template <class TimeT, class TypeDomain>
+inline bool operator == (const episode_set<TimeT,TypeDomain>& lhs,
+                         const episode_set<TimeT,TypeDomain>& rhs)
 {
     if(lhs.size() != rhs.size())
         return false;
 
-    typename episode_set<ItvDomTV,TypeDomTV>::const_iterator 
+    typename episode_set<TimeT,TypeDomain>::const_iterator 
         lhs_ = lhs.begin(), 
         rhs_ = rhs.begin();
 
@@ -137,6 +123,6 @@ inline bool operator == (const episode_set<ItvDomTV,TypeDomTV>& lhs,
 
 } // namespace itl
 
-#endif // __episode_set_h_JOFA_011015_H__
+#endif // __itl_episode_set_hpp_JOFA_011015_H__
 
 

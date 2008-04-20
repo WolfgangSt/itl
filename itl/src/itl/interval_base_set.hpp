@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------+
-Copyright (c) 2007: Joachim Faulhaber
+Copyright (c) 2007-2008: Joachim Faulhaber
 +-----------------------------------------------------------------------------+
 Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
 +-----------------------------------------------------------------------------+
@@ -28,9 +28,9 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
 
-/* ------------------------------------------------------------------
+/*----------------------------------------------------------------------------+
 class interval_base_set
---------------------------------------------------------------------*/
++----------------------------------------------------------------------------*/
 #ifndef __interval_base_set_h_JOFA_990223__
 #define __interval_base_set_h_JOFA_990223__
 
@@ -61,13 +61,13 @@ namespace itl
     In particular all discrete atomic datatypes like <tt>int, short, long</tt> and
     atomic pseudo-continuous datatypes <tt>float, double</tt> may be instantiated.
     
-      Template parameter <b>IntervT=interval<DomainT></b>: Type of interval used
-    to implement the set. The default <b>interval<DomainT></b> uses the
-    interval class that comes with this library. Own implementation of interval
+      Template parameter <b>Interval=itl::interval</b>: Type of interval used
+    to implement the set. The default <b>itl::interval</b> uses the
+    interval class template that comes with this library. Own implementation of interval
     classes are possible (but not trivial).
 
-    <b>interval_base_set</b> implements a set <tt>SetT<DomainT></tt> as a set of intervals
-    <tt>SetT<interval<DomainT>></tt>.
+    <b>interval_base_set</b> implements a set <tt>set<DomainT></tt> as a set of intervals
+    <tt>set<interval<DomainT>></tt>.
   
     interval_base_set<DomainT> can thus be used like a set. As it is known from mathematics
     the union over a set of intervls is a set itself.

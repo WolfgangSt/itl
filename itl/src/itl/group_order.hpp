@@ -37,9 +37,9 @@ DEALINGS IN THE SOFTWARE.
 
 namespace itl
 {
-    template <int varCountV> class var_tuple;
+    template <int VarCount> class var_tuple;
 
-
+	/// Strict weak ordering on var_tuple that defines grouping via induced equivalence
     /** Gruppierung kann man so ausdrücken, dass alle Werte, die in gleiche Gruppen
         zusammenfallen, äquivalent sind.
 
@@ -61,11 +61,11 @@ namespace itl
         binary_function<StatVarTD,     StatVarTD,     bool>      sondern als
         binary_function<var_tuple, var_tuple, bool>
     */
-    template <int varCountV>
-    class group_order : public std::binary_function<var_tuple<varCountV>, var_tuple<varCountV>, bool>
+    template <int VarCount>
+    class group_order : public std::binary_function<var_tuple<VarCount>, var_tuple<VarCount>, bool>
     {
     public:
-        typedef var_tuple<varCountV> var_tupleD;
+        typedef var_tuple<VarCount> var_tupleD;
     public:
         /** Die strikt schwache Ordnung, die auch die Äquivalenz induziert! Sie wird
             in abgeleiteten Klassen implementiert. */

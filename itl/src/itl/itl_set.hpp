@@ -1,6 +1,8 @@
 /*----------------------------------------------------------------------------+
 Copyright (c) 2007-2008: Joachim Faulhaber
 +-----------------------------------------------------------------------------+
+Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
++-----------------------------------------------------------------------------+
 Boost Software License - Version 1.0 - August 17th, 2003
 
 Permission is hereby granted, free of charge, to any person or organization
@@ -25,11 +27,11 @@ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
-/* ------------------------------------------------------------------
+/* ----------------------------------------------------------------------------
 class itl::set
 a general set class that extends stl-sets
 for concepts InplaceAddable and InplaceSubtractable
---------------------------------------------------------------------*/
+-----------------------------------------------------------------------------*/
 #ifndef __itl_set_h_JOFA_070519__
 #define __itl_set_h_JOFA_070519__
 
@@ -42,12 +44,20 @@ for concepts InplaceAddable and InplaceSubtractable
 
 namespace itl
 {
-    //JODO 1_0_1 documentation
     /// an stl based set implementing inplace addition and subtraction operators += and -=
     /** 
+	Class template <b>itl::set</b> extends <b>itl::set</b> by inplace operators
+	<b>+=, -= and *=</b>. These operations implement the fundamental set 
+	functions union, difference and intersection.  
+
+	In contrast to the classic stl style design, template parameters for set 
+	ordering <b>Compare</b> and allocation <b>Alloc</b> are passed as template 
+	template parameters. This allows for more flexible passing of those 
+	parameters to derived types via typedef.
 
     @author Joachim Faulhaber
     */
+	//JODO documentation
     template 
     <
         typename KeyT, 
