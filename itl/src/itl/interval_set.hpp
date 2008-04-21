@@ -239,14 +239,7 @@ void interval_set<DomainT,Interval,Compare,Alloc>::rec_subtract(const interval_t
 template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 void interval_set<DomainT,Interval,Compare,Alloc>::subtract(const interval_type& x)
 {
-#ifdef _DEV_TEST
-    interval_set<DomainT,interval_type> clone(*this);
-#endif
-
     base_type::subtract(x);
-
-    ON_DEV_TEST(clone.rec_subtract(x);)
-    DEV_ASSERT(isEqual(clone));
 }
 
 

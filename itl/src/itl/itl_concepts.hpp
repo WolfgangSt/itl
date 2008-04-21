@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------+
-Copyright (c) 2007-2008: Joachim Faulhaber
+Copyright (c) 2008: Joachim Faulhaber
 +-----------------------------------------------------------------------------+
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -25,53 +25,35 @@ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
-/* ------------------------------------------------------------------
-class sets
-    a general and generic set interface
---------------------------------------------------------------------*/
-#ifndef __sets_H_JOFA_990223__
-#define __sets_H_JOFA_990223__
+/* ----------------------------------------------------------------------------
+concepts that are not yet provided by concept_gcc
+-----------------------------------------------------------------------------*/
+#ifndef __itl_itl_concepts_hpp_JOFA_080420__
+#define __itl_itl_concepts_hpp_JOFA_080420__
 
-#include <itl/itl_concepts.hpp>
+#ifdef USE_CONCEPTS
+
+#include <concepts>
 
 namespace itl
 {
+	auto concept InplaceAddable<typename ObjectT, typename DeltaT = ObjectT>
+	{
+		ObjectT& operator+=(const ObjectT& stock, const DeltaT& delta);
+	};
 
-/// interface template for sets
-/**
-    Template interface class <b>sets</b>: Defines a general interface for sets.
+	auto concept InplaceSubtractable<typename ObjectT, typename DeltaT = ObjectT>
+	{
+		ObjectT& operator-=(const ObjectT& stock, const DeltaT& delta);
+	};
 
-    Template parameter <b>DomainT</b>: The set's domain-type. Type of the 
-    set's elements.
-    
-    @author  Joachim Faulhaber
-*/
-template <class DomainT> class sets
-{
-public:
-
-	/// virtual destructor
-	virtual ~sets(){}
-
-    /// Remove all elements of the set
-    virtual void clear()=0;
-
-    /// Is the set empty?
-    virtual bool empty()const=0;
-
-    /// Does the set contain the element x?
-    virtual bool contains(const DomainT& x)const=0;
-
-    /// Inserts an element x into the set
-    virtual void insert(const DomainT& x)=0;
-
-    /// Remove the element x from the set
-    virtual void subtract(const DomainT& x)=0;
-
-} ;
+	concept InplaceStarOperable<typename ObjectT, typename DeltaT = ObjectT>
+	{
+		ObjectT& operator*=(const ObjectT& stock, const DeltaT& delta);
+	};
 
 } // namespace itl
 
-#endif
+#endif // USE_CONCEPTS
 
-
+#endif // __itl_itl_concepts_hpp_JOFA_080420__

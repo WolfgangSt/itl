@@ -44,9 +44,9 @@ for concepts InplaceAddable and InplaceSubtractable
 
 namespace itl
 {
-    /// an stl based set implementing inplace addition and subtraction operators += and -=
+	/// adds inplace addition, subtraction and intersection to std::set
     /** 
-	Class template <b>itl::set</b> extends <b>itl::set</b> by inplace operators
+	Class template <b>itl::set</b> extends <b>std::set</b> by inplace operators
 	<b>+=, -= and *=</b>. These operations implement the fundamental set 
 	functions union, difference and intersection.  
 
@@ -55,9 +55,12 @@ namespace itl
 	template parameters. This allows for more flexible passing of those 
 	parameters to derived types via typedef.
 
+	<b>Note</b> that itl::set provides all functionality of std::set via
+	private	inheritence. This can not be seen in the documentation because 
+	unfortunately doxygen does not evaluate using statements.
+
     @author Joachim Faulhaber
     */
-	//JODO documentation
     template 
     <
         typename KeyT, 
@@ -168,7 +171,7 @@ namespace itl
         std::string as_string(const char* sep = " ")const;
 
         /** Keep the elements in *this set to which property \c hasProperty applies. 
-        Erase all the rest. */
+            Erase all the rest. */
         set& keep_if(const property<value_type>& hasProperty);
 
         /** Erase the elements in *this set to which property \c hasProperty applies. 
@@ -176,26 +179,39 @@ namespace itl
         set& drop_if(const property<value_type>& hasProperty);
 
         /** Copy the elements in set \c src to which property \c hasProperty applies 
-        into \c *this set. */
+            into \c *this set. */
         set& copy_if(const property<value_type>& hasProperty, const set& src);
 
+		/** \c key_value allows for a uniform access to \c key_values which is
+		    is used for common algorithms on sets and maps. */
         template<typename IteratorT>
         static const key_type& key_value(IteratorT& value_){ return (*value_); }
 
+		/** \c data_value allows for a uniform access to \c data_values which is
+		    is used for common algorithms on sets and maps. */
         template<typename IteratorT>
         static const data_type& data_value(IteratorT& value_){ return (*value_); }
 
+		/** \c key_less allows for a uniform notation of key comparison which
+		    is used for common algorithms on sets and maps. */
         template<typename LeftIterT, typename RightIterT>
-        static bool key_less(LeftIterT& lhs_, RightIterT& rhs_) { return key_compare()(*lhs_, *rhs_); }
+        static bool key_less(LeftIterT& lhs_, RightIterT& rhs_) 
+		{ return key_compare()(*lhs_, *rhs_); }
 
+		/** \c make_element allows for a uniform notation of key comparison which
+		    is used for common algorithms on sets and maps. */
         static value_type make_element(const key_type& key_val, const data_type& data_val)
         { return key_val; }
 
-        //JODO: semantics implementation clash size/element_count
-        size_t element_count()const { return size(); }
+		/** \c iterative_size() yields the number of elements that is visited
+		    throu complete iteration. For interval sets \c iterative_size() is
+			different from \c size(). */
+        size_t iterative_size()const { return size(); }
     };
 
 
+	/** Standard equality, which is lexicographical equality of the sets
+	    as sequences, that are given by their Compare order. */
     template <typename KeyT, template<class>class Compare, template<class>class Alloc>
     inline bool operator == (const itl::set<KeyT,Compare,Alloc>& lhs,
                              const itl::set<KeyT,Compare,Alloc>& rhs)
@@ -204,7 +220,10 @@ namespace itl
         return operator==((const base_type&)lhs, (const base_type&)rhs);
     }
 
-    template <typename KeyT, template<class>class Compare, template<class>class Alloc>
+	/** Element equality. Two sets are equal if they contain the same 
+	    elements */
+    template <typename KeyT, template<class>class Compare, 
+	                         template<class>class Alloc>
     inline bool is_element_equal(const itl::set<KeyT,Compare,Alloc>& lhs,
                                  const itl::set<KeyT,Compare,Alloc>& rhs)
     {
@@ -212,15 +231,18 @@ namespace itl
         return operator==((const base_type&)lhs, (const base_type&)rhs);
     }
 
-    template <typename KeyT, template<class>class Compare, template<class>class Alloc>
+	/** Strict weak less ordering which is given by the Compare order */
+    template <typename KeyT, template<class>class Compare, 
+	                         template<class>class Alloc>
     inline bool operator < (const itl::set<KeyT,Compare,Alloc>& lhs,
-        const itl::set<KeyT,Compare,Alloc>& rhs)
+                            const itl::set<KeyT,Compare,Alloc>& rhs)
     {
         typedef std::set<KeyT,Compare<KeyT>,Alloc<KeyT> > base_type;
         return operator<((const base_type&)lhs, (const base_type&)rhs);
     }
 
-    template <typename KeyT, template<class>class Compare, template<class>class Alloc>
+    template <typename KeyT, template<class>class Compare, 
+	                         template<class>class Alloc>
     inline bool operator <= (const itl::set<KeyT,Compare,Alloc>& lhs,
         const itl::set<KeyT,Compare,Alloc>& rhs)
     {
@@ -229,7 +251,8 @@ namespace itl
     }
 
 
-    template <typename KeyT, template<class>class Compare, template<class>class Alloc>
+    template <typename KeyT, template<class>class Compare, 
+	                         template<class>class Alloc>
     typename set<KeyT,Compare,Alloc>::iterator
         set<KeyT,Compare,Alloc>::subtract(const value_type& val)
     {
@@ -241,7 +264,8 @@ namespace itl
     }
 
 
-    template <typename KeyT, template<class>class Compare, template<class>class Alloc>
+    template <typename KeyT, template<class>class Compare, 
+	                         template<class>class Alloc>
     set<KeyT,Compare,Alloc>& 
         set<KeyT,Compare,Alloc>::operator += (const set<KeyT,Compare,Alloc>& x2)
     {

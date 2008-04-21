@@ -34,6 +34,8 @@ class maps
 #ifndef __maps_h_JOFA_990223__
 #define __maps_h_JOFA_990223__
 
+#include <itl/itl_concepts.hpp>
+
 namespace itl
 {
 

@@ -192,7 +192,7 @@ namespace itl
         { return value_type(key_val, data_val); }
 
         //JODO: semantics implementation clash size/element_count
-        size_t element_count()const { return size(); }
+        size_t iterative_size()const { return size(); }
 
 
         //JODO concept StringRepresentable

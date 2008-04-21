@@ -106,6 +106,9 @@ template
     template<class>class Compare  = std::less,
     template<class>class Alloc    = std::allocator
 > 
+#ifdef USE_CONCEPTS
+    requires std::LessThanComparable<DomainT>
+#endif
 class interval_base_set: public sets<DomainT>
 {
 public:
@@ -226,7 +229,7 @@ public:
 
     /// number of intervals
     size_t interval_count()const { return _set.size(); }
-    size_t element_count()const { return _set.size(); }
+    size_t iterative_size()const { return _set.size(); }
 //@}
 
 

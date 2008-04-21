@@ -138,7 +138,7 @@ namespace itl
         bool lexicographical_equal(const SetType& left, const SetType& right)
         {
             if(&left == &right)        return true;
-            if(left.element_count() != right.element_count()) 
+            if(left.iterative_size() != right.iterative_size()) 
                 return false;
 
             // so we have two sorted containers with equal element counts

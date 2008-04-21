@@ -122,6 +122,10 @@ template
     template<class>class Compare  = std::less,
     template<class>class Alloc    = std::allocator
 >
+#ifdef USE_CONCEPTS
+    //requires LessThanComparable<DomainT> &&
+	   //      EqualityComparable<Codomain, Codomain>
+#endif
 class interval_base_map: public maps<DomainT,CodomainT>
 {
 public:
@@ -242,7 +246,7 @@ public:
     // JODO: bounds of the map like interval_base_set
     /// number of intervals
     size_t interval_count()const { return _map.size(); }
-    size_t element_count()const { return _map.size(); }
+    size_t iterative_size()const { return _map.size(); }
 
     /// enclosing Interval
     interval_type enclosure()const { return first_interval().span(last_interval()); }
