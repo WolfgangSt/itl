@@ -123,8 +123,12 @@ template
     template<class>class Alloc    = std::allocator
 >
 #ifdef USE_CONCEPTS
-    //requires LessThanComparable<DomainT> &&
-	   //      EqualityComparable<Codomain, Codomain>
+//conceptgcc is still too buggy
+//requires 
+//{
+//	std::LessThanComparable<DomainT>,
+//  std::EqualityComparable<Codomain>
+//}
 #endif
 class interval_base_map: public maps<DomainT,CodomainT>
 {

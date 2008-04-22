@@ -36,7 +36,7 @@ Es soll und muﬂ niemals in Projekte includiert werden!
 namespace itl
 {
 
-/**  
+/*  
     <b>large definiert das implizite Interface aller
     Type-Domain-Parameter von Episoden- und Historien-Template-Klassen</b>
     

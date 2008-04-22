@@ -148,39 +148,18 @@ namespace itl
         /** <tt>*this</tt> and <tt>x2</tt> are disjoint, if their intersection is empty */
         bool disjoint(const set& x2)const { return disjoint(*this, x2); }
 
-        // Default inject-function using += on CodomTV
-        // iterator inject(const value_type& vp);
-
         // Default subtract-function using -= on CodomTV
         iterator subtract(const value_type& vp);
 
-        //JODO concept InplaceAddable
         /// Add a set \c x2 to this set.
         set& operator += (const set& x2);
 
-        //JODO concept InplaceSubtractable
         /// Subtract a set \c x2 from this set.
         set& operator -= (const set& x2) { Set::subtract(*this, x2); return *this; }
 
         /** Intersect set \c x2 \c *this.
-        So \c *this becomes the intersection of \c *this and \c x2 */
+            So \c *this becomes the intersection of \c *this and \c x2 */
         set& operator *= (const set& x) { Set::intersect(*this, x); return *this; }
-
-        //JODO concept StringRepresentable
-        /** Represent this set as a string */
-        std::string as_string(const char* sep = " ")const;
-
-        /** Keep the elements in *this set to which property \c hasProperty applies. 
-            Erase all the rest. */
-        set& keep_if(const property<value_type>& hasProperty);
-
-        /** Erase the elements in *this set to which property \c hasProperty applies. 
-        Keep all the rest. */
-        set& drop_if(const property<value_type>& hasProperty);
-
-        /** Copy the elements in set \c src to which property \c hasProperty applies 
-            into \c *this set. */
-        set& copy_if(const property<value_type>& hasProperty, const set& src);
 
 		/** \c key_value allows for a uniform access to \c key_values which is
 		    is used for common algorithms on sets and maps. */
@@ -207,6 +186,21 @@ namespace itl
 		    throu complete iteration. For interval sets \c iterative_size() is
 			different from \c size(). */
         size_t iterative_size()const { return size(); }
+
+        /** Keep the elements in *this set to which property \c hasProperty applies. 
+            Erase all the rest. */
+        set& keep_if(const property<value_type>& hasProperty);
+
+        /** Erase the elements in *this set to which property \c hasProperty applies. 
+        Keep all the rest. */
+        set& drop_if(const property<value_type>& hasProperty);
+
+        /** Copy the elements in set \c src to which property \c hasProperty applies 
+            into \c *this set. */
+        set& copy_if(const property<value_type>& hasProperty, const set& src);
+
+        /** Represent this set as a string */
+        std::string as_string(const char* sep = " ")const;
     };
 
 
@@ -241,6 +235,7 @@ namespace itl
         return operator<((const base_type&)lhs, (const base_type&)rhs);
     }
 
+	/** Partial ordering which is induced by Compare */
     template <typename KeyT, template<class>class Compare, 
 	                         template<class>class Alloc>
     inline bool operator <= (const itl::set<KeyT,Compare,Alloc>& lhs,

@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------+
-Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
+Copyright (c) 2007-2008: Joachim Faulhaber
 +-----------------------------------------------------------------------------+
 Boost Software License - Version 1.0 - August 17th, 2003
 
@@ -41,7 +41,7 @@ namespace itl
 {    
     
     //JODO 1_0_1 documentation
-    /// an stl based list implementing inplace addition operators += 
+    /// an stl based list implementing inplace addition operator += 
     /** 
         @author Joachim Faulhaber
     */
@@ -145,7 +145,7 @@ namespace itl
 
 
     //JODO 1_0_1 documentation
-    /// an stl based list implementing inplace addition operators += 
+    /// an stl based list implementing inplace addition operator += 
     /** 
     @author Joachim Faulhaber
     */

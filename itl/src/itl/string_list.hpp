@@ -44,8 +44,9 @@ class itl::string_list
 namespace itl
 {    
     
+/// providing split, join and basic text processing
 /** class string_list implements a list of strings that provide split and 
-    join functions and basis text formatting.
+    join functions and basic text formatting.
 
     @author Joachim Faulhaber
 */

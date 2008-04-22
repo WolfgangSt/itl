@@ -60,7 +60,7 @@ namespace itl
     typedef enum_bitset<StatVarPropertyET, StatVarPropertyET_size> StatVarPropertySetTD ; 
 
 
-    /** class StatVarDescT: Beschreibung der Eigenschaften von Variablen einer Statistik 
+    /*  class StatVarDescT: Beschreibung der Eigenschaften von Variablen einer Statistik 
         (auch bekannt als Stochastische Variable). 
 
         Zuständigkeit: Beschreibt wichtige Eigenschaften von Datenbank-Feldern im Kontext

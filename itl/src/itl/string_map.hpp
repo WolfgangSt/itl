@@ -39,7 +39,7 @@ namespace itl
     {
     };
     
-    /// Compair class for Strings ingnoring case
+    // Compair class for Strings ingnoring case
     struct  string_ICLess {
         bool operator() (const std::string& c1, const std::string& c2) const 
         { 
@@ -48,7 +48,7 @@ namespace itl
         }
     };
     
-    /// A template map class that's keys are handled case insensitive
+    // A template map class that's keys are handled case insensitive
     template <class CodomTV>
         class ICstring_map : public itl::string_map<CodomTV, string_ICLess>
     {

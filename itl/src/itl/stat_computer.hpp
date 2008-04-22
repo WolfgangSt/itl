@@ -32,7 +32,6 @@ DEALINGS IN THE SOFTWARE.
 #define __stat_computer_JOFA_040826_H__
 
 #include <itl/itl_vector.hpp>
-//CL #include <itl/string_list.hpp>
 #include <itl/tuple_computer.hpp>
 #include <itl/stattd.hpp> //JODO extract typedefs that are essental. Remove StatTD or rename
 
@@ -107,7 +106,7 @@ namespace itl
         int m_ItvVars;
     };
 
-    /** class stat_computer
+    /* class stat_computer
     
         Zuständigkeit: Er hält für jede abhängige Variable einen passenden
         TupelComputerT.

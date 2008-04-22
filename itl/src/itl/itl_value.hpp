@@ -44,6 +44,7 @@ Function-templates for discrete Datatypes like int, unsigned or
 namespace itl
 {    
 
+/// static class template for the string representation of values
 /**
     <b>value</b> serves as a base to for the representation
     of atomic types and classes as strings.

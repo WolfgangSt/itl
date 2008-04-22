@@ -35,6 +35,7 @@ DEALINGS IN THE SOFTWARE.
 namespace itl
 {
 
+/// an enumeration ordered class type
 /**  
     class template <b>ordered_type</b> defines objects
     that can be ordered by an enumeration type that

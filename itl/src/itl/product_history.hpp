@@ -34,6 +34,7 @@ DEALINGS IN THE SOFTWARE.
 namespace itl
 {
 
+/// composes many episodes of different types into a single history of episode_product s
 /**    
     <b>Eine Klasse zur Verarbeitung von Episoden unterschiedlichen Typs in einer gemeinsamen Historie</b>
 
@@ -77,7 +78,7 @@ public:
     typedef    typename    BaseTypeTD::interval_type IntervalTD;
     typedef    typename    BaseTypeTD::domain_type DomainTD;
     
-    typedef typename    BaseTypeTD::data_type data_type;
+    typedef    typename    BaseTypeTD::data_type data_type;
     typedef    typename    EpisodeProductTD::EpisodePTD EpisodePTD;
     
 public:
