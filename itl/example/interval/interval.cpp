@@ -39,11 +39,14 @@ int main()
 
     cout << "Interval<int>: " << int_Itv.as_string() << endl;
     cout << "Interval<double>: " << sqrt_Itv.as_string() << " does " 
-                                 << string(sqrt_Itv.contains(sqrt(2.0))?"":"NOT") << " contain sqrt(2)" << endl;
+                                 << string(sqrt_Itv.contains(sqrt(2.0))?"":"NOT") 
+                                 << " contain sqrt(2)" << endl;
     cout << "Interval<string>: " << city_Itv.as_string() << " does "  
-                                 << string(city_Itv.contains("Barcelona")?"":"NOT") << " contain 'Barcelona'" << endl;
+                                 << string(city_Itv.contains("Barcelona")?"":"NOT") 
+                                 << " contain 'Barcelona'" << endl;
     cout << "Interval<string>: " << city_Itv.as_string() << " does "  
-                                 << string(city_Itv.contains("Berlin")?"":"NOT") << " contain 'Berlin'" << endl;
+                                 << string(city_Itv.contains("Berlin")?"":"NOT") 
+                                 << " contain 'Berlin'" << endl;
     cout << "Interval<Time>: " << time_Itv.as_string() << endl;
 
     return 0;

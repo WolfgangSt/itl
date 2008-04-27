@@ -190,6 +190,18 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath="..\..\src\itl\interval_base_map.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\itl\itl_interval.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\itl\split_interval_map.hpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Ressourcendateien"

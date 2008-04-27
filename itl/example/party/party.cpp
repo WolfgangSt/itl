@@ -20,7 +20,7 @@ using namespace itl;
 
 /** Example party.cpp \file Party.cpp
 
-    Party.cpp demonstrates the possibilities of a split interval map (split_interval_map).
+    Party.cpp demonstrates the possibilities of a split interval map (\ref split_interval_map).
     A split_interval_map maps intervals to a given content. In this case the content 
     is a set of party guests represented by their name strings.
 
@@ -31,10 +31,25 @@ using namespace itl;
     On every overlap of intervals, the corresponding name sets are accumulated. At
     the points of overlap the intervals are split. The accumulation of content on
     overlap of intervals is always done via an operator += that has to be implemented
-    for the content parameter of the SpliItvMapT.
+    for the content parameter of the split_interval_map.
 
     Finally the split_interval_map contains the history of attendance and all points in
     time, where the group of party guests changed.
+
+	Party.cpp demonstrates a principle that we call 
+	<b><em>aggregate on overlap (aggovering;)</em></b>:
+	On insertion a value associated to the interval is aggrgated (added) to those
+	values in the split_interval_map that overlap with the inserted value.
+
+	There are two behavioral aspects to <b>aggovering</b>: a <em>decompositional
+	behavior</em> and a <em>accumulative behavior</em>.
+
+	The <em>decompositional behavior</em> splits up intervals on the time dimension of the 
+	split_interval_map so that the intervals change whenever associated values
+	change.
+
+	The <em>accumulative behavior accumulates associated values on every overlap of
+	an insertion for the associated values.
 
     \include party/party.cpp
 */

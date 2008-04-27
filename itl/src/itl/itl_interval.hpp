@@ -69,26 +69,34 @@ namespace itl
 
     \subsection party_subsec Party
 
-    Party demonstrates the possibilities of a <em>split interval map</em> (split_interval_map).
+	party.cpp is the ITL's <em>flagship example</em> because it demonstrates
+	at least two important aspects of the library design in a 
+	comprehensible way.
     In party.cpp the change of guests of a party in time is calculated using a 
-    \ref split_interval_map simply by inserting pairs of intervals and guest sets into the split_interval_map.
-    \n \n
-
-    \subsection overlap_counter_subsec Overlap counter
-
-    The most basic application of a split_interval_map is a counter counting
-    the number of overlaps of intervals inserted into it as shown in overlap_counter.cpp.
-    \n \n
-
-    \subsection interval_container_subsec Interval container
-
-    Sample interval_container.cpp demonstrates basic charactersistics of 
-    interval container objects.
+    split_interval_map simply by inserting pairs of intervals and guest sets
+	into the split_interval_map.
+	As can be seen from this example split_interval_map has a 
+	<em>decompositional behavior</em> on the time part: time intervals are
+	split up whenever the set of guests is changing. And it has an 
+	<em>aggregational behavior</em> on the associated values: Guest sets are 
+	added up on insertion.
     \n \n
 
     \subsection interval_subsec Intervals 
     
     Interval.cpp gives a short example of different instances of the class interval
+    \n \n
+
+    \subsection interval_container_subsec Interval container
+
+    Sample interval_container.cpp demonstrates basic charactersistics of 
+    interval container objects: interval_set, split_interval_set and split_interval_map.
+    \n \n
+
+	\subsection overlap_counter_subsec Overlap counter
+
+    The most basic application of a split_interval_map is a counter counting
+    the number of overlaps of intervals inserted into it as shown in overlap_counter.cpp.
     \n \n
 
     \subsection history_subsec History
