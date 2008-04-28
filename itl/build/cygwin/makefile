@@ -197,3 +197,34 @@ validate:
 	$(COMPILE) $(COMPILE_FLAGS)  $(INCLUDE) $(validate_SOURCES) $(LOAD_FLAGS) -o $(validate_TARGET)
 
 
+show_temps:
+	find $(ITL_ROOT_PATH) -name \*.pdb; \
+	find $(ITL_ROOT_PATH) -name \*.exe; \
+	find $(ITL_ROOT_PATH) -name \*.obj; \
+	find $(ITL_ROOT_PATH) -name \*.pdb; \
+	find $(ITL_ROOT_PATH) -name \*.idb; \
+	find $(ITL_ROOT_PATH) -name \*.ilk; \
+	find $(ITL_ROOT_PATH) -name \*.dep; \
+	find $(ITL_ROOT_PATH) -name \*.manifest*; \
+	find $(ITL_ROOT_PATH) -name BuildLog.htm; \
+	find $(ITL_ROOT_PATH) -name BuildLog.htm; \
+	find $(ITL_ROOT_PATH)/doc/html -name \*.html; \
+	find $(ITL_ROOT_PATH)/doc/html -name \*.png; 
+	
+clean:
+	find $(ITL_ROOT_PATH) -name \*.pdb -exec rm {}; \
+	find $(ITL_ROOT_PATH) -name \*.exe -exec rm {}; \
+	find $(ITL_ROOT_PATH) -name \*.obj -exec rm {}; \
+	find $(ITL_ROOT_PATH) -name \*.pdb -exec rm {}; \
+	find $(ITL_ROOT_PATH) -name \*.idb -exec rm {}; \
+	find $(ITL_ROOT_PATH) -name \*.ilk -exec rm {}; \
+	find $(ITL_ROOT_PATH) -name \*.dep -exec rm {}; \
+	find $(ITL_ROOT_PATH) -name \*.manifest* -exec rm {}; \
+	find $(ITL_ROOT_PATH) -name BuildLog.htm -exec rm {}; \
+	find $(ITL_ROOT_PATH) -name BuildLog.htm -exec rm {}; \
+	find $(ITL_ROOT_PATH)/doc/html -name \*.html -exec rm {}; \
+	
+hilf:
+	find $(ITL_ROOT_PATH)/doc/html -name \*.png -exec rm \{}\; 
+	
+	
