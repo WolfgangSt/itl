@@ -208,23 +208,38 @@ show_temps:
 	find $(ITL_ROOT_PATH) -name \*.manifest*; \
 	find $(ITL_ROOT_PATH) -name BuildLog.htm; \
 	find $(ITL_ROOT_PATH) -name BuildLog.htm; \
-	find $(ITL_ROOT_PATH)/doc/html -name \*.html; \
-	find $(ITL_ROOT_PATH)/doc/html -name \*.png; 
+	find $(ITL_ROOT_PATH)/doc/html -name *; \
+	find $(ITL_ROOT_PATH) -name \*.ncb; \
+	find $(ITL_ROOT_PATH) -name \*.suo; \
+	find $(ITL_ROOT_PATH) -name \*.user; \
 	
+win_clean:
+	../script/rm_temps $(ITL_ROOT_PATH)/bin \*.exe; \
+	../script/rm_temps $(ITL_ROOT_PATH)/bin \*.obj; \
+	../script/rm_temps $(ITL_ROOT_PATH)/bin \*.pdb; \
+	../script/rm_temps $(ITL_ROOT_PATH)/bin \*.idb; \
+	../script/rm_temps $(ITL_ROOT_PATH)/bin \*.ilk; \
+	../script/rm_temps $(ITL_ROOT_PATH)/bin \*.dep; \
+	../script/rm_temps $(ITL_ROOT_PATH)/bin \*.manifest; \
+	../script/rm_temps $(ITL_ROOT_PATH)/bin \*.manifest.*; \
+	../script/rm_temps $(ITL_ROOT_PATH)/bin BuildLog.htm; \
+	../script/rm_temps $(ITL_ROOT_PATH) \*.ncb; \
+	../script/rm_temps $(ITL_ROOT_PATH) \*.suo; \
+	../script/rm_temps $(ITL_ROOT_PATH) \*.user;
+	
+bin_clean:
+	rm -rf $(ITL_ROOT_PATH)/bin/* ;
+
+dox_clean:
+	../script/rm_temps $(ITL_ROOT_PATH)/doc/html \*.html; \
+	../script/rm_temps $(ITL_ROOT_PATH)/doc/html \*.png; \
+	../script/rm_temps $(ITL_ROOT_PATH)/doc/html \*.css; \
+	../script/rm_temps $(ITL_ROOT_PATH)/doc/html \*.gif; \
+
 clean:
-	find $(ITL_ROOT_PATH) -name \*.pdb -exec rm {}; \
-	find $(ITL_ROOT_PATH) -name \*.exe -exec rm {}; \
-	find $(ITL_ROOT_PATH) -name \*.obj -exec rm {}; \
-	find $(ITL_ROOT_PATH) -name \*.pdb -exec rm {}; \
-	find $(ITL_ROOT_PATH) -name \*.idb -exec rm {}; \
-	find $(ITL_ROOT_PATH) -name \*.ilk -exec rm {}; \
-	find $(ITL_ROOT_PATH) -name \*.dep -exec rm {}; \
-	find $(ITL_ROOT_PATH) -name \*.manifest* -exec rm {}; \
-	find $(ITL_ROOT_PATH) -name BuildLog.htm -exec rm {}; \
-	find $(ITL_ROOT_PATH) -name BuildLog.htm -exec rm {}; \
-	find $(ITL_ROOT_PATH)/doc/html -name \*.html -exec rm {}; \
+	make win_clean 
+	make dox_clean
 	
-hilf:
-	find $(ITL_ROOT_PATH)/doc/html -name \*.png -exec rm \{}\; 
+#	echo `find $(ITL_ROOT_PATH)/doc/html -name \*.png`  
 	
 	
