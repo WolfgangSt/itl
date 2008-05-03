@@ -374,13 +374,13 @@ namespace itl
 
 
     // ------------------------------------------------------------------------
-	/// Aggregates intervals associated to tuples
+    /// Aggregates intervals associated to tuples
     /** class interval_tuple_computer: Merkmalskombinationsrechner (flavor: 
-	    Zeitraumrechner). Jedem Tupel (Merkmalskombination) wird ein 
-		split_interval_map assoziiert, das Zeiträume (Itv=Interval) zählen
-		kann. Genauer gesagt werden Zustände gezählt, die für einen Zeitraum
-		anhalten. Bei Überlappungen der Zeiträume müssen die die Häufigkeiten
-		im split_interval_map entsprechend aufaddiert werden.
+        Zeitraumrechner). Jedem Tupel (Merkmalskombination) wird ein 
+        split_interval_map assoziiert, das Zeiträume (Itv=Interval) zählen
+        kann. Genauer gesagt werden Zustände gezählt, die für einen Zeitraum
+        anhalten. Bei Überlappungen der Zeiträume müssen die die Häufigkeiten
+        im split_interval_map entsprechend aufaddiert werden.
     */
     template <int VarCount, class TimeT, class CounteeT>
     class interval_tuple_computer : 

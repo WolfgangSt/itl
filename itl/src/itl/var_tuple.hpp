@@ -38,7 +38,7 @@ DEALINGS IN THE SOFTWARE.
 
 namespace itl
 {
-	/// tuple of independent variables 
+    /// tuple of independent variables 
     /** class var_tuple: Die Tupel unabhängiger Variablen. Beschreiben
         die Zellen eines n-dimensionalen Zählwürfels
 

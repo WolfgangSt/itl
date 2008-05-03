@@ -37,20 +37,20 @@ concepts that are not yet provided by concept_gcc
 
 namespace itl
 {
-	auto concept InplaceAddable<typename ObjectT, typename DeltaT = ObjectT>
-	{
-		ObjectT& operator+=(const ObjectT& stock, const DeltaT& delta);
-	};
+    auto concept InplaceAddable<typename ObjectT, typename DeltaT = ObjectT>
+    {
+        ObjectT& operator+=(const ObjectT& stock, const DeltaT& delta);
+    };
 
-	auto concept InplaceSubtractable<typename ObjectT, typename DeltaT = ObjectT>
-	{
-		ObjectT& operator-=(const ObjectT& stock, const DeltaT& delta);
-	};
+    auto concept InplaceSubtractable<typename ObjectT, typename DeltaT = ObjectT>
+    {
+        ObjectT& operator-=(const ObjectT& stock, const DeltaT& delta);
+    };
 
-	concept InplaceStarOperable<typename ObjectT, typename DeltaT = ObjectT>
-	{
-		ObjectT& operator*=(const ObjectT& stock, const DeltaT& delta);
-	};
+    concept InplaceStarOperable<typename ObjectT, typename DeltaT = ObjectT>
+    {
+        ObjectT& operator*=(const ObjectT& stock, const DeltaT& delta);
+    };
 
 } // namespace itl
 

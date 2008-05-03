@@ -44,20 +44,20 @@ for concepts InplaceAddable and InplaceSubtractable
 
 namespace itl
 {
-	/// adds inplace addition, subtraction and intersection to std::set
+    /// adds inplace addition, subtraction and intersection to std::set
     /** 
-	Class template <b>itl::set</b> extends <b>std::set</b> by inplace operators
-	<b>+=, -= and *=</b>. These operations implement the fundamental set 
-	functions union, difference and intersection.  
+    Class template <b>itl::set</b> extends <b>std::set</b> by inplace operators
+    <b>+=, -= and *=</b>. These operations implement the fundamental set 
+    functions union, difference and intersection.  
 
-	In contrast to the classic stl style design, template parameters for set 
-	ordering <b>Compare</b> and allocation <b>Alloc</b> are passed as template 
-	template parameters. This allows for more flexible passing of those 
-	parameters to derived types via typedef.
+    In contrast to the classic stl style design, template parameters for set 
+    ordering <b>Compare</b> and allocation <b>Alloc</b> are passed as template 
+    template parameters. This allows for more flexible passing of those 
+    parameters to derived types via typedef.
 
-	<b>Note</b> that itl::set provides all functionality of std::set via
-	private	inheritence. This can not be seen in the documentation because 
-	unfortunately doxygen does not evaluate using statements.
+    <b>Note</b> that itl::set provides all functionality of std::set via
+    private    inheritence. This can not be seen in the documentation because 
+    unfortunately doxygen does not evaluate using statements.
 
     @author Joachim Faulhaber
     */
@@ -161,30 +161,30 @@ namespace itl
             So \c *this becomes the intersection of \c *this and \c x2 */
         set& operator *= (const set& x) { Set::intersect(*this, x); return *this; }
 
-		/** \c key_value allows for a uniform access to \c key_values which is
-		    is used for common algorithms on sets and maps. */
+        /** \c key_value allows for a uniform access to \c key_values which is
+            is used for common algorithms on sets and maps. */
         template<typename IteratorT>
         static const key_type& key_value(IteratorT& value_){ return (*value_); }
 
-		/** \c data_value allows for a uniform access to \c data_values which is
-		    is used for common algorithms on sets and maps. */
+        /** \c data_value allows for a uniform access to \c data_values which is
+            is used for common algorithms on sets and maps. */
         template<typename IteratorT>
         static const data_type& data_value(IteratorT& value_){ return (*value_); }
 
-		/** \c key_less allows for a uniform notation of key comparison which
-		    is used for common algorithms on sets and maps. */
+        /** \c key_less allows for a uniform notation of key comparison which
+            is used for common algorithms on sets and maps. */
         template<typename LeftIterT, typename RightIterT>
         static bool key_less(LeftIterT& lhs_, RightIterT& rhs_) 
-		{ return key_compare()(*lhs_, *rhs_); }
+        { return key_compare()(*lhs_, *rhs_); }
 
-		/** \c make_element allows for a uniform notation of key comparison which
-		    is used for common algorithms on sets and maps. */
+        /** \c make_element allows for a uniform notation of key comparison which
+            is used for common algorithms on sets and maps. */
         static value_type make_element(const key_type& key_val, const data_type& data_val)
         { return key_val; }
 
-		/** \c iterative_size() yields the number of elements that is visited
-		    throu complete iteration. For interval sets \c iterative_size() is
-			different from \c size(). */
+        /** \c iterative_size() yields the number of elements that is visited
+            throu complete iteration. For interval sets \c iterative_size() is
+            different from \c size(). */
         size_t iterative_size()const { return size(); }
 
         /** Keep the elements in *this set to which property \c hasProperty applies. 
@@ -204,8 +204,8 @@ namespace itl
     };
 
 
-	/** Standard equality, which is lexicographical equality of the sets
-	    as sequences, that are given by their Compare order. */
+    /** Standard equality, which is lexicographical equality of the sets
+        as sequences, that are given by their Compare order. */
     template <typename KeyT, template<class>class Compare, template<class>class Alloc>
     inline bool operator == (const itl::set<KeyT,Compare,Alloc>& lhs,
                              const itl::set<KeyT,Compare,Alloc>& rhs)
@@ -214,10 +214,10 @@ namespace itl
         return operator==((const base_type&)lhs, (const base_type&)rhs);
     }
 
-	/** Element equality. Two sets are equal if they contain the same 
-	    elements */
+    /** Element equality. Two sets are equal if they contain the same 
+        elements */
     template <typename KeyT, template<class>class Compare, 
-	                         template<class>class Alloc>
+                             template<class>class Alloc>
     inline bool is_element_equal(const itl::set<KeyT,Compare,Alloc>& lhs,
                                  const itl::set<KeyT,Compare,Alloc>& rhs)
     {
@@ -225,9 +225,9 @@ namespace itl
         return operator==((const base_type&)lhs, (const base_type&)rhs);
     }
 
-	/** Strict weak less ordering which is given by the Compare order */
+    /** Strict weak less ordering which is given by the Compare order */
     template <typename KeyT, template<class>class Compare, 
-	                         template<class>class Alloc>
+                             template<class>class Alloc>
     inline bool operator < (const itl::set<KeyT,Compare,Alloc>& lhs,
                             const itl::set<KeyT,Compare,Alloc>& rhs)
     {
@@ -235,9 +235,9 @@ namespace itl
         return operator<((const base_type&)lhs, (const base_type&)rhs);
     }
 
-	/** Partial ordering which is induced by Compare */
+    /** Partial ordering which is induced by Compare */
     template <typename KeyT, template<class>class Compare, 
-	                         template<class>class Alloc>
+                             template<class>class Alloc>
     inline bool operator <= (const itl::set<KeyT,Compare,Alloc>& lhs,
         const itl::set<KeyT,Compare,Alloc>& rhs)
     {
@@ -247,7 +247,7 @@ namespace itl
 
 
     template <typename KeyT, template<class>class Compare, 
-	                         template<class>class Alloc>
+                             template<class>class Alloc>
     typename set<KeyT,Compare,Alloc>::iterator
         set<KeyT,Compare,Alloc>::subtract(const value_type& val)
     {
@@ -260,7 +260,7 @@ namespace itl
 
 
     template <typename KeyT, template<class>class Compare, 
-	                         template<class>class Alloc>
+                             template<class>class Alloc>
     set<KeyT,Compare,Alloc>& 
         set<KeyT,Compare,Alloc>::operator += (const set<KeyT,Compare,Alloc>& x2)
     {

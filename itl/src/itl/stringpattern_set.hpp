@@ -34,7 +34,7 @@ DEALINGS IN THE SOFTWARE.
 
 namespace itl
 {
-	/// Specifies a set of strings via prefix_set s include and exclude
+    /// Specifies a set of strings via prefix_set s include and exclude
     /** stringpattern_set repraesentiert eine Menge von Strings durch
         zwei PrefixSetTs, der zugehoerigen und der nicht zugehoerigen
         Strings.

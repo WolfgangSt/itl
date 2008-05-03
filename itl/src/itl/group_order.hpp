@@ -39,7 +39,7 @@ namespace itl
 {
     template <int VarCount> class var_tuple;
 
-	/// Strict weak ordering on var_tuple that defines grouping via induced equivalence
+    /// Strict weak ordering on var_tuple that defines grouping via induced equivalence
     /** Gruppierung kann man so ausdrücken, dass alle Werte, die in gleiche Gruppen
         zusammenfallen, äquivalent sind.
 

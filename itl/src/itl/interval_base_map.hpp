@@ -60,8 +60,8 @@ namespace itl
     In particular all discrete atomic datatypes like <tt>int, short, long</tt> and
     atomic pseudo-continuous datatypes <tt>float, double</tt> may be instantiated.
       
-       Template parameter <b>CodomainT</b>: The map's codomain type or value type: Type
-    of values contained in the map.
+       Template parameter <b>CodomainT</b>: The map's codomain type or data type: Type
+    of associated values contained in the map.
 
     Datatypes for the codomain parameter have to <b>implement</b> operations
     <tt>+=</tt>, <tt>-=</tt>, <tt>==</tt> (equality) and <tt>CodomainT()</tt> (default constructor).
@@ -72,13 +72,13 @@ namespace itl
       If <tt>x = y; y += CodomainT();</tt> then <tt>x==y;</tt> and
       If <tt>x = y; y -= CodomainT();</tt> then <tt>x==y;</tt>
   
-    Template parameter <b>interval_type=interval<DomainT></b>: Type of interval used
-    to implement the set. The default <b>interval<DomainT></b> uses the
+    Template parameter <b>Interval=itl::interval</b>: Type of interval template used
+    to implement the set. The default <b>itl::interval</b> uses the
     interval class that comes with this library. Own implementation of interval
     classes are possible (but not trivial).
   
-    <b>interval_base_map</b> implements a map <tt>MapT<DomainT, CodomainT></tt> as a map
-    of intervals <tt>MapT<interval<DomainT>, CodomainT, exclusive_less<interval_type> ></tt>
+    <b>interval_base_map</b> implements a map <tt>map<DomainT, CodomainT></tt> as a map
+    of intervals <tt>map<interval<DomainT>, CodomainT, exclusive_less<interval_type> ></tt>
 
     Interval maps <tt>interval_base_map<DomainT,CodomainT></tt> can be used similar (and in many
     aspects exactly like) common stl-maps. Unlike to stl-maps where you store
@@ -126,7 +126,7 @@ template
 //conceptgcc is still too buggy
 //requires 
 //{
-//	std::LessThanComparable<DomainT>,
+//    std::LessThanComparable<DomainT>,
 //  std::EqualityComparable<Codomain>
 //}
 #endif
@@ -286,7 +286,7 @@ public:
         This inserts a value <tt>y</tt> for a single key <tt>k</tt> into the map.
         If <tt>k</tt> already has a value <tt>y0</tt> associated with it, <tt>y0</tt>
         will be incremented by <tt>y</tt>: <tt>y0 += y</tt> via operator <tt>+=</tt>
-        which has to be implemented for \ref CodomainT.
+        which has to be implemented for CodomainT.
         
         Insertion and subtraction are reversible as follows:
         <tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
@@ -304,7 +304,7 @@ public:
         If there are associated values, in the range of <tt>x</tt>, then all
         those values within the ranges of their intervals,
         are incremented by <tt>y</tt>. This is done via operator <tt>+=</tt>
-        which has to be implemented for \ref CodomainT. 
+        which has to be implemented for CodomainT. 
 
         Insertion and subtraction are reversible as follows:
         <tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
@@ -318,8 +318,8 @@ public:
         This subtracts a value <tt>y</tt> for a single key <tt>k</tt> from the map.
         If <tt>k</tt> already has a value <tt>y0</tt> associated with it, <tt>y0</tt>
         will be decremented by <tt>y</tt>: <tt>y0 -= y</tt> via operator <tt>-=</tt>
-        which has to be implemented for \ref CodomainT. If <tt>y</tt> becomes
-        the neutral element \ref CodomainT() <tt>k</tt> will also be removed from
+        which has to be implemented for CodomainT. If <tt>y</tt> becomes
+        the neutral element CodomainT() <tt>k</tt> will also be removed from
         the map.
 
         Insertion and subtraction are reversible as follows:
@@ -336,7 +336,7 @@ public:
           If there are associated values, in the range of <tt>x</tt>, all
         those values within the ranges of their intervals,
         are decremented by <tt>y</tt>. This is done via operator <tt>-=</tt>
-        which has to be implemented for \ref CodomainT. 
+        which has to be implemented for CodomainT. 
 
         Insertion and subtraction are reversible as follows:
         <tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         

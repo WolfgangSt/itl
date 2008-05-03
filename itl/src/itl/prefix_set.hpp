@@ -45,7 +45,7 @@ namespace itl
         bool operator() (const StringT& lhs, const StringT& rhs)const;
     };
 
-	/// represents a set of strings by means of prefixes
+    /// represents a set of strings by means of prefixes
     /** Ein prefix_set repraesentiert eine Menge von Strings mit Hilfe von
         Prefixen.
 

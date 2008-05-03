@@ -62,13 +62,13 @@ namespace itl
           If <tt>x = y; y += CodomainT();</tt> then <tt>x==y;</tt> and
           If <tt>x = y; y -= CodomainT();</tt> then <tt>x==y;</tt>
 
-          Template parameter <b>interval_type=interval<DomainT></b>: Type of interval used
-        to implement the set. The default <b>interval<DomainT></b> uses the
-        interval class that comes with this library. Own implementation of interval
+          Template parameter <b>Interval=itl::interval</b>: Template type of interval used
+        to implement the map. The default <b>itl::interval</b> uses the
+        interval class template that comes with this library. Own implementation of interval
         classes are possible (but not trivial).
 
-        <b>split_interval_map</b> implements a map <tt>MapT<DomainT, CodomainT></tt> as a map
-        of intervals <tt>MapT<interval<DomainT>, CodomainT, ExclusiveLessT<IntervT> ></tt>
+        <b>split_interval_map</b> implements a map <tt>map<DomainT, CodomainT></tt> as a map
+        of intervals <tt>map<interval<DomainT>, CodomainT, ExclusiveLessT<Interval> ></tt>
 
         Interval maps <tt>split_interval_map<DomainT,CodomainT></tt> can be used similar (and in many
         aspects exactly like) common stl-maps. Unlike to stl-maps where you store

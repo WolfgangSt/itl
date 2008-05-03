@@ -56,8 +56,8 @@ public:
     /// base-type of the map; that is (key,value)-pairs 
     typedef std::pair<DomainT,CodomainT> base_value_type ;
 
-	/// virtual destructor
-	virtual ~maps(){}
+    /// virtual destructor
+    virtual ~maps(){}
 
     /// Remove all elements of the map
     virtual void clear()=0;

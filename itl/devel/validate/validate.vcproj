@@ -181,10 +181,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\stdafx.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\validate\validate.cpp"
 				>
 			</File>
@@ -200,10 +196,6 @@
 			</File>
 			<File
 				RelativePath="..\..\validate\laws\semigroup.h"
-				>
-			</File>
-			<File
-				RelativePath=".\stdafx.h"
 				>
 			</File>
 		</Filter>

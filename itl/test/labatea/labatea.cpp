@@ -66,12 +66,12 @@ void test_Validater()
 void test_realmvalidater()
 {
     RealmValidater validater;
-	cout << 
-	">> ------------------------------------------------------ <<\n"
-	">> -------- Law based test automaton 'LaBatea' ---------- <<\n"
-	">> Output will be generated in a few seconds\n"
-	">> teminate by typing <CTRL>C\n"
-	">> ------------------------------------------------------ <<\n";
+    cout << 
+    ">> ------------------------------------------------------ <<\n"
+    ">> -------- Law based test automaton 'LaBatea' ---------- <<\n"
+    ">> Output will be generated in a few seconds\n"
+    ">> teminate by typing <CTRL>C\n"
+    ">> ------------------------------------------------------ <<\n";
     validater.validate();
 };
 

@@ -69,17 +69,17 @@ namespace itl
 
     \subsection party_subsec Party
 
-	party.cpp is the ITL's <em>flagship example</em> because it demonstrates
-	at least two important aspects of the library design in a 
-	comprehensible way.
+    party.cpp is the ITL's <em>flagship example</em> because it demonstrates
+    at least two important aspects of the library design in a 
+    comprehensible way.
     In party.cpp the change of guests of a party in time is calculated using a 
     split_interval_map simply by inserting pairs of intervals and guest sets
-	into the split_interval_map.
-	As can be seen from this example split_interval_map has a 
-	<em>decompositional behavior</em> on the time part: time intervals are
-	split up whenever the set of guests is changing. And it has an 
-	<em>aggregational behavior</em> on the associated values: Guest sets are 
-	added up on insertion.
+    into the split_interval_map.
+    As can be seen from this example split_interval_map has a 
+    <em>decompositional behavior</em> on the time part: time intervals are
+    split up whenever the set of guests is changing. And it has an 
+    <em>aggregational behavior</em> on the associated values: Guest sets are 
+    added up on insertion.
     \n \n
 
     \subsection interval_subsec Intervals 
@@ -93,7 +93,7 @@ namespace itl
     interval container objects: interval_set, split_interval_set and split_interval_map.
     \n \n
 
-	\subsection overlap_counter_subsec Overlap counter
+    \subsection overlap_counter_subsec Overlap counter
 
     The most basic application of a split_interval_map is a counter counting
     the number of overlaps of intervals inserted into it as shown in overlap_counter.cpp.
@@ -165,7 +165,7 @@ namespace itl
 
 /// A class for intervals
 /**    Bounds of the interval may be closed or open.
-    Discrete or continuous datatypes may be used as domain datatypes \ref DataT.
+    Discrete or continuous datatypes may be used as domain datatypes DataT.
 
        Template parameter <b>DataT</b>:
     The intervals domain type or type of the elements of the interval.
@@ -176,7 +176,7 @@ namespace itl
     <tt>(short, int, date, time etc.)</tt> and continuous 
     <tt>float, double, Rational, Complex etc.</tt> elements. The domain parameter
     may be a built in c++ datatype or a class type. It has to implement
-    the interface \ref DataT.
+    the interface DataT.
 
     @author  Joachim Faulhaber
 */
@@ -899,7 +899,7 @@ inline bool operator < (const interval<DataT>& lhs, const interval<DataT>& rhs)
     <tt>bool IntervalType::exclusive_less(IntervalType x2)const; </tt>
     
     <b>exclusive_less</b> implements a strict weak ordering that serves to
-    sort sets and maps of intervals \ref ItvSetT, \ref DiscItvSetT and \ref 
+    sort sets and maps of intervals interval_set, split_interval_set and
     split_interval_map. 
     
     Function <tt>bool IntervalType::exclusive_less(IntervalType x2)const; </tt> is true if every

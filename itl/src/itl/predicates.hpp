@@ -49,7 +49,7 @@ namespace itl
     class property : public std::unary_function<Type,bool>
     {
     public:
-		virtual ~property(){}
+        virtual ~property(){}
         virtual bool operator() (const Type& x)const=0;
     };
 
@@ -102,28 +102,28 @@ namespace itl
 
     template<>
     inline std::string unary_template<itl::element_equal>::to_string()  
-	{ return "="; }
+    { return "="; }
 
-	/// Functor class template contained_in implements the subset relation.
+    /// Functor class template contained_in implements the subset relation.
     template<class Type> 
     struct contained_in : public relation<Type, Type>
     {
-		/// Apply the subset relation.
+        /// Apply the subset relation.
         /** <tt>contained_in(sub, super)</tt> is true if <tt>sub</tt> 
-			is contained in <tt>super</tt> */
+            is contained in <tt>super</tt> */
         bool operator()(const Type& sub, const Type& super)const
         {
             return sub.contained_in(super);
         }
     };
 
-	/// Functor class template <b>containes</b> implements the superset relation. 
+    /// Functor class template <b>containes</b> implements the superset relation. 
     template<class Type> 
     struct containes : public relation<Type, Type>
     {
-		/// Apply the superset relation.
+        /// Apply the superset relation.
         /** <tt>containes(super, sub)</tt> is true if <tt>super</tt> containes 
-	        <tt>sub</tt> */
+            <tt>sub</tt> */
         bool operator()(const Type& super, const Type& sub)const
         {
             return super.containes(sub);

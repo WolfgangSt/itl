@@ -107,7 +107,7 @@ template
     template<class>class Alloc    = std::allocator
 > 
 #ifdef USE_CONCEPTS
-	requires {std::LessThanComparable<DomainT>}
+    requires {std::LessThanComparable<DomainT>}
 #endif
 class interval_base_set: public sets<DomainT>
 {
@@ -187,9 +187,9 @@ public:
 
     bool contains(const DomainT& x)const
     { 
-		typename ImplSetT::const_iterator it = _set.find(interval_type(x)); 
+        typename ImplSetT::const_iterator it = _set.find(interval_type(x)); 
         return it != _set.end(); 
-	}
+    }
 
     void insert(const DomainT& x) { insert(interval_type(x)); }
     void subtract(const DomainT& x) { subtract(interval_type(x)); }

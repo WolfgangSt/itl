@@ -168,9 +168,9 @@ namespace itl
 
         /** Insert sequence \c seq as a \e consequent subsequence into \c *this.
 
-            Whereby \c sub is a <em>consequent subsequence<\em> of \super, if
+            Whereby \c sub is a <em>consequent subsequence</em> of \c super, if
             \c sub is contained as a (possibly non contingent) subsequence of
-            \super without permuting elements:
+            \c super without permuting elements:
 
             <code>
             super: my big new ball is light and blue

@@ -39,9 +39,9 @@ namespace itl
 /**  
     class template <b>ordered_type</b> defines objects
     that can be ordered by an enumeration type that
-	is associated to the template parameter TypeDomain.
-	Every object of this class exposes a value of
-	that enumeration type by a function <b>type()</b>
+    is associated to the template parameter TypeDomain.
+    Every object of this class exposes a value of
+    that enumeration type by a function <b>type()</b>
 
     @author  Joachim Faulhaber
 */
@@ -60,12 +60,12 @@ public:
     /// the objects value
     virtual const typename TypeDomain::ValueBaseTD* value()const=0;
 
-	/// Comparison on type level
+    /// Comparison on type level
     virtual bool isLessOnType(const ordered_type* x2)const=0;
     /// Equivalece relation <tt>this->type()==x2->type()</tt>
     virtual bool isTypeEquivalent(const ordered_type* x2)const=0;
 
-	/// comparisons on value level
+    /// comparisons on value level
     virtual bool isEqual(const ordered_type* x2)const=0;  
 
     virtual bool isLess(const ordered_type* x2)const=0;  

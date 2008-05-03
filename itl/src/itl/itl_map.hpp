@@ -144,23 +144,23 @@ namespace itl
 
         /** Is <tt>*this</tt> contained in <tt>super</tt>? */
         bool contained_in(const map& super)const 
-		{ return Map::contained_in(*this, super); }
+        { return Map::contained_in(*this, super); }
 
         /** Does <tt>*this</tt> contain <tt>sub</tt>? */
         bool contains(const map& sub)const 
-		{ return Map::contained_in(sub, *this); }
+        { return Map::contained_in(sub, *this); }
 
-		/** \c inject inserts \c value_pair into the map if it's key does 
-		    not exist in the map.	
-			If \c value_pairs's key value exists in the map, it's data
-			value is added to the data value already found in the map. */
+        /** \c inject inserts \c value_pair into the map if it's key does 
+            not exist in the map.    
+            If \c value_pairs's key value exists in the map, it's data
+            value is added to the data value already found in the map. */
         iterator inject(const value_type& value_pair);
 
-		/* The \c value_pair for key is erased from the map */
+        /* The \c value_pair for key is erased from the map */
         iterator subtract(const key_type& key);
 
-		/** If the \c value_pair's key value is in the map, it's data value is
-			subtraced from the data value stored in the map. */
+        /** If the \c value_pair's key value is in the map, it's data value is
+            subtraced from the data value stored in the map. */
         iterator subtract(const value_type& value_pair);
 
         /** Add a map \c x2 to this map. If an element of \c x2 already exists
@@ -184,31 +184,31 @@ namespace itl
             So \c *this becomes the intersection of \c *this and \c x2 */
         map& operator *= (const set_type& x2) { Map::intersect(*this, x2); return *this; }
 
-		/** \c key_value allows for a uniform access to \c key_values which is
-		    is used for common algorithms on sets and maps. */
+        /** \c key_value allows for a uniform access to \c key_values which is
+            is used for common algorithms on sets and maps. */
         template<typename IteratorT>
         static const key_type& key_value(IteratorT& value_){ return (*value_).first; }
 
-		/** \c data_value allows for a uniform access to \c data_values which is
-		    is used for common algorithms on sets and maps. */
+        /** \c data_value allows for a uniform access to \c data_values which is
+            is used for common algorithms on sets and maps. */
         template<typename IteratorT>
         static const data_type& data_value(IteratorT& value_){ return (*value_).second; }
 
-		/** \c key_less allows for a uniform notation of key comparison which
-		    is used for common algorithms on sets and maps. */
+        /** \c key_less allows for a uniform notation of key comparison which
+            is used for common algorithms on sets and maps. */
         template<typename LeftIterT, typename RightIterT>
         static bool key_less(LeftIterT& lhs_, RightIterT& rhs_) 
         { return key_compare()((*lhs_).first,(*rhs_).first); }
 
-		/** \c iterative_size() yields the number of elements that is visited
-		    throu complete iteration. For interval sets \c iterative_size() is
-			different from \c size(). */
+        /** \c iterative_size() yields the number of elements that is visited
+            throu complete iteration. For interval sets \c iterative_size() is
+            different from \c size(). */
         static value_type make_element(const key_type& key_val, const data_type& data_val)
         { return value_type(key_val, data_val); }
 
-		/** \c iterative_size() yields the number of elements that is visited
-		    throu complete iteration. For interval sets \c iterative_size() is
-			different from \c size(). */
+        /** \c iterative_size() yields the number of elements that is visited
+            throu complete iteration. For interval sets \c iterative_size() is
+            different from \c size(). */
         size_t iterative_size()const { return size(); }
 
 
@@ -229,8 +229,8 @@ namespace itl
     };
 
 
-	/** Standard equality, which is lexicographical equality of the sets
-	    as sequences, that are given by their Compare order. */
+    /** Standard equality, which is lexicographical equality of the sets
+        as sequences, that are given by their Compare order. */
     template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
     inline bool operator == (const itl::map<KeyT,DataT,Compare,Alloc>& lhs,
                              const itl::map<KeyT,DataT,Compare,Alloc>& rhs)
@@ -239,7 +239,7 @@ namespace itl
         return operator==((const base_type&)lhs, (const base_type&)rhs);
     }
 
-	/** Strict weak less ordering which is given by the Compare order */
+    /** Strict weak less ordering which is given by the Compare order */
     template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
     inline bool operator < (const itl::map<KeyT,DataT,Compare,Alloc>& lhs,
         const itl::map<KeyT,DataT,Compare,Alloc>& rhs)
@@ -248,7 +248,7 @@ namespace itl
         return operator<((const base_type&)lhs, (const base_type&)rhs);
     }
 
-	/** Partial ordering which is induced by Compare */
+    /** Partial ordering which is induced by Compare */
     template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
     inline bool operator <= (const itl::map<KeyT,DataT,Compare,Alloc>& lhs,
         const itl::map<KeyT,DataT,Compare,Alloc>& rhs)

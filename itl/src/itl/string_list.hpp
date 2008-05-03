@@ -73,13 +73,11 @@ public:
     /** Separates for ANY character, which is found in the separator string. */
     int separateForAny(const std::string& arg, const char* separator = " ");
 
-    /**
-        The resulting list contains the sequence of null-terminated strings
-        out of the buffer txtbuf, limited by the maximal length maxlen, which
-        can be omitted by specifying -1
-        buffer layout: txt1\0txt2\0\txt3\0\0 <-- double null byte marks end
-        return value: number of strings found
-    **/
+    //The resulting list contains the sequence of null-terminated strings
+    //out of the buffer txtbuf, limited by the maximal length maxlen, which
+    //can be omitted by specifying -1
+    //buffer layout: txt1\0txt2\0\txt3\0\0 <-- double null byte marks end
+    //return value: number of strings found
     int separateForNull(const char * txtbuf, int maxlen = -1);
     
     /* concatenate all strings of this list inserting 'separator' between elements */

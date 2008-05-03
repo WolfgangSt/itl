@@ -50,8 +50,8 @@ template <class DomainT> class sets
 {
 public:
 
-	/// virtual destructor
-	virtual ~sets(){}
+    /// virtual destructor
+    virtual ~sets(){}
 
     /// Remove all elements of the set
     virtual void clear()=0;

@@ -48,15 +48,15 @@ namespace itl
         In particular all discrete atomic datatypes like <tt>int, short, long</tt> and
         atomic pseudo-continuous datatypes <tt>float, double</tt> may be instantiated.
         
-          Template parameter <b>IntervT=interval<DomainT></b>: Type of interval used
-        to implement the set. The default <b>interval<DomainT></b> uses the
-        interval class that comes with this library. Own implementation of interval
+          Template parameter <b>Interval=itl::interval</b>: Type of interval used
+        to implement the set. The default <b>itl::interval</b> uses the
+        interval class template that comes with this library. Own implementation of interval
         classes are possible (but not trivial).
 
-        <b>split_interval_set</b> implements a set <tt>SetT<DomainT></tt> as a set of intervals
-        <tt>SetT<interval<DomainT>></tt>. Intervals will not be <b>not</b> merged on 
+        <b>split_interval_set</b> implements a set <tt>set<DomainT></tt> as a set of intervals
+        <tt>set<interval<DomainT>></tt>. Intervals will not be <b>not</b> merged on 
         insertion, if they border each other or overlap. The inserted intervalls will be
-        be preserved and hence kept <b>disc</b>rete. So the calss is called <b>Disc</b>interval_set.
+        be preserved. 
       
         interval_base_set<DomainT> can thus be used like a set. As it is known from mathematics
         the union over a set of intervls is a set itself.
@@ -131,7 +131,7 @@ namespace itl
         void toItvSetT(interval_set<DomainT,Interval,Compare,Alloc>& dst)const
         { dst.clear(); const_FORALL(typename ImplSetT, it, this->_set) dst.insert(*it); }
 
-        /// Maximum DiscItvSet representing 'always' as good as possible
+        /// Maximum split_interval_set representing 'always' as good as possible
         static split_interval_set always()    { return split_interval_set(interval_type::always()); }
     } ;
 

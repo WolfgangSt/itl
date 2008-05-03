@@ -20,27 +20,18 @@ ITL_ROOT_PATH = ../..
 #--- root directory of the interval template library --------------------------
 ITL_SRC_PATH  = $(ITL_ROOT_PATH)/src
 
-
-#--- location of the compiler -------------------------------------------------
-CMP_PATH = /opt/conceptgcc-boostcon
-#CMP_PATH = /opt/conceptgcc-4.1.1-alpha-5
-
 #--- binaries -----------------------------------------------------------------
-BIN_PATH    = $(ITL_ROOT_PATH)/bin
-OBJ_PATH    = $(BIN_PATH)/obj
+BIN_PATH = $(ITL_ROOT_PATH)/bin
+OBJ_PATH = $(BIN_PATH)/obj
 
 #--- include pathes -----------------------------------------------------------
 ITL_INCL = $(addprefix -I,$(ITL_SRC_PATH))
 STD_INCL = -I/usr/include
 #GCC_INCL = $(addprefix -I,$(CMP_PATH))/include
-GCC_INCL = -I/opt/conceptgcc-boostcon/include
+CONCEPTGCC_INCL = -I/opt/conceptgcc-boostcon/include
 
-INCLUDE  = $(GCC_INCL) $(ITL_INCL) 
-#INCLUDE  = $(STD_INCL) $(ITL_INCL)
-
-#SOURCES = ./test/itvset_shell/itvset_shell.cpp 
-#SOURCES = itl_test.cpp 
-#SOURCES = ./src/validate/gentor/gentorprofile.cpp
+#INCLUDE  = $(CONCEPTGCC_INCL) $(ITL_INCL) 
+INCLUDE  = $(STD_INCL) $(ITL_INCL)
 
 #--- libraries ----------------------------------------------------------------
 #LOAD_LIBS  = -L$(CMP_PATH)/lib
@@ -54,6 +45,8 @@ LOAD_FLAGS = $(LOAD_LIBS) -lstdc++
 COMPILE_FLAGS = -o2
 
 #--- compiler -----------------------------------------------------------------
+#--- location of the compiler -------------------------------------------------
+#CMP_PATH = /opt/conceptgcc-boostcon
 #COMPILE = $(CMP_PATH)/bin/gcc
 #COMPILE = /opt/conceptgcc-boostcon/bin/gcc
 COMPILE = gcc
@@ -207,11 +200,11 @@ show_temps:
 	find $(ITL_ROOT_PATH) -name \*.dep; \
 	find $(ITL_ROOT_PATH) -name \*.manifest*; \
 	find $(ITL_ROOT_PATH) -name BuildLog.htm; \
-	find $(ITL_ROOT_PATH) -name BuildLog.htm; \
 	find $(ITL_ROOT_PATH)/doc/html -name *; \
 	find $(ITL_ROOT_PATH) -name \*.ncb; \
 	find $(ITL_ROOT_PATH) -name \*.suo; \
 	find $(ITL_ROOT_PATH) -name \*.user; \
+	find $(ITL_ROOT_PATH) -name stdafx.h; \
 	
 win_clean:
 	../script/rm_temps $(ITL_ROOT_PATH)/bin \*.exe; \
@@ -228,7 +221,7 @@ win_clean:
 	../script/rm_temps $(ITL_ROOT_PATH) \*.user;
 	
 bin_clean:
-	rm -rf $(ITL_ROOT_PATH)/bin/* ;
+	rm $(ITL_ROOT_PATH)/bin/* ;
 
 dox_clean:
 	../script/rm_temps $(ITL_ROOT_PATH)/doc/html \*.html; \
@@ -240,6 +233,8 @@ clean:
 	make win_clean 
 	make dox_clean
 	
-#	echo `find $(ITL_ROOT_PATH)/doc/html -name \*.png`  
+svn_clean:
+	../script/rm_svn $(ITL_ROOT_PATH)
+	
 	
 	

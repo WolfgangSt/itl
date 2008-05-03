@@ -1,4 +1,12 @@
-//#include <devel/validate/stdafx.h>
+/*----------------------------------------------------------------------------+
+Interval Template Library
+Author: Joachim Faulhaber
+Copyright (c) 2007-2008: Joachim Faulhaber
++-----------------------------------------------------------------------------+
+   Distributed under the Boost Software License, Version 1.0.
+      (See accompanying file LICENCE.txt or copy at
+           http://www.boost.org/LICENSE_1_0.txt)
++----------------------------------------------------------------------------*/
 #include "GentorProfile.h"
 
 using namespace itl;

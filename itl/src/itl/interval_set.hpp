@@ -52,13 +52,13 @@ namespace itl
     In particular all discrete atomic datatypes like <tt>int, short, long</tt> and
     atomic pseudo-continuous datatypes <tt>float, double</tt> may be instantiated.
     
-      Template parameter <b>IntervT=interval<DomainT></b>: Type of interval used
-    to implement the set. The default <b>interval<DomainT></b> uses the
+      Template parameter <b>Interval=itl::interval</b>: Type of interval used
+    to implement the set. The default <b>itl::interval</b> uses the
     interval class that comes with this library. Own implementation of interval
     classes are possible (but not trivial).
 
-    <b>interval_set</b> implements a set <tt>SetT<DomainT></tt> as a set of intervals
-    <tt>SetT<interval<DomainT>></tt>. Intervals will be merged on insertion, if they
+    <b>interval_set</b> implements a set <tt>set<DomainT></tt> as a set of intervals
+    <tt>set<interval<DomainT>></tt>. Intervals will be merged on insertion, if they
     border each other or overlap.
   
     interval_base_set<DomainT> can thus be used like a set. As it is known from mathematics

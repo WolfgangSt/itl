@@ -4,9 +4,9 @@
 
 #--- Platformdependent variables ----------------------------------------------
 #--- cygwin
-EXE_TAG = .exe
+#EXE_TAG = .exe
 #--- unix
-#EXE_TAG = 
+EXE_TAG = 
 
 
 #------------------------------------------------------------------------------
@@ -20,31 +20,24 @@ ITL_ROOT_PATH = ../..
 #--- root directory of the interval template library --------------------------
 ITL_SRC_PATH  = $(ITL_ROOT_PATH)/src
 
-
-#--- location of the compiler -------------------------------------------------
-CMP_PATH = /opt/conceptgcc-boostcon
-#CMP_PATH = /opt/conceptgcc-4.1.1-alpha-5
-
 #--- binaries -----------------------------------------------------------------
-BIN_PATH    = $(ITL_ROOT_PATH)/bin
-OBJ_PATH    = $(BIN_PATH)/obj
+BIN_PATH = $(ITL_ROOT_PATH)/bin
+OBJ_PATH = $(BIN_PATH)/obj
 
 #--- include pathes -----------------------------------------------------------
 ITL_INCL = $(addprefix -I,$(ITL_SRC_PATH))
 STD_INCL = -I/usr/include
 #GCC_INCL = $(addprefix -I,$(CMP_PATH))/include
-GCC_INCL = -I/opt/conceptgcc-boostcon/include
+CONCEPTGCC_INCL = -I/opt/conceptgcc-boostcon/include
 
-INCLUDE  = $(GCC_INCL) $(ITL_INCL) 
-#INCLUDE  = $(STD_INCL) $(ITL_INCL)
-
-#SOURCES = ./test/itvset_shell/itvset_shell.cpp 
-#SOURCES = itl_test.cpp 
-#SOURCES = ./src/validate/gentor/gentorprofile.cpp
+#INCLUDE  = $(CONCEPTGCC_INCL) $(ITL_INCL) 
+INCLUDE  = $(STD_INCL) $(ITL_INCL)
 
 #--- libraries ----------------------------------------------------------------
 #LOAD_LIBS  = -L$(CMP_PATH)/lib
-LOAD_LIBS  = -L/usr/lib 
+LOAD_LIBS  = -L/usr/lib
+#--- LIBS for 64bit processors: 
+#LOAD_LIBS  = -L/usr/lib64 
 
 #--- loadflags ----------------------------------------------------------------
 LOAD_FLAGS = $(LOAD_LIBS) -lstdc++
@@ -54,6 +47,8 @@ LOAD_FLAGS = $(LOAD_LIBS) -lstdc++
 COMPILE_FLAGS = -o2
 
 #--- compiler -----------------------------------------------------------------
+#--- location of the compiler -------------------------------------------------
+#CMP_PATH = /opt/conceptgcc-boostcon
 #COMPILE = $(CMP_PATH)/bin/gcc
 #COMPILE = /opt/conceptgcc-boostcon/bin/gcc
 COMPILE = gcc
@@ -197,3 +192,51 @@ validate:
 	$(COMPILE) $(COMPILE_FLAGS)  $(INCLUDE) $(validate_SOURCES) $(LOAD_FLAGS) -o $(validate_TARGET)
 
 
+show_temps:
+	find $(ITL_ROOT_PATH) -name \*.pdb; \
+	find $(ITL_ROOT_PATH) -name \*.exe; \
+	find $(ITL_ROOT_PATH) -name \*.obj; \
+	find $(ITL_ROOT_PATH) -name \*.pdb; \
+	find $(ITL_ROOT_PATH) -name \*.idb; \
+	find $(ITL_ROOT_PATH) -name \*.ilk; \
+	find $(ITL_ROOT_PATH) -name \*.dep; \
+	find $(ITL_ROOT_PATH) -name \*.manifest*; \
+	find $(ITL_ROOT_PATH) -name BuildLog.htm; \
+	find $(ITL_ROOT_PATH)/doc/html -name *; \
+	find $(ITL_ROOT_PATH) -name \*.ncb; \
+	find $(ITL_ROOT_PATH) -name \*.suo; \
+	find $(ITL_ROOT_PATH) -name \*.user; \
+	find $(ITL_ROOT_PATH) -name stdafx.h; \
+	
+win_clean:
+	../script/rm_temps $(ITL_ROOT_PATH)/bin \*.exe; \
+	../script/rm_temps $(ITL_ROOT_PATH)/bin \*.obj; \
+	../script/rm_temps $(ITL_ROOT_PATH)/bin \*.pdb; \
+	../script/rm_temps $(ITL_ROOT_PATH)/bin \*.idb; \
+	../script/rm_temps $(ITL_ROOT_PATH)/bin \*.ilk; \
+	../script/rm_temps $(ITL_ROOT_PATH)/bin \*.dep; \
+	../script/rm_temps $(ITL_ROOT_PATH)/bin \*.manifest; \
+	../script/rm_temps $(ITL_ROOT_PATH)/bin \*.manifest.*; \
+	../script/rm_temps $(ITL_ROOT_PATH)/bin BuildLog.htm; \
+	../script/rm_temps $(ITL_ROOT_PATH) \*.ncb; \
+	../script/rm_temps $(ITL_ROOT_PATH) \*.suo; \
+	../script/rm_temps $(ITL_ROOT_PATH) \*.user;
+	
+bin_clean:
+	rm $(ITL_ROOT_PATH)/bin/* ;
+
+dox_clean:
+	../script/rm_temps $(ITL_ROOT_PATH)/doc/html \*.html; \
+	../script/rm_temps $(ITL_ROOT_PATH)/doc/html \*.png; \
+	../script/rm_temps $(ITL_ROOT_PATH)/doc/html \*.css; \
+	../script/rm_temps $(ITL_ROOT_PATH)/doc/html \*.gif; \
+
+clean:
+	make win_clean 
+	make dox_clean
+	
+svn_clean:
+	../script/rm_svn $(ITL_ROOT_PATH)
+	
+	
+	

@@ -60,7 +60,7 @@ namespace itl
     spezifische Werte und eine maximale Anzahl beschränkt.
 
     Der Wertebereich (CoDomain) sind Mengen von Episoden. Diese Episoden sind
-    'getypte' \ref TypedEpisodeT, die ihren Typ kennen. Eine Episode aus einer 
+    'getypte' \ref typed_episode, die ihren Typ kennen. Eine Episode aus einer 
     Episodenmenge ei
     hat immer den gleichen Typ aus TypeDomain::DomainET wie ihr Schlüssels Ti 
     eines Wertepaares (Ti, ei).
