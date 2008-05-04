@@ -58,7 +58,7 @@ all:
 	make examples
 	make tests
 
-# The concept_gcc compiles does not yet digest my loki::typelist based tuple type
+# The concept_gcc compiler does not yet digest my loki::typelist based tuple type
 # tag 'all_concept' covers the parts that can be compiled
 all_concept:
 	make examples

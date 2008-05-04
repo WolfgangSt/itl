@@ -7,16 +7,6 @@ Copyright (c) 2007-2008: Joachim Faulhaber
       (See accompanying file LICENCE.txt or copy at
            http://www.boost.org/LICENSE_1_0.txt)
 +----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------+
-WARNING:
-The code of LaBatea makes heavy use of c++ meta programming that causes 
-extensive computational activity at compile time.
-Please be prepared that the compilaton of the code will take a lot longer as 
-you usualy would expect, without the generating any compiler messages.
-Avoid compiling in Debug mode because the generated binary tends to be bloated.
-+----------------------------------------------------------------------------*/
-
 #include <iostream>
 #include <stdio.h>
 #include <lokixt/Tuple.h>

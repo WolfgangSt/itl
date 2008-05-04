@@ -36,6 +36,8 @@ INCLUDE  = $(STD_INCL) $(ITL_INCL)
 #--- libraries ----------------------------------------------------------------
 #LOAD_LIBS  = -L$(CMP_PATH)/lib
 LOAD_LIBS  = -L/usr/lib 
+#--- LIBS for 64bit processors: 
+#LOAD_LIBS  = -L/usr/lib64 
 
 #--- loadflags ----------------------------------------------------------------
 LOAD_FLAGS = $(LOAD_LIBS) -lstdc++
@@ -55,13 +57,14 @@ COMPILE = gcc
 all:
 	make examples
 	make tests
-	make devels
 
-# The concept_gcc compiles does not yet digest my loki::typelist based tuple type
+# The concept_gcc compiler does not yet digest my loki::typelist based tuple type
 # tag 'all_concept' covers the parts that can be compiled
 all_concept:
 	make examples
-	make tests
+	make itvset_shell
+	make splititvmap_shell
+	make auto_itv_test
 	
 examples:
 	make party

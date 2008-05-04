@@ -103,6 +103,7 @@ public:
         {
         case diagnosis: return std::string("DIAG");
         case ward:      return std::string("WARD");
+		default:        return std::string("Unknown");
         }
     }
 };
