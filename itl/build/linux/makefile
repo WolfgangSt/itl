@@ -35,9 +35,9 @@ INCLUDE  = $(STD_INCL) $(ITL_INCL)
 
 #--- libraries ----------------------------------------------------------------
 #LOAD_LIBS  = -L$(CMP_PATH)/lib
-#LOAD_LIBS  = -L/usr/lib
+LOAD_LIBS  = -L/usr/lib
 #--- LIBS for 64bit processors: 
-LOAD_LIBS  = -L/usr/lib64 
+#LOAD_LIBS  = -L/usr/lib64 
 
 #--- loadflags ----------------------------------------------------------------
 LOAD_FLAGS = $(LOAD_LIBS) -lstdc++
