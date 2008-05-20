@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------+
-Copyright (c) 2007-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
+Copyright (c) 2007-2008: Joachim Faulhaber
 +-----------------------------------------------------------------------------+
 Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
 +-----------------------------------------------------------------------------+
@@ -58,8 +58,25 @@ namespace itl
     intervals and interval containers the library provides classes for
     generalized crosstables, which are tuple containers. We call such
     containers <em>tuple computers</em> or \e cubes.
+	\n \n
+	The Interval Template Library is currently hosted at the open source
+	platform sourceforge and can be downloaded from http://sourceforge.net/projects/itl.
+	This doxygen generated html documentation is part of the library release.
+	In addition it is available at http://www.herold-faulhaber.de/itl.
+	\n \n
+	Basic parts of the ITL (interval conainers) are currently discussed at the
+	boost developers mailing list as a contribution to the boost libraries.
+	Although the sourcecode of the ITL is mature and very well tested it's 
+	Design may be refactored significantly in a process of adapting to the
+	boost library design principles and coding standards.
     \n \n \n
 
+	\section sample_acc Acknowledgements
+
+    I would like to thank CEO Hermann Steppe and Chief Programmer Peter Wuttke
+	of Cortex Software GmbH for their friendly support of the development of the
+	itl and their permission to release the	library as open source.
+    
     \section sample_sec Examples
 
     We do provide a collection of examples that demonstrate the purpose and basic
@@ -118,7 +135,7 @@ namespace itl
 
     \subsection itv_subsec Intervals and sets of intervals 
 
-    A set of intervals is again a set. The implementation of a set as a set of
+    A set of intervals represents again a set. The implementation of a set as a set of
     intervals is a very efficient implementation of a set if it's elements are
     clustered in intervals. Examples for interval sets are given in sample
     interval_container.cpp. 

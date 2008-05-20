@@ -43,15 +43,15 @@ namespace itl
             _typeChoice.setMaxWeights(100);
             _typeChoice[Type::itl_set]             = 0;
             _typeChoice[Type::interval_set]        = 0;
-            _typeChoice[Type::split_interval_set]  = 0;
-            _typeChoice[Type::itl_map]             = 0;
-            _typeChoice[Type::split_interval_map]  = 100;
+            _typeChoice[Type::split_interval_set]  = 33;
+            _typeChoice[Type::itl_map]             = 33;
+            _typeChoice[Type::split_interval_map]  = 34;
             _typeChoice.init();
 
             _atomicTypeChoice.setSize(AtomicType::AtomicTypes_size);
             _atomicTypeChoice.setMaxWeights(100);
-            _atomicTypeChoice[AtomicType::Int]     = 0;
-            _atomicTypeChoice[AtomicType::Double]  = 100;
+            _atomicTypeChoice[AtomicType::Int]     = 50;
+            _atomicTypeChoice[AtomicType::Double]  = 50;
             _atomicTypeChoice.init();
         }
 
@@ -92,31 +92,31 @@ namespace itl
             //        }
             //        break;
             //    }
-            //case Type::split_interval_set:
-            //    {
-            //        switch(_atomicTypeChoice.some())
-            //        {
-            //        case AtomicType::Int:    return new IntervalSetValidater<split_interval_set<int> >;
-            //        case AtomicType::Double: return new IntervalSetValidater<split_interval_set<double> >;
-            //        default: return NULL;
-            //        }
-            //        break;
-            //    }
-            //case Type::itl_map:
-            //    {
-            //        switch(_atomicTypeChoice.some())
-            //        {
-            //        case AtomicType::Int:    return new InplaceCopValidater<itl::map<int,int> >; 
-            //        case AtomicType::Double: return new InplaceSetBaseValidater<itl::map<int,double> >; 
-            //        default: return NULL;
-            //        }
-            //        break;
-            //    }
+            case Type::split_interval_set:
+                {
+                    switch(_atomicTypeChoice.some())
+                    {
+                    case AtomicType::Int:    return new IntervalSetValidater<split_interval_set<int> >;
+                    case AtomicType::Double: return new IntervalSetValidater<split_interval_set<double> >;
+                    default: return NULL;
+                    }
+                    break;
+                }
+            case Type::itl_map:
+                {
+                    switch(_atomicTypeChoice.some())
+                    {
+                    case AtomicType::Int:    return new InplaceCopValidater<itl::map<int,int> >; 
+                    case AtomicType::Double: return new InplaceSetBaseValidater<itl::map<int,double> >; 
+                    default: return NULL;
+                    }
+                    break;
+                }
             case Type::split_interval_map:
                 {
                     switch(_atomicTypeChoice.some())
                     {
-                    // case AtomicType::Int:    return new IntervalMapValidater<split_interval_map<int,double> >; 
+                    case AtomicType::Int:    return new IntervalMapValidater<split_interval_map<int,double> >; 
                     case AtomicType::Double: return new IntervalMapValidater<split_interval_map<double,int> >; 
                     default: return NULL;
                     }

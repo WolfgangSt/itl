@@ -44,7 +44,7 @@ LOAD_FLAGS = $(LOAD_LIBS) -lstdc++
 
 #--- compileflags ---------------------------------------------------
 # COMPILE_FLAGS = -o2 -DUSE_CONCEPTS
-COMPILE_FLAGS = -o2
+COMPILE_FLAGS = -O2
 
 #--- compiler -----------------------------------------------------------------
 #--- location of the compiler -------------------------------------------------
