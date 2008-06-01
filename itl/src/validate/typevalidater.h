@@ -32,6 +32,8 @@ namespace itl
         virtual void validate()=0;
         virtual void addFrequencies(ValidationCounterT&)=0;
         virtual void addViolations(ViolationCounterT&, ViolationMapT&)=0;
+
+		virtual bool hasValidProfile()const{ return true; }
     };
 
 
@@ -78,10 +80,13 @@ namespace itl
         void validate()
         {
             _validater = chooseValidater();
-            _validater->run();
-            _validater->addFrequencies(_frequencies);
-            _validater->addViolations(_violationsCount, _violations);
-            delete _validater;
+			if(_validater)
+			{
+				_validater->run();
+				_validater->addFrequencies(_frequencies);
+				_validater->addViolations(_violationsCount, _violations);
+				delete _validater;
+			}
         }
 
         void addFrequencies(ValidationCounterT& summary) { summary += _frequencies; }
@@ -142,10 +147,13 @@ namespace itl
         void validate()
         {
             _validater = chooseValidater();
-            _validater->run();
-            _validater->addFrequencies(_frequencies);
-            _validater->addViolations(_violationsCount, _violations);
-            delete _validater;
+			if(_validater)
+			{
+				_validater->run();
+				_validater->addFrequencies(_frequencies);
+				_validater->addViolations(_violationsCount, _violations);
+				delete _validater;
+			}
         }
 
         void addFrequencies(ValidationCounterT& summary) { summary += _frequencies; }
@@ -294,10 +302,13 @@ namespace itl
         void validate()
         {
             _validater = chooseValidater();
-            _validater->run();
-            _validater->addFrequencies(_frequencies);
-            _validater->addViolations(_violationsCount, _violations);
-            delete _validater;
+			if(_validater)
+			{
+				_validater->run();
+				_validater->addFrequencies(_frequencies);
+				_validater->addViolations(_violationsCount, _violations);
+				delete _validater;
+			}
         }
 
         void addFrequencies(ValidationCounterT& summary) { summary += _frequencies; }
@@ -365,10 +376,13 @@ namespace itl
         void validate()
         {
             _validater = chooseValidater();
-            _validater->run();
-            _validater->addFrequencies(_frequencies);
-            _validater->addViolations(_violationsCount, _violations);
-            delete _validater;
+			if(_validater)
+			{
+				_validater->run();
+				_validater->addFrequencies(_frequencies);
+				_validater->addViolations(_violationsCount, _violations);
+				delete _validater;
+			}
         }
 
         void addFrequencies(ValidationCounterT& summary) { summary += _frequencies; }
@@ -442,10 +456,13 @@ namespace itl
         void validate()
         {
             _validater = chooseValidater();
-            _validater->run();
-            _validater->addFrequencies(_frequencies);
-            _validater->addViolations(_violationsCount, _violations);
-            delete _validater;
+			if(_validater)
+			{
+				_validater->run();
+				_validater->addFrequencies(_frequencies);
+				_validater->addViolations(_violationsCount, _violations);
+				delete _validater;
+			}
         }
 
         void addFrequencies(ValidationCounterT& summary) { summary += _frequencies; }
@@ -523,10 +540,13 @@ namespace itl
         void validate()
         {
             _validater = chooseValidater();
-            _validater->run();
-            _validater->addFrequencies(_frequencies);
-            _validater->addViolations(_violationsCount, _violations);
-            delete _validater;
+			if(_validater)
+			{
+				_validater->run();
+				_validater->addFrequencies(_frequencies);
+				_validater->addViolations(_violationsCount, _violations);
+				delete _validater;
+			}
         }
 
         void addFrequencies(ValidationCounterT& summary) { summary += _frequencies; }
@@ -583,10 +603,13 @@ namespace itl
         void validate()
         {
             _validater = chooseValidater();
-            _validater->run();
-            _validater->addFrequencies(_frequencies);
-            _validater->addViolations(_violationsCount, _violations);
-            delete _validater;
+			if(_validater)
+			{
+				_validater->run();
+				_validater->addFrequencies(_frequencies);
+				_validater->addViolations(_violationsCount, _violations);
+				delete _validater;
+			}
         }
 
         void addFrequencies(ValidationCounterT& summary) { summary += _frequencies; }
@@ -631,6 +654,9 @@ namespace itl
             _lawChoice.init();
         }
 
+		bool hasValidProfile()
+		{
+		}
 
         LawValidaterI* chooseValidater()
         {
@@ -645,10 +671,13 @@ namespace itl
         void validate()
         {
             _validater = chooseValidater();
-            _validater->run();
-            _validater->addFrequencies(_frequencies);
-            _validater->addViolations(_violationsCount, _violations);
-            delete _validater;
+			if(_validater)
+			{
+				_validater->run();
+				_validater->addFrequencies(_frequencies);
+				_validater->addViolations(_violationsCount, _violations);
+				delete _validater;
+			}
         }
 
         void addFrequencies(ValidationCounterT& summary) { summary += _frequencies; }

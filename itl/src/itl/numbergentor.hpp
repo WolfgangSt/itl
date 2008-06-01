@@ -122,11 +122,15 @@ public:
 
     WeightedNumberGentor(int size, WeightsT maxWeights):
         _size(size), _maxWeights(maxWeights),
-        _weights(size, WeightsT()), _kumWeights(size+1, WeightsT()) {}
+        _weights(size, WeightsT()), _kumWeights(size+1, WeightsT()),
+		_typeNames(size, std::string())
+		{}
 
     WeightedNumberGentor(int size):
         _size(size), _maxWeights(1000),
-        _weights(size, WeightsT()), _kumWeights(size+1, WeightsT()) {}
+        _weights(size, WeightsT()), _kumWeights(size+1, WeightsT()),
+		_typeNames(size, std::string())
+		{}
 
     void setSize(int size);
     int size()const { return _size; }
@@ -135,12 +139,23 @@ public:
     WeightsT maxWeights()const { return _maxWeights; }
     WeightsT chosenValue()const { return _chosenValue; }
 
+	void setTypeNames(const std::vector<std::string>& names)
+	{ _typeNames = names ; }
+
+	void setTypeNames(const char* denotation[])
+	{ 
+		for(int idx=0; idx < size(); idx++)
+			_typeNames[idx] = std::string(denotation[idx]);
+	}
+
     WeightsT& operator[](int idx) 
     { J_ASSERT(0<=idx && idx<_size); return _weights[idx]; }
 
     void setWeight(int idx, WeightsT val) { J_ASSERT(0<=idx && idx<_size); _weights[idx] = val; }
 
     WeightsT getKumWeight(int idx)const { return _kumWeights[idx]; }
+
+	WeightsT sumOfWeights()const;
 
     void init();
 
@@ -152,14 +167,21 @@ public:
     bool isRangeValid()const 
     { return _kumWeights[_chosenIndex] <= _chosenValue && _chosenValue < _kumWeights[_chosenIndex+1]; }
 
+	std::string asString()const;
+
+	bool is_consistent()const { return sumOfWeights() == _maxWeights; }
+
+	std::string inconsitencyMessage(const std::string& location)const;
+
 private:
-    int                        _size;
-    WeightsT                _maxWeights;
-    std::vector<WeightsT>   _weights;
-    std::vector<WeightsT>   _kumWeights;
-    NumberGentorT<int>        _numgentor;
-    WeightsT                _chosenValue;
-    int                        _chosenIndex;
+    int                      _size;
+    WeightsT                 _maxWeights;
+    std::vector<WeightsT>    _weights;
+    std::vector<WeightsT>    _kumWeights;
+    NumberGentorT<int>       _numgentor;
+    WeightsT                 _chosenValue;
+    int                      _chosenIndex;
+	std::vector<std::string> _typeNames;
 };
 
 
@@ -183,6 +205,16 @@ void WeightedNumberGentor<WeightsT>::init()
 }
 
 template <typename WeightsT>
+WeightsT WeightedNumberGentor<WeightsT>::sumOfWeights()const 
+{
+	WeightsT weightSum = WeightsT();
+    for(int idx=0; idx < _size; idx++)
+        weightSum += _weights[idx];
+
+	return weightSum; 
+}
+
+template <typename WeightsT>
 int WeightedNumberGentor<WeightsT>::some()
 {
     _chosenValue = _numgentor(_maxWeights);
@@ -200,6 +232,39 @@ int WeightedNumberGentor<WeightsT>::lower_bound_index(int low, int up, WeightsT 
         return lower_bound_index(low, mid, val);
     else
         return lower_bound_index(mid+1, up, val);
+}
+
+
+template <typename WeightsT>
+std::string WeightedNumberGentor<WeightsT>::asString()const
+{
+	std::string result;
+	for(int idx=0; idx < size(); idx++)
+	{
+		result += value<int>::to_string(idx);
+		result += ":";
+		result += _typeNames[idx];
+		result += "(";
+		result += value<int>::to_string(_weights[idx]);
+		result += ")\n";
+	}
+	return result;
+}
+
+template <typename WeightsT>
+std::string WeightedNumberGentor<WeightsT>::inconsitencyMessage(const std::string& location)const
+{
+	std::string message;
+	message += "Inconsistent typechoice in ";
+	message += location + ":\n";
+	message += "The sum of weights must be ";
+	message += value<int>::to_string(maxWeights());
+	message += " but is ";
+	message += value<int>::to_string(sumOfWeights());
+	message += "\n";
+	message += "The weights defined are:\n";
+	message += asString();
+	return message;
 }
 
 } // namespace itl

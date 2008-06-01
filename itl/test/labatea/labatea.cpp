@@ -62,7 +62,7 @@ void test_realmvalidater()
     ">> Output will be generated in a few seconds\n"
     ">> teminate by typing <CTRL>C\n"
     ">> ------------------------------------------------------ <<\n";
-    validater.validate();
+	validater.validate();
 };
 
 

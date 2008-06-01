@@ -280,6 +280,17 @@ public:
     */
     void intersect(interval_base_set& section, const interval_base_set& x)const;
 
+	//JODO refactor
+    interval_base_set& operator *= (const value_type& x)
+	{
+		interval_base_set<DomainT,Interval,Compare,Alloc>* section = cons();
+		intersect(*section, x); 
+        section->_set.swap(_set);
+        delete section;
+        return *this;
+	}
+
+
     /** Perform intersection of <tt>*this</tt> and <tt>x</tt>; assign result
         to <tt>*this</tt>
 

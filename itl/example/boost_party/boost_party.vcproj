@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="party"
-	ProjectGUID="{6BE62DDE-21B9-4333-BF11-AA054DD43757}"
+	Name="boost_party"
+	ProjectGUID="{0D1DB87E-E72A-4FE9-A067-1907CC6613F6}"
 	RootNamespace="Party"
 	Keyword="Win32Proj"
 	>
@@ -188,7 +188,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\party.cpp"
+				RelativePath=".\boost_party.cpp"
 				>
 			</File>
 		</Filter>

@@ -122,7 +122,9 @@ EXCLUDE_SYMLINKS       = NO
 EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       = ./src/loki/* \
                          ./src/lokixt/* \
-                         ./src/validate/*.h
+                         ./src/validate/*.h \
+						 ./boost_1_35_0/* \
+						 */boost_1_35_0/*
 EXCLUDE_SYMBOLS        = 
 EXAMPLE_PATH           = ./example
 EXAMPLE_PATTERNS       = *

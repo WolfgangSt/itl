@@ -15,12 +15,18 @@ Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
 #include <itl/split_interval_map.hpp>
 #include "../toytime.h"
 
+// The next line includes <boost/date_time/posix_time/posix_time.hpp>
+// and a few lines of adapter code.
+#include <itl/itl_ptime.hpp> 
+
 using namespace std;
+using namespace boost::posix_time;
 using namespace itl;
 
-/** Example party.cpp \file Party.cpp
+/** Example boost_party.cpp \file boost_party.cpp
 
     Party.cpp demonstrates the possibilities of a split interval map (split_interval_map).
+	As time parameter boost::posix_time::ptime is used. 
     A split_interval_map maps intervals to a given content. In this case the content 
     is a set of party guests represented by their name strings.
 
@@ -51,19 +57,20 @@ using namespace itl;
     The <em>accumulative behavior</em> accumulates associated values on every overlap of
     an insertion for the associated values.
 
-    \include party/party.cpp
+    \include party/boost_party.cpp
 */
 
 // Type itl::set<string> collects the names of party guests. Therefore it needs to
 // implement operator += that performs a set union on overlap of intervals.
 typedef itl::set<string> GuestSetT;
 
-// Time is the domain type the the split_interval_map. It's key values are therefore
-// time intervals: interval<Time>. The content is the set of names: GuestSetT.
+// boost::posix_time::ptime is the domain type the the split_interval_map. 
+// It's key values are therefore time intervals: interval<ptime>. The content
+// is the set of names: GuestSetT.
+typedef split_interval_map<ptime, GuestSetT> BoostPartyAttendenceHistoryT;
 
-typedef split_interval_map<Time, GuestSetT> PartyAttendenceHistoryT;
 
-void party()
+void boost_party()
 {
     GuestSetT mary_harry; 
     mary_harry.insert("Mary");
@@ -76,36 +83,55 @@ void party()
     GuestSetT peter; 
     peter.insert("Peter");
 
-    PartyAttendenceHistoryT party;
+    BoostPartyAttendenceHistoryT party;
 
-    party.insert(make_pair( rightopen_interval<Time>(Time(19,30), Time(23,00)), mary_harry) );
-    party.insert(make_pair( rightopen_interval<Time>(Time(20,10), Time(monday,0,0)), diana_susan) );
-    party.insert(make_pair( rightopen_interval<Time>(Time(22,15), Time(monday,0,30)), peter) );
+	party.insert(
+	  make_pair( 
+		rightopen_interval<ptime>(
+		  time_from_string("2008-05-20 19:30"), 
+		  time_from_string("2008-05-20 23:00")), 
+		  mary_harry) );
+	party.insert(
+	  make_pair( 
+		rightopen_interval<ptime>(
+		  time_from_string("2008-05-20 20:10"), 
+		  time_from_string("2008-05-21 00:00")), 
+		  diana_susan) );
+	party.insert(
+	  make_pair( 
+		rightopen_interval<ptime>(
+		  time_from_string("2008-05-20 22:15"), 
+		  time_from_string("2008-05-21 00:30")), 
+		  peter) );
 
-    PartyAttendenceHistoryT::iterator it = party.begin();
+    BoostPartyAttendenceHistoryT::iterator it = party.begin();
     while(it != party.end())
     {
-        interval<Time> when = (*it).first;
+        interval<ptime> when = (*it).first;
         // Who is at the party within the time interval 'when' ?
         GuestSetT who = (*it++).second;
-        cout << when.as_string() << ": " << who.as_string() << endl;
+        cout << "[" << when.first() << " - " << when.upper_bound() << ")"
+			 << ": " << who.as_string() << endl;
     }
 }
+
 
 int main()
 {
     cout << ">> Interval Template Library: Sample boost_party.cpp <<\n";
     cout << "-------------------------------------------------------\n";
-    party();
+    boost_party();
     return 0;
 }
 
 // Program output:
-
-// >> Interval Template Library: Sample party.cpp <<
-// -------------------------------------------------
-// [sun:19:30,sun:20:10): Harry Mary
-// [sun:20:10,sun:22:15): Diana Harry Mary Susan
-// [sun:22:15,sun:23:00): Diana Harry Mary Peter Susan
-// [sun:23:00,mon:00:00): Diana Peter Susan
-// [mon:00:00,mon:00:30): Peter
+/*-----------------------------------------------------------------------------
+>> Interval Template Library: Sample boost_party.cpp <<
+-------------------------------------------------------
+[2008-May-20 19:30:00 - 2008-May-20 20:10:00): Harry Mary
+[2008-May-20 20:10:00 - 2008-May-20 22:15:00): Diana Harry Mary Susan
+[2008-May-20 22:15:00 - 2008-May-20 23:00:00): Diana Harry Mary Peter Susan
+[2008-May-20 23:00:00 - 2008-May-21 00:00:00): Diana Peter Susan
+[2008-May-21 00:00:00 - 2008-May-21 00:30:00): Peter
+Drücken Sie eine beliebige Taste . . .
+-----------------------------------------------------------------------------*/

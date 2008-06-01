@@ -39,6 +39,7 @@ Function-templates for discrete Datatypes like int, unsigned or
 #include <string>
 #include <sstream>
 
+
 namespace itl
 {
     template <class IncrementableT>
@@ -46,6 +47,7 @@ namespace itl
 
     template <class DecrementableT>
     inline DecrementableT pred(DecrementableT x) { return --x; }
+
 
     // ------------------------------------------------------------------------
     template<class Type>
@@ -95,15 +97,25 @@ namespace itl
         static std::string to_string();
     };
 
-
     template <class Type>
-    inline Type type<Type>::neutron() { return Type(); }
+    inline Type type<Type>::neutron() 
+	{
+		return Type(); 
+	}
 
     template<> inline float  type<float>::unon()  { return 1.0; }
     template<> inline double type<double>::unon() { return 1.0; }
 
+	//CL 
+	//template<> inline boost::posix_time::ptime::time_duration_type 
+	//	type<boost::posix_time::ptime::time_duration_type>::unon() 
+	//{ return boost::posix_time::ptime::time_duration_type::unit(); }
+
     template <class Type>
-    inline Type type<Type>::unon() { return succ(Type()); }
+    inline Type type<Type>::unon() 
+	{ 
+		return succ(type<Type>::neutron()); 
+	}
 
 
     template<> inline bool type<bool>::is_atomic() { return true; }
@@ -171,7 +183,7 @@ namespace itl
         { 
             return binary_template<Binary>::to_string()+
                 "<"+type<Type1>::to_string()+","+type<Type2>::to_string()+">"; 
-        }
+S        }
     };
 
 } // namespace itl

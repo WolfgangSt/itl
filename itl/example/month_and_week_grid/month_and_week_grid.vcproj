@@ -2,8 +2,8 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="party"
-	ProjectGUID="{6BE62DDE-21B9-4333-BF11-AA054DD43757}"
+	Name="month_and_week_grid"
+	ProjectGUID="{360BCFA9-9EB6-4D22-8469-CDC290478F77}"
 	RootNamespace="Party"
 	Keyword="Win32Proj"
 	>
@@ -188,7 +188,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\party.cpp"
+				RelativePath=".\month_and_week_grid.cpp"
 				>
 			</File>
 		</Filter>

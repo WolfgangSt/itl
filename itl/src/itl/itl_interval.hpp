@@ -37,6 +37,9 @@ DEALINGS IN THE SOFTWARE.
 #include <itl/itl_value.hpp>
 #include <itl/j_assert.hpp>
 
+#undef min
+#undef max
+
 #define BOUND_VAL first
 #define BOUND_TYPES second
 
@@ -47,6 +50,14 @@ namespace itl
 
 /**
     \mainpage The Interval Template Library
+
+	\section news_sec News
+
+	The ITL has been validated by a <em>Law based Test Automaton (LaBatea)</em>
+	which makes heavy use of c++ meta programming. Problems with compile time
+	and code generation efficiency are reported on http://groups.google.com/group/comp.lang.c++.moderated/ .
+	See related <a href="LaBatea_performance.xls">performance charts here.</a>
+
 
     \section intro_sec Introduction
 
@@ -60,9 +71,9 @@ namespace itl
     containers <em>tuple computers</em> or \e cubes.
 	\n \n
 	The Interval Template Library is currently hosted at the open source
-	platform sourceforge and can be downloaded from http://sourceforge.net/projects/itl.
+	platform sourceforge and can be downloaded from http://sourceforge.net/projects/itl .
 	This doxygen generated html documentation is part of the library release.
-	In addition it is available at http://www.herold-faulhaber.de/itl.
+	In addition it is available at http://www.herold-faulhaber.de/itl .
 	\n \n
 	Basic parts of the ITL (interval conainers) are currently discussed at the
 	boost developers mailing list as a contribution to the boost libraries.
@@ -71,12 +82,6 @@ namespace itl
 	boost library design principles and coding standards.
     \n \n \n
 
-	\section sample_acc Acknowledgements
-
-    I would like to thank CEO Hermann Steppe and Chief Programmer Peter Wuttke
-	of Cortex Software GmbH for their friendly support of the development of the
-	itl and their permission to release the	library as open source.
-    
     \section sample_sec Examples
 
     We do provide a collection of examples that demonstrate the purpose and basic
@@ -178,6 +183,12 @@ namespace itl
     provided by file amount_cube.cpp. 
     \n \n
 
+	\section thanks_sec Acknowledgements
+
+    I would like to thank CEO Hermann Steppe and Chief Developer Peter Wuttke
+	of Cortex Software GmbH for their friendly support of my work on the
+	ITL and their permission to release the	library as open source.
+    
 */
 
 /// A class for intervals
@@ -230,7 +241,8 @@ public:
 
     // JODO unon() dokumentieren
     /// Default constructor; yields an empty interval <tt>[1,0]</tt>
-    interval() : _lwb(type<DataT>::unon()), _upb(DataT()), _boundtypes(CLOSED) {}
+	interval() : _lwb(type<DataT>::unon()), _upb(type<DataT>::neutron()), 
+                 _boundtypes(CLOSED) {}
     /// Constructor for a closed singleton interval <tt>[val,val]</tt>
     interval(const DataT& val) : 
         _lwb(val), _upb(val), _boundtypes(CLOSED) {}
@@ -321,7 +333,7 @@ public:
 //@{
     /// Set the interval empty
     void clear()
-    { set_lwb(type<DataT>::unon()); set_upb(DataT()); _boundtypes=CLOSED; }
+    { set_lwb(type<DataT>::unon()); set_upb(type<DataT>::neutron()); _boundtypes=CLOSED; }
 
     /// Set the intervals values
     interval& set(const DataT& lw, const DataT& up, bound_types bt) 
@@ -847,9 +859,12 @@ DataT interval<DataT>::last()const
 template <class DataT>
 DataT interval<DataT>::size()const
 { 
-    if(empty()) return DataT(); 
-    else if(type<DataT>::is_continuous()) return _upb - _lwb;
-    else return last() - first() + type<DataT>::unon(); 
+    if(empty()) 
+		return (type<DataT>::neutron() - type<DataT>::neutron()); 
+    else if(type<DataT>::is_continuous()) 
+		return _upb - _lwb;
+    else 
+		return last()-first() + type<DataT>::unon() - type<DataT>::neutron(); 
 }
 
 template <class DataT>
