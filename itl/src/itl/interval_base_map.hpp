@@ -38,7 +38,7 @@ class interval_base_map
 #include <itl/notate.hpp>
 #include <itl/itl_map.hpp>
 #include <itl/interval_base_set.hpp>
-#include <itl/maps.hpp>
+//CL devirt #include <itl/maps.hpp>
 #include <itl/itl_interval.hpp>
 
 
@@ -130,7 +130,7 @@ template
 //  std::EqualityComparable<Codomain>
 //}
 #endif
-class interval_base_map: public maps<DomainT,CodomainT>
+class interval_base_map
 {
 public:
 
@@ -239,7 +239,6 @@ public:
     /// Treatment of neighouring intervals on insertion
     virtual void handle_neighbours(const typename ImplMapT::iterator& it)=0;
 //@}
-    // JODO iterator inject(UniCombinatorT<CodomainT>& cmb, const value_type& vp);
 
     
     // Functions that are common with interval_base_set --------------------------------
@@ -311,7 +310,8 @@ public:
     */
     virtual void insert(const value_type& x);
 
-    void inject(const value_type& x) { insert(x); }
+    void add(const value_type& x) { insert(x); }
+    void operator += (const value_type& x) { add(x); }
 
     /** Subtraction of a base value pair <tt>x := pair(k,y)</tt> where <tt>base_value_type:=pair<DomainT,CodomainT></tt>
 
@@ -325,8 +325,9 @@ public:
         Insertion and subtraction are reversible as follows:
         <tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
     */
-    virtual    void subtract(const base_value_type& x)
+    virtual void subtract(const base_value_type& x)
     { subtract( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
+    void operator -= (const value_type& x) { subtract(x); }
 
     
     /** Subtraction of an interval value pair  <tt>x := pair(interval_type(x1,x2)const ,y)</tt> 

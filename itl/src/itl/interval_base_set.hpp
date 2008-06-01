@@ -257,6 +257,11 @@ public:
     //CL
     ///// Insertion of an interval <tt>x</tt>
     virtual void insert(const value_type& x);
+
+	void add(const value_type& x) { insert(x); }
+    void operator += (const value_type& x) { add(x); }
+
+
     ///// Removal of an interval <tt>x</tt>
     virtual void subtract(const value_type& x);
 

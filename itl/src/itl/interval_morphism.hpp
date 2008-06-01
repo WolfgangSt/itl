@@ -57,7 +57,7 @@ namespace itl
                 const typename ElementContainerT::key_type&  key  = ElementContainerT::key_value(element_);
                 const typename ElementContainerT::data_type& data = ElementContainerT::data_value(element_);
 
-                result.insert(IntervalContainerT::make_domain_element(key, data));
+                result += IntervalContainerT::make_domain_element(key, data);
             }
         }
 

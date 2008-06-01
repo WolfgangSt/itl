@@ -150,11 +150,12 @@ namespace itl
         bool contains(const map& sub)const 
         { return Map::contained_in(sub, *this); }
 
-        /** \c inject inserts \c value_pair into the map if it's key does 
+        /** \c add inserts \c value_pair into the map if it's key does 
             not exist in the map.    
             If \c value_pairs's key value exists in the map, it's data
             value is added to the data value already found in the map. */
-        iterator inject(const value_type& value_pair);
+        iterator add(const value_type& value_pair);
+		iterator operator += (const value_type& value_pair) { return add(value_pair); }
 
         /* The \c value_pair for key is erased from the map */
         iterator subtract(const key_type& key);
@@ -165,7 +166,7 @@ namespace itl
 
         /** Add a map \c x2 to this map. If an element of \c x2 already exists
             in \c *this, add up the contents using <tt>operator +=</tt>. */
-        map& operator += (const map& x2) { Set::inject(*this, x2); return *this; }
+        map& operator += (const map& x2) { Set::add(*this, x2); return *this; }
 
         /** Subtract a map \c x2 from this map. If an element of \c x2 already exists
             in \c *this, subtract the contents using <tt>operator -=</tt>. */
@@ -260,7 +261,7 @@ namespace itl
 
     template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
     typename map<KeyT,DataT,Compare,Alloc>::iterator
-        map<KeyT,DataT,Compare,Alloc>::inject(const value_type& val)
+        map<KeyT,DataT,Compare,Alloc>::add(const value_type& val)
     {
         if(val.CONT_VALUE == DataT())
             return end();

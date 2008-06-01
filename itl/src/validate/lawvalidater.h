@@ -67,13 +67,12 @@ namespace itl
         
         void addViolations(ViolationCounterT& summary, ViolationMapT& collector)   
         {
-            summary.inject(ViolationCounterT::value_type(lawType(), static_cast<int>(_lawViolations.size()))); 
-            //collector.inject(ViolationMapT::value_type(lawType(), PolyLawViolations(new LawViolationsT(_violations))));
+            summary += ViolationCounterT::value_type(lawType(), static_cast<int>(_lawViolations.size())); 
             if(!_lawViolations.empty())
-                collector.inject(ViolationMapT::value_type(lawType(), PolyLawViolations(new LawViolationsT(_lawViolations))));
+                collector += ViolationMapT::value_type(lawType(), PolyLawViolations(new LawViolationsT(_lawViolations)));
         }
 
-        std::string lawType()const{    return _law.typeString(); }
+        std::string lawType()const{ return _law.typeString(); }
 
         void reportLawInfo()const;
         void reportProgress()const;

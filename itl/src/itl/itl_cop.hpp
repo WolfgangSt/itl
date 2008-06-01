@@ -152,7 +152,8 @@ namespace itl
         bool contains(const cop& sub)const { return Map::contained_in(sub, *this); }
 
         // Default inject-function using += on CodomTV
-        iterator inject(const value_type& vp);
+        iterator add(const value_type& vp);
+        iterator operator += (const value_type& vp);
 
         iterator subtract(const key_type& key);
         // Default subtract-function using -= on CodomTV
@@ -225,7 +226,7 @@ namespace itl
 
     template <typename KeyT, typename DataT, typename CompareT, typename AllocT>
     typename cop<KeyT,DataT,CompareT,AllocT>::iterator
-        cop<KeyT,DataT,CompareT,AllocT>::inject(const value_type& val)
+        cop<KeyT,DataT,CompareT,AllocT>::add(const value_type& val)
     {
         if(val.CONT_VALUE == DataT())
             return end();

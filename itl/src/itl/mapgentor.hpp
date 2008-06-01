@@ -100,7 +100,7 @@ void MapGentorT<MapTV>::some(MapTV& x)
         p_domainGentor->some(key);
         CodomainTD val;
         p_codomainGentor->some(val);
-        x.inject(ValueTypeTD(key,val));
+        x += ValueTypeTD(key,val);
         m_sample.push_back(ValueTypeTD(key,val));
     }
 }

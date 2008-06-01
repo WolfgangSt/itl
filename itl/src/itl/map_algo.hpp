@@ -63,8 +63,6 @@ namespace itl
             return true;
         }
 
-        //JODO map_intersection: es gibt mehrer Möglichkeiten der Implementierung
-        // map/insert; accu_map/inject=insert
         template<class MapType>
         void intersection(MapType& y, const MapType& x1, const MapType& x2)
         {
@@ -74,12 +72,7 @@ namespace itl
             while(i1 != x1.end())
             {
                 i2 = x2.find(i1->first);
-                if(i2 != x2.end())
-                {
-                    //JODO this is for collector and counter
-                    tmp.insert(*i1);
-                    tmp.inject(*i2); //JODO insert/inject
-                }
+                if(i2 != x2.end()){tmp += *i1; tmp += *i2;}
                 i1++;
             }
             tmp.swap(y);
@@ -104,7 +97,7 @@ namespace itl
                 if(x2_ != x2.end())
                 {
                     result.insert(*x1_);
-                    result.inject(*x2_);
+                    result.add(*x2_);
                 }
                 x1_++;
             }

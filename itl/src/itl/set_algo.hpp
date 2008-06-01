@@ -81,16 +81,23 @@ namespace itl
 
         //JODO where to put common algorithms? namespace Collector, Ordered, Sorted, SortedObject
 
+
         template<class ObjectT>
-        void inject(ObjectT& result, const ObjectT& x2)
+        ObjectT& operator += (ObjectT& result, const ObjectT& x2)
+		{ return Set::add(result, x2); }
+
+        template<class ObjectT>
+        ObjectT& add(ObjectT& result, const ObjectT& x2)
         {
             typedef typename ObjectT::const_iterator Object_const_iterator;
             for(Object_const_iterator x2_ = x2.begin(); x2_ != x2.end(); x2_++)
-                result.inject(*x2_);
+                result += *x2_;
+
+			return result;
         }
 
         template<class ObjectT, class CoObjectT>
-        void subtract(ObjectT& result, const CoObjectT& x2) //JODO TEST
+        void subtract(ObjectT& result, const CoObjectT& x2)
         {
             typename CoObjectT::const_iterator common_lwb_;
             typename CoObjectT::const_iterator common_upb_;
