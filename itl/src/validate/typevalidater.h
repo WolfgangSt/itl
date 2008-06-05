@@ -14,7 +14,6 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 #include <validate/laws/set_laws.h>
 #include <validate/laws/order.h>
 #include <validate/laws/pushouts.h>
-#include <validate/laws/pushouts.h>
 #include <validate/lawvalidater.h>
 
 namespace itl

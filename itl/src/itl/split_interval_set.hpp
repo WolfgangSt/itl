@@ -30,7 +30,8 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __split_interval_set_JOFA_990223__
 #define __split_interval_set_JOFA_990223__
 
-#include <itl/interval_set.hpp>
+#include <itl/interval_set_splitter.hpp>
+#include <itl/interval_base_set.hpp>
 
 
 namespace itl
@@ -92,11 +93,12 @@ namespace itl
         template<class>class Compare  = std::less,
         template<class>class Alloc    = std::allocator
     > 
-    class split_interval_set: public interval_base_set<DomainT,Interval,Compare,Alloc>
+	class split_interval_set: 
+		public interval_base_set<itl::interval_set_splitter, DomainT,Interval,Compare,Alloc>
     {
     public:
         // inherit all typedefs
-        typedef interval_base_set<DomainT,Interval,Compare,Alloc> base_type;
+        typedef interval_base_set<itl::interval_set_splitter,DomainT,Interval,Compare,Alloc> base_type;
 
         //PORT: The following types should be intereted from the base class
         // which does work with mscv++ but gcc complaines
@@ -112,77 +114,7 @@ namespace itl
         /// Constructor for a single interval
         explicit split_interval_set(const interval_type& itv): base_type() { insert(itv); }
         
-        /// Virtual constructor
-        virtual base_type* cons()const { return new split_interval_set<DomainT,Interval,Compare,Alloc>; }
-
-        /// Does the set contain the interval  <tt>x</tt>?
-        virtual bool contains(const interval_type& x)const;
-
-
-        /// Insertion of an interval <tt>x</tt>
-        virtual void insert(const interval_type&);
-
-        /// Subtraction of an interval <tt>x</tt>
-        virtual void subtract(const interval_type& x);
-
-        /// Treatment of adjoint intervals on insertion
-        virtual void handle_neighbours(const iterator& it){}
-
-        void toItvSetT(interval_set<DomainT,Interval,Compare,Alloc>& dst)const
-        { dst.clear(); const_FORALL(typename ImplSetT, it, this->_set) dst.insert(*it); }
-
-        /// Maximum split_interval_set representing 'always' as good as possible
-        static split_interval_set always()    { return split_interval_set(interval_type::always()); }
     } ;
-
-
-
-    template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-    bool split_interval_set<DomainT,Interval,Compare,Alloc>::contains(const interval_type& x)const
-    {
-        if(x.empty()) return true;
-
-        typename ImplSetT::const_iterator fst_it = this->_set.lower_bound(x);
-        typename ImplSetT::const_iterator end_it = this->_set.upper_bound(x);
-
-        interval_set<DomainT,Interval,Compare,Alloc> matchSet;
-        for(typename ImplSetT::const_iterator it=fst_it; it!=end_it; it++) matchSet.insert(*it);
-
-        interval_set<DomainT,Interval,Compare,Alloc> x_asSet; x_asSet.insert(x);
-        return x_asSet.contained_in(matchSet);
-    }
-
-
-
-    template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-    void split_interval_set<DomainT,Interval,Compare,Alloc>::insert(const interval_type& x)
-    {
-    #ifdef _DEV_TEST
-        interval_set<DomainT,Interval,Compare,Alloc> clone; toItvSetT(clone);
-    #endif
-
-        base_type::insert(x);
-
-    #ifdef _DEV_TEST
-        ON_DEV_TEST(clone.insert(x);)
-        DEV_ASSERT(isEqual(clone))
-    #endif
-    }
-
-
-    template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-    void split_interval_set<DomainT,Interval,Compare,Alloc>::subtract(const interval_type& x)
-    {
-    #ifdef _DEV_TEST
-        interval_set<DomainT,Interval,Compare,Alloc> clone; toItvSetT(clone);
-    #endif
-
-        base_type::subtract(x);
-    #ifdef _DEV_TEST
-        ON_DEV_TEST(clone.subtract(x);)
-        DEV_ASSERT(isEqual(clone))
-    #endif
-    }
 
 
     /** Equality on discrete interval sets. Discrete interval sets are equal, if

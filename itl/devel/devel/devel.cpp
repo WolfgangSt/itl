@@ -4,12 +4,14 @@
 #include "stdafx.h"
 #include <iostream>
 #include <itl/notate.hpp>
+#include <itl/itl_value.hpp>
 #include <itl/itl_set.hpp>
 #include <itl/itl_map.hpp>
 //#include <itl/itl_list.hpp>
 //#include <itl/string_list.hpp>
 #include <itl/interval_set.hpp>
-#include <itl/split_interval_map.hpp>
+#include <itl/split_interval_set.hpp>
+//#include <itl/split_interval_map.hpp>
 //#include <lokixt/Tuple.h>
 
 using namespace std;
@@ -208,8 +210,6 @@ using namespace itl;
 //struct TypeToString<BinaryTemplate2<2, Tpl> >
 //{
 //    static std::string to_string()
-
-static std::string to_string()
 //    {
 //        return UnaryTemplate2ToString<BinaryTemplate2>::it() + "<1*" + " some " + ">";
 //    }
@@ -224,27 +224,21 @@ static std::string to_string()
 //    cout << TypeToString<MyUnary2<2, MyUnary> >::it() << endl;
 //}
 
-void tmp_test_map()
+void tmp_test()
 {
-    itl::set<int> y;
-    y.insert(3);
-    y.insert(5);
-    cout << y.as_string() << endl;
+	//interval_set<int> is;
+	//is.insert(rightopen_interval(1,3));
+	//is.insert(rightopen_interval(6,33));
+	//is.insert(rightopen_interval(18,42));
+	//printf("interval_set=%s\n", is.as_string().c_str());
 
-    itl::map<int,int> my;
-    my.insert(make_pair(3,3));
-    my.insert(make_pair(5,3));
-    cout << my.as_string() << endl;
-
-    itl::interval_set<int> is;
-    is.insert(rightopen_interval(1,3));
-    is.insert(rightopen_interval(3,5));
-    cout << is.as_string() << endl;
-
-    itl::split_interval_map<int,int> im;
-    im.insert(make_pair(rightopen_interval(1,6), 1));
-    im.insert(make_pair(rightopen_interval(4,8), 1));
-    cout << im.as_string() << endl;
+	split_interval_set<int> sis;
+	sis.insert(rightopen_interval(1,9));
+	printf("split_interval_set=%s\n", sis.as_string().c_str());
+	sis.insert(rightopen_interval(5,20));
+	printf("split_interval_set=%s\n", sis.as_string().c_str());
+	sis.insert(rightopen_interval(10,13));
+	printf("split_interval_set=%s\n", sis.as_string().c_str());
 }
 
 int _tmain(int argc, _TCHAR* argv[])
@@ -254,7 +248,7 @@ int _tmain(int argc, _TCHAR* argv[])
     //test_tuple();
     //test_intersection();
     //test_TypeToString();
-    tmp_test_map();
+    tmp_test();
     return 0;
 }
 

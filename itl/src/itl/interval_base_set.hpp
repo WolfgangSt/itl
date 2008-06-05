@@ -35,7 +35,6 @@ class interval_base_set
 #define __interval_base_set_h_JOFA_990223__
 
 #include <limits>
-#include <itl/sets.hpp>
 #include <itl/itl_set.hpp>
 #include <itl/itl_interval.hpp>
 #include <itl/notate.hpp>
@@ -101,6 +100,13 @@ namespace itl
 */
 template 
 <
+    template
+	<
+		class,
+		template<class>class,
+		template<class>class,
+		template<class>class
+	>class Injector,
     typename             DomainT, 
     template<class>class Interval = itl::interval,
     template<class>class Compare  = std::less,
@@ -109,7 +115,7 @@ template
 #ifdef USE_CONCEPTS
     requires {std::LessThanComparable<DomainT>}
 #endif
-class interval_base_set: public sets<DomainT>
+class interval_base_set : public Injector<DomainT,Interval,Compare,Alloc>
 {
 public:
 
@@ -162,14 +168,9 @@ public:
 
     // B: Constructors, destructors, assignment
     /// Default constructor for the empty set 
-    interval_base_set(): _set() {}
+    interval_base_set(){}
     /// Copy constructor
-    interval_base_set(const interval_base_set& src): _set(src._set) {}
-
-    /// Virtual constructor
-    virtual interval_base_set* cons()const=0;
-    /// Virtual destruktor
-    virtual ~interval_base_set(){};
+    //JODO URG interval_base_set(const interval_base_set& src): _set(src._set) {}
 
     /// Assignment operator
     interval_base_set& operator = (const interval_base_set& src) 
@@ -186,7 +187,7 @@ public:
     bool empty()const { return _set.size()==0; }
 
     bool contains(const DomainT& x)const
-    { 
+    {
         typename ImplSetT::const_iterator it = _set.find(interval_type(x)); 
         return it != _set.end(); 
     }
@@ -200,9 +201,6 @@ public:
         distinct.        
     */
 //@{ 
-    /// Does the set contain the interval x?
-    virtual bool contains(const interval_type& x)const=0;
-
     /** Is <tt>*this</tt> contained in <tt>super</tt>? */
     bool contained_in(const interval_base_set& super)const;
 
@@ -210,7 +208,7 @@ public:
     bool contains(const interval_base_set& sub)const { return sub.contained_in(*this); }
 
     /// Treatment of adjoint intervals on insertion
-    virtual void handle_neighbours(const typename ImplSetT::iterator& it)=0;
+    //CL virtual void handle_neighbours(const typename ImplSetT::iterator& it)=0;
 //@}
 
 /** @name E: Bounds and other selectors
@@ -255,15 +253,16 @@ public:
 //@{ 
 
     //CL
-    ///// Insertion of an interval <tt>x</tt>
-    virtual void insert(const value_type& x);
+    /// Insertion of an interval <tt>x</tt>
+    void insert(const value_type& x);
 
 	void add(const value_type& x) { insert(x); }
     void operator += (const value_type& x) { add(x); }
 
 
-    ///// Removal of an interval <tt>x</tt>
-    virtual void subtract(const value_type& x);
+    /// Removal of an interval <tt>x</tt>
+    void subtract(const value_type& x);
+    void operator -= (const value_type& x) { subtract(x); }
 
     /** Intersection with intervall x; The intersection is assigned to <tt>section</tt>. 
     
@@ -429,14 +428,12 @@ private:
     void intersect_ascending(interval_base_set& section, const DomainT& start, const DomainT& span)const;
     void intersect_descending(interval_base_set& section, const DomainT& start, const DomainT& span)const;
 
-protected:
-    ImplSetT _set;
-
 } ;
 
 
-template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-DomainT interval_base_set<DomainT,Interval,Compare,Alloc>::size()const
+template<template<class,template<class>class,template<class>class,template<class>class>class Injector,
+         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+DomainT interval_base_set<Injector,DomainT,Interval,Compare,Alloc>::size()const
 {
     DomainT size = DomainT();
     const_FOR_IMPL(it) size += (*it).size();
@@ -444,8 +441,9 @@ DomainT interval_base_set<DomainT,Interval,Compare,Alloc>::size()const
 }
 
 
-template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-bool interval_base_set<DomainT,Interval,Compare,Alloc>::contained_in(const interval_base_set& x2)const
+template<template<class,template<class>class,template<class>class,template<class>class>class Injector,
+         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+bool interval_base_set<Injector,DomainT,Interval,Compare,Alloc>::contained_in(const interval_base_set& x2)const
 {
     // The empty set is subset of every set
     if(empty())
@@ -460,7 +458,7 @@ bool interval_base_set<DomainT,Interval,Compare,Alloc>::contained_in(const inter
     {
         // x2 should be larger than *this; so every element in this should be in x2
         const_FOR_IMPL(it) 
-            if(!x2.contains(*it)) 
+			if(!x2.Injector<DomainT,Interval,Compare,Alloc>::contains(*it)) 
                 return false;
         return true;
     }
@@ -468,14 +466,15 @@ bool interval_base_set<DomainT,Interval,Compare,Alloc>::contained_in(const inter
 
 
 //CL 
-//template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-//bool interval_base_set<DomainT,Interval,Compare,Alloc>::operator <= (const interval_base_set<DomainT,Interval,Compare,Alloc>& x2)const
+//template <class Injector, class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+//bool interval_base_set<Injector,DomainT,Interval,Compare,Alloc>::operator <= (const interval_base_set<Injector,DomainT,Interval,Compare,Alloc>& x2)const
 //{ return contained_in(x2); }
 
 
 
-template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_set<DomainT,Interval,Compare,Alloc>::insert(const value_type& x)
+template<template<class,template<class>class,template<class>class,template<class>class>class Injector,
+         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+void interval_base_set<Injector,DomainT,Interval,Compare,Alloc>::insert(const value_type& x)
 {
     if(x.empty()) return;
 
@@ -494,13 +493,14 @@ void interval_base_set<DomainT,Interval,Compare,Alloc>::insert(const value_type&
 
         while(it!=end_it)
         { 
-            if((++nxt_it)==end_it) (*it).right_surplus(rightResid,x);
+            if((++nxt_it)==end_it) 
+				(*it).right_surplus(rightResid,x);
             victim = it; it++; _set.erase(victim);
         }
 
         Interval<DomainT> extended = x;
         extended.extend(leftResid).extend(rightResid);
-
+        extended.extend(rightResid);
         insert(extended);
     }
 
@@ -508,8 +508,9 @@ void interval_base_set<DomainT,Interval,Compare,Alloc>::insert(const value_type&
 
 
 
-template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_set<DomainT,Interval,Compare,Alloc>::subtract(const value_type& x)
+template<template<class,template<class>class,template<class>class,template<class>class>class Injector,
+         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+void interval_base_set<Injector,DomainT,Interval,Compare,Alloc>::subtract(const value_type& x)
 {
     if(x.empty()) return;
     typename ImplSetT::iterator fst_it = _set.lower_bound(x);
@@ -533,25 +534,28 @@ void interval_base_set<DomainT,Interval,Compare,Alloc>::subtract(const value_typ
 
 
 
-template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-bool interval_base_set<DomainT,Interval,Compare,Alloc>::disjoint_to(const interval_type& x)const
+template<template<class,template<class>class,template<class>class,template<class>class>class Injector,
+         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+bool interval_base_set<Injector,DomainT,Interval,Compare,Alloc>::disjoint_to(const interval_type& x)const
 {
-    interval_base_set<DomainT,Interval,Compare,Alloc>* section = cons();
+    interval_base_set<Injector,DomainT,Interval,Compare,Alloc>* section = cons();
     intersect(*section, x);
     return section->empty();
 }
 
-template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-bool interval_base_set<DomainT,Interval,Compare,Alloc>::disjoint_to(const interval_base_set& x)const
+template<template<class,template<class>class,template<class>class,template<class>class>class Injector,
+         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+bool interval_base_set<Injector,DomainT,Interval,Compare,Alloc>::disjoint_to(const interval_base_set& x)const
 {
-    interval_base_set<DomainT,Interval,Compare,Alloc>* section = cons();
+    interval_base_set<Injector,DomainT,Interval,Compare,Alloc>* section = cons();
     intersect(*section, x);
     return section->empty();
 }
 
 
-template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_set<DomainT,Interval,Compare,Alloc>::intersect(interval_base_set& section, const value_type& x)const
+template<template<class,template<class>class,template<class>class,template<class>class>class Injector,
+         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+void interval_base_set<Injector,DomainT,Interval,Compare,Alloc>::intersect(interval_base_set& section, const value_type& x)const
 {
     section.clear();
     // any intersection with the empty intervall is empty
@@ -567,8 +571,8 @@ void interval_base_set<DomainT,Interval,Compare,Alloc>::intersect(interval_base_
 }
 
 //JODO CL?
-//template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-//void interval_base_set<DomainT,Interval,Compare,Alloc>::intersect_ascending(interval_base_set& section, 
+//template <class Injector, class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+//void interval_base_set<Injector,DomainT,Interval,Compare,Alloc>::intersect_ascending(interval_base_set& section, 
 //                                         const DomainT& start, const DomainT& span)const
 //{
 //    section.clear();
@@ -604,8 +608,8 @@ void interval_base_set<DomainT,Interval,Compare,Alloc>::intersect(interval_base_
 
 /*CL? CONTINUE
 CAUTION first()/last() is wrong for ContinTV's
-template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_set<DomainT,Interval,Compare,Alloc>::intersect_descending(interval_base_set<DomainT,Interval,Compare,Alloc>& section, 
+template <class Injector, class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+void interval_base_set<Injector,DomainT,Interval,Compare,Alloc>::intersect_descending(interval_base_set<Injector,DomainT,Interval,Compare,Alloc>& section, 
                                          const DomainT& start, const DomainT& span)const
 {
     section.clear();
@@ -641,32 +645,31 @@ void interval_base_set<DomainT,Interval,Compare,Alloc>::intersect_descending(int
 */
 
 
-template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_set<DomainT,Interval,Compare,Alloc>::intersect(interval_base_set& interSection, 
+template<template<class,template<class>class,template<class>class,template<class>class>class Injector,
+         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+void interval_base_set<Injector,DomainT,Interval,Compare,Alloc>::intersect(interval_base_set& interSection, 
                                             const interval_base_set& x)const
 {
     interSection.clear();
     if(x.empty()) return;
 
-    interval_base_set<DomainT,Interval,Compare,Alloc>* aux = cons();
+    interval_base_set<Injector,DomainT,Interval,Compare,Alloc> aux;
     const_FORALL(typename ImplSetT, it, x._set)
     {
-        aux->clear();
-        intersect(*aux, *it);
-        interSection += (*aux);
+        intersect(aux, *it);
+        interSection += aux;
     }
-    delete aux;
 }
 
 
-template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-interval_base_set<DomainT,Interval,Compare,Alloc>& 
-    interval_base_set<DomainT,Interval,Compare,Alloc>::operator *= (const interval_base_set& x)
+template<template<class,template<class>class,template<class>class,template<class>class>class Injector,
+         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+interval_base_set<Injector,DomainT,Interval,Compare,Alloc>& 
+    interval_base_set<Injector,DomainT,Interval,Compare,Alloc>::operator *= (const interval_base_set& x)
 {
-    interval_base_set<DomainT,Interval,Compare,Alloc>* section = cons();
-    intersect(*section, x);
-    section->_set.swap(_set);
-    delete section;
+    interval_base_set<Injector,DomainT,Interval,Compare,Alloc> section;
+    intersect(section, x);
+    section._set.swap(_set);
     return *this;
 }
     
@@ -674,8 +677,9 @@ interval_base_set<DomainT,Interval,Compare,Alloc>&
 
 
 
-template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-interval_base_set<DomainT,Interval,Compare,Alloc>& interval_base_set<DomainT,Interval,Compare,Alloc>::join()
+template<template<class,template<class>class,template<class>class,template<class>class>class Injector,
+         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+interval_base_set<Injector,DomainT,Interval,Compare,Alloc>& interval_base_set<Injector,DomainT,Interval,Compare,Alloc>::join()
 {
     iterator it=_set.begin();
     if(it==_set.end()) 
@@ -716,8 +720,9 @@ interval_base_set<DomainT,Interval,Compare,Alloc>& interval_base_set<DomainT,Int
 
 
 
-template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_set<DomainT,Interval,Compare,Alloc>::uniform_bounds(typename interval<DomainT>::bound_types bt)
+template<template<class,template<class>class,template<class>class,template<class>class>class Injector,
+         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+void interval_base_set<Injector,DomainT,Interval,Compare,Alloc>::uniform_bounds(typename interval<DomainT>::bound_types bt)
 {
     // I can do this only, because I am shure that the contents and the
     // ordering < on interval is invariant wrt. this transformation on bounds
@@ -725,8 +730,9 @@ void interval_base_set<DomainT,Interval,Compare,Alloc>::uniform_bounds(typename 
 }
 
 
-template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-interval_base_set<DomainT,Interval,Compare,Alloc>& interval_base_set<DomainT,Interval,Compare,Alloc>::scale_up(const interval_base_set& src, DomainT factor, DomainT max)
+template<template<class,template<class>class,template<class>class,template<class>class>class Injector,
+         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+interval_base_set<Injector,DomainT,Interval,Compare,Alloc>& interval_base_set<Injector,DomainT,Interval,Compare,Alloc>::scale_up(const interval_base_set& src, DomainT factor, DomainT max)
 { 
     clear();
     const_FORALL(typename interval_base_set, it, src)
@@ -738,8 +744,9 @@ interval_base_set<DomainT,Interval,Compare,Alloc>& interval_base_set<DomainT,Int
     return *this;
 }
 
-template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-interval_base_set<DomainT,Interval,Compare,Alloc>& interval_base_set<DomainT,Interval,Compare,Alloc>::scale_down(const interval_base_set& src, DomainT factor)
+template<template<class,template<class>class,template<class>class,template<class>class>class Injector,
+         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+interval_base_set<Injector,DomainT,Interval,Compare,Alloc>& interval_base_set<Injector,DomainT,Interval,Compare,Alloc>::scale_down(const interval_base_set& src, DomainT factor)
 { 
     clear();
     const_FORALL(typename interval_base_set, it, src)
@@ -753,9 +760,10 @@ interval_base_set<DomainT,Interval,Compare,Alloc>& interval_base_set<DomainT,Int
 
 
 
-template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-inline bool operator == (const interval_base_set<DomainT,Interval,Compare,Alloc>& lhs,
-                         const interval_base_set<DomainT,Interval,Compare,Alloc>& rhs)
+template<template<class,template<class>class,template<class>class,template<class>class>class Injector,
+         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+inline bool operator == (const interval_base_set<Injector,DomainT,Interval,Compare,Alloc>& lhs,
+                         const interval_base_set<Injector,DomainT,Interval,Compare,Alloc>& rhs)
 {
     //MEMO PORT: This implemetation worked with stlport, sgi and gnu 
     // implementations of the stl. But using MSVC-implementation
@@ -765,17 +773,19 @@ inline bool operator == (const interval_base_set<DomainT,Interval,Compare,Alloc>
     return Set::lexicographical_equal(lhs, rhs);
 }
 
-template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-inline bool operator < (const interval_base_set<DomainT,Interval,Compare,Alloc>& lhs,
-                        const interval_base_set<DomainT,Interval,Compare,Alloc>& rhs)
+template<template<class,template<class>class,template<class>class,template<class>class>class Injector,
+         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+inline bool operator < (const interval_base_set<Injector,DomainT,Interval,Compare,Alloc>& lhs,
+                        const interval_base_set<Injector,DomainT,Interval,Compare,Alloc>& rhs)
 {
     return std::lexicographical_compare(
         lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), Compare<Interval<DomainT> >());
 }
 
-template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-inline bool operator <= (const interval_base_set<DomainT,Interval,Compare,Alloc>& lhs,
-                         const interval_base_set<DomainT,Interval,Compare,Alloc>& rhs)
+template<template<class,template<class>class,template<class>class,template<class>class>class Injector,
+         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+inline bool operator <= (const interval_base_set<Injector,DomainT,Interval,Compare,Alloc>& lhs,
+                         const interval_base_set<Injector,DomainT,Interval,Compare,Alloc>& rhs)
 {
     return lhs < rhs || lhs == rhs;
 }

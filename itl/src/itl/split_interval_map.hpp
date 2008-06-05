@@ -556,7 +556,7 @@ namespace itl
         const CodomainT& x_val = x.CONT_VALUE;
 
         if(x_itv.empty()) return;
-        if(x_val==CodomainT()) return;  //CodomainT::OP CodomainT; CodomainT::OP ==
+        if(x_val==CodomainT()) return;
 
         iterator fst_it = this->_map.lower_bound(x_itv);
         if(fst_it==this->_map.end()) return;
@@ -566,7 +566,7 @@ namespace itl
         iterator cur_it = fst_it ;
         interval_type cur_itv   = (*cur_it).KEY_VALUE ;
         // must be copies because cur_it will be erased
-        CodomainT cur_val = (*cur_it).CONT_VALUE ; //CodomainT::OP = 
+        CodomainT cur_val = (*cur_it).CONT_VALUE ;
 
         // only for the first there can be a leftResid: a part of *it left of x
         interval_type leftResid;  cur_itv.left_surplus(leftResid, x_itv);
@@ -576,8 +576,8 @@ namespace itl
         interval_type interSec;
         cur_itv.intersect(interSec, x_itv);
 
-        CodomainT cmb_val = cur_val; //CodomainT::OP =
-        cmb_val -= x_val;          //CodomainT::OP -=
+        CodomainT cmb_val = cur_val;
+        cmb_val -= x_val;
 
         iterator snd_it = fst_it; snd_it++;
         if(snd_it == end_it) 
@@ -588,7 +588,7 @@ namespace itl
 
             this->_map.erase(cur_it);
             insert(value_type(leftResid,  cur_val));
-            if(!(cmb_val==CodomainT())) //CodomainT::OP CodomainT; CodomainT::OP ==
+            if(!(cmb_val==CodomainT()))
                 insert(value_type(interSec, cmb_val));
             insert(value_type(rightResid, cur_val));
         }
@@ -597,7 +597,7 @@ namespace itl
             // first AND NOT last
             this->_map.erase(cur_it);
             insert(value_type(leftResid, cur_val));
-            if(!(cmb_val==CodomainT())) //CodomainT::OP CodomainT; CodomainT::OP ==
+            if(!(cmb_val==CodomainT()))
                 insert(value_type(interSec, cmb_val));
 
             subtractRest(x_itv, x_val, snd_it, end_it);

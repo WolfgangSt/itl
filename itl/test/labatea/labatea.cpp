@@ -14,15 +14,15 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 #include <itl/itl_map.hpp>
 #include <validate/lawvalidater.h>
 #include <validate/laws/monoid.h>
-#include <validate/laws/pushouts.h>
+//#include <validate/laws/pushouts.h>
 #include <validate/gentor/gentorprofile.h>
 #include <validate/gentor/rangegentor.h>
 #include <validate/realmvalidater.h>
 #include <itl/interval_set.hpp>
 #include <itl/numbergentor.hpp>
 #include <itl/setgentor.hpp>
-#include <itl/mapgentor.hpp>
-#include <itl/interval_morphism.hpp>
+//#include <itl/mapgentor.hpp>
+//#include <itl/interval_morphism.hpp>
 #include <itl/functors.hpp>
 
 using namespace std;
