@@ -91,7 +91,7 @@ void SetGentorT<SetTV>::some(SetTV& x)
         DomainTD key;
         //CL m_domainGentor->some(key);
         domainGentor()->some(key);
-        x.insert(key);
+		x.insert(key);
         m_sample.push_back(key);
     }
 }

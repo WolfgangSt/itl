@@ -51,7 +51,7 @@ namespace itl
         typedef typename Loki::tuple<gentor_types> input_gentor;
 
     public:
-        LawValidater()    { setTrialsCount(1000); }
+        LawValidater(){ setTrialsCount(1000); } //1000(std)//JODO config at only ONE location
 
         void setTrialsCount(int trials) 
         {

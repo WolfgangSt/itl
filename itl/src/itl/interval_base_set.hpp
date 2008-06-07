@@ -122,6 +122,8 @@ public:
 /** @name A: Type definitions for the template class 
     */
 //@{ 
+	typedef Injector<DomainT,Interval,Compare,Alloc> base_type;
+
     /// The domain type of the set
     typedef DomainT   domain_type;
     /// The codomaintype is the same as domain_type
@@ -254,14 +256,14 @@ public:
 
     //CL
     /// Insertion of an interval <tt>x</tt>
-    void insert(const value_type& x);
+	void insert(const value_type& x) { base_type::insert(x); }
 
 	void add(const value_type& x) { insert(x); }
     void operator += (const value_type& x) { add(x); }
 
 
     /// Removal of an interval <tt>x</tt>
-    void subtract(const value_type& x);
+    void subtract(const value_type& x) { base_type::subtract(x); }
     void operator -= (const value_type& x) { subtract(x); }
 
     /** Intersection with intervall x; The intersection is assigned to <tt>section</tt>. 
@@ -305,11 +307,17 @@ public:
 
     /// Union with set <tt>x</tt>
     interval_base_set& operator +=(const interval_base_set& x)
-    { const_FORALL(typename ImplSetT, it, x._set) insert(*it); return *this; }
+    { 
+		const_FORALL(typename ImplSetT, it, x._set) insert(*it); 
+		return *this; 
+	}
 
     /// Perform set difference with the set <tt>x</tt>
     interval_base_set& operator -= (const interval_base_set& x)
-    { const_FORALL(typename ImplSetT, it, x._set) subtract(*it); return *this; }
+    { 
+		const_FORALL(typename ImplSetT, it, x._set) subtract(*it); 
+		return *this; 
+	}
 
 
     /// Join bordering intervals    
@@ -465,73 +473,66 @@ bool interval_base_set<Injector,DomainT,Interval,Compare,Alloc>::contained_in(co
 }
 
 
-//CL 
-//template <class Injector, class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-//bool interval_base_set<Injector,DomainT,Interval,Compare,Alloc>::operator <= (const interval_base_set<Injector,DomainT,Interval,Compare,Alloc>& x2)const
-//{ return contained_in(x2); }
-
-
-
-template<template<class,template<class>class,template<class>class,template<class>class>class Injector,
-         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_set<Injector,DomainT,Interval,Compare,Alloc>::insert(const value_type& x)
-{
-    if(x.empty()) return;
-
-    std::pair<typename ImplSetT::iterator,bool> insertion = _set.insert(x);
-
-    if(insertion.WAS_SUCCESSFUL)
-        handle_neighbours(insertion.ITERATOR);
-    else
-    {
-        typename ImplSetT::iterator fst_it = _set.lower_bound(x);
-        typename ImplSetT::iterator end_it = _set.upper_bound(x);
-
-        typename ImplSetT::iterator it=fst_it, nxt_it=fst_it, victim;
-        Interval<DomainT> leftResid;  (*it).left_surplus(leftResid,x);
-        Interval<DomainT> rightResid;
-
-        while(it!=end_it)
-        { 
-            if((++nxt_it)==end_it) 
-				(*it).right_surplus(rightResid,x);
-            victim = it; it++; _set.erase(victim);
-        }
-
-        Interval<DomainT> extended = x;
-        extended.extend(leftResid).extend(rightResid);
-        extended.extend(rightResid);
-        insert(extended);
-    }
-
-}
-
-
-
-template<template<class,template<class>class,template<class>class,template<class>class>class Injector,
-         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_set<Injector,DomainT,Interval,Compare,Alloc>::subtract(const value_type& x)
-{
-    if(x.empty()) return;
-    typename ImplSetT::iterator fst_it = _set.lower_bound(x);
-    if(fst_it==_set.end()) return;
-    typename ImplSetT::iterator end_it = _set.upper_bound(x);
-
-    typename ImplSetT::iterator it=fst_it, nxt_it=fst_it, victim;
-    interval_type leftResid; (*it).left_surplus(leftResid,x);
-    interval_type rightResid;
-
-    while(it!=end_it)
-    { 
-        if((++nxt_it)==end_it) (*it).right_surplus(rightResid,x);
-        victim = it; it++; _set.erase(victim);
-    }
-
-    insert(leftResid);
-    insert(rightResid);
-}
-
-
+//template<template<class,template<class>class,template<class>class,template<class>class>class Injector,
+//         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+//void interval_base_set<Injector,DomainT,Interval,Compare,Alloc>::insert(const value_type& x)
+//{
+//    if(x.empty()) return;
+//
+//    std::pair<typename ImplSetT::iterator,bool> insertion = _set.insert(x);
+//
+//    if(insertion.WAS_SUCCESSFUL)
+//        handle_neighbours(insertion.ITERATOR);
+//    else
+//    {
+//        typename ImplSetT::iterator fst_it = _set.lower_bound(x);
+//        typename ImplSetT::iterator end_it = _set.upper_bound(x);
+//
+//        typename ImplSetT::iterator it=fst_it, nxt_it=fst_it, victim;
+//        Interval<DomainT> leftResid;  (*it).left_surplus(leftResid,x);
+//        Interval<DomainT> rightResid;
+//
+//        while(it!=end_it)
+//        { 
+//            if((++nxt_it)==end_it) 
+//				(*it).right_surplus(rightResid,x);
+//            victim = it; it++; _set.erase(victim);
+//        }
+//
+//        Interval<DomainT> extended = x;
+//        extended.extend(leftResid).extend(rightResid);
+//        extended.extend(rightResid);
+//        insert(extended);
+//    }
+//
+//}
+//
+//
+//
+//template<template<class,template<class>class,template<class>class,template<class>class>class Injector,
+//         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+//void interval_base_set<Injector,DomainT,Interval,Compare,Alloc>::subtract(const value_type& x)
+//{
+//    if(x.empty()) return;
+//    typename ImplSetT::iterator fst_it = _set.lower_bound(x);
+//    if(fst_it==_set.end()) return;
+//    typename ImplSetT::iterator end_it = _set.upper_bound(x);
+//
+//    typename ImplSetT::iterator it=fst_it, nxt_it=fst_it, victim;
+//    interval_type leftResid; (*it).left_surplus(leftResid,x);
+//    interval_type rightResid;
+//
+//    while(it!=end_it)
+//    { 
+//        if((++nxt_it)==end_it) (*it).right_surplus(rightResid,x);
+//        victim = it; it++; _set.erase(victim);
+//    }
+//
+//    insert(leftResid);
+//    insert(rightResid);
+//}
+//
+//
 
 
 template<template<class,template<class>class,template<class>class,template<class>class>class Injector,

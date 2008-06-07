@@ -27,12 +27,23 @@ GentorProfileSgl::GentorProfileSgl(){}
 
 GentorProfile::GentorProfile()
 {
+	//---------------------------------
+	//standard values
     set_range_int(0, 10);
     set_range_double(0.0, 1.0);
     set_range_ContainerSize(0,10);
 
     set_range_interval_int(-10, 10);
     set_maxIntervalLength(8);
+
+	//---------------------------------
+	//small values
+    //set_range_int(0, 10);
+    //set_range_double(0.0, 1.0);
+    //set_range_ContainerSize(0,5);
+
+    //set_range_interval_int(0, 10);
+    //set_maxIntervalLength(5);
 }
 
 // -------------------------------------

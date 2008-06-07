@@ -442,7 +442,7 @@ namespace itl
             {
             case inplaceSetBaseLaws:          return InplaceSetBaseValidater<Type>::chooseValidater();
             case inplaceUnionInvertability:   return new LawValidater<InplaceUnionInvertability<Type>, RandomGentor>;
-            case inplacePlusDistributivity:   return new LawValidater<InplaceDistributivity<Type, inplace_plus, inplace_star>, RandomGentor>;
+            case inplacePlusDistributivity:   return new LawValidater<InplaceDistributivity<Type, inplace_plus, inplace_star, itl::element_equal>, RandomGentor>;
             case inplaceStarDistributivity:   return new LawValidater<InplaceDistributivity<Type, inplace_star, inplace_plus>, RandomGentor>;
             case inplacePlusDashRightDistrib: return new LawValidater<InplaceRightDistributivity<Type, inplace_plus, inplace_minus>, RandomGentor>;
             case inplaceStarDashRightDistrib: return new LawValidater<InplaceRightDistributivity<Type, inplace_star, inplace_minus>, RandomGentor>;

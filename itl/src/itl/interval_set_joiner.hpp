@@ -1,8 +1,6 @@
 /*----------------------------------------------------------------------------+
 Copyright (c) 2007-2008: Joachim Faulhaber
 +-----------------------------------------------------------------------------+
-Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
-+-----------------------------------------------------------------------------+
 Boost Software License - Version 1.0 - August 17th, 2003
 
 Permission is hereby granted, free of charge, to any person or organization
@@ -66,7 +64,15 @@ public:
     /// Container type for the implementation 
     typedef typename itl::set<interval_type,exclusive_less,Alloc> ImplSetT;
 
+    /// Container type for the implementation 
     typedef typename ImplSetT::iterator iterator;
+
+    /// key type of the implementing container
+    typedef typename ImplSetT::key_type   key_type;
+    /// data type of the implementing container
+    typedef typename ImplSetT::data_type  data_type;
+    /// value type of the implementing container
+    typedef typename ImplSetT::value_type value_type;
 
 
     /// Virtual constructor JODO
@@ -75,6 +81,12 @@ public:
 
     /// Does the set contain the interval  <tt>x</tt>?
     bool contains(const interval_type& x)const;
+
+	/// Insertion of an interval <tt>x</tt>
+	void insert(const value_type& x);
+
+	/// Removal of an interval <tt>x</tt>
+	void subtract(const value_type& x);
 
     /// Treatment of adjoint intervals on insertion
     void handle_neighbours(const iterator& it);
@@ -171,6 +183,65 @@ typename interval_set_joiner<DomainT,Interval,Compare,Alloc>::iterator
     J_ASSERT(new_it!=this->_set.end());
     return new_it;
 }
+
+
+template<class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+void interval_set_joiner<DomainT,Interval,Compare,Alloc>::insert(const value_type& x)
+{
+    if(x.empty()) return;
+
+    std::pair<typename ImplSetT::iterator,bool> insertion = _set.insert(x);
+
+    if(insertion.WAS_SUCCESSFUL)
+        handle_neighbours(insertion.ITERATOR);
+    else
+    {
+        typename ImplSetT::iterator fst_it = _set.lower_bound(x);
+        typename ImplSetT::iterator end_it = _set.upper_bound(x);
+
+        typename ImplSetT::iterator it=fst_it, nxt_it=fst_it, victim;
+        Interval<DomainT> leftResid;  (*it).left_surplus(leftResid,x);
+        Interval<DomainT> rightResid;
+
+        while(it!=end_it)
+        { 
+            if((++nxt_it)==end_it) 
+				(*it).right_surplus(rightResid,x);
+            victim = it; it++; _set.erase(victim);
+        }
+
+        Interval<DomainT> extended = x;
+        extended.extend(leftResid).extend(rightResid);
+        extended.extend(rightResid);
+        insert(extended);
+    }
+
+}
+
+
+template<class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+void interval_set_joiner<DomainT,Interval,Compare,Alloc>::subtract(const value_type& x)
+{
+    if(x.empty()) return;
+    typename ImplSetT::iterator fst_it = _set.lower_bound(x);
+    if(fst_it==_set.end()) return;
+    typename ImplSetT::iterator end_it = _set.upper_bound(x);
+
+    typename ImplSetT::iterator it=fst_it, nxt_it=fst_it, victim;
+    interval_type leftResid; (*it).left_surplus(leftResid,x);
+    interval_type rightResid;
+
+    while(it!=end_it)
+    { 
+        if((++nxt_it)==end_it) (*it).right_surplus(rightResid,x);
+        victim = it; it++; _set.erase(victim);
+    }
+
+    insert(leftResid);
+    insert(rightResid);
+}
+
+
 
 
 

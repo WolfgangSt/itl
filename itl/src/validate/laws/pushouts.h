@@ -82,6 +82,36 @@ namespace itl
                 value_size<SourceT>::get(this->template getInputValue<operand_a>())+
                 value_size<SourceT>::get(this->template getInputValue<operand_b>());
         }
+
+		bool debug_holds()
+        {
+            // f(a o b) == f(a) o f(b)
+            // --- left hand side ------------------------
+            // lhs := f(a o b)
+            SourceT a_o_b = this->template getInputValue<operand_a>();
+			std::cout << "a:" << this->template getInputValue<operand_a>().as_string() << endl;
+			std::cout << "b:" << this->template getInputValue<operand_b>().as_string() << endl;
+            // a_o_b o=  this->template getInputValue<operand_b>();
+            OperatorT<SourceT>()(a_o_b, this->template getInputValue<operand_b>());
+
+            TargetT lhs;
+            FunctionT<TargetT,SourceT>()(lhs, a_o_b);
+
+            // --- right hand side -----------------------
+            // rhs := atomize(a) * atomize(b)
+            TargetT atomic_a;
+            FunctionT<TargetT,SourceT>()(atomic_a, this->template getInputValue<operand_a>());
+            TargetT atomic_b;
+            FunctionT<TargetT,SourceT>()(atomic_b, this->template getInputValue<operand_b>());
+            TargetT rhs = atomic_a;
+            OperatorT<TargetT>()(rhs, atomic_b);
+
+            this->template setOutputValue<lhs_result>(lhs);
+            this->template setOutputValue<rhs_result>(rhs);
+
+            return lhs == rhs;
+        }
+
     };
 
 

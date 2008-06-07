@@ -428,10 +428,10 @@ namespace itl
     {
         const interval_type& x_itv = x.KEY_VALUE;
          // must be a copy
-        CodomainT      x_val = x.CONT_VALUE; //CodomainT::OP =
+        CodomainT      x_val = x.CONT_VALUE;
 
         if(x_itv.empty()) return;
-        if(x_val==CodomainT()) return; //CodomainT::OP CodomainT; CodomainT::OP ==
+        if(x_val==CodomainT()) return;
 
         std::pair<typename ImplMapT::iterator,bool> insertion = this->_map.insert(x);
 
@@ -443,7 +443,7 @@ namespace itl
 
             iterator cur_it = fst_it ;
             interval_type cur_itv   = (*cur_it).KEY_VALUE ;
-            CodomainT cur_val = (*cur_it).CONT_VALUE ; //CodomainT::OP =
+            CodomainT cur_val = (*cur_it).CONT_VALUE;
 
 
             interval_type leadGap; x_itv.left_surplus(leadGap, cur_itv);
@@ -615,9 +615,9 @@ namespace itl
         {
             CodomainT& cur_val = (*it).CONT_VALUE ;
 
-            cur_val -= x_val; //CodomainT::OP -=
+            cur_val -= x_val;
 
-            if(cur_val==CodomainT()) //CodomainT::OP CodomainT; CodomainT::OP == 
+            if(cur_val==CodomainT())
             { iterator victim; victim=it; it++; this->_map.erase(victim); }
             else it++;
             nxt_it=it; nxt_it++;
@@ -631,19 +631,19 @@ namespace itl
         if(rightResid.empty())
         {
             CodomainT& cur_val = (*it).CONT_VALUE ;
-            cur_val -= x_val;      //CodomainT::OP -=
-            if(cur_val==CodomainT()) //CodomainT::OP CodomainT; CodomainT::OP ==
+            cur_val -= x_val;
+            if(cur_val==CodomainT())
                 this->_map.erase(it);
         }
         else
         {
             CodomainT cur_val = (*it).CONT_VALUE ;
-            CodomainT cmb_val = cur_val ; //CodomainT::OP =
-            cmb_val -= x_val;           //CodomainT::OP -=
+            CodomainT cmb_val = cur_val ;
+            cmb_val -= x_val;
             interval_type interSec; cur_itv.intersect(interSec, x_itv);
 
             this->_map.erase(it);
-            if(!(cmb_val==CodomainT())) //CodomainT::OP CodomainT; CodomainT::OP ==
+            if(!(cmb_val==CodomainT()))
                 insert(value_type(interSec, cmb_val));
             insert(value_type(rightResid, cur_val));
         }
