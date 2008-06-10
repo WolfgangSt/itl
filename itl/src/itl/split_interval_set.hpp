@@ -97,7 +97,6 @@ namespace itl
 		public interval_base_set<itl::interval_set_splitter, DomainT,Interval,Compare,Alloc>
     {
     public:
-        // inherit all typedefs
         typedef interval_base_set<itl::interval_set_splitter,DomainT,Interval,Compare,Alloc> base_type;
 
         //PORT: The following types should be intereted from the base class

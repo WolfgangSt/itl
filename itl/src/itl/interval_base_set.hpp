@@ -106,7 +106,9 @@ template
 		template<class>class,
 		template<class>class,
 		template<class>class
-	>class Injector,
+	>
+	class Injector,
+
     typename             DomainT, 
     template<class>class Interval = itl::interval,
     template<class>class Compare  = std::less,
@@ -286,13 +288,11 @@ public:
     */
     void intersect(interval_base_set& section, const interval_base_set& x)const;
 
-	//JODO refactor
     interval_base_set& operator *= (const value_type& x)
 	{
-		interval_base_set<DomainT,Interval,Compare,Alloc>* section = cons();
-		intersect(*section, x); 
-        section->_set.swap(_set);
-        delete section;
+		interval_base_set section;
+		intersect(section, x); 
+        section._set.swap(_set);
         return *this;
 	}
 

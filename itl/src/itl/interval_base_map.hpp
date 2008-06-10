@@ -116,6 +116,16 @@ namespace itl
 */
 template
 <
+    template
+	<
+		class,
+		class,
+		template<class>class,
+		template<class>class,
+		template<class>class
+	>
+	class Injector,
+
     typename DomainT,
     typename CodomainT,
     template<class>class Interval = itl::interval,
@@ -130,13 +140,15 @@ template
 //  std::EqualityComparable<Codomain>
 //}
 #endif
-class interval_base_map
+class interval_base_map : Injector<DomainT,CodomainT,Interval,Compare,Alloc>
 {
 public:
 
 /** @name A: Type definitions for the template class 
 */
 //@{ 
+	typedef Injector<DomainT,CodomainT,Interval,Compare,Alloc> base_type;
+
     /// Domain type (type of the keys) of the map
     typedef DomainT   domain_type;
     /// Domain type (type of the keys) of the map
@@ -174,7 +186,7 @@ public:
     typedef typename ImplMapT::const_iterator const_iterator;
 
     /// Corresponding abstract interval set type
-	//typedef interval_base_set<Injector,DomainT,Interval,Compare,Alloc> interval_base_set_type;
+	//typedef interval_base_set<SetInjector,DomainT,Interval,Compare,Alloc> interval_base_set_type;
 
     ///JODO Make exported types consistent
     typedef typename itl::map<DomainT,CodomainT,Compare,Alloc> atomized_type;
@@ -182,15 +194,9 @@ public:
 
     // B: Constructors, destructors, assignment
     /// Default constructor for the empty map 
-    interval_base_map(): _map() {}
+    interval_base_map(){}
     /// Copy constructor
-    interval_base_map(const interval_base_map& src): _map(src._map) {}
-
-    /// Virtual constructor
-    virtual interval_base_map* cons()const=0;
-    /// Virtual destruktor
-    virtual ~interval_base_map(){};
-
+    interval_base_map(const interval_base_map& src): base_type(src) {}
 
     /// Assignment operator
     interval_base_map& operator = (const interval_base_map& src) 
@@ -232,10 +238,10 @@ public:
     */
 //@{ 
     /// Does the map contain the element the value pair <tt>x := pair(interval_type(x1,x2)const, y)</tt>
-    virtual bool contains(const value_type& x)const=0;
+    //JODO doc virtual bool contains(const value_type& x)const=0;
 
     /// Treatment of neighouring intervals on insertion
-    virtual void handle_neighbours(const typename ImplMapT::iterator& it)=0;
+    //JODO doc virtual void handle_neighbours(const typename ImplMapT::iterator& it)=0;
 //@}
 
     
@@ -253,8 +259,8 @@ public:
     interval_type enclosure()const { return first_interval().span(last_interval()); }
 
     /// Gives the domain of the map as interval set
-	template<template<class,template<class>class,template<class>class,template<class>class>class Injector>
-    void domain(interval_base_set<Injector,DomainT,Interval,Compare,Alloc>& dom)const 
+	template<template<class,template<class>class,template<class>class,template<class>class>class SetInjector>
+    void domain(interval_base_set<SetInjector,DomainT,Interval,Compare,Alloc>& dom)const 
     { dom.clear(); const_FOR_IMPLMAP(it) dom.insert((*it).KEY_VALUE); } 
 //@}
     
@@ -289,7 +295,7 @@ public:
         Insertion and subtraction are reversible as follows:
         <tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
     */
-    virtual void insert(const base_value_type& x) 
+    void insert(const base_value_type& x) 
     { insert( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
 
     /** Insertion of an interval value pair <tt>x := pair(interval_type(x1,x2)const ,y)</tt>
@@ -307,9 +313,9 @@ public:
         Insertion and subtraction are reversible as follows:
         <tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
     */
-    virtual void insert(const value_type& x);
+    //CL virtual void insert(const value_type& x);
 
-    void add(const value_type& x) { insert(x); }
+	void add(const value_type& x) { base_type::insert(x); }
     void operator += (const value_type& x) { add(x); }
 
     /** Subtraction of a base value pair <tt>x := pair(k,y)</tt> where <tt>base_value_type:=pair<DomainT,CodomainT></tt>
@@ -324,7 +330,7 @@ public:
         Insertion and subtraction are reversible as follows:
         <tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
     */
-    virtual void subtract(const base_value_type& x)
+    void subtract(const base_value_type& x)
     { subtract( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
     void operator -= (const value_type& x) { subtract(x); }
 
@@ -341,7 +347,7 @@ public:
         Insertion and subtraction are reversible as follows:
         <tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
     */
-    virtual void subtract(const value_type& x);
+    //CL virtual void subtract(const value_type& x);
 
     /** Remove a value <tt>y</tt> at <tt>x</tt> from the map
 
@@ -371,10 +377,10 @@ public:
 
         So this is the most general function for removal of values from interval sets.
     */
-	template<template<class,template<class>class,template<class>class,template<class>class>class Injector>
-    void erase(const interval_base_set<Injector,DomainT,Interval,Compare,Alloc>& x)
+	template<template<class,template<class>class,template<class>class,template<class>class>class SetInjector>
+    void erase(const interval_base_set<SetInjector,DomainT,Interval,Compare,Alloc>& x)
 	{
-	    const_FORALL((typename interval_base_set<Injector,DomainT,Interval,Compare,Alloc>), x_, x)
+	    const_FORALL((typename interval_base_set<SetInjector,DomainT,Interval,Compare,Alloc>), x_, x)
 	        erase(*x_);
 	}
 
@@ -410,8 +416,8 @@ public:
 
     /** Compute the intersection of <tt>*this</tt> and the interval set <tt>x</tt>;
         assign result to the interval map <tt>section</tt>.    */
-	template<template<class,template<class>class,template<class>class,template<class>class>class Injector>
-    void intersect(interval_base_map& section, const interval_base_set<Injector,DomainT,Interval,Compare,Alloc>& x)const
+	template<template<class,template<class>class,template<class>class,template<class>class>class SetInjector>
+    void intersect(interval_base_map& section, const interval_base_set<SetInjector,DomainT,Interval,Compare,Alloc>& x)const
 	{
 		interSection.clear();
 		if(sectant.empty()) return;
@@ -419,7 +425,7 @@ public:
 		interval_base_map* aux = cons();
 		// THINK JODO optimize using the ordering: if intervalls are beyond borders we can terminate
 
-		typename interval_base_set<Injector,DomainT,Interval,Compare,Alloc>::const_iterator it = sectant.begin();
+		typename interval_base_set<SetInjector,DomainT,Interval,Compare,Alloc>::const_iterator it = sectant.begin();
 		while(it != sectant.end())
 		{
 			aux->clear();
@@ -434,8 +440,8 @@ public:
 
         Call of <tt>x *= y</tt> stands for <tt>x = x intersection with y </tt>
     */
-	template<template<class,template<class>class,template<class>class,template<class>class>class Injector>
-    interval_base_map& operator *= (const interval_base_set<Injector,DomainT,Interval,Compare,Alloc>& x)
+	template<template<class,template<class>class,template<class>class,template<class>class>class SetInjector>
+    interval_base_map& operator *= (const interval_base_set<SetInjector,DomainT,Interval,Compare,Alloc>& x)
 	{
 		interval_base_map* section = cons();
 		intersect(*section, x);
@@ -460,11 +466,17 @@ public:
     
     /// Compute union with <tt>x</tt>
     interval_base_map& operator +=(const interval_base_map& x)
-    { const_FORALL(typename ImplMapT, it, x._map) insert(*it); return *this; }
+    { 
+		const_FORALL(typename ImplMapT, it, x._map) base_type::insert(*it); 
+		return *this; 
+	}
     
     /// Compute difference with <tt>x</tt>
     interval_base_map& operator -= (const interval_base_map& x)
-    { const_FORALL(typename ImplMapT, it, x._map) subtract(*it); return *this; }
+    { 
+		const_FORALL(typename ImplMapT, it, x._map) base_type::subtract(*it); 
+		return *this; 
+	}
     
     /// Join bounding intervals    
     interval_base_map& join();
@@ -616,119 +628,31 @@ public:
     static value_type make_domain_element(const domain_type& dom_val, const codomain_type& codom_val)
     { return value_type(interval_type(dom_val), codom_val); }
 
-
-protected:
-    void matchMap(interval_base_map& matchMap, const value_type& x)const;
-    
-protected:
-    ImplMapT _map;
-
 } ;
 
 
-template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::matchMap(interval_base_map& matchMap, 
-                                             const value_type& x_y)const
-{
-    interval_type x = x_y.KEY_VALUE;
-    typename ImplMapT::const_iterator fst_it = _map.lower_bound(x);
-    typename ImplMapT::const_iterator end_it = _map.upper_bound(x);
 
-    for(typename ImplMapT::const_iterator it=fst_it; it!=end_it; it++) matchMap.insert(*it);
-    matchMap.join();
-}
-
-
-template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-bool interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::contained_in(const interval_base_map& super)const
+template 
+<
+    template<class,class,template<class>class,template<class>class,template<class>class>class Injector,
+    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+>
+bool interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>::contained_in(const interval_base_map& super)const
 {
     // x2 should be larger than *this; so every element in this should be in x2
     const_FOR_IMPLMAP(it) 
-        if(!super.contains(*it)) 
+		if(!super.base_type::contains(*it)) 
             return false;
     return true;
 }
 
 
-template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::insert(const value_type& x)
-{
-    const interval_type& x_itv = x.KEY_VALUE;
-    // it HAS TO be a copy
-    CodomainT      x_val = x.CONT_VALUE;
-
-    if(x_itv.empty()) return;
-
-    std::pair<typename ImplMapT::iterator,bool> insertion = _map.insert(x);
-
-    if(insertion.WAS_SUCCESSFUL)
-        handle_neighbours(insertion.ITERATOR);
-    else
-    {
-        iterator fst_it = _map.lower_bound(x_itv);
-        iterator end_it = _map.upper_bound(x_itv);
-
-        typename ImplMapT::iterator it=fst_it, nxt_it=fst_it, victim;
-        interval_type leftResid;  (*it).KEY_VALUE.left_surplus(leftResid, x_itv);
-        interval_type rightResid;
-
-        while(it!=end_it)
-        {
-            x_val += (*it).CONT_VALUE;
-            
-            if((++nxt_it)==end_it) 
-				(*it).KEY_VALUE.right_surplus(rightResid, x_itv);
-            victim = it; it++; _map.erase(victim);
-        }
-
-        interval_type extended = x_itv;
-        extended.extend(leftResid).extend(rightResid);
-
-        insert(value_type(extended, x_val));
-    }
-}
-
-
-
-template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::subtract(const value_type& x)
-{
-    // JODO: Test subtract
-    const interval_type& x_itv = x.KEY_VALUE;
-
-    if(x_itv.empty()) return;
-    iterator fst_it = _map.lower_bound(x_itv);
-    if(fst_it==_map.end()) return;
-    iterator end_it = _map.upper_bound(x_itv);
-
-    typename ImplMapT::iterator it=fst_it, nxt_it=fst_it, victim;
-    interval_type leftResid; (*it).KEY_VALUE.left_surplus(leftResid,x_itv);
-    interval_type rightResid;
-
-    while(it!=end_it)
-    {
-        if((++nxt_it)==end_it) (*it).KEY_VALUE.right_surplus(rightResid,x_itv);
-
-        (*it).CONT_VALUE -= x.CONT_VALUE; //CodomainT::OP -=
-        
-        if( (*it).CONT_VALUE == CodomainT() ) //CodomainT::OP ==
-        {
-            DEV_ASSERT((*it).CONT_VALUE == x.CONT_VALUE); //CodomainT::OP ==
-            victim = it; it++; _map.erase(victim);
-            // behave like DiscItvSetT in case of deletion
-            insert(value_type(leftResid,  x.CONT_VALUE )); //CodomainT::OP CodomainT(CodomainT&) CopyCtor on every value_type
-            insert(value_type(rightResid, x.CONT_VALUE ));
-        }
-        else it++;
-    }
-    
-}
-
-
-
-
-template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::intersect(interval_base_map& section, 
+template 
+<
+    template<class,class,template<class>class,template<class>class,template<class>class>class Injector,
+    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+>
+void interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>::intersect(interval_base_map& section, 
                                                  const interval_type& x)const
 {
     section.clear();
@@ -747,9 +671,13 @@ void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::intersect(inte
     }
 }
 
-template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::intersect(interval_base_map& section, 
-                                                 const typename interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::value_type& sectant)const
+template 
+<
+    template<class,class,template<class>class,template<class>class,template<class>class>class Injector,
+    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+>
+void interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>::intersect(interval_base_map& section, 
+                                                 const typename interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>::value_type& sectant)const
 {
     section.clear();
     interval_type sectant_interval = sectant.KEY_VALUE;
@@ -765,82 +693,50 @@ void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::intersect(inte
 
         if(!common_interval.empty())
         {
-            section.insert( value_type(common_interval, (*it).CONT_VALUE) );
-            section.insert( value_type(common_interval, sectant.CONT_VALUE) );
+			section.base_type::insert( value_type(common_interval, (*it).CONT_VALUE) );
+            section.base_type::insert( value_type(common_interval, sectant.CONT_VALUE) );
         }
     }
 }
 
-	
-//CL
-//template<template<class,template<class>class,template<class>class,template<class>class>class Injector>
-//  template<typename DomainT, typename CodomainT, template<class>class Interval, 
-//           template<class>class Compare, template<class>class Alloc>
-//void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::
-//   intersect(interval_base_map& interSection, 
-//             const interval_base_set<Injector,DomainT,Interval,Compare,Alloc>& sectant)const
-//{
-//    interSection.clear();
-//    if(sectant.empty()) return;
-//
-//    interval_base_map* aux = cons();
-//    // THINK JODO optimize using the ordering: if intervalls are beyond borders we can terminate
-//
-//    typename interval_base_set<Injector,DomainT,Interval,Compare,Alloc>::const_iterator it = sectant.begin();
-//    while(it != sectant.end())
-//    {
-//        aux->clear();
-//        intersect(*aux, *it++);
-//        interSection += (*aux);
-//    }
-//    delete aux;
-//}
-
-//CL
-//template <template<class,template<class>class,template<class>class,template<class>class>class Injector,
-//          typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-//interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>& interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>
-//::operator *= (const interval_base_set<Injector,DomainT,Interval,Compare,Alloc>& x)
-//{
-//    interval_base_map* section = cons();
-//    intersect(*section, x);
-//    section->_map.swap(_map);
-//    delete section;
-//    return *this;
-//}
-
 
 //JODO Section algorithms for map and set arguments are virually the same
-template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::
+template 
+<
+    template<class,class,template<class>class,template<class>class,template<class>class>class Injector,
+    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+>
+void interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>::
     intersect(interval_base_map& interSection, 
               const interval_base_map& sectant)const
 {
     interSection.clear();
     if(sectant.empty()) return;
 
-    interval_base_map* aux = cons();
+    interval_base_map aux;
     // THINK JODO optimize using the ordering: if intervalls are beyond borders we can terminate
 
-    typename interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::const_iterator 
+    typename interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>::const_iterator 
         it = sectant.begin();
     while(it != sectant.end())
     {
-        aux->clear();
-        intersect(*aux, *it++);
-        interSection += (*aux);
+        aux.clear();
+        intersect(aux, *it++);
+        interSection += aux;
     }
-    delete aux;
 }
 
-template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>& interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>
+template 
+<
+    template<class,class,template<class>class,template<class>class,template<class>class>class Injector,
+    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+>
+interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>& interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>
 ::operator *= (const interval_base_map& x)
 {
-    interval_base_map* section = cons();
-    intersect(*section, x);
-    section->_map.swap(_map);
-    delete section;
+    interval_base_map section;
+    intersect(section, x);
+    section._map.swap(_map);
     return *this;
 }
 
@@ -848,7 +744,7 @@ interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>& interval_base_map<D
 
 /*
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::intersect(interval_base_map& section, 
+void interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>::intersect(interval_base_map& section, 
                                               const value_type& x)const
 {
 }
@@ -857,8 +753,12 @@ void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::intersect(inte
 
 
 // JODO USE FOR TESTCODE OR DELETE
-template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::recJoin()
+template 
+<
+    template<class,class,template<class>class,template<class>class,template<class>class>class Injector,
+    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+>
+void interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>::recJoin()
 {
     iterator it=_map.begin();
     if(it==_map.end()) return;
@@ -898,8 +798,12 @@ void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::recJoin()
 }
 
 
-template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>& interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::join()
+template 
+<
+    template<class,class,template<class>class,template<class>class,template<class>class>class Injector,
+    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+>
+interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>& interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>::join()
 {
     iterator it=_map.begin();
     if(it==_map.end()) 
@@ -941,8 +845,12 @@ interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>& interval_base_map<D
     return *this;
 }
 
-template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::merge()
+template 
+<
+    template<class,class,template<class>class,template<class>class,template<class>class>class Injector,
+    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+>
+void interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>::merge()
 {
     iterator it=_map.begin();
     if(it==_map.end()) return;
@@ -986,8 +894,12 @@ void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::merge()
 }
 
 
-template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-std::string interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::as_string()const
+template 
+<
+    template<class,class,template<class>class,template<class>class,template<class>class>class Injector,
+    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+>
+std::string interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>::as_string()const
 {
     std::string res(""); 
     const_FOR_IMPLMAP(it) {
@@ -1001,8 +913,12 @@ std::string interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::as_stri
     return res; 
 }
 
-template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-DomainT interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::size()const
+template 
+<
+    template<class,class,template<class>class,template<class>class,template<class>class>class Injector,
+    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+>
+DomainT interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>::size()const
 {
     DomainT size = DomainT();
     const_FOR_IMPLMAP(it) size += (*it).KEY_VALUE.size();
@@ -1012,7 +928,7 @@ DomainT interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::size()const
 #ifdef UNISTAT
 // JODO: volume ist zu speziell. Geht nicht mit beliebigen WerteTypen für CodomainT
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-CodomainT interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::volume()const
+CodomainT interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>::volume()const
 {
     CodomainT vol = CodomainT();
     const_FOR_IMPLMAP(it) 
@@ -1025,8 +941,12 @@ CodomainT interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::volume()c
 }
 #endif
 
-template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-CodomainT interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::sum()const
+template 
+<
+    template<class,class,template<class>class,template<class>class,template<class>class>class Injector,
+    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+>
+CodomainT interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>::sum()const
 {
     CodomainT sum = CodomainT();
     const_FOR_IMPLMAP(it) 
@@ -1035,16 +955,24 @@ CodomainT interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::sum()cons
 }
 
 
-template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::uniformBounds( typename interval<DomainT>::bound_types bt)
+template 
+<
+    template<class,class,template<class>class,template<class>class,template<class>class>class Injector,
+    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+>
+void interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>::uniformBounds( typename interval<DomainT>::bound_types bt)
 {
     // I can do this only, because I am shure that the contents and the
     // ordering < on interval is invariant wrt. this transformation on bounds
     FOR_IMPLMAP(it) const_cast<interval_type&>((*it).KEY_VALUE).transformBounds(bt);
 }
 
-template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::closeLeftBounds()
+template 
+<
+    template<class,class,template<class>class,template<class>class,template<class>class>class Injector,
+    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+>
+void interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>::closeLeftBounds()
 {
     // I can do this only, because I am shure that the contents and the
     // ordering < on interval is invariant wrt. this transformation on bounds
@@ -1053,8 +981,12 @@ void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::closeLeftBound
 
 
 
-template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::erase(const interval_type& x_itv)
+template 
+<
+    template<class,class,template<class>class,template<class>class,template<class>class>class Injector,
+    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+>
+void interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>::erase(const interval_type& x_itv)
 {
     if(x_itv.empty()) return;
     iterator fst_it = _map.lower_bound(x_itv);
@@ -1084,36 +1016,44 @@ void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::erase(const in
 }
 
 //CL
-//template <template<class,template<class>class,template<class>class,template<class>class>class Injector,
+//template <template<class,template<class>class,template<class>class,template<class>class>class SetInjector,
 //          typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-//void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::erase(const interval_base_set<Injector,DomainT,Interval,Compare,Alloc>& x)
+//void interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>::erase(const interval_base_set<SetInjector,DomainT,Interval,Compare,Alloc>& x)
 //{
-//    const_FORALL(typename interval_base_set<Injector,DomainT,Interval,Compare,Alloc>, x_, x)
+//    const_FORALL(typename interval_base_set<SetInjector,DomainT,Interval,Compare,Alloc>, x_, x)
 //        erase(*x_);
 //}
 
-template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::erase(const interval_base_map& x)
+template 
+<
+    template<class,class,template<class>class,template<class>class,template<class>class>class Injector,
+    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+>
+void interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>::erase(const interval_base_map& x)
 {
     const_FORALL(typename interval_base_map, x_, x)
         erase((*x_).KEY_VALUE);
 }
 
 /*
-error C2244: 'interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::-=' : Funktionsueberladung kann nicht aufgeloest werden
+error C2244: 'interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>::-=' : Funktionsueberladung kann nicht aufgeloest werden
 template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>::operator -= (const interval_base_set<Injector,DomainT,Interval,Compare,Alloc>& x)
+void interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>::operator -= (const interval_base_set<SetInjector,DomainT,Interval,Compare,Alloc>& x)
 {
-    interval_base_set<Injector,DomainT,Interval,Compare,Alloc>::const_iterator x_ = x.begin();
+    interval_base_set<SetInjector,DomainT,Interval,Compare,Alloc>::const_iterator x_ = x.begin();
     while(x_ != x.end()) subtractItv(*x_);
     return *this;
 }
 */
 
 
-template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-inline bool operator == (const interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>& lhs,
-                         const interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>& rhs)
+template 
+<
+    template<class,class,template<class>class,template<class>class,template<class>class>class Injector,
+    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+>
+inline bool operator == (const interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>& lhs,
+                         const interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>& rhs)
 {
     //MEMO PORT: This implemetation worked with stlport, sgi and gnu 
     // implementations of the stl. But using MSVC-implementation
@@ -1123,9 +1063,13 @@ inline bool operator == (const interval_base_map<DomainT,CodomainT,Interval,Comp
     return Set::lexicographical_equal(lhs, rhs);
 }
 
-template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-inline bool operator < (const interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>& lhs,
-                        const interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>& rhs)
+template 
+<
+    template<class,class,template<class>class,template<class>class,template<class>class>class Injector,
+    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+>
+inline bool operator < (const interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>& lhs,
+                        const interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>& rhs)
 {
     return std::lexicographical_compare(
         lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), 
@@ -1133,9 +1077,13 @@ inline bool operator < (const interval_base_map<DomainT,CodomainT,Interval,Compa
         );
 }
 
-template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-inline bool operator <= (const interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>& lhs,
-                        const interval_base_map<DomainT,CodomainT,Interval,Compare,Alloc>& rhs)
+template 
+<
+    template<class,class,template<class>class,template<class>class,template<class>class>class Injector,
+    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+>
+inline bool operator <= (const interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>& lhs,
+                        const interval_base_map<Injector,DomainT,CodomainT,Interval,Compare,Alloc>& rhs)
 {
     return lhs < rhs || lhs == rhs;
 }

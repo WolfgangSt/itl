@@ -15,6 +15,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 #include <itl/mapgentor.hpp>
 #include <itl/itvgentor.hpp>
 #include <itl/interval_set.hpp>
+#include <itl/separate_interval_set.hpp>
 #include <itl/split_interval_set.hpp>
 #include <itl/split_interval_map.hpp>
 #include <validate/gentor/gentorprofile.h>
@@ -30,9 +31,11 @@ namespace itl
     // ----- sets ----------------------------------------------------------------
     template <> class RandomGentor<itl::set<int> > : public SetGentorT<itl::set<int> > {};
     template <> class RandomGentor<interval_set<int> > : public SetGentorT<interval_set<int> > {};
+    template <> class RandomGentor<separate_interval_set<int> > : public SetGentorT<separate_interval_set<int> > {};
     template <> class RandomGentor<split_interval_set<int> > : public SetGentorT<split_interval_set<int> > {};
     template <> class RandomGentor<itl::set<double> > : public SetGentorT<itl::set<double> > {};
     template <> class RandomGentor<interval_set<double> > : public SetGentorT<interval_set<double> > {};
+    template <> class RandomGentor<separate_interval_set<double> > : public SetGentorT<separate_interval_set<double> > {};
     template <> class RandomGentor<split_interval_set<double> > : public SetGentorT<split_interval_set<double> > {};
     // ----- maps ----------------------------------------------------------------
     template <> class RandomGentor<itl::map<int,int> > : public MapGentorT<itl::map<int,int> > {};
@@ -200,6 +203,44 @@ namespace itl
     };
 
     template <> 
+    struct Calibrater<separate_interval_set<int>, RandomGentor>
+    {
+        static void apply(RandomGentor<separate_interval_set<int> >& gentor) 
+        {
+            // Set the range within which the sizes of the generated object varies.
+            // interval<int> range = rightOpenInterval<int>(0,10); //JODO: From SysCalibrater
+            //JODO gentor.calibrate(profile);
+
+            gentor.setRangeOfSampleSize(GentorProfileSgl::it()->range_ContainerSize());
+
+            // If it is a container: (Create and) Pass the generator(s) for their contents
+            // NumberGentorT<int> intGentor;
+            ItvGentorT<int>* itvGentor = new ItvGentorT<int>;
+            interval<int> valRange = GentorProfileSgl::it()->range_interval_int();
+            itvGentor->setValueRange(valRange.lower_bound(), valRange.upper_bound());
+            itvGentor->setMaxIntervalLength(GentorProfileSgl::it()->maxIntervalLength()); //JODO
+            gentor.setDomainGentor(itvGentor);
+        }
+    };
+
+    template <> 
+    struct Calibrater<separate_interval_set<double>, RandomGentor>
+    {
+        static void apply(RandomGentor<separate_interval_set<double> >& gentor) 
+        {
+            gentor.setRangeOfSampleSize(GentorProfileSgl::it()->range_ContainerSize());
+
+            // If it is a container: (Create and) Pass the generator(s) for their contents
+            // NumberGentorT<int> intGentor;
+            ItvGentorT<double>* itvGentor = new ItvGentorT<double>;
+            interval<double> valRange = GentorProfileSgl::it()->range_interval_double();
+            itvGentor->setValueRange(valRange.lower_bound(), valRange.upper_bound());
+            itvGentor->setMaxIntervalLength(GentorProfileSgl::it()->maxIntervalLength()); //JODO
+            gentor.setDomainGentor(itvGentor);
+        }
+    };
+
+	template <> 
     struct Calibrater<split_interval_set<int>, RandomGentor>
     {
         static void apply(RandomGentor<split_interval_set<int> >& gentor) 

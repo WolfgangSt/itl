@@ -20,7 +20,7 @@ namespace itl
     {
         enum Types 
         { 
-            itl_set, interval_set, split_interval_set, 
+            itl_set, interval_set, separate_interval_set, split_interval_set, 
             itl_map, split_interval_map, 
             Types_size 
         };
@@ -41,11 +41,12 @@ namespace itl
 		void setTypeNames()
 		{
 			std::vector<std::string> type_names(Type::Types_size);
-            type_names[Type::itl_set]            = "itl_set"; 
-			type_names[Type::interval_set]       = "interval_set"; 
-			type_names[Type::split_interval_set] = "split_interval_set"; 
-            type_names[Type::itl_map]            = "itl_map"; 
-			type_names[Type::split_interval_map] = "split_interval_map"; 
+            type_names[Type::itl_set]               = "itl_set"; 
+			type_names[Type::interval_set]          = "interval_set"; 
+			type_names[Type::separate_interval_set] = "separate_interval_set"; 
+			type_names[Type::split_interval_set]    = "split_interval_set"; 
+            type_names[Type::itl_map]               = "itl_map"; 
+			type_names[Type::split_interval_map]    = "split_interval_map"; 
 			_typeChoice.setTypeNames(type_names);
 		}
 		void setAtomicTypeNames()
@@ -58,6 +59,13 @@ namespace itl
 
 		void setInvalid() { _isValid = false; }
 
+		AlgebraValidater* choiceError(int value, const ChoiceT& choice)
+		{
+			reportTypeChoiceError(value, choice); 
+			setInvalid();
+			return NULL; 
+		}
+
 	public:
 		bool hasValidProfile()const { return _isValid; }
 
@@ -65,11 +73,12 @@ namespace itl
         {
             _typeChoice.setSize(Type::Types_size);
             _typeChoice.setMaxWeights(100);
-            _typeChoice[Type::itl_set]             = 0;
-            _typeChoice[Type::interval_set]        = 0;
-            _typeChoice[Type::split_interval_set]  = 100;
-            _typeChoice[Type::itl_map]             = 0;
-            _typeChoice[Type::split_interval_map]  = 0;
+            _typeChoice[Type::itl_set]               = 0;
+            _typeChoice[Type::interval_set]          = 20;
+            _typeChoice[Type::separate_interval_set] = 20;
+            _typeChoice[Type::split_interval_set]    = 20;
+            _typeChoice[Type::itl_map]               = 0;
+            _typeChoice[Type::split_interval_map]    = 40;
 			setTypeNames();
             _typeChoice.init();
 
@@ -108,55 +117,51 @@ namespace itl
 			int typeChoice       = _typeChoice.some();
 			int atomicTypeChoice = _atomicTypeChoice.some();
 
-            switch(atomicTypeChoice)
-            {
-            case AtomicType::Int:    
-            case AtomicType::Double: break;
-            default: { 
-					reportTypeChoiceError(atomicTypeChoice, _atomicTypeChoice); 
-					setInvalid();
-					return NULL; 
-				}
-            }
-
             switch(typeChoice)
             {
             //case Type::itl_set: {
             //        switch(atomicTypeChoice) {
             //        case AtomicType::Int:    return new InplaceSetValidater<itl::set<int> >; 
             //        case AtomicType::Double: return new InplaceSetValidater<itl::set<double> >; 
+			//        default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
             //        }
             //    }
-            //case Type::interval_set: {
-            //        switch(atomicTypeChoice) {
-            //        case AtomicType::Int:    return new IntervalSetValidater<interval_set<int> >;
-            //        //case AtomicType::Double: return new InplaceSetValidater<interval_set<double> >;
-            //        }
-            //    }
+            case Type::interval_set: {
+                    switch(atomicTypeChoice) {
+                    case AtomicType::Int:    return new IntervalSetValidater<interval_set<int> >;
+                    //case AtomicType::Double: return new InplaceSetValidater<interval_set<double> >;
+			        default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
+                    }
+                }
+            case Type::separate_interval_set: {
+                    switch(atomicTypeChoice) {
+                    case AtomicType::Int:    return new IntervalSetValidater<split_interval_set<int> >;
+                    //case AtomicType::Double: return new IntervalSetValidater<split_interval_set<double> >;
+		            //default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
+                    }
+                 }
             case Type::split_interval_set: {
                     switch(atomicTypeChoice) {
                     case AtomicType::Int:    return new IntervalSetValidater<split_interval_set<int> >;
                     //case AtomicType::Double: return new IntervalSetValidater<split_interval_set<double> >;
+                    default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
                     }
                 }
             //case Type::itl_map: {
             //        switch(atomicTypeChoice) {
             //        case AtomicType::Int:    return new InplaceCopValidater<itl::map<int,int> >; 
             //        case AtomicType::Double: return new InplaceSetBaseValidater<itl::map<int,double> >; 
+			//        default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
             //        }
             //    }
-            //case Type::split_interval_map: {
-            //        switch(atomicTypeChoice) {
-            //        case AtomicType::Int:    return new IntervalMapValidater<split_interval_map<int,double> >; 
-            //        case AtomicType::Double: return new IntervalMapValidater<split_interval_map<double,int> >; 
-            //        }
-            //        break;
-            //    }
-            default: { 
-					reportTypeChoiceError(typeChoice, _typeChoice); 
-					setInvalid();
-					return NULL; 
-				}
+            case Type::split_interval_map: {
+                    switch(atomicTypeChoice) {
+                    case AtomicType::Int:    return new IntervalMapValidater<split_interval_map<int,double> >; 
+                    //case AtomicType::Double: return new IntervalMapValidater<split_interval_map<double,int> >; 
+			        default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
+                    }
+                }
+            default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
             } //switch()
 
 			return NULL; //just to please the compiler ;)
@@ -204,7 +209,7 @@ namespace itl
 
 		void reportTypeChoiceError(int typeChoice, const ChoiceT& chooser)const
 		{
-			std::cout << "Type choice: " << typeChoice << " is out of range\n"
+			std::cout << "Type choice: " << typeChoice << " is out of range or unselectable in switch clause\n"
 				<< "Expected types and their weights are:\n"
 				<< chooser.asString();
 		}
