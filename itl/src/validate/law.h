@@ -23,12 +23,17 @@ namespace itl
         The evaluation of the law results in a set of output variables.
         Output variables hold interim and final results of the evaluation of the law.
     */
-    template <typename InputTypes, typename OutputTypes>
+    template 
+	<
+		typename InputTypes, typename OutputTypes
+		//,template<class,class> SubType
+	>
     class Law
     {
     public:
-        typedef InputTypes               input_types;
-        typedef OutputTypes              output_types;
+		//typedef SubType<InputTypes, OutputTypes>  sub_type;
+        typedef InputTypes                        input_types;
+        typedef OutputTypes                       output_types;
         typedef typename Loki::tuple<InputTypes>  input_tuple;
         typedef typename Loki::tuple<OutputTypes> output_tuple;
     public:

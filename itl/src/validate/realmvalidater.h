@@ -130,14 +130,14 @@ namespace itl
                     switch(atomicTypeChoice) {
                     case AtomicType::Int:    return new IntervalSetValidater<interval_set<int> >;
                     //case AtomicType::Double: return new InplaceSetValidater<interval_set<double> >;
-			        default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
+                    default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
                     }
                 }
             case Type::separate_interval_set: {
                     switch(atomicTypeChoice) {
                     case AtomicType::Int:    return new IntervalSetValidater<split_interval_set<int> >;
                     //case AtomicType::Double: return new IntervalSetValidater<split_interval_set<double> >;
-		            //default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
+		            default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
                     }
                  }
             case Type::split_interval_set: {
@@ -158,7 +158,7 @@ namespace itl
                     switch(atomicTypeChoice) {
                     case AtomicType::Int:    return new IntervalMapValidater<split_interval_map<int,double> >; 
                     //case AtomicType::Double: return new IntervalMapValidater<split_interval_map<double,int> >; 
-			        default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
+                    default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
                     }
                 }
             default: return choiceError(atomicTypeChoice, _atomicTypeChoice);

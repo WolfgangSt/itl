@@ -34,7 +34,6 @@ class interval_set
 #define __interval_set_h_JOFA_990223__
 
 #include <itl/interval_base_set.hpp>
-#include <itl/interval_set_joiner.hpp>
 #include <itl/j_assert.hpp>
 
 namespace itl
@@ -108,15 +107,13 @@ template
     template<class>class Alloc    = std::allocator
 > 
 class interval_set: 
-	public interval_base_set<itl::interval_set_joiner,DomainT,Interval,Compare,Alloc>
+	public interval_base_set<interval_set,DomainT,Interval,Compare,Alloc>
 {
 public:
-    // inherit all typedefs
 
-	typedef interval_base_set<itl::interval_set_joiner,DomainT,Interval,Compare,Alloc> base_type;
+	/// The base_type of this class
+	typedef interval_base_set<itl::interval_set,DomainT,Interval,Compare,Alloc> base_type;
 
-    //PORT: The following types should be intereted from the base class
-    // which does work with mscv++ but gcc complaines
     typedef Interval<DomainT> interval_type;
     typedef typename itl::set<interval_type,exclusive_less,Alloc> ImplSetT;
     typedef typename ImplSetT::iterator iterator;
@@ -129,8 +126,168 @@ public:
     /// Constructor for a single interval
     explicit interval_set(const interval_type& itv): base_type() { insert(itv); }
 
+
+
+    /// Does the set contain the interval  <tt>x</tt>?
+    bool contains(const interval_type& x)const;
+
+	/// Insertion of an interval <tt>x</tt>
+	void insert(const value_type& x);
+
+	/// Removal of an interval <tt>x</tt>
+	void subtract(const value_type& x);
+
+    /// Treatment of adjoint intervals on insertion
+    void handle_neighbours(const iterator& it);
+
+protected:
+    iterator joint_insert(const iterator& left_it, const iterator& right_it);
 } ;
 
+
+
+
+template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+bool interval_set<DomainT,Interval,Compare,Alloc>::contains(const interval_type& x)const
+{ 
+    // Emptiness is contained in everything
+    if(x.empty()) 
+        return true;
+    else if (this->empty())
+        return false;
+    else if(x.last() < this->first())
+        return false;
+    else if(this->last() < x.first())
+        return false;
+    {
+        typename ImplSetT::const_iterator it = this->_set.find(x);
+        if(it == this->_set.end())
+            return false;
+        else
+            return x.contained_in(*it);
+    }
+}
+
+
+template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+void interval_set<DomainT,Interval,Compare,Alloc>::handle_neighbours(const iterator& it)
+{
+    interval_type x = *it;
+
+    if(it == this->_set.begin())
+    {
+        typename ImplSetT::iterator it_nxt=it; it_nxt++;
+        if(it_nxt!=this->_set.end() && (*it).touches(*it_nxt)) 
+            joint_insert(it, it_nxt);
+    }
+    else
+    {
+        // there is a predecessor
+        iterator it_pred = it; it_pred-- ;
+
+        if((*it_pred).touches(*it)) 
+        {
+            iterator it_extended = joint_insert(it_pred, it);
+
+            iterator it_succ=it_extended; it_succ++;
+            if(it_succ!=this->_set.end())
+            {
+                // it's a non border element that might have two touching neighbours
+                if((*it_extended).touches(*it_succ)) 
+                    joint_insert(it_extended, it_succ);
+            }
+        }
+        else
+        {
+            iterator it_succ=it; it_succ++;
+            if(it_succ!=this->_set.end())
+            {
+                // it's a non border element that might have a right touching neighbours
+                if((*it).touches(*it_succ)) 
+                    joint_insert(it, it_succ);
+            }
+        }
+    }
+}
+
+
+
+template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+typename interval_set<DomainT,Interval,Compare,Alloc>::iterator 
+    interval_set<DomainT,Interval,Compare,Alloc>
+    ::joint_insert(const iterator& left_it, const iterator& right_it)
+{
+    // both left and right are in the set and they are neighbours
+    DEV_ASSERT((*left_it).excl_less(*right_it));
+    DEV_ASSERT((*left_it).touches(*right_it));
+
+    interval_type curItv = (*left_it);
+    curItv.extend(*right_it);
+
+    this->_set.erase(left_it);
+    this->_set.erase(right_it);
+    
+    typename ImplSetT::iterator new_it = this->_set.insert(curItv).ITERATOR;
+    J_ASSERT(new_it!=this->_set.end());
+    return new_it;
+}
+
+
+template<class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+void interval_set<DomainT,Interval,Compare,Alloc>::insert(const value_type& x)
+{
+    if(x.empty()) return;
+
+    std::pair<typename ImplSetT::iterator,bool> insertion = _set.insert(x);
+
+    if(insertion.WAS_SUCCESSFUL)
+        handle_neighbours(insertion.ITERATOR);
+    else
+    {
+        typename ImplSetT::iterator fst_it = _set.lower_bound(x);
+        typename ImplSetT::iterator end_it = _set.upper_bound(x);
+
+        typename ImplSetT::iterator it=fst_it, nxt_it=fst_it, victim;
+        Interval<DomainT> leftResid;  (*it).left_surplus(leftResid,x);
+        Interval<DomainT> rightResid;
+
+        while(it!=end_it)
+        { 
+            if((++nxt_it)==end_it) 
+				(*it).right_surplus(rightResid,x);
+            victim = it; it++; _set.erase(victim);
+        }
+
+        Interval<DomainT> extended = x;
+        extended.extend(leftResid).extend(rightResid);
+        extended.extend(rightResid);
+        insert(extended);
+    }
+
+}
+
+
+template<class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+void interval_set<DomainT,Interval,Compare,Alloc>::subtract(const value_type& x)
+{
+    if(x.empty()) return;
+    typename ImplSetT::iterator fst_it = _set.lower_bound(x);
+    if(fst_it==_set.end()) return;
+    typename ImplSetT::iterator end_it = _set.upper_bound(x);
+
+    typename ImplSetT::iterator it=fst_it, nxt_it=fst_it, victim;
+    interval_type leftResid; (*it).left_surplus(leftResid,x);
+    interval_type rightResid;
+
+    while(it!=end_it)
+    { 
+        if((++nxt_it)==end_it) (*it).right_surplus(rightResid,x);
+        victim = it; it++; _set.erase(victim);
+    }
+
+    insert(leftResid);
+    insert(rightResid);
+}
 
 
 template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
@@ -139,6 +296,7 @@ inline bool is_element_equal(const interval_set<DomainT,Interval,Compare,Alloc>&
 {
     return std::equal(lhs.begin(), lhs.end(), rhs.begin());
 }
+
 
 template <class Type>
 class type<itl::interval_set<Type> >
