@@ -34,6 +34,7 @@ class split_interval_map
 #ifndef __split_interval_map_h_JOFA_000706__
 #define __split_interval_map_h_JOFA_000706__
 
+#include <itl/interval_set.hpp>
 #include <itl/interval_map_splitter.hpp>
 #include <itl/interval_base_map.hpp>
 #include <itl/split_interval_set.hpp>

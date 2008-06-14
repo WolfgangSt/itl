@@ -35,7 +35,7 @@ date_grid month_grid(const interval<date>& scope)
 {
 	split_interval_set<date> month_grid;
 
-	date frame_months_1st = scope.first().end_of_month() + days(1) - months(1);
+	date frame_months_1st = scope.first().end_of_month() + days(1) - boost::gregorian::months(1);
 	month_iterator month_iter(frame_months_1st);
 
 	for(; month_iter <= scope.last(); ++month_iter)
@@ -46,31 +46,39 @@ date_grid month_grid(const interval<date>& scope)
 	return month_grid;
 }
 
-//date_grid week_grid(const interval<date>& scope)
-//{
-//	split_interval_set<date> week_grid;
-//
-//	date frame_weeks_1st = scope.first().end_of_week() + days(1) - weeks(1);
-//	week_iterator week_iter(frame_weeks_1st);
-//
-//	for(; week_iter <= scope.last(); ++week_iter)
-//		week_grid.insert(rightopen_interval(*week_iter, *week_iter + months(1)));
-//
-//	month_grid *= scope; // cut off the surplus
-//
-//	return month_grid;
-//}
+date_grid week_grid(const interval<date>& scope)
+{
+	split_interval_set<date> week_grid;
+
+	date frame_weeks_1st = scope.first() + days(days_until_weekday(scope.first(), greg_weekday(Monday))) - weeks(1);
+	week_iterator week_iter(frame_weeks_1st);
+
+	for(; week_iter <= scope.last(); ++week_iter)
+		week_grid.insert(rightopen_interval(*week_iter, *week_iter + weeks(1)));
+
+	week_grid *= scope; // cut off the surplus
+
+	return week_grid;
+}
 
 void month_and_time_grid()
 {
 	date someday = day_clock::local_day();
-	date thenday = someday + months(3);
+	date thenday = someday + months(2);
 
 	interval<date> itv = rightopen_interval(someday, thenday);
-	date_grid months = month_grid(itv);
+	//date_grid month_and_week_grid = week_grid(itv);
+	date_grid month_and_week_grid = month_grid(itv);
+	month_and_week_grid *= week_grid(itv);
 
-	for(date_grid::iterator it = months.begin(); it != months.end(); it++)
+
+	for(date_grid::iterator it = month_and_week_grid.begin(); 
+		it != month_and_week_grid.end(); it++)
+	{
+		if(it->first().day_of_week()==greg_weekday(Monday))
+			cout << "-->" ;
 		cout << it->first() << " - " << it->last() << endl;
+	}
 }
 
 #include <limits>

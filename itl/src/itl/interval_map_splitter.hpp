@@ -58,8 +58,9 @@ namespace itl
 
 		size_t jodo_interval_count()const { return _map.size(); }
 
-        void toItvSetT(interval_set<DomainT,Interval,Compare,Alloc>& dst)const
-        { dst.clear(); const_FORALL(typename ImplMapT, it, this->_map) dst.insert((*it).KEY_VALUE); }
+		//CL JODO ckeck, if this is used somewhere
+        //void toItvSetT(interval_set<DomainT,Interval,Compare,Alloc>& dst)const
+        //{ dst.clear(); const_FORALL(typename ImplMapT, it, this->_map) dst.insert((*it).KEY_VALUE); }
 
         
         //TESTCODE
