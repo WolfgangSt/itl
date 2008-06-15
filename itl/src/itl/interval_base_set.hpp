@@ -478,8 +478,8 @@ template<template<class,template<class>class,template<class>class,template<class
          class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 bool interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::disjoint_to(const interval_type& x)const
 {
-    interval_base_set<SubType,DomainT,Interval,Compare,Alloc>* section = cons();
-    intersect(*section, x);
+    interval_base_set<SubType,DomainT,Interval,Compare,Alloc> section;
+    intersect(section, x);
     return section->empty();
 }
 
@@ -487,8 +487,8 @@ template<template<class,template<class>class,template<class>class,template<class
          class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 bool interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::disjoint_to(const interval_base_set& x)const
 {
-    interval_base_set<SubType,DomainT,Interval,Compare,Alloc>* section = cons();
-    intersect(*section, x);
+    interval_base_set<SubType,DomainT,Interval,Compare,Alloc> section;
+    intersect(section, x);
     return section->empty();
 }
 

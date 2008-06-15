@@ -27,7 +27,8 @@ namespace itl
     template <typename SourceT, typename TargetT, 
               template<class,class>class FunctionT, template<typename>class OperatorT>
     class BinaryPushout : 
-        public LawBase<LOKI_TYPELIST_2(SourceT, SourceT), LOKI_TYPELIST_2(TargetT,TargetT)>
+        public Law<BinaryPushout<SourceT,TargetT,FunctionT,OperatorT>, 
+                   LOKI_TYPELIST_2(SourceT, SourceT), LOKI_TYPELIST_2(TargetT,TargetT)>
     {
         /** f(a o b) == f(a) o f(b)
         computed using inplace operators  o=
@@ -89,8 +90,8 @@ namespace itl
             // --- left hand side ------------------------
             // lhs := f(a o b)
             SourceT a_o_b = this->template getInputValue<operand_a>();
-			std::cout << "a:" << this->template getInputValue<operand_a>().as_string() << endl;
-			std::cout << "b:" << this->template getInputValue<operand_b>().as_string() << endl;
+			std::cout << "a:" << this->template getInputValue<operand_a>().as_string() << std::endl;
+			std::cout << "b:" << this->template getInputValue<operand_b>().as_string() << std::endl;
             // a_o_b o=  this->template getInputValue<operand_b>();
             OperatorT<SourceT>()(a_o_b, this->template getInputValue<operand_b>());
 

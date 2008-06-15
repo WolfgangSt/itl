@@ -71,14 +71,15 @@ namespace itl
 
         void setProfile()
         {
+			_isValid = true;
             _typeChoice.setSize(Type::Types_size);
             _typeChoice.setMaxWeights(100);
             _typeChoice[Type::itl_set]               = 0;
-            _typeChoice[Type::interval_set]          = 20;
-            _typeChoice[Type::separate_interval_set] = 20;
-            _typeChoice[Type::split_interval_set]    = 20;
+            _typeChoice[Type::interval_set]          = 0;
+            _typeChoice[Type::separate_interval_set] = 0;
+            _typeChoice[Type::split_interval_set]    = 0;
             _typeChoice[Type::itl_map]               = 0;
-            _typeChoice[Type::split_interval_map]    = 40;
+            _typeChoice[Type::split_interval_map]    = 100;
 			setTypeNames();
             _typeChoice.init();
 
@@ -90,10 +91,16 @@ namespace itl
             _atomicTypeChoice.init();
 
 			if(!_typeChoice.is_consistent())
+			{
+				setInvalid();
 				std::cout << _typeChoice.inconsitencyMessage("RealmValidater::setProfile()") << std::endl;
+			}
 
 			if(!_atomicTypeChoice.is_consistent())
+			{
+				setInvalid();
 				std::cout << _atomicTypeChoice.inconsitencyMessage("RealmValidater::setProfile()") << std::endl;
+			}
 
         }
 
@@ -103,7 +110,6 @@ namespace itl
 			//srand(static_cast<unsigned>(1)); //Same numbers each run (std)
 			srand(static_cast<unsigned>(4711)); //Same numbers each run (varying)
 
-			//for(int idx=0; idx<=10000; idx++)
 			for(int idx=0; hasValidProfile(); idx++)
 			{
 				if(idx>0 && idx % 100 == 0)
@@ -123,35 +129,35 @@ namespace itl
             //        switch(atomicTypeChoice) {
             //        case AtomicType::Int:    return new InplaceSetValidater<itl::set<int> >; 
             //        case AtomicType::Double: return new InplaceSetValidater<itl::set<double> >; 
-			//        default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
+            //        default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
             //        }
             //    }
-            case Type::interval_set: {
-                    switch(atomicTypeChoice) {
-                    case AtomicType::Int:    return new IntervalSetValidater<interval_set<int> >;
-                    //case AtomicType::Double: return new InplaceSetValidater<interval_set<double> >;
-                    default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
-                    }
-                }
-            case Type::separate_interval_set: {
-                    switch(atomicTypeChoice) {
-                    case AtomicType::Int:    return new IntervalSetValidater<split_interval_set<int> >;
-                    //case AtomicType::Double: return new IntervalSetValidater<split_interval_set<double> >;
-		            default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
-                    }
-                 }
-            case Type::split_interval_set: {
-                    switch(atomicTypeChoice) {
-                    case AtomicType::Int:    return new IntervalSetValidater<split_interval_set<int> >;
-                    //case AtomicType::Double: return new IntervalSetValidater<split_interval_set<double> >;
-                    default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
-                    }
-                }
+            //case Type::interval_set: {
+            //        switch(atomicTypeChoice) {
+            //        case AtomicType::Int:    return new IntervalSetValidater<interval_set<int> >;
+            //        case AtomicType::Double: return new InplaceSetValidater<interval_set<double> >;
+            //        default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
+            //        }
+            //    }
+            //case Type::separate_interval_set: {
+            //        switch(atomicTypeChoice) {
+            //        case AtomicType::Int:    return new IntervalSetValidater<split_interval_set<int> >;
+            //        case AtomicType::Double: return new IntervalSetValidater<split_interval_set<double> >;
+            //        default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
+            //        }
+            //     }
+            //case Type::split_interval_set: {
+            //        switch(atomicTypeChoice) {
+            //        case AtomicType::Int:    return new IntervalSetValidater<split_interval_set<int> >;
+            //        //case AtomicType::Double: return new IntervalSetValidater<split_interval_set<double> >;
+            //        default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
+            //        }
+            //    }
             //case Type::itl_map: {
             //        switch(atomicTypeChoice) {
             //        case AtomicType::Int:    return new InplaceCopValidater<itl::map<int,int> >; 
             //        case AtomicType::Double: return new InplaceSetBaseValidater<itl::map<int,double> >; 
-			//        default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
+            //        default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
             //        }
             //    }
             case Type::split_interval_map: {

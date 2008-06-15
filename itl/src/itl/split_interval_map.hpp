@@ -199,8 +199,8 @@ namespace itl
 		::matchMap(split_interval_map& matchMap, const value_type& x_y)const
 	{
 		interval_type x = x_y.KEY_VALUE;
-		typename ImplMapT::const_iterator fst_it = _map.lower_bound(x);
-		typename ImplMapT::const_iterator end_it = _map.upper_bound(x);
+		typename ImplMapT::const_iterator fst_it = this->_map.lower_bound(x);
+		typename ImplMapT::const_iterator end_it = this->_map.upper_bound(x);
 
 		for(typename ImplMapT::const_iterator it=fst_it; it!=end_it; it++) 
 			matchMap.insert(*it);

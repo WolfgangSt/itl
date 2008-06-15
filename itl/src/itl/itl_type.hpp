@@ -183,7 +183,7 @@ namespace itl
         { 
             return binary_template<Binary>::to_string()+
                 "<"+type<Type1>::to_string()+","+type<Type2>::to_string()+">"; 
-S        }
+        }
     };
 
 } // namespace itl

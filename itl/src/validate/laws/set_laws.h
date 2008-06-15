@@ -19,7 +19,9 @@ namespace itl
 {
 
     template <typename Type>
-    class InplaceUnionInvertability : public LawBase<LOKI_TYPELIST_1(Type), LOKI_TYPELIST_2(Type,Type)>
+    class InplaceUnionInvertability 
+		: public Law<InplaceUnionInvertability<Type>, 
+                     LOKI_TYPELIST_1(Type), LOKI_TYPELIST_2(Type,Type)>
     {
         /** a - a == 0
         computed using inplace operators +=
@@ -51,6 +53,8 @@ namespace itl
             return lhs == rhs;
         }
 
+		bool debug_holds(){ return holds(); }
+
         size_t size()const { return value_size<Type>::get(this->template getInputValue<operand_a>()); }
     };
 
@@ -58,7 +62,9 @@ namespace itl
     template <typename Type, template<class>class Operator1 = inplace_plus, 
 		                     template<class>class Operator2 = inplace_star,
                              template<class>class Equality  = itl::std_equal>
-    class InplaceDistributivity : public LawBase<LOKI_TYPELIST_3(Type,Type,Type), LOKI_TYPELIST_2(Type,Type)>
+    class InplaceDistributivity 
+		: public Law<InplaceDistributivity<Type,Operator1,Operator2,Equality>, 
+                     LOKI_TYPELIST_3(Type,Type,Type), LOKI_TYPELIST_2(Type,Type)>
     {
         /** a + (b * c) == (a + b) * (a + c)
         computed using inplace operators +=, += and *=
@@ -155,7 +161,9 @@ namespace itl
     template <typename Type, template<class>class Operator1 = inplace_plus, 
                              template<class>class Operator2 = inplace_star, 
                              template<class>class Equality = itl::std_equal>
-    class InplaceDeMorgan : public LawBase<LOKI_TYPELIST_3(Type,Type,Type), LOKI_TYPELIST_2(Type,Type)>
+    class InplaceDeMorgan 
+		: public Law<InplaceDeMorgan<Type,Operator1,Operator2,Equality>, 
+                     LOKI_TYPELIST_3(Type,Type,Type), LOKI_TYPELIST_2(Type,Type)>
     {
         /** a - (b + c) == (a - b) * (a - c)
         computed using inplace operators +=, += and *=
@@ -204,6 +212,8 @@ namespace itl
             return Equality<Type>()(lhs, rhs);
         }
 
+		bool debug_holds(){ return holds(); }
+
         size_t size()const 
         { 
             return 
@@ -214,8 +224,12 @@ namespace itl
     };
 
     // ---------------------------------------------------------------------------
-    template <typename Type, template<class>class Operator1 = inplace_plus, template<class>class Operator2 = inplace_minus>
-    class InplaceRightDistributivity : public LawBase<LOKI_TYPELIST_3(Type,Type,Type), LOKI_TYPELIST_2(Type,Type)>
+    template <typename Type, 
+		      template<class>class Operator1 = inplace_plus, 
+			  template<class>class Operator2 = inplace_minus>
+    class InplaceRightDistributivity 
+		: public Law<InplaceRightDistributivity<Type,Operator1,Operator2>, 
+                     LOKI_TYPELIST_3(Type,Type,Type), LOKI_TYPELIST_2(Type,Type)>
     {
         /** (a + b) - c == (a - c) + (b - c)
         computed using inplace operators +=, += and *=
@@ -306,7 +320,9 @@ namespace itl
 
     // ---------------------------------------------------------------------------
     template <typename Type>
-    class InplaceSymmetricDifference : public LawBase<LOKI_TYPELIST_2(Type,Type), LOKI_TYPELIST_2(Type,Type)>
+    class InplaceSymmetricDifference 
+		: public Law<InplaceSymmetricDifference<Type>, 
+                     LOKI_TYPELIST_2(Type,Type), LOKI_TYPELIST_2(Type,Type)>
     {
         /** (a + b) - (a * b) == (a - b) + (b - a)
         computed using inplace operators +=, += and *=
@@ -399,7 +415,9 @@ namespace itl
 
     // ---------------------------------------------------------------------------
     template <typename MapT>
-    class SectionAbsorbtion : public LawBase<LOKI_TYPELIST_2(MapT, typename MapT::set_type), LOKI_TYPELIST_2(MapT,MapT)>
+    class SectionAbsorbtion 
+		: public Law<SectionAbsorbtion<MapT>, 
+                     LOKI_TYPELIST_2(MapT, typename MapT::set_type), LOKI_TYPELIST_2(MapT,MapT)>
     {
         /** a - (a * b) == a - b
         computed using inplace operators -= and *=
@@ -437,6 +455,8 @@ namespace itl
 
             return lhs == rhs;
         }
+
+		bool debug_holds(){ return holds(); }
 
         size_t size()const 
         { 

@@ -83,10 +83,6 @@ namespace itl
 
 
         template<class ObjectT>
-        ObjectT& operator += (ObjectT& result, const ObjectT& x2)
-		{ return Set::add(result, x2); }
-
-        template<class ObjectT>
         ObjectT& add(ObjectT& result, const ObjectT& x2)
         {
             typedef typename ObjectT::const_iterator Object_const_iterator;
@@ -95,6 +91,12 @@ namespace itl
 
 			return result;
         }
+
+
+		template<class ObjectT>
+        ObjectT& operator += (ObjectT& result, const ObjectT& x2)
+		{ return Set::add(result, x2); }
+
 
         template<class ObjectT, class CoObjectT>
         void subtract(ObjectT& result, const CoObjectT& x2)

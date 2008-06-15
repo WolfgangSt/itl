@@ -56,6 +56,7 @@ void test_Validater()
 void test_realmvalidater()
 {
     RealmValidater validater;
+
     cout << 
     ">> ------------------------------------------------------ <<\n"
     ">> -------- Law based test automaton 'LaBatea' ---------- <<\n"

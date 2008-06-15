@@ -25,7 +25,8 @@ namespace itl
     */
 
     template <typename Type>
-    class AdditionNeutrality : public LawBase<LOKI_TYPELIST_1(Type), LOKI_TYPELIST_1(Type)> 
+    class AdditionNeutrality 
+		: public Law<AdditionNeutrality<Type>, LOKI_TYPELIST_1(Type), LOKI_TYPELIST_1(Type)> 
     {
     public:
         std::string name()const { return "Addition Neutrality"; }
@@ -45,6 +46,8 @@ namespace itl
             return inVal == outVal;
         }
 
+		bool debug_holds(){ return holds(); }
+
         size_t size()const;
 
         void setValue(const Type& inVal) { this->template setInputValue<0>(inVal); }
@@ -58,7 +61,8 @@ namespace itl
     { return this->template getInputValue<0>().size(); };
 
     template <typename Type>
-    class AdditionCommutativity : public LawBase<LOKI_TYPELIST_2(Type,Type), LOKI_TYPELIST_2(Type,Type)> 
+    class AdditionCommutativity 
+		: public Law<AdditionCommutativity<Type>, LOKI_TYPELIST_2(Type,Type), LOKI_TYPELIST_2(Type,Type)> 
     {
         /** a + b == b + a 
         Input  = (a := inVal1, b := inVal2)
@@ -92,6 +96,8 @@ namespace itl
             return this->template getOutputValue<lhs_sum>() == this->template getOutputValue<rhs_sum>();
         }
 
+		bool debug_holds(){ return holds(); }
+
         size_t size()const 
         { 
             return value_size<Type>::get(this->template getInputValue<operand_a>())+
@@ -101,7 +107,9 @@ namespace itl
 
 
     template <typename TypeA, typename TypeB>
-    class MixedAdditionCommutativity : public LawBase<LOKI_TYPELIST_2(TypeA,TypeB), LOKI_TYPELIST_2(TypeB,TypeB)> 
+    class MixedAdditionCommutativity 
+		: public Law<MixedAdditionCommutativity<TypeA, TypeB>, 
+		             LOKI_TYPELIST_2(TypeA,TypeB), LOKI_TYPELIST_2(TypeB,TypeB)> 
     {
         /** a + b == b + a 
         Input  = (a := inVal1, b := inVal2)
@@ -136,6 +144,8 @@ namespace itl
             return this->template getOutputValue<lhs_sum>() == this->template getOutputValue<rhs_sum>();
         }
 
+		bool debug_holds(){ return holds(); }
+
         size_t size()const 
         { 
             return value_size<TypeA>::get(this->template getInputValue<operand_a>())+
@@ -152,7 +162,9 @@ namespace itl
     // TypeAsString!
     //template <typename Type, template<class>class Accumulator = inplace_plus, int aux=0>
     template <typename Type, template<class>class Accumulator = inplace_plus, template<class>class NeutronT = neutron>
-    class InplaceNeutrality : public LawBase<LOKI_TYPELIST_1(Type), LOKI_TYPELIST_1(Type)>
+    class InplaceNeutrality 
+		: public Law<InplaceNeutrality<Type,Accumulator,NeutronT>, 
+		             LOKI_TYPELIST_1(Type), LOKI_TYPELIST_1(Type)>
     {
         /** a o 0 == a computed as
         l=a; l o= 0; => l==a 
@@ -191,11 +203,16 @@ namespace itl
             this->template setOutputValue<lhs_result>(lhs);
             return lhs == this->template getInputValue<operand_a>();
         }
+
+		bool debug_holds(){ return holds(); }
+
     };
 
 
     template <typename Type, template<class>class Accumulator = inplace_plus>
-    class InplaceAssociativity : public LawBase<LOKI_TYPELIST_3(Type,Type,Type), LOKI_TYPELIST_2(Type,Type)>
+    class InplaceAssociativity 
+		: public Law<InplaceAssociativity<Type,Accumulator>, 
+                     LOKI_TYPELIST_3(Type,Type,Type), LOKI_TYPELIST_2(Type,Type)>
     {
         /** (a o b) o c == a o (b o c) 'inplace'
         Input  = (a := inVal1, b := inVal2, c := inVal3)
@@ -249,11 +266,16 @@ namespace itl
 
             return lsum == rsum;
         }
+
+		bool debug_holds(){ return holds(); }
+
     };
 
 
     template <typename Type, template<class>class Accumulator = inplace_plus>
-    class InplaceCommutativity : public LawBase<LOKI_TYPELIST_2(Type,Type), LOKI_TYPELIST_2(Type,Type)>
+    class InplaceCommutativity 
+		: public Law<InplaceCommutativity<Type,Accumulator>, 
+                     LOKI_TYPELIST_2(Type,Type), LOKI_TYPELIST_2(Type,Type)>
     {
         /** a o b == b o a computed as
         lsum=a; lsum+=b; rsum=b; rsum+=a => lsum==rsum 
@@ -301,6 +323,9 @@ namespace itl
 
             return lsum == rsum;
         }
+
+		bool debug_holds(){ return holds(); }
+
     };
 
 } // namespace itl

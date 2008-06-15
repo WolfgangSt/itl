@@ -25,50 +25,21 @@ namespace itl
     */
     template 
 	<
+		class SubType,
 		typename InputTypes, typename OutputTypes
-		//,template<class,class> SubType
 	>
     class Law
     {
     public:
-		//typedef SubType<InputTypes, OutputTypes>  sub_type;
+		typedef SubType                           sub_type;
         typedef InputTypes                        input_types;
         typedef OutputTypes                       output_types;
         typedef typename Loki::tuple<InputTypes>  input_tuple;
         typedef typename Loki::tuple<OutputTypes> output_tuple;
-    public:
-        virtual ~Law(){}
-        virtual bool holds()=0;
-        virtual bool debug_holds()=0;
-
-        virtual void setInstance(const input_tuple&)=0;
-        virtual void getInstance(input_tuple&, output_tuple&)const=0;
-        virtual void getInputInstance(input_tuple&)const=0;
-        virtual void getOutputInstance(output_tuple&)const=0;
-
-        virtual bool operator == (const Law& rhs)const=0;
-        virtual bool operator < (const Law& rhs)const=0;
-        virtual size_t size()const=0;
-
-        virtual std::string name()const=0;
-        virtual std::string formula()const=0;
-        virtual std::string typeString()const=0;
-    };
-
-
-    template <typename InputTypes, typename OutputTypes>
-    class LawBase : public Law<InputTypes, OutputTypes>
-    {
-    public:
-        typedef Law<InputTypes, OutputTypes>     base_type;
-        typedef typename base_type::input_tuple  input_tuple;
-        typedef typename base_type::output_tuple output_tuple;
 
     public:
-        virtual size_t size()const=0;
-        virtual bool holds()=0;
-
-        bool debug_holds(){ return holds(); }
+		bool holds(){ return that()->holds(); }
+        bool debug_holds(){ return that()->debug_holds(); }
 
         void setInstance(const input_tuple& inVars)
         { _inputTuple = inVars; }
@@ -82,21 +53,17 @@ namespace itl
         void getOutputInstance(output_tuple& outVars)const
         { outVars = _outputTuple; }
 
-        bool operator == (const base_type& rhs)const
-        {
-            return size() == rhs.size(); //JODO
-        }
+		size_t size()const{ return that()->size(); }
 
-        bool operator < (const base_type& rhs)const
-        {
-            return size() < rhs.size();
-        }
+        bool operator == (const Law& rhs)const
+        { return size() == rhs.size(); }
 
+        bool operator < (const Law& rhs)const
+        { return size() < rhs.size(); }
 
-        std::string name()const { return "unspecified law"; }
-        std::string formula()const { return "unspecified formula"; }
-        std::string typeString()const { return ""; }
-
+        std::string name()const       { return that()->name(); }
+        std::string formula()const    { return that()->formula(); }
+        std::string typeString()const { return that()->typeString(); }
 
         template<unsigned int index>
         typename Loki::TL::TypeAt<InputTypes, index>::Result 
@@ -116,10 +83,15 @@ namespace itl
         typename Loki::TL::TypeAt<OutputTypes, index>::Result getOutputValue()const 
         { return Loki::tup::get<index>(_outputTuple); }
 
+	protected:
+		      sub_type* that()      { return static_cast      <sub_type*>(this); }
+		const sub_type* that()const { return static_cast<const sub_type*>(this); }
+
     private:
         input_tuple  _inputTuple;
         output_tuple _outputTuple;
-    }; //class LawBase
+    };
+
 
     enum InputVarIndex  { operand_a, operand_b, operand_c, operand_d, operand_e };
     enum OutputVarIndex { lhs_result, rhs_result };

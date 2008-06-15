@@ -45,8 +45,6 @@ namespace itl
         typedef typename LawT::input_tuple    input_tuple;
         typedef typename LawT::output_tuple   output_tuple;
         
-        //JODO don't forget for handcoded testcases
-        //typedef typename GentorT<input_tuple> input_gentor;
         typedef typename Loki::TL::MapType<GentorT, input_types>::Result gentor_types;
         typedef typename Loki::tuple<gentor_types> input_gentor;
 

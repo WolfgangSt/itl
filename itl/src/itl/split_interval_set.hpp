@@ -97,11 +97,50 @@ namespace itl
     public:
 		typedef interval_base_set<itl::split_interval_set,DomainT,Interval,Compare,Alloc> base_type;
 
-        //PORT: The following types should be intereted from the base class
-        // which does work with mscv++ but gcc complaines
-        typedef Interval<DomainT> interval_type;
-        typedef typename base_type::iterator iterator;
-        typedef typename itl::set<interval_type,exclusive_less,Alloc> ImplSetT;
+		/// The domain type of the set
+		typedef DomainT   domain_type;
+		/// The codomaintype is the same as domain_type
+		typedef DomainT   codomain_type;
+
+		/// The interval type of the set
+		typedef Interval<DomainT> interval_type;
+
+		/// Comparison functor for domain values
+		typedef Compare<DomainT> domain_compare;
+		/// Comparison functor for intervals
+		typedef exclusive_less<interval_type> interval_compare;
+
+		/// Comparison functor for keys
+		typedef exclusive_less<interval_type> key_compare;
+
+		/// The allocator type of the set
+		typedef Alloc<interval_type> allocator_type;
+
+		/// allocator type of the corresponding element set
+		typedef Alloc<DomainT> domain_allocator_type;
+
+		/// The type of the set of elements that is equivalent to the set of intervals
+		typedef typename itl::set<DomainT,Compare,Alloc> element_set;
+
+		/// The corresponding atomized type representing this ineterval container of elements
+		typedef typename itl::set<DomainT,Compare,Alloc> atomized_type;
+
+		/// Container type for the implementation 
+		typedef typename itl::set<interval_type,exclusive_less,Alloc> ImplSetT;
+
+		/// key type of the implementing container
+		typedef typename ImplSetT::key_type   key_type;
+		/// data type of the implementing container
+		typedef typename ImplSetT::data_type  data_type;
+		/// value type of the implementing container
+		typedef typename ImplSetT::value_type value_type;
+
+		/// iterator for iteration over intervals
+		typedef typename ImplSetT::iterator iterator;
+		/// const_iterator for iteration over intervals
+		typedef typename ImplSetT::const_iterator const_iterator;
+
+
 
         // B: Constructors, destructors, assignment
         /// Default constructor for the empty set 
@@ -169,7 +208,7 @@ namespace itl
             iterator fst_it = this->_set.lower_bound(x);
             iterator end_it = this->_set.upper_bound(x);
 
-			if(fst_it == _set.end())
+			if(fst_it == this->_set.end())
 				fst_it = end_it;
 
             iterator cur_it       = fst_it ;
