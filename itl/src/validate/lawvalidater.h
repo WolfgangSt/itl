@@ -77,9 +77,6 @@ namespace itl
         void reportViolations()const;
         void reportSuccess()const;
 
-        //CL this is tmp. Will be replaced by 'run'
-        //CL void LawValidater::test_gen();
-
     private:
         typedef LawViolations<LawT> LawViolationsT;
 
@@ -108,11 +105,6 @@ namespace itl
     template <class LawT, template<typename>class GentorT>
     void LawValidater<LawT, GentorT>::run()
     {
-        //JODO reporting
-        //reportLawInfo();
-        //std::cout << "input_types.size()= " << TL::Length<input_types>::value << std::endl;
-        //std::cout << "gentor_types.size()= " << TL::Length<gentor_types>::value << std::endl;
-
         // apply Calibrater.apply to each element of the generator-tuple _gentor
         // This is just an initialisation of the generators according to system
         // defaults for convenience purposes.
@@ -126,10 +118,6 @@ namespace itl
             // Apply the function SomeVale to each component of the input tuple
             _gentor.template map_template<GentorT, SomeValue>(values);
             _law.setInstance(values);
-
-            //JODO reporting
-            //if(idx % _silentTrialsCount == 0)
-            //    reportProgress();
 
             if(!_law.holds())
                 _lawViolations.insert(_law);
@@ -171,7 +159,7 @@ namespace itl
     {
         typename LawT::input_tuple input_values;
         _law.getInputInstance(input_values);
-        //JODO think about more general mechanics of pregress reporting here
+        //JODO think about more general mechanics of progress reporting here
         std::cout << "SomeValues " << input_values.as_string() << std::endl;
     }
 

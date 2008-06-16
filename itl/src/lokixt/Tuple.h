@@ -87,24 +87,21 @@ namespace Loki
         // template class TupleGentor
         // --------------------------------------------------------------------------
         template <class TList, unsigned int index>
-        class TupleGentor;
+        struct TupleGentor;
 
         template <class HeadT, class TailT, unsigned int index>
-        class TupleGentor<Typelist<HeadT, TailT>, index>
+        struct TupleGentor<Typelist<HeadT, TailT>, index>
             : public TupleElement<HeadT, index>
             , public TupleGentor<TailT, index+1>
         {
-        public:
-            enum { Index = index };
             typedef Typelist<HeadT, TailT>         TList;
             typedef TupleElement<HeadT, index>  HeadClass;
             typedef TupleGentor<TailT, index+1> TailClass;
         };
 
         template <unsigned int size>
-        class TupleGentor<NullType, size>
+        struct TupleGentor<NullType, size>
         {
-        public:
             typedef NullType TList;
         };
         // --------------------------------------------------------------------------
