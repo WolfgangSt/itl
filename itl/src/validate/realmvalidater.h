@@ -76,10 +76,10 @@ namespace itl
             _typeChoice.setMaxWeights(100);
             _typeChoice[Type::itl_set]               = 0;
             _typeChoice[Type::interval_set]          = 0;
-            _typeChoice[Type::separate_interval_set] = 0;
-            _typeChoice[Type::split_interval_set]    = 0;
+            _typeChoice[Type::separate_interval_set] = 30;
+            _typeChoice[Type::split_interval_set]    = 30;
             _typeChoice[Type::itl_map]               = 0;
-            _typeChoice[Type::split_interval_map]    = 100;
+            _typeChoice[Type::split_interval_map]    = 40;
 			setTypeNames();
             _typeChoice.init();
 
@@ -106,9 +106,9 @@ namespace itl
 
         void validate()
         {
-			//srand(static_cast<unsigned>(time(NULL))); //Different numbers each run
+			srand(static_cast<unsigned>(time(NULL))); //Different numbers each run
 			//srand(static_cast<unsigned>(1)); //Same numbers each run (std)
-			srand(static_cast<unsigned>(4711)); //Same numbers each run (varying)
+			//srand(static_cast<unsigned>(4711)); //Same numbers each run (varying)
 
 			for(int idx=0; hasValidProfile(); idx++)
 			{
@@ -139,20 +139,20 @@ namespace itl
             //        default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
             //        }
             //    }
-            //case Type::separate_interval_set: {
-            //        switch(atomicTypeChoice) {
-            //        case AtomicType::Int:    return new IntervalSetValidater<split_interval_set<int> >;
-            //        case AtomicType::Double: return new IntervalSetValidater<split_interval_set<double> >;
-            //        default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
-            //        }
-            //     }
-            //case Type::split_interval_set: {
-            //        switch(atomicTypeChoice) {
-            //        case AtomicType::Int:    return new IntervalSetValidater<split_interval_set<int> >;
-            //        //case AtomicType::Double: return new IntervalSetValidater<split_interval_set<double> >;
-            //        default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
-            //        }
-            //    }
+            case Type::separate_interval_set: {
+                    switch(atomicTypeChoice) {
+                    case AtomicType::Int:    return new IntervalSetValidater<split_interval_set<int> >;
+                    //case AtomicType::Double: return new IntervalSetValidater<split_interval_set<double> >;
+                    default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
+                    }
+                 }
+            case Type::split_interval_set: {
+                    switch(atomicTypeChoice) {
+                    case AtomicType::Int:    return new IntervalSetValidater<split_interval_set<int> >;
+                    //case AtomicType::Double: return new IntervalSetValidater<split_interval_set<double> >;
+                    default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
+                    }
+                }
             //case Type::itl_map: {
             //        switch(atomicTypeChoice) {
             //        case AtomicType::Int:    return new InplaceCopValidater<itl::map<int,int> >; 

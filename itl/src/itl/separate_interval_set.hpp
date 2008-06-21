@@ -71,12 +71,14 @@ template
     template<class>class Alloc    = std::allocator
 > 
 class separate_interval_set: 
-	public interval_base_set<separate_interval_set,DomainT,Interval,Compare,Alloc>
+	public interval_base_set<separate_interval_set<DomainT,Interval,Compare,Alloc>,
+	                         DomainT,Interval,Compare,Alloc>
 {
 public:
     // inherit all typedefs
 
-	typedef interval_base_set<itl::separate_interval_set,DomainT,Interval,Compare,Alloc> base_type;
+	typedef interval_base_set<itl::separate_interval_set<DomainT,Interval,Compare,Alloc>,
+		                      DomainT,Interval,Compare,Alloc> base_type;
 
     /// The domain type of the set
     typedef DomainT   domain_type;

@@ -107,12 +107,14 @@ template
     template<class>class Alloc    = std::allocator
 > 
 class interval_set: 
-	public interval_base_set<interval_set,DomainT,Interval,Compare,Alloc>
+	public interval_base_set<interval_set<DomainT,Interval,Compare,Alloc>,
+                             DomainT,Interval,Compare,Alloc>
 {
 public:
 
 	/// The base_type of this class
-	typedef interval_base_set<itl::interval_set,DomainT,Interval,Compare,Alloc> base_type;
+	typedef interval_base_set<itl::interval_set<DomainT,Interval,Compare,Alloc>,
+                              DomainT,Interval,Compare,Alloc> base_type;
 
     /// The domain type of the set
     typedef DomainT   domain_type;

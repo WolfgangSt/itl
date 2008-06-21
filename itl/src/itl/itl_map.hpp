@@ -36,6 +36,7 @@ class itl::map
 #include <string>
 #include <itl/notate.hpp>
 #include <itl/itl_value.hpp>
+#include <itl/functors.hpp>
 #include <itl/predicates.hpp>
 #include <itl/itl_set.hpp>
 #include <itl/map_algo.hpp>
@@ -154,7 +155,11 @@ namespace itl
             not exist in the map.    
             If \c value_pairs's key value exists in the map, it's data
             value is added to the data value already found in the map. */
-        iterator add(const value_type& value_pair);
+        iterator add(const value_type& value_pair) { return add<inplace_plus>(value_pair); }
+
+		template<template<class>class InplaceBinaryOp>
+		iterator add(const value_type& value_pair);
+
 		iterator operator += (const value_type& value_pair) { return add(value_pair); }
 
         /* The \c value_pair for key is erased from the map */
@@ -259,6 +264,7 @@ namespace itl
     }
 
 
+	/*CL
     template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
     typename map<KeyT,DataT,Compare,Alloc>::iterator
         map<KeyT,DataT,Compare,Alloc>::add(const value_type& val)
@@ -274,6 +280,34 @@ namespace itl
         {
             iterator it = insertion.ITERATOR;
             (*it).CONT_VALUE += val.CONT_VALUE;
+
+            if((*it).CONT_VALUE == DataT()) //neutron absorbtion
+            {
+                erase(it);
+                return end();
+            }
+            else
+                return it ;
+        }
+    }
+	*/
+
+    template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
+		template <template<class>class InplaceBinaryOp>
+    typename map<KeyT,DataT,Compare,Alloc>::iterator
+        map<KeyT,DataT,Compare,Alloc>::add(const value_type& val)
+    {
+        if(val.CONT_VALUE == DataT())
+            return end();
+
+        std::pair<iterator, bool> insertion = insert(val);
+
+        if( insertion.WAS_SUCCESSFUL )
+            return insertion.ITERATOR ;
+        else
+        {
+            iterator it = insertion.ITERATOR;
+			InplaceBinaryOp<DataT>()((*it).CONT_VALUE, val.CONT_VALUE);
 
             if((*it).CONT_VALUE == DataT()) //neutron absorbtion
             {

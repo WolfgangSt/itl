@@ -92,10 +92,12 @@ namespace itl
         template<class>class Alloc    = std::allocator
     > 
 	class split_interval_set: 
-		public interval_base_set<split_interval_set, DomainT,Interval,Compare,Alloc>
+		public interval_base_set<split_interval_set<DomainT,Interval,Compare,Alloc>, 
+		                         DomainT,Interval,Compare,Alloc>
     {
     public:
-		typedef interval_base_set<itl::split_interval_set,DomainT,Interval,Compare,Alloc> base_type;
+		typedef interval_base_set<itl::split_interval_set<DomainT,Interval,Compare,Alloc>,
+			                      DomainT,Interval,Compare,Alloc> base_type;
 
 		/// The domain type of the set
 		typedef DomainT   domain_type;

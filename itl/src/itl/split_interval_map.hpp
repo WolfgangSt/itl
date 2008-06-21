@@ -132,12 +132,12 @@ namespace itl
         template<class>class Alloc    = std::allocator
     >
     class split_interval_map:
-		public interval_base_map<split_interval_map, DomainT,CodomainT,Interval,Compare,Alloc>
-		//CL public interval_base_map<itl::split_interval_map, DomainT,CodomainT,Interval,Compare,Alloc>
+		public interval_base_map<split_interval_map<DomainT,CodomainT,Interval,Compare,Alloc>, 
+                                 DomainT,CodomainT,Interval,Compare,Alloc>
     {
     public:
         typedef split_interval_map<DomainT,CodomainT,Interval,Compare,Alloc> type;
-        typedef interval_base_map <itl::split_interval_map, 
+        typedef interval_base_map <split_interval_map<DomainT,CodomainT,Interval,Compare,Alloc>, 
                                    DomainT,CodomainT,Interval,Compare,Alloc> base_type;
 
         typedef Interval<DomainT> interval_type;
