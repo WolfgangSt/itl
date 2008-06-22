@@ -19,6 +19,7 @@ MAKE_PATH = .
 ITL_ROOT_PATH = ../..
 #--- root directory of the interval template library --------------------------
 ITL_SRC_PATH  = $(ITL_ROOT_PATH)/src
+BOOST_PATH = $(ITL_ROOT_PATH)/boost_1_35_0
 
 #--- binaries -----------------------------------------------------------------
 BIN_PATH = $(ITL_ROOT_PATH)/bin
@@ -26,12 +27,13 @@ OBJ_PATH = $(BIN_PATH)/obj
 
 #--- include pathes -----------------------------------------------------------
 ITL_INCL = $(addprefix -I,$(ITL_SRC_PATH))
+BOOST_INCL = $(addprefix -I,$(BOOST_PATH))
 STD_INCL = -I/usr/include
 #GCC_INCL = $(addprefix -I,$(CMP_PATH))/include
 CONCEPTGCC_INCL = -I/opt/conceptgcc-boostcon/include
 
 #INCLUDE  = $(CONCEPTGCC_INCL) $(ITL_INCL) 
-INCLUDE  = $(STD_INCL) $(ITL_INCL)
+INCLUDE  = $(STD_INCL) $(ITL_INCL) $(BOOST_INCL)
 
 #--- libraries ----------------------------------------------------------------
 #LOAD_LIBS  = -L$(CMP_PATH)/lib
@@ -73,6 +75,7 @@ examples:
 	make overlap_counter
 	make history
 	make amount_cube
+	make boost_party
 
 tests:
 	make itvset_shell
@@ -141,6 +144,17 @@ amount_cube_TARGET  = $(BIN_PATH)/amount_cube$(EXE_TAG)
 amount_cube:
 	$(COMPILE) $(COMPILE_FLAGS)  $(INCLUDE) $(amount_cube_SOURCES) $(LOAD_FLAGS) -o $(amount_cube_TARGET)
 
+#--- project boost_party --------------------------------------------------
+boost_party_PATH = $(ITL_ROOT_PATH)/$(EXAMPLE_DIR)/boost_party
+boost_party_MAIN = $(boost_party_PATH)/boost_party.cpp
+boost_party_SOURCES = $(boost_party_MAIN)
+boost_party_TARGET  = $(BIN_PATH)/boost_party$(EXE_TAG)
+
+boost_party:
+	$(COMPILE) $(COMPILE_FLAGS)  $(INCLUDE) $(boost_party_SOURCES) $(LOAD_FLAGS) -o $(boost_party_TARGET)
+
+	
+	
 #--- group tests --------------------------------------------------------------
 #--- project itvset_shell -----------------------------------------------------
 TEST_DIR = test

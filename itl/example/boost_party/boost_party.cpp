@@ -13,7 +13,6 @@ Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
 #include <itl/itl_value.hpp>
 #include <itl/string_set.hpp>
 #include <itl/split_interval_map.hpp>
-#include "../toytime.h"
 
 // The next line includes <boost/date_time/posix_time/posix_time.hpp>
 // and a few lines of adapter code.
@@ -133,5 +132,4 @@ int main()
 [2008-May-20 22:15:00 - 2008-May-20 23:00:00): Diana Harry Mary Peter Susan
 [2008-May-20 23:00:00 - 2008-May-21 00:00:00): Diana Peter Susan
 [2008-May-21 00:00:00 - 2008-May-21 00:30:00): Peter
-Drücken Sie eine beliebige Taste . . .
 -----------------------------------------------------------------------------*/

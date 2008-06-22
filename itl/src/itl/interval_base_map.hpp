@@ -376,6 +376,12 @@ public:
 	        erase(*x_);
 	}
 
+	template<class SetSubType>
+    interval_base_map& operator -= (const interval_base_set<SetSubType,DomainT,Interval,Compare,Alloc>& x)
+	{
+		erase(x);
+		return *this;
+	}
 
     void erase(const interval_base_map& x);
 
@@ -436,7 +442,7 @@ public:
 	{
 		interval_base_map section;
 		intersect(section, sectant);
-		section->_map.swap(_map);
+		section._map.swap(_map);
 		return *this;
 	}
 
@@ -626,8 +632,8 @@ template
     class SubType,
     class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::intersect(interval_base_map& section, 
-                                                 const interval_type& x)const
+void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>
+    ::intersect(interval_base_map& section, const interval_type& x)const
 {
     section.clear();
     if(x.empty()) return;
@@ -641,7 +647,7 @@ void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::inters
         (*it).KEY_VALUE.intersect(isec, x);
 
         if(!isec.empty())
-            section.insert( value_type(isec, (*it).CONT_VALUE) );
+            section.add( value_type(isec, (*it).CONT_VALUE) );
     }
 }
 
@@ -972,21 +978,21 @@ void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::erase(
     (*it).KEY_VALUE.left_surplus(leftResid,x_itv);
     interval_type rightResid;  // right residual from last overlapping interval of *this
     
-    CodomainT leftResid_ContVal = (*it).CONT_VALUE; //CodomainT::OP =
-    CodomainT rightResid_ContVal;                   //CodomainT::OP CodomainT()
+    CodomainT leftResid_ContVal = (*it).CONT_VALUE;
+    CodomainT rightResid_ContVal;
     
     while(it!=end_it)
     { 
         if((++nxt_it)==end_it) 
         {
             (*it).KEY_VALUE.right_surplus(rightResid,x_itv);
-            rightResid_ContVal = (*it).CONT_VALUE; //CodomainT::OP =
+            rightResid_ContVal = (*it).CONT_VALUE;
         }
         victim = it; it++; _map.erase(victim);
     }
     
-    insert(value_type(leftResid,  leftResid_ContVal));
-    insert(value_type(rightResid, rightResid_ContVal));
+    add(value_type(leftResid,  leftResid_ContVal));
+    add(value_type(rightResid, rightResid_ContVal));
 }
 
 //CL

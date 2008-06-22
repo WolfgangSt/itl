@@ -25,6 +25,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "boost_party", "..\..\exampl
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "month_and_week_grid", "..\..\example\month_and_week_grid\month_and_week_grid.vcproj", "{360BCFA9-9EB6-4D22-8469-CDC290478F77}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "man_power", "..\..\example\man_power\man_power.vcproj", "{360BCFA9-9EB6-4D22-8469-CDC290478F78}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -79,6 +81,10 @@ Global
 		{360BCFA9-9EB6-4D22-8469-CDC290478F77}.Debug|Win32.Build.0 = Debug|Win32
 		{360BCFA9-9EB6-4D22-8469-CDC290478F77}.Release|Win32.ActiveCfg = Release|Win32
 		{360BCFA9-9EB6-4D22-8469-CDC290478F77}.Release|Win32.Build.0 = Release|Win32
+		{360BCFA9-9EB6-4D22-8469-CDC290478F78}.Debug|Win32.ActiveCfg = Debug|Win32
+		{360BCFA9-9EB6-4D22-8469-CDC290478F78}.Debug|Win32.Build.0 = Debug|Win32
+		{360BCFA9-9EB6-4D22-8469-CDC290478F78}.Release|Win32.ActiveCfg = Release|Win32
+		{360BCFA9-9EB6-4D22-8469-CDC290478F78}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -53,6 +53,10 @@ namespace itl
 
 	\section news_sec News
 
+	New examples are available showing applications of interval containers
+	that use boost::date_time. boost::gregorian dates and boost::posix times
+	are used in examples boost_party.cpp, man_power.cpp and month_and_week_grid.cpp.
+
 	The ITL has been validated by a <em>Law based Test Automaton (LaBatea)</em>
 	which makes heavy use of c++ meta programming. Problems with compile time
 	and code generation efficiency are reported on http://groups.google.com/group/comp.lang.c++.moderated/ .
@@ -86,22 +90,23 @@ namespace itl
 
     We do provide a collection of examples that demonstrate the purpose and basic
     characteristics of the classes offered by the library. To get an instant 
-    impression you may browse these examples first:
+    impression you may browse these examples first.
     \n \n \n
 
     \subsection party_subsec Party
 
-    party.cpp is the ITL's <em>flagship example</em> because it demonstrates
+    boost_party.cpp is the ITL's <em>flagship example</em> because it demonstrates
     at least two important aspects of the library design in a 
     comprehensible way.
-    In party.cpp the change of guests of a party in time is calculated using a 
+    In boost_party.cpp the change of guests of a party in time is calculated using a 
     split_interval_map simply by inserting pairs of intervals and guest sets
     into the split_interval_map.
     As can be seen from this example split_interval_map has a 
     <em>decompositional behavior</em> on the time part: time intervals are
     split up whenever the set of guests is changing. And it has an 
     <em>aggregational behavior</em> on the associated values: Guest sets are 
-    added up on insertion.
+    added up on insertion. (party.cpp is a variant of the example that does not use 
+	boost::date_time)  
     \n \n
 
     \subsection interval_subsec Intervals 
@@ -119,6 +124,22 @@ namespace itl
 
     The most basic application of a split_interval_map is a counter counting
     the number of overlaps of intervals inserted into it as shown in overlap_counter.cpp.
+    \n \n
+
+	\subsection man_power Man-power
+
+	Set style operations on interval_sets and interval_maps like union, difference
+	and intersection can be used to obtain calculations in a flexible way. Example
+	man_power.cpp demontrates such operations in the process of calculating the
+	available man-power of a company in a given time interval. The example uses 
+	boost::date_time.
+    \n \n
+
+	\subsection month_and_week_grid Partitioning of times using split_interval_set
+
+	Example month_and_week_grid.cpp shows how the <em>border preserving</em>
+	split_interval_set can be used to create time partitionigs where different
+	periodic time intervals overlay each other.
     \n \n
 
     \subsection history_subsec History

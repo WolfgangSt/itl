@@ -73,6 +73,7 @@ examples:
 	make overlap_counter
 	make history
 	make amount_cube
+	make boost_party
 
 tests:
 	make itvset_shell
@@ -141,6 +142,17 @@ amount_cube_TARGET  = $(BIN_PATH)/amount_cube$(EXE_TAG)
 amount_cube:
 	$(COMPILE) $(COMPILE_FLAGS)  $(INCLUDE) $(amount_cube_SOURCES) $(LOAD_FLAGS) -o $(amount_cube_TARGET)
 
+#--- project boost_party --------------------------------------------------
+boost_party_PATH = $(ITL_ROOT_PATH)/$(EXAMPLE_DIR)/boost_party
+boost_party_MAIN = $(boost_party_PATH)/boost_party.cpp
+boost_party_SOURCES = $(boost_party_MAIN)
+boost_party_TARGET  = $(BIN_PATH)/boost_party$(EXE_TAG)
+
+boost_party:
+	$(COMPILE) $(COMPILE_FLAGS)  $(INCLUDE) $(boost_party_SOURCES) $(LOAD_FLAGS) -o $(boost_party_TARGET)
+
+
+	
 #--- group tests --------------------------------------------------------------
 #--- project itvset_shell -----------------------------------------------------
 TEST_DIR = test

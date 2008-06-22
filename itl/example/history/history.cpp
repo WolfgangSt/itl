@@ -26,7 +26,7 @@ History demonstrates further possibilities of a split interval map
 Here we show the mechanics of a product_history which is split_interval_map that
 maps intervals to products of attributes that change over time.
 
-Using ProductHistories, we can monitor a set of attributes in a history:
+Using product_histories, we can monitor a set of attributes in a history:
 
 Monday 22:00: A person is taken to a hospital with a head injury. So a suspicion
 of cranial fraction is filed.
@@ -64,6 +64,7 @@ Diagnosis:
 
 Stays:
 [mon:22:00, mon:22:15) -> emergency ward
+(unregistered gap)
 [mon:22:30, mon:22:50) -> radiology
 [mon:22:50, mon:07:20) -> ward A
 

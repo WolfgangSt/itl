@@ -25,17 +25,33 @@ using namespace itl;
 
 /** Example month_and_time_grid.cpp \file month_and_time_grid.cpp
 
+	As split_interval_set preserves all interval borders on insertion
+	and intersection operations. So given a split_interval_set
+	\code
+	x   =   {[1,     3)}
+	x.insert(     [2,     4)) then
+	x   ==  {[1,2)[2,3)[3,4)}
+	\endcode
+	Using this property we can intersect split_interval_maps in
+	order to iterate over intervals accounting for all occurring
+	changes of interval borders.
+
+	In this example we provide an intersection of two split_interval_sets
+	representing a month and week time grid. 
 
     \include party/month_and_time_grid.cpp
 */
 
 typedef split_interval_set<boost::gregorian::date> date_grid;
 
+// This function splits a gregorian::date interval 'scope' into a month grid:
+// For every month contained in 'scope' that month is contained as interval
+// in the resulting split_interval_set.
 date_grid month_grid(const interval<date>& scope)
 {
 	split_interval_set<date> month_grid;
 
-	date frame_months_1st = scope.first().end_of_month() + days(1) - boost::gregorian::months(1);
+	date frame_months_1st = scope.first().end_of_month() + days(1) - months(1);
 	month_iterator month_iter(frame_months_1st);
 
 	for(; month_iter <= scope.last(); ++month_iter)
@@ -46,6 +62,9 @@ date_grid month_grid(const interval<date>& scope)
 	return month_grid;
 }
 
+// This function splits a gregorian::date interval 'scope' into a week grid:
+// For every week contained in 'scope' that month is contained as interval
+// in the resulting split_interval_set.
 date_grid week_grid(const interval<date>& scope)
 {
 	split_interval_set<date> week_grid;
@@ -61,51 +80,63 @@ date_grid week_grid(const interval<date>& scope)
 	return week_grid;
 }
 
+// For a period of two months, starting from today, the function
+// computes a partitioning for months and weeks using intersection
+// operator *= on split_interval_sets.
 void month_and_time_grid()
 {
 	date someday = day_clock::local_day();
 	date thenday = someday + months(2);
 
 	interval<date> itv = rightopen_interval(someday, thenday);
-	//date_grid month_and_week_grid = week_grid(itv);
+
+	// Compute a month grid
 	date_grid month_and_week_grid = month_grid(itv);
+	// Intersection of the month and week grids:
 	month_and_week_grid *= week_grid(itv);
 
+	cout << "interval : " << itv.first() << " - " << itv.last() 
+	     << " month and week partitions:" << endl;
+    cout << "---------------------------------------------------------------\n";
 
 	for(date_grid::iterator it = month_and_week_grid.begin(); 
 		it != month_and_week_grid.end(); it++)
 	{
-		if(it->first().day_of_week()==greg_weekday(Monday))
-			cout << "-->" ;
+		if(it->first().day() == 1)
+			cout << "new month: ";
+		else if(it->first().day_of_week()==greg_weekday(Monday))
+			cout << "new week : " ;
+		else if(it == month_and_week_grid.begin())
+			cout << "first day: " ;
 		cout << it->first() << " - " << it->last() << endl;
 	}
 }
 
-#include <limits>
 
 int main()
 {
     cout << ">> Interval Template Library: Sample month_and_time_grid.cpp <<\n";
     cout << "---------------------------------------------------------------\n";
     month_and_time_grid();
-
-	printf("unsigned int min=%u max=%u\n", 
-		std::numeric_limits<unsigned int>::min(),
-		std::numeric_limits<unsigned int>::max());
-	cout << "unsigned int min="<< std::numeric_limits<unsigned int>::min()
-		 << "unsigned int max="<< std::numeric_limits<unsigned int>::max() <<endl;
-
     return 0;
 }
 
 // Program output:
 /*
 >> Interval Template Library: Sample month_and_time_grid.cpp <<
--------------------------------------------------------
-[2008-May-20 19:30:00 - 2008-May-20 20:09:59.999999]: Harry Mary
-[2008-May-20 20:10:00 - 2008-May-20 22:14:59.999999]: Diana Harry Mary Susan
-[2008-May-20 22:15:00 - 2008-May-20 22:59:59.999999]: Diana Harry Mary Peter Sus
-an
-[2008-May-20 23:00:00 - 2008-May-20 23:59:59.999999]: Diana Peter Susan
-[2008-May-21 00:00:00 - 2008-May-21 00:29:59.999999]: Peter
+---------------------------------------------------------------
+interval : 2008-Jun-22 - 2008-Aug-21 month and week partitions:
+---------------------------------------------------------------
+first day: 2008-Jun-22 - 2008-Jun-22
+new week : 2008-Jun-23 - 2008-Jun-29
+new week : 2008-Jun-30 - 2008-Jun-30
+new month: 2008-Jul-01 - 2008-Jul-06
+new week : 2008-Jul-07 - 2008-Jul-13
+new week : 2008-Jul-14 - 2008-Jul-20
+new week : 2008-Jul-21 - 2008-Jul-27
+new week : 2008-Jul-28 - 2008-Jul-31
+new month: 2008-Aug-01 - 2008-Aug-03
+new week : 2008-Aug-04 - 2008-Aug-10
+new week : 2008-Aug-11 - 2008-Aug-17
+new week : 2008-Aug-18 - 2008-Aug-21
 */
