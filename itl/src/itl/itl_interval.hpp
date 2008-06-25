@@ -139,7 +139,7 @@ namespace itl
 
 	Example month_and_week_grid.cpp shows how the <em>border preserving</em>
 	split_interval_set can be used to create time partitionigs where different
-	periodic time intervals overlay each other.
+	periodic time intervals overlay each other. The example uses boost::date_time.
     \n \n
 
     \subsection history_subsec History
@@ -279,9 +279,9 @@ public:
 */
 //@{
     /// Lower bound of the interval
-    DataT lower_bound()const { return _lwb; }
+    DataT lower()const { return _lwb; }
     /// Upper bound of the interval
-    DataT upper_bound()const { return _upb; }
+    DataT upper()const { return _upb; }
     /// Typ of interval bounds
     bound_types boundtypes()const { return _boundtypes; }
 //@}

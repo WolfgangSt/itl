@@ -184,6 +184,8 @@ public:
 	/// is the container empty
     bool empty()const { return _set.empty(); }
 
+	void swap(interval_base_set& x) { _set.swap(x._set); }
+
 	/// does the container contain the element \c x
     bool contains(const DomainT& x)const
     {
@@ -192,7 +194,7 @@ public:
     }
 
 	/// insert an element to the container
-    void insert(const DomainT& x) { insert(interval_type(x)); }
+    void insert(const DomainT& x) { insert(interval_type(x)); } //JODO URG
 
 	/// subtract an element from the container
     void subtract(const DomainT& x) { subtract(interval_type(x)); }
@@ -209,9 +211,9 @@ public:
     */
 //@{ 
     /// lower bound of all intervals in the set
-    DomainT lower_bound()const { return (*(_set.begin())).lower_bound(); }
+    DomainT lower()const { return (*(_set.begin())).lower(); }
     /// upper bound of all intervals in the set
-    DomainT upper_bound()const { return (*(_set.rbegin())).upper_bound(); }
+    DomainT upper()const { return (*(_set.rbegin())).upper(); }
 
     /// first (smallest) interval in the set
     interval_type first_interval()const { return (*(_set.begin())); }
@@ -258,7 +260,7 @@ public:
     void subtract(const value_type& x) { that()->subtract(x); }
     void operator -= (const value_type& x) { subtract(x); }
 
-    /** Intersection with intervall x; The intersection is assigned to <tt>section</tt>. 
+    /** Intersection with interval x; The intersection is assigned to <tt>section</tt>. 
     
         Intersection also serves a generalized <tt>find</tt>-function to search
         for intervals in the set:
@@ -298,9 +300,9 @@ public:
     /// Union with set <tt>x</tt>
     interval_base_set& operator +=(const interval_base_set& x)
     { 
-		const_FORALL(typename ImplSetT, it, x._set) insert(*it); 
-		return *this; 
-	}
+        const_FORALL(typename ImplSetT, it, x._set) insert(*it); 
+        return *this; 
+    }
 
     /// Perform set difference with the set <tt>x</tt>
     interval_base_set& operator -= (const interval_base_set& x)
@@ -308,7 +310,6 @@ public:
 		const_FORALL(typename ImplSetT, it, x._set) subtract(*it); 
 		return *this; 
 	}
-
 
     /// Join bordering intervals    
     interval_base_set& join();
@@ -530,7 +531,7 @@ interval_base_set<SubType,DomainT,Interval,Compare,Alloc>&
     section._set.swap(_set);
     return *this;
 }
-    
+
 
 
 

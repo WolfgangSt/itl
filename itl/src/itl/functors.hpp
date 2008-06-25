@@ -41,6 +41,12 @@ namespace itl
     template<>
     inline std::string unary_template<neutron>::to_string() { return "0"; }
 
+    template <typename Type> struct inplace_identity
+    {
+        void operator()(Type& object, const Type& operand)const
+        {}
+    };
+
     template <typename Type> struct inplace_plus
     {
         void operator()(Type& object, const Type& operand)const

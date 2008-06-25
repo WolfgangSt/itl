@@ -154,7 +154,12 @@ namespace itl
 
         bool contains(const value_type& x)const;
 
-        void insert(const value_type&);
+
+        template<template<class>class Combinator>
+		void add(const value_type&);
+
+		void add(const value_type& value){ add<inplace_plus>(value); }
+
         void subtract(const value_type&);
 
         void handle_neighbours(const iterator& it){}
@@ -171,13 +176,14 @@ namespace itl
 
     private:
 
-        void iterative_insert(const value_type&);
+        void iterative_add(const value_type&);
         void iterative_subtract(const value_type&);
 
-        void recursive_insert(const value_type&);
         void recursive_subtract(const value_type&);
 
+		template<template<class>class Combinator>
         void insert_rest(const interval_type& x_itv, const CodomainT& x_val, iterator& it, iterator& end_it);
+
         void subtract_rest(const interval_type& x_itv, const CodomainT& x_val, iterator& it, iterator& end_it);
 
 		void matchMap(split_interval_map& matchMap, const value_type& x)const;
@@ -203,7 +209,7 @@ namespace itl
 		typename ImplMapT::const_iterator end_it = this->_map.upper_bound(x);
 
 		for(typename ImplMapT::const_iterator it=fst_it; it!=end_it; it++) 
-			matchMap.insert(*it);
+			matchMap.add(*it);
 	}
 
 
@@ -297,12 +303,12 @@ namespace itl
 
 
     //MEMO INFO -------------------------------------------------------------------
-    // iterative_insert and iterative_subtract are iterative versions of recursive functions
-    // recursive_insert and recursive_subtract. Since recursive_insert and recursive_subtract are one of the
+    // iterative_add and iterative_subtract are iterative versions of recursive functions
+    // recursive_add and recursive_subtract. Since recursive_add and recursive_subtract are one of the
     // most expensive functions (according to profile run) I expected the
     // iterative versions to speed up performance. As it turned out this is not
     // so, the iterative niftyVersions were even slightly slower.
-    //   iterative_insert/Subtract should still be kept. (1) Their implementation is
+    //   iterative_add/Subtract should still be kept. (1) Their implementation is
     // more concise and better to understand. (2) May be it could be speeded up
     // by another attempt JODO 
     //-----------------------------------------------------------------------------
@@ -321,7 +327,7 @@ namespace itl
     // All the other intervals of M are of course unchanged
     //-----------------------------------------------------------------------------
     template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-    void split_interval_map<DomainT,CodomainT,Interval,Compare,Alloc>::iterative_insert(const value_type& x)
+    void split_interval_map<DomainT,CodomainT,Interval,Compare,Alloc>::iterative_add(const value_type& x)
     {
         typedef split_interval_set<DomainT,Interval,Compare,Alloc> AuxSetTD;
         const interval_type&   x_itv = x.KEY_VALUE;
@@ -437,16 +443,11 @@ namespace itl
 
 
     template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-    void split_interval_map<DomainT,CodomainT,Interval,Compare,Alloc>::insert(const value_type& x)
-    { recursive_insert(x); }
-    //{ iterative_insert(x); }
-
-
-    template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-    void split_interval_map<DomainT,CodomainT,Interval,Compare,Alloc>::recursive_insert(const value_type& x)
+		template<template<class>class Combinator>
+    void split_interval_map<DomainT,CodomainT,Interval,Compare,Alloc>::add(const value_type& x)
     {
         const interval_type& x_itv = x.KEY_VALUE;
-         // must be a copy
+        // must be a copy
         CodomainT      x_val = x.CONT_VALUE;
 
         if(x_itv.empty()) return;
@@ -456,7 +457,6 @@ namespace itl
 
         if(!insertion.WAS_SUCCESSFUL)
         {
-
             iterator fst_it = this->_map.lower_bound(x_itv);
             iterator end_it = this->_map.upper_bound(x_itv);
 
@@ -464,10 +464,9 @@ namespace itl
             interval_type cur_itv   = (*cur_it).KEY_VALUE ;
             CodomainT cur_val = (*cur_it).CONT_VALUE;
 
-
             interval_type leadGap; x_itv.left_surplus(leadGap, cur_itv);
             // this is a new Interval that is a gap in the current map
-            recursive_insert(value_type(leadGap, x_val));
+            add(value_type(leadGap, x_val));
 
             // only for the first there can be a leftResid: a part of *it left of x
             interval_type leftResid;  cur_itv.left_surplus(leftResid, x_itv);
@@ -478,7 +477,7 @@ namespace itl
             cur_itv.intersect(interSec, x_itv);
 
             CodomainT cmb_val = cur_val;
-            cmb_val += x_val;
+            Combinator<CodomainT>()(cmb_val, x_val);
 
             iterator snd_it = fst_it; snd_it++;
             if(snd_it == end_it) 
@@ -487,33 +486,34 @@ namespace itl
 
                 interval_type endGap; x_itv.right_surplus(endGap, cur_itv);
                 // this is a new Interval that is a gap in the current map
-                recursive_insert(value_type(endGap, x_val));
+                add<Combinator>(value_type(endGap, x_val));
 
                 // only for the last there can be a rightResid: a part of *it right of x
                 interval_type rightResid;  (*cur_it).KEY_VALUE.right_surplus(rightResid, x_itv);
 
                 this->_map.erase(cur_it);
-                recursive_insert(value_type(leftResid,  cur_val));
-                recursive_insert(value_type(interSec,   cmb_val));
-                recursive_insert(value_type(rightResid, cur_val));
+                add<Combinator>(value_type(leftResid,  cur_val));
+                add<Combinator>(value_type(interSec,   cmb_val));
+                add<Combinator>(value_type(rightResid, cur_val));
             }
             else
             {
                 this->_map.erase(cur_it);
-                recursive_insert(value_type(leftResid, cur_val));
-                recursive_insert(value_type(interSec,  cmb_val));
+                add<Combinator>(value_type(leftResid, cur_val));
+                add<Combinator>(value_type(interSec,  cmb_val));
 
                 // shrink interval
                 interval_type x_rest(x_itv);
                 x_rest.left_subtract(cur_itv);
 
-                insert_rest(x_rest, x_val, snd_it, end_it);
+                insert_rest<Combinator>(x_rest, x_val, snd_it, end_it);
             }
         }
     }
 
 
     template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+		template<template<class>class Combinator>
     void split_interval_map<DomainT,CodomainT,Interval,Compare,Alloc>::insert_rest(const interval_type& x_itv, const CodomainT& x_val, iterator& it, iterator& end_it)
     {
         iterator nxt_it = it; nxt_it++;
@@ -523,37 +523,37 @@ namespace itl
         
         interval_type newGap; x_itv.left_surplus(newGap, cur_itv);
         // this is a new Interval that is a gap in the current map
-        recursive_insert(value_type(newGap, x_val));
+        add(value_type(newGap, x_val));
 
         interval_type interSec;
         cur_itv.intersect(interSec, x_itv);
 
         CodomainT cmb_val = cur_val;
-        cmb_val += x_val;
+        Combinator<CodomainT>()(cmb_val, x_val);
 
         if(nxt_it==end_it)
         {
             interval_type endGap; x_itv.right_surplus(endGap, cur_itv);
             // this is a new Interval that is a gap in the current map
-            recursive_insert(value_type(endGap, x_val));
+            add<Combinator>(value_type(endGap, x_val));
 
             // only for the last there can be a rightResid: a part of *it right of x
             interval_type rightResid;  cur_itv.right_surplus(rightResid, x_itv);
 
             this->_map.erase(it);
-            recursive_insert(value_type(interSec,   cmb_val));
-            recursive_insert(value_type(rightResid, cur_val));
+            add<Combinator>(value_type(interSec,   cmb_val));
+            add<Combinator>(value_type(rightResid, cur_val));
         }
         else
         {        
             this->_map.erase(it);
-            recursive_insert(value_type(interSec,   cmb_val));
+            add<Combinator>(value_type(interSec,   cmb_val));
 
             // shrink interval
             interval_type x_rest(x_itv);
             x_rest.left_subtract(cur_itv);
 
-            insert_rest(x_rest, x_val, nxt_it, end_it);
+            insert_rest<Combinator>(x_rest, x_val, nxt_it, end_it);
         }
     }
 
@@ -604,18 +604,18 @@ namespace itl
             interval_type rightResid;  (*cur_it).KEY_VALUE.right_surplus(rightResid, x_itv);
 
             this->_map.erase(cur_it);
-            insert(value_type(leftResid,  cur_val));
+            add(value_type(leftResid,  cur_val));
             if(!(cmb_val==CodomainT()))
-                insert(value_type(interSec, cmb_val));
-            insert(value_type(rightResid, cur_val));
+                add(value_type(interSec, cmb_val));
+            add(value_type(rightResid, cur_val));
         }
         else
         {
             // first AND NOT last
             this->_map.erase(cur_it);
-            insert(value_type(leftResid, cur_val));
+            add(value_type(leftResid, cur_val));
             if(!(cmb_val==CodomainT()))
-                insert(value_type(interSec, cmb_val));
+                add(value_type(interSec, cmb_val));
 
             subtract_rest(x_itv, x_val, snd_it, end_it);
         }
@@ -661,8 +661,8 @@ namespace itl
 
             this->_map.erase(it);
             if(!(cmb_val==CodomainT()))
-                insert(value_type(interSec, cmb_val));
-            insert(value_type(rightResid, cur_val));
+                add(value_type(interSec, cmb_val));
+            add(value_type(rightResid, cur_val));
         }
     }
 

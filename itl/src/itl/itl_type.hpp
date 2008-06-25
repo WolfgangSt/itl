@@ -105,11 +105,7 @@ namespace itl
 
     template<> inline float  type<float>::unon()  { return 1.0; }
     template<> inline double type<double>::unon() { return 1.0; }
-
-	//CL 
-	//template<> inline boost::posix_time::ptime::time_duration_type 
-	//	type<boost::posix_time::ptime::time_duration_type>::unon() 
-	//{ return boost::posix_time::ptime::time_duration_type::unit(); }
+	template<> inline std::string type<std::string>::unon() { return std::string(" "); }
 
     template <class Type>
     inline Type type<Type>::unon() 
@@ -141,6 +137,7 @@ namespace itl
 
     template<> inline bool type<float>::is_continuous() { return true; }
     template<> inline bool type<double>::is_continuous() { return true; }
+	template<> inline bool type<std::string>::is_continuous() { return true; }
 
     template <class Type>
     inline bool type<Type>::is_continuous() { return false; }

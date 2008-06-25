@@ -202,6 +202,9 @@ public:
     void clear() { _map.clear(); }
     bool empty()const { return _map.empty(); }
 
+	void swap(interval_base_map& x) { _map.swap(x._map); }
+
+
     bool contains(const DomainT& x)const
     { 
         typename ImplMapT::const_iterator it = _map.find(interval_type(x)); 
@@ -214,8 +217,8 @@ public:
         return (it!=_map.end() && (*it).CONT_VALUE==x.CONT_VALUE);  //CodomainT::OP == 
     }
 
-    DomainT lower_bound()const { return (*(_map.begin())).KEY_VALUE.lower_bound(); }
-    DomainT upper_bound()const { return (*(_map.rbegin())).KEY_VALUE.upper_bound(); }
+    DomainT lower()const { return (*(_map.begin())).KEY_VALUE.lower(); }
+    DomainT upper()const { return (*(_map.rbegin())).KEY_VALUE.upper(); }
     // DomainT first()const { return (*(_map.begin())).KEY_VALUE.first(); } // JODO NONCONT
     // DomainT last()const { return (*(_map.rbegin())).KEY_VALUE.last(); }// JODO NONCONT
     interval_type first_interval()const { return (*(_map.begin())).KEY_VALUE; }
@@ -304,10 +307,22 @@ public:
         Insertion and subtraction are reversible as follows:
         <tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
     */
-    //CL virtual void insert(const value_type& x);
 
-	void add(const value_type& x) { that()->insert(x); }
-    void operator += (const value_type& x) { add(x); }
+	//JODO doc
+	template<template<class>class Combinator>
+	void add(const value_type& x) { that()->add<Combinator>(x); };
+
+    void add(const base_value_type& x) 
+    { add( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
+
+	void add(const value_type& x) { that()->add<inplace_plus>(x); }
+    void operator += (const value_type& x) { that()->add(x); }
+
+
+    //JODO doc 
+	void insert(const value_type& x){ that()->add<inplace_identity>(x); }
+
+
 
     /** Subtraction of a base value pair <tt>x := pair(k,y)</tt> where <tt>base_value_type:=pair<DomainT,CodomainT></tt>
 
@@ -321,9 +336,11 @@ public:
         Insertion and subtraction are reversible as follows:
         <tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
     */
-    void subtract(const base_value_type& x)
-    { subtract( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
-    void operator -= (const value_type& x) { subtract(x); }
+    void subtract(const base_value_type& x) { that()->add<inplace_minus>(x); }    
+	//{ subtract( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
+
+	
+	void operator -= (const value_type& x) { subtract(x); }
 
     
     /** Subtraction of an interval value pair  <tt>x := pair(interval_type(x1,x2)const ,y)</tt> 
@@ -463,7 +480,7 @@ public:
     /// Compute union with <tt>x</tt>
     interval_base_map& operator +=(const interval_base_map& x)
     { 
-		const_FORALL(typename ImplMapT, it, x._map) that()->insert(*it); 
+		const_FORALL(typename ImplMapT, it, x._map) that()->add(*it); 
 		return *this; 
 	}
     
@@ -673,8 +690,8 @@ void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::inters
 
         if(!common_interval.empty())
         {
-			section.that()->insert( value_type(common_interval, (*it).CONT_VALUE) );
-            section.that()->insert( value_type(common_interval, sectant.CONT_VALUE) );
+			section.that()->add( value_type(common_interval, (*it).CONT_VALUE) );
+            section.that()->add( value_type(common_interval, sectant.CONT_VALUE) );
         }
     }
 }

@@ -30,7 +30,7 @@ using namespace itl;
     is a set of party guests represented by their name strings.
 
     As time goes by, groups of people join the party and leave later in the evening.
-    So we insert a time interval and a name set to the split_interval_map for the attendance
+    So we add a time interval and a name set to the split_interval_map for the attendance
     of each group of people, that come together and leave together.
 
     On every overlap of intervals, the corresponding name sets are accumulated. At
@@ -84,24 +84,24 @@ void boost_party()
 
     BoostPartyAttendenceHistoryT party;
 
-	party.insert(
+	party +=
 	  make_pair( 
 		rightopen_interval<ptime>(
 		  time_from_string("2008-05-20 19:30"), 
 		  time_from_string("2008-05-20 23:00")), 
-		  mary_harry) );
-	party.insert(
+		  mary_harry);
+	party +=
 	  make_pair( 
 		rightopen_interval<ptime>(
 		  time_from_string("2008-05-20 20:10"), 
 		  time_from_string("2008-05-21 00:00")), 
-		  diana_susan) );
-	party.insert(
+		  diana_susan);
+	party +=
 	  make_pair( 
 		rightopen_interval<ptime>(
 		  time_from_string("2008-05-20 22:15"), 
 		  time_from_string("2008-05-21 00:30")), 
-		  peter) );
+		  peter);
 
     BoostPartyAttendenceHistoryT::iterator it = party.begin();
     while(it != party.end())
@@ -109,7 +109,7 @@ void boost_party()
         interval<ptime> when = (*it).first;
         // Who is at the party within the time interval 'when' ?
         GuestSetT who = (*it++).second;
-        cout << "[" << when.first() << " - " << when.upper_bound() << ")"
+        cout << "[" << when.first() << " - " << when.upper() << ")"
 			 << ": " << who.as_string() << endl;
     }
 }

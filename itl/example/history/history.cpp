@@ -68,7 +68,7 @@ Stays:
 [mon:22:30, mon:22:50) -> radiology
 [mon:22:50, mon:07:20) -> ward A
 
-A product_history allows to compute the history of events by simply inserting all
+A product_history allows to compute the history of events by simply adding all
 separate episode data to a history object.
 
 \include history/history.cpp
@@ -198,14 +198,14 @@ void medical_file()
 
     HospitalProductHistory history;
 
-    history.insert(&susp_cran_frac);
-    history.insert(&alc_intox);
-    history.insert(&laceration);
-    history.insert(&acute_delirium);
+    history += &susp_cran_frac;
+    history += &alc_intox;
+    history += &laceration;
+    history += &acute_delirium;
 
-    history.insert(&emergency_ward);
-    history.insert(&radiology);
-    history.insert(&ward_A);
+    history += &emergency_ward;
+    history += &radiology;
+    history += &ward_A;
 
     HospitalProductHistory::iterator it = history.begin();
     while(it != history.end())

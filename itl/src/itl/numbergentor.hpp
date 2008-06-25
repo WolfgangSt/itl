@@ -91,9 +91,9 @@ public:
     { 
         J_ASSERT(rng.is_rightopen() || rng.is_closed());
         if(rng.is_rightopen())
-            return rnd_within_exUpb<NumTV>(rng.lower_bound(), rng.upper_bound());
+            return rnd_within_exUpb<NumTV>(rng.lower(), rng.upper());
         else
-            return rnd_within<NumTV>(rng.lower_bound(), rng.upper_bound());
+            return rnd_within<NumTV>(rng.lower(), rng.upper());
     }
 
     void setRange(interval<NumTV> rng) { m_valueRange = rng; }

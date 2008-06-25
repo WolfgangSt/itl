@@ -83,18 +83,25 @@ public:
     
 public:
 
-    void insert(EpisodePTD epi)
+    void add(EpisodePTD epi)
     {
         EpisodeProductTD epiRec;
         epiRec.insert(epi);
-        BaseTypeTD::insert(value_type(epi->interval(), epiRec));
+        BaseTypeTD::add(value_type(epi->interval(), epiRec));
     }
+
+	product_history& operator +=(EpisodePTD epi)
+	{
+		add(epi);
+		return *this;
+	}
+
 
 protected:
     
-    void insert(const value_type& val)
+    void add(const value_type& val)
     {
-        BaseTypeTD::insert(val);
+        BaseTypeTD::add(val);
     }
 };
 

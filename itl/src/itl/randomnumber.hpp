@@ -47,7 +47,7 @@ namespace itl
         { return _random.rnd(lwb, upb);}
 
         NumTV rnd(const IntervalT<NumTV>& rng)
-        { J_ASSERT( rng.isROpen() ); return rnd(rng.lower_bound(),rng.upper_bound()); }
+        { J_ASSERT( rng.isROpen() ); return rnd(rng.lower(),rng.upper()); }
 
     private:
         random _random;

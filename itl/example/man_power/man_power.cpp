@@ -175,18 +175,23 @@ int main()
 /*
 >> Interval Template Library: Sample man_power.cpp <<
 ---------------------------------------------------------------
-interval : 2008-Jun-22 - 2008-Aug-21 month and week partitions:
+2008-Aug-01 - 2008-Oct-31    available man-power:
 ---------------------------------------------------------------
-first day: 2008-Jun-22 - 2008-Jun-22
-new week : 2008-Jun-23 - 2008-Jun-29
-new week : 2008-Jun-30 - 2008-Jun-30
-new month: 2008-Jul-01 - 2008-Jul-06
-new week : 2008-Jul-07 - 2008-Jul-13
-new week : 2008-Jul-14 - 2008-Jul-20
-new week : 2008-Jul-21 - 2008-Jul-27
-new week : 2008-Jul-28 - 2008-Jul-31
-new month: 2008-Aug-01 - 2008-Aug-03
-new week : 2008-Aug-04 - 2008-Aug-10
-new week : 2008-Aug-11 - 2008-Aug-17
-new week : 2008-Aug-18 - 2008-Aug-21
+2008-Aug-01 - 2008-Aug-01 -> 4
+2008-Aug-04 - 2008-Aug-08 -> 4
+2008-Aug-11 - 2008-Aug-14 -> 4
+2008-Aug-15 - 2008-Aug-15 -> 8
+2008-Aug-25 - 2008-Aug-29 -> 8
+2008-Sep-01 - 2008-Sep-03 -> 8
+2008-Sep-04 - 2008-Sep-05 -> 12
+2008-Sep-08 - 2008-Sep-12 -> 12
+2008-Sep-15 - 2008-Sep-15 -> 12
+2008-Sep-16 - 2008-Sep-18 -> 4
+2008-Sep-25 - 2008-Sep-26 -> 8
+2008-Sep-29 - 2008-Sep-29 -> 8
+2008-Sep-30 - 2008-Oct-02 -> 12
+2008-Oct-06 - 2008-Oct-10 -> 12
+2008-Oct-13 - 2008-Oct-17 -> 12
+2008-Oct-20 - 2008-Oct-24 -> 12
+2008-Oct-27 - 2008-Oct-31 -> 12
 */

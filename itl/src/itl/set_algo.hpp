@@ -92,27 +92,27 @@ namespace itl
 			return result;
         }
 
-
 		template<class ObjectT>
-        ObjectT& operator += (ObjectT& result, const ObjectT& x2)
+		ObjectT& operator += (ObjectT& result, const ObjectT& x2)
 		{ return Set::add(result, x2); }
 
 
         template<class ObjectT, class CoObjectT>
-        void subtract(ObjectT& result, const CoObjectT& x2)
+        ObjectT& subtract(ObjectT& result, const CoObjectT& x2)
         {
             typename CoObjectT::const_iterator common_lwb_;
             typename CoObjectT::const_iterator common_upb_;
             if(!common_range(common_lwb_, common_upb_, x2, result))
-                return;
+                return result;
 
             typename CoObjectT::const_iterator x2_ = common_lwb_;
             typename ObjectT::iterator common_;
 
             while(x2_ != common_upb_)
                 result.subtract(*x2_++);
-        }
 
+			return result;
+		}
 
 
         /** Function template <tt>contained_in</tt> implements the subset relation. 
@@ -188,11 +188,12 @@ namespace itl
         }
 
         template<class SetType>
-        void intersect(SetType& result, const SetType& x2)
+        SetType& intersect(SetType& result, const SetType& x2)
         {
-            SetType tmp;
-            intersect(tmp, result, x2);
-            tmp.swap(result);
+            SetType aux;
+            intersect(aux, result, x2);
+            aux.swap(result);
+			return result;
         }
 
 

@@ -202,6 +202,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\itl\interval_base_set.hpp"
+				>
+			</File>
+			<File
+				RelativePath="..\..\src\itl\interval_set.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\itl\itl_interval.hpp"
 				>
 			</File>

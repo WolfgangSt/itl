@@ -310,7 +310,7 @@ namespace itl
         iterator fst_it;
 		if(x.exclusive_less(*(this->_set.begin())))
 			return;
-		if(x.lower_bound() < this->_set.begin()->upper_bound())
+		if(x.lower() < this->_set.begin()->upper())
 			fst_it = this->_set.begin();
 		else
 			fst_it = this->_set.lower_bound(x);

@@ -157,7 +157,7 @@ namespace itl
             value is added to the data value already found in the map. */
         iterator add(const value_type& value_pair) { return add<inplace_plus>(value_pair); }
 
-		template<template<class>class InplaceBinaryOp>
+		template<template<class>class Combinator>
 		iterator add(const value_type& value_pair);
 
 		iterator operator += (const value_type& value_pair) { return add(value_pair); }
@@ -293,7 +293,7 @@ namespace itl
 	*/
 
     template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
-		template <template<class>class InplaceBinaryOp>
+		template <template<class>class Combinator>
     typename map<KeyT,DataT,Compare,Alloc>::iterator
         map<KeyT,DataT,Compare,Alloc>::add(const value_type& val)
     {
@@ -307,7 +307,7 @@ namespace itl
         else
         {
             iterator it = insertion.ITERATOR;
-			InplaceBinaryOp<DataT>()((*it).CONT_VALUE, val.CONT_VALUE);
+			Combinator<DataT>()((*it).CONT_VALUE, val.CONT_VALUE);
 
             if((*it).CONT_VALUE == DataT()) //neutron absorbtion
             {

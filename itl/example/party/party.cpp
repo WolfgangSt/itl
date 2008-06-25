@@ -25,7 +25,7 @@ using namespace itl;
     is a set of party guests represented by their name strings.
 
     As time goes by, groups of people join the party and leave later in the evening.
-    So we insert a time interval and a name set to the split_interval_map for the attendance
+    So we add a time interval and a name set to the split_interval_map for the attendance
     of each group of people, that come together and leave together.
 
     On every overlap of intervals, the corresponding name sets are accumulated. At
@@ -78,9 +78,9 @@ void party()
 
     PartyAttendenceHistoryT party;
 
-    party.insert(make_pair( rightopen_interval<Time>(Time(19,30), Time(23,00)), mary_harry) );
-    party.insert(make_pair( rightopen_interval<Time>(Time(20,10), Time(monday,0,0)), diana_susan) );
-    party.insert(make_pair( rightopen_interval<Time>(Time(22,15), Time(monday,0,30)), peter) );
+    party += make_pair( rightopen_interval<Time>(Time(19,30), Time(23,00)), mary_harry);
+    party += make_pair( rightopen_interval<Time>(Time(20,10), Time(monday,0,0)), diana_susan);
+    party += make_pair( rightopen_interval<Time>(Time(22,15), Time(monday,0,30)), peter);
 
     PartyAttendenceHistoryT::iterator it = party.begin();
     while(it != party.end())
