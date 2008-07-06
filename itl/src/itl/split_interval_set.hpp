@@ -30,6 +30,7 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __split_interval_set_JOFA_990223__
 #define __split_interval_set_JOFA_990223__
 
+#include <itl/interval_set.hpp>
 #include <itl/interval_base_set.hpp>
 
 namespace itl
@@ -98,6 +99,8 @@ namespace itl
     public:
 		typedef interval_base_set<itl::split_interval_set<DomainT,Interval,Compare,Alloc>,
 			                      DomainT,Interval,Compare,Alloc> base_type;
+
+		typedef interval_set<DomainT,Interval,Compare,Alloc> joint_type;
 
 		/// The domain type of the set
 		typedef DomainT   domain_type;
@@ -416,11 +419,12 @@ namespace itl
 
 
     template <class Type>
-    class type<itl::split_interval_set<Type> >
+    struct type<itl::split_interval_set<Type> >
     {
-    public:
+    	static bool is_set() { return true; }
+
         static std::string to_string()
-        { return "splt_itv_set<"+ type<Type>::to_string() +">"; }
+        { return "sp_itv_set<"+ type<Type>::to_string() +">"; }
     };
 
 } // namespace itl

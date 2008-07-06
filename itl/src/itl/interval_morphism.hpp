@@ -79,6 +79,28 @@ namespace itl
             }
         };
 
+		template <typename JointType, typename SplitType>
+        struct Join
+        {
+            void operator()(JointType& joint, SplitType& split)
+            {
+				split.join();
+				FORALL(typename SplitType, split_, split)
+					joint.insert(*split_);
+            }
+        };
+
+		template <typename AbsorberType, typename EnricherType>
+        struct AbsorbNeutrons
+        {
+            void operator()(AbsorberType& absorber, EnricherType& enricher)
+            {
+				enricher.absorb_neutrons();
+				FORALL(typename EnricherType, enricher_, enricher)
+					absorber.insert(*enricher_);
+            }
+        };
+
     } // namespace Interval
 
 
@@ -86,6 +108,10 @@ namespace itl
     inline std::string binary_template<Interval::Atomize>::to_string() { return "@"; }
     template<> 
     inline std::string binary_template<Interval::Cluster>::to_string() { return "&"; }
+    template<> 
+    inline std::string binary_template<Interval::Join>::to_string() { return "j"; }
+    template<> 
+    inline std::string binary_template<Interval::AbsorbNeutrons>::to_string() { return "a0"; }
 
 } // namespace itl
 

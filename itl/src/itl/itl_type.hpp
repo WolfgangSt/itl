@@ -93,6 +93,8 @@ namespace itl
         */
         static bool is_continuous();
 
+		static bool is_set();
+
         /** Represent the type by a string which is it's typename */
         static std::string to_string();
     };
@@ -142,6 +144,8 @@ namespace itl
     template <class Type>
     inline bool type<Type>::is_continuous() { return false; }
 
+    template <class Type>
+	inline bool type<Type>::is_set() { return false; }
 
     template<>
     inline std::string type<int>::to_string() { return "int"; }
@@ -182,6 +186,25 @@ namespace itl
                 "<"+type<Type1>::to_string()+","+type<Type2>::to_string()+">"; 
         }
     };
+
+	// ---------------------------------------------------------------------------
+	//KEEP only currently unused
+    //template<template<class,class,class>class Templ>
+    //struct ternary_template
+    //{
+    //    static std::string to_string();
+    //};
+
+    //template <template<class Type1, class Type2, class Type3>class Ternary, 
+    //          class Type1, class Type2, class Type3>
+    //struct type<Ternary<Type1, Type2, Type3> >
+    //{
+    //    static std::string to_string()
+    //    { 
+    //        return ternary_template<Ternary>::to_string()+
+    //            "<"+type<Type1>::to_string()+","+type<Type2>::to_string()+","+type<Type3>::to_string()+">"; 
+    //    }
+    //};
 
 } // namespace itl
 

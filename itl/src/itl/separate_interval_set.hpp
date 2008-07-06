@@ -80,6 +80,8 @@ public:
 	typedef interval_base_set<itl::separate_interval_set<DomainT,Interval,Compare,Alloc>,
 		                      DomainT,Interval,Compare,Alloc> base_type;
 
+	typedef interval_set<DomainT,Interval,Compare,Alloc> joint_type;
+
     /// The domain type of the set
     typedef DomainT   domain_type;
     /// The codomaintype is the same as domain_type
@@ -233,9 +235,10 @@ inline bool is_element_equal(const separate_interval_set<DomainT,Interval,Compar
 }
 
 template <class Type>
-class type<itl::separate_interval_set<Type> >
+struct type<itl::separate_interval_set<Type> >
 {
-public:
+	static bool is_set() { return true; }
+
     static std::string to_string()
     { return "separate_interval_set<"+ type<Type>::to_string() +">"; }
 };

@@ -63,7 +63,6 @@ interval_set<date> weekends(const interval<date>& scope)
 	return weekends;
 }
 
-
 // For a period of two months, starting from today, the function
 // computes a partitioning for months and weeks using intersection
 // operator *= on split_interval_sets.

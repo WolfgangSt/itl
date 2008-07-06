@@ -324,14 +324,37 @@ namespace itl
         return *this;
     }
 
+	//-------------------------------------------------------------------------
+    template <typename KeyT,
+		      template<class>class Compare, template<class>class Alloc>
+    set<KeyT,Compare,Alloc>& 
+		insert(      set<KeyT,Compare,Alloc>& object, 
+			   const set<KeyT,Compare,Alloc>& insertee) 
+	{
+		return object += insertee; 
+	}
 
+    template <typename KeyT,
+		      template<class>class Compare, template<class>class Alloc>
+    set<KeyT,Compare,Alloc>& 
+		erase(      set<KeyT,Compare,Alloc>& object, 
+			  const set<KeyT,Compare,Alloc>& erasee) 
+	{
+		return object -= erasee; 
+	}
+
+
+
+	//-------------------------------------------------------------------------
     template <class Type>
-    class type<itl::set<Type> >
+    struct type<itl::set<Type> >
     {
-    public:
+		static bool is_set() { return true; }
+
         static std::string to_string()
-        { return "itl::set<"+ type<Type>::to_string() +">"; }
+        { return "set<"+ type<Type>::to_string() +">"; }
     };
+
 
 } // namespace itl
 

@@ -45,6 +45,25 @@ class itl::map
 
 namespace itl
 {
+
+	struct neutron_absorber
+	{
+		inline static bool absorbs_neutrons(){ return true; }
+	};
+
+	template<> 
+    inline std::string type<neutron_absorber>::to_string() { return "@0"; }
+
+
+	struct neutron_enricher
+	{
+		inline static bool absorbs_neutrons(){ return false; }
+	};
+
+	template<> 
+    inline std::string type<neutron_enricher>::to_string() { return "e0"; }
+
+
     /*JODO move this comment to concept InplaceAddable, InplaceSubtractable, InplaceCombinable
 
         Many features of the itl are based on the concept, that instances of
@@ -62,6 +81,7 @@ namespace itl
     <
         typename KeyT, 
         typename DataT, 
+	    class NeutronHandler = itl::neutron_absorber,
         template<class>class Compare = std::less,
         template<class>class Alloc   = std::allocator 
     >
@@ -71,10 +91,13 @@ namespace itl
     public:
         typedef Alloc<typename std::pair<const KeyT, DataT> >  allocator_type;
 
-        typedef typename itl::map<KeyT, DataT, Compare, Alloc> type;
+        typedef typename itl::map<KeyT, DataT, NeutronHandler, Compare, Alloc> type;
         typedef typename std::map<KeyT, DataT, Compare<KeyT>, 
                                   allocator_type>              base_type;
         typedef typename itl::set<KeyT, Compare, Alloc >       set_type;
+
+		typedef itl::map<KeyT, DataT, itl::neutron_absorber, Compare, Alloc> 
+                                                               neutron_absorber_type;
 
     public:
         typedef KeyT                                       key_type;
@@ -181,6 +204,11 @@ namespace itl
             has a key that is element of \c x2 is deleted from the map. */
         map& operator -= (const set_type& x2) { Set::subtract(*this, x2); return *this; }
 
+		//JODO 
+		/** erase the value pair \c pair(key,val) from the map.
+		    Erase only if, the exact value content \c val is stored at key \key. */
+		void erase(const value_type& value);
+
         //JODO
         /** Intersect map \c x2 and \c *this.
             So \c *this becomes the intersection of \c *this and \c x2 */
@@ -237,67 +265,38 @@ namespace itl
 
     /** Standard equality, which is lexicographical equality of the sets
         as sequences, that are given by their Compare order. */
-    template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
-    inline bool operator == (const itl::map<KeyT,DataT,Compare,Alloc>& lhs,
-                             const itl::map<KeyT,DataT,Compare,Alloc>& rhs)
+    template <typename KeyT, typename DataT, class NeutronHandler, template<class>class Compare, template<class>class Alloc>
+    inline bool operator == (const itl::map<KeyT,DataT,NeutronHandler,Compare,Alloc>& lhs,
+                             const itl::map<KeyT,DataT,NeutronHandler,Compare,Alloc>& rhs)
     {
         typedef std::map<KeyT,DataT,Compare<KeyT>,Alloc<KeyT> > base_type;
         return operator==((const base_type&)lhs, (const base_type&)rhs);
     }
 
     /** Strict weak less ordering which is given by the Compare order */
-    template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
-    inline bool operator < (const itl::map<KeyT,DataT,Compare,Alloc>& lhs,
-        const itl::map<KeyT,DataT,Compare,Alloc>& rhs)
+    template <typename KeyT, typename DataT, class NeutronHandler, template<class>class Compare, template<class>class Alloc>
+    inline bool operator < (const itl::map<KeyT,DataT,NeutronHandler,Compare,Alloc>& lhs,
+        const itl::map<KeyT,DataT,NeutronHandler,Compare,Alloc>& rhs)
     {
         typedef std::map<KeyT,DataT,Compare<KeyT>,Alloc<KeyT> > base_type;
         return operator<((const base_type&)lhs, (const base_type&)rhs);
     }
 
     /** Partial ordering which is induced by Compare */
-    template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
-    inline bool operator <= (const itl::map<KeyT,DataT,Compare,Alloc>& lhs,
-        const itl::map<KeyT,DataT,Compare,Alloc>& rhs)
+    template <typename KeyT, typename DataT, class NeutronHandler, template<class>class Compare, template<class>class Alloc>
+    inline bool operator <= (const itl::map<KeyT,DataT,NeutronHandler,Compare,Alloc>& lhs,
+        const itl::map<KeyT,DataT,NeutronHandler,Compare,Alloc>& rhs)
     {
         typedef std::map<KeyT,DataT,Compare<KeyT>,Alloc<KeyT> > base_type;
         return operator<=((const base_type&)lhs, (const base_type&)rhs);
     }
 
-
-	/*CL
-    template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
-    typename map<KeyT,DataT,Compare,Alloc>::iterator
-        map<KeyT,DataT,Compare,Alloc>::add(const value_type& val)
-    {
-        if(val.CONT_VALUE == DataT())
-            return end();
-
-        std::pair<iterator, bool> insertion = insert(val);
-
-        if( insertion.WAS_SUCCESSFUL )
-            return insertion.ITERATOR ;
-        else
-        {
-            iterator it = insertion.ITERATOR;
-            (*it).CONT_VALUE += val.CONT_VALUE;
-
-            if((*it).CONT_VALUE == DataT()) //neutron absorbtion
-            {
-                erase(it);
-                return end();
-            }
-            else
-                return it ;
-        }
-    }
-	*/
-
-    template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
+    template <typename KeyT, typename DataT, class NeutronHandler, template<class>class Compare, template<class>class Alloc>
 		template <template<class>class Combinator>
-    typename map<KeyT,DataT,Compare,Alloc>::iterator
-        map<KeyT,DataT,Compare,Alloc>::add(const value_type& val)
+    typename map<KeyT,DataT,NeutronHandler,Compare,Alloc>::iterator
+        map<KeyT,DataT,NeutronHandler,Compare,Alloc>::add(const value_type& val)
     {
-        if(val.CONT_VALUE == DataT())
+		if(NeutronHandler::absorbs_neutrons() && val.CONT_VALUE == DataT())
             return end();
 
         std::pair<iterator, bool> insertion = insert(val);
@@ -309,7 +308,7 @@ namespace itl
             iterator it = insertion.ITERATOR;
 			Combinator<DataT>()((*it).CONT_VALUE, val.CONT_VALUE);
 
-            if((*it).CONT_VALUE == DataT()) //neutron absorbtion
+			if(NeutronHandler::absorbs_neutrons() && (*it).CONT_VALUE == DataT())
             {
                 erase(it);
                 return end();
@@ -319,9 +318,10 @@ namespace itl
         }
     }
 
-    template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
-    typename map<KeyT,DataT,Compare,Alloc>::iterator
-        map<KeyT,DataT,Compare,Alloc>::subtract(const key_type& key)
+	//JODO check redundancies wrt. erase
+    template <typename KeyT, typename DataT, class NeutronHandler, template<class>class Compare, template<class>class Alloc>
+    typename map<KeyT,DataT,NeutronHandler,Compare,Alloc>::iterator
+        map<KeyT,DataT,NeutronHandler,Compare,Alloc>::subtract(const key_type& key)
     {
         iterator it_ = find(key);
         if(it_ != end())
@@ -330,16 +330,16 @@ namespace itl
         return end();
     }
 
-    template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
-    typename map<KeyT,DataT,Compare,Alloc>::iterator
-        map<KeyT,DataT,Compare,Alloc>::subtract(const value_type& val)
+    template <typename KeyT, typename DataT, class NeutronHandler, template<class>class Compare, template<class>class Alloc>
+    typename map<KeyT,DataT,NeutronHandler,Compare,Alloc>::iterator
+        map<KeyT,DataT,NeutronHandler,Compare,Alloc>::subtract(const value_type& val)
     {
         iterator it_ = find(val.KEY_VALUE);
         if(it_ != end())
         {
             (*it_).CONT_VALUE -= val.CONT_VALUE;
 
-            if((*it_).CONT_VALUE == DataT()) //neutron absorbtion
+            if(NeutronHandler::absorbs_neutrons() && (*it_).CONT_VALUE == DataT())
             {
                 erase(it_);
                 return end();
@@ -351,8 +351,18 @@ namespace itl
         return it_;
     }
 
-    template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
-    std::string map<KeyT,DataT,Compare,Alloc>::as_string()const
+
+    template <typename KeyT, typename DataT, class NeutronHandler, template<class>class Compare, template<class>class Alloc>
+	void map<KeyT,DataT,NeutronHandler,Compare,Alloc>::erase(const value_type& value)
+	{
+		iterator it_ = find(value.KEY_VALUE);
+		if(it_ != end() && value.CONT_VALUE == it_->CONT_VALUE)
+			erase(it_);
+	}
+
+
+    template <typename KeyT, typename DataT, class NeutronHandler, template<class>class Compare, template<class>class Alloc>
+    std::string map<KeyT,DataT,NeutronHandler,Compare,Alloc>::as_string()const
     { 
         std::string repr;
         const_FORALL_THIS(it) {
@@ -368,29 +378,33 @@ namespace itl
     }
 
 
-    template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
-    map<KeyT,DataT,Compare,Alloc>& map<KeyT,DataT,Compare,Alloc>
+    template <typename KeyT, typename DataT, class NeutronHandler, template<class>class Compare, template<class>class Alloc>
+    map<KeyT,DataT,NeutronHandler,Compare,Alloc>& map<KeyT,DataT,NeutronHandler,Compare,Alloc>
         ::drop_if(const property<value_type>& hasProperty)
     {
         iterator it = begin(), victim;
         while(it != end())
-            if ( hasProperty(*it) ) { victim = it++; erase(victim); } else ++it;
+            if(hasProperty(*it))
+				erase(it++); 
+			else ++it;
         return *this;
     }
 
-    template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
-    map<KeyT,DataT,Compare,Alloc>& map<KeyT,DataT,Compare,Alloc>
+    template <typename KeyT, typename DataT, class NeutronHandler, template<class>class Compare, template<class>class Alloc>
+    map<KeyT,DataT,NeutronHandler,Compare,Alloc>& map<KeyT,DataT,NeutronHandler,Compare,Alloc>
         ::keep_if(const property<value_type>& hasProperty)
     {
         iterator it = begin(), victim;
         while(it != end())
-            if ( !hasProperty(*it) ) { victim = it++; erase(victim); } else ++it;
+            if(!hasProperty(*it))
+				erase(it++);
+			else ++it;
         return *this;
     }
 
-    template <typename KeyT, typename DataT, template<class>class Compare, template<class>class Alloc>
-    map<KeyT,DataT,Compare,Alloc>& map<KeyT,DataT,Compare,Alloc>
-        ::copy_if(const property<value_type>& hasProperty, const map<KeyT,DataT,Compare,Alloc>& src)
+    template <typename KeyT, typename DataT, class NeutronHandler, template<class>class Compare, template<class>class Alloc>
+    map<KeyT,DataT,NeutronHandler,Compare,Alloc>& map<KeyT,DataT,NeutronHandler,Compare,Alloc>
+        ::copy_if(const property<value_type>& hasProperty, const map<KeyT,DataT,NeutronHandler,Compare,Alloc>& src)
     {
         if(this == &src) return keep_if(hasProperty);
         // otherwise
@@ -401,15 +415,49 @@ namespace itl
         }
         return *this;
     }
+	//-------------------------------------------------------------------------
+    template <typename KeyT, typename DataT, class NeutronHandler, 
+		      template<class>class Compare, template<class>class Alloc>
+    map<KeyT,DataT,NeutronHandler,Compare,Alloc>& 
+		insert(map<KeyT,DataT,NeutronHandler,Compare,Alloc>& object, 
+			   const map<KeyT,DataT,NeutronHandler,Compare,Alloc>& insertee) 
+	{
+		typedef map<KeyT,DataT,NeutronHandler,Compare,Alloc> map_type;
 
+		const_FORALL(typename map_type, elem_, insertee) 
+			object.insert(*elem_); 
 
-    template <class KeyT, class DataT>
-    class type<itl::map<KeyT,DataT> >
-    {
-    public:
-        static std::string to_string()
-        { return "itl::map<"+ type<KeyT>::to_string() + "," + type<DataT>::to_string() +">"; }
-    };
+		return object; 
+	}
+
+    template <typename KeyT, typename DataT, class NeutronHandler, 
+		      template<class>class Compare, template<class>class Alloc>
+    map<KeyT,DataT,NeutronHandler,Compare,Alloc>& 
+		erase(map<KeyT,DataT,NeutronHandler,Compare,Alloc>& object, 
+			  const map<KeyT,DataT,NeutronHandler,Compare,Alloc>& erasee) 
+	{
+		typedef map<KeyT,DataT,NeutronHandler,Compare,Alloc> map_type;
+
+		const_FORALL(typename map_type, elem_, erasee) 
+			object.erase(*elem_); 
+
+		return object; 
+	}
+
+	//-------------------------------------------------------------------------
+	template <class KeyT, class DataT, class Neutronizer>
+	struct type<itl::map<KeyT,DataT,Neutronizer> >
+	{
+		static bool is_set() { return true; }
+
+		static std::string to_string()
+		{
+			return "map<"+ type<KeyT>::to_string()  + ","
+						 + type<DataT>::to_string() + ","
+						 + type<Neutronizer>::to_string() +">"; 
+		}
+	};
+
 
 } // namespace itl
 

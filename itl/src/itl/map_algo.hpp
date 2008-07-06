@@ -25,8 +25,8 @@ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
-#ifndef __itl_MAPALGO_H_JOFA_990225__
-#define __itl_MAPALGO_H_JOFA_990225__
+#ifndef __itl_MAPALGO_H_JOFA_080225__
+#define __itl_MAPALGO_H_JOFA_080225__
 
 #include <itl/notate.hpp>
 #include <itl/set_algo.hpp>
@@ -56,7 +56,7 @@ namespace itl
                 super_ = super.find((*sub_).KEY_VALUE);
                 if(super_ == super.end()) 
                     return false;
-                else if((*sub_).CONT_VALUE != (*super_).CONT_VALUE)
+                else if(!(sub_->CONT_VALUE == super_->CONT_VALUE))
                     return false;
                 sub_++;
             }
@@ -72,7 +72,14 @@ namespace itl
             while(i1 != x1.end())
             {
                 i2 = x2.find(i1->first);
-                if(i2 != x2.end()){tmp += *i1; tmp += *i2;}
+                if(i2 != x2.end())
+				{
+					tmp += *i1; 
+					if(type<typename MapType::codomain_type>::is_set())
+						tmp *= *i2;
+					else
+						tmp += *i2;
+				}
                 i1++;
             }
             tmp.swap(y);
@@ -97,7 +104,10 @@ namespace itl
                 if(x2_ != x2.end())
                 {
                     result.insert(*x1_);
-                    result.add(*x2_);
+					if(type<typename MapType::data_type>::is_set())
+						result.template add<inplace_star>(*x2_); //MEMO template cast for gcc
+					else
+						result.template add<inplace_plus>(*x2_);
                 }
                 x1_++;
             }

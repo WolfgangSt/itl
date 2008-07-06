@@ -36,6 +36,7 @@ The shell also gives you a good idea how interval container are working.
 
 #include <itl/split_interval_set.hpp>
 #include <itl/split_interval_map.hpp>
+#include <itl/interval_map.hpp>
 
 using namespace std;
 using namespace itl;
@@ -90,7 +91,7 @@ void mapTestShell()
                     cin >> lwb >> upb >> val;
                     typename MapTV::interval_type 
                         itv = typename MapTV::interval_type(lwb,upb);
-                    m1.insert(make_pair(itv,val));
+                    m1 += make_pair(itv,val);
 
                     cout << "+" << itv.as_string().c_str()<<" "<<val<< " =" << endl;
                     cout << "{" << m1.as_string() << "}" << endl;
@@ -103,27 +104,28 @@ void mapTestShell()
                     cin >> lwb >> upb >> val;
                     typename MapTV::interval_type 
                         itv = typename MapTV::interval_type(lwb,upb);
-                    m1.subtract(make_pair(itv,val));
+                    m1 -= make_pair(itv,val);
 
                     cout << "-" << itv.as_string().c_str()<<" "<<val<< " =" << endl;
                     cout << "{" << m1.as_string() << "}" << endl;
 
                 }
                 break;
-            case '_': 
-                {
-                    cout << "input: lwb upb >> ";
-                    cin >> lwb >> upb;
-                    typename MapTV::interval_type 
-                        itv = typename MapTV::interval_type(lwb,upb);
-                    split_interval_set<typename MapTV::domain_type> sgl(itv);
-                    m1.erase(itv);
+			//JODO URG REV
+            //case '_': 
+            //    {
+            //        cout << "input: lwb upb >> ";
+            //        cin >> lwb >> upb;
+            //        typename MapTV::interval_type 
+            //            itv = typename MapTV::interval_type(lwb,upb);
+            //        split_interval_set<typename MapTV::domain_type> sgl(itv);
+            //        m1.erase(itv);
 
-                    cout << "_" << itv.as_string().c_str()<<" "<< " =" << endl;
-                    cout << "{" << m1.as_string() << "}" << endl;
+            //        cout << "_" << itv.as_string().c_str()<<" "<< " =" << endl;
+            //        cout << "{" << m1.as_string() << "}" << endl;
 
-                }
-                break;
+            //    }
+            //    break;
             case 'j':
                 {
                     m1.join();
@@ -156,7 +158,7 @@ int main()
 {
     cout << ">> Interval Template Library: Test splititvmap_shell.cpp <<\n";
     cout << "-----------------------------------------------------------\n";
-    mapTestShell< split_interval_map<int, int> >();
+    mapTestShell< interval_map<int, int> >(); //JODO URG REV
 
     return 0;
 }

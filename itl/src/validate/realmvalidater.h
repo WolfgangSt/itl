@@ -14,21 +14,36 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 #include <time.h>
 #include <validate/typevalidater.h>
 
+#define ITL_LOCATION(message) location(__FILE__,__LINE__,message)
+
 namespace itl
 {
-    namespace Type 
+	std::string location(const std::string& file, int line, const std::string& message)
     {
-        enum Types 
+        std::string result = file;
+        result += "(" + value<int>::to_string(line) + "): ";
+        result += message;
+        return result;
+    }
+
+    namespace RootType 
+    {
+        enum RootTypes 
         { 
             itl_set, interval_set, separate_interval_set, split_interval_set, 
-            itl_map, split_interval_map, 
+            itl_map, interval_map, split_interval_map, 
             Types_size 
         };
     }
 
-    namespace AtomicType 
+    namespace DomainType 
     {
-        enum AtomicTypes { Int, Double, AtomicTypes_size };
+        enum DomainTypes { Int, Double, DomainTypes_size };
+    }
+
+    namespace CodomainType 
+    {
+        enum CodomainTypes { Int, Double, set_int, CodomainTypes_size };
     }
 
     
@@ -37,153 +52,239 @@ namespace itl
     public:
         RealmValidater() { setProfile(); }
 
-	private:
-		void setTypeNames()
-		{
-			std::vector<std::string> type_names(Type::Types_size);
-            type_names[Type::itl_set]               = "itl_set"; 
-			type_names[Type::interval_set]          = "interval_set"; 
-			type_names[Type::separate_interval_set] = "separate_interval_set"; 
-			type_names[Type::split_interval_set]    = "split_interval_set"; 
-            type_names[Type::itl_map]               = "itl_map"; 
-			type_names[Type::split_interval_map]    = "split_interval_map"; 
-			_typeChoice.setTypeNames(type_names);
-		}
-		void setAtomicTypeNames()
-		{
-			std::vector<std::string> type_names(AtomicType::AtomicTypes_size);
-            type_names[AtomicType::Int]          = "Int"; 
-			type_names[AtomicType::Double]       = "Double"; 
-			_atomicTypeChoice.setTypeNames(type_names);
-		}
+    private:
+        void setRootTypeNames()
+        {
+            std::vector<std::string> type_names(RootType::Types_size);
+            type_names[RootType::itl_set]               = "itl_set"; 
+            type_names[RootType::interval_set]          = "interval_set"; 
+            type_names[RootType::separate_interval_set] = "separate_interval_set"; 
+            type_names[RootType::split_interval_set]    = "split_interval_set"; 
+            type_names[RootType::itl_map]               = "itl_map"; 
+            type_names[RootType::interval_map]          = "interval_map"; 
+            type_names[RootType::split_interval_map]    = "split_interval_map"; 
+            _rootChoice.setTypeNames(type_names);
+        }
+        void setDomainTypeNames()
+        {
+            std::vector<std::string> type_names(CodomainType::CodomainTypes_size);
+            type_names[CodomainType::Int]               = "Int"; 
+            type_names[CodomainType::Double]            = "Double"; 
+            _domainChoice.setTypeNames(type_names);
+        }
+        void setCodomainTypeNames()
+        {
+            std::vector<std::string> type_names(CodomainType::CodomainTypes_size);
+            type_names[CodomainType::Int]               = "Int"; 
+            type_names[CodomainType::Double]            = "Double"; 
+            type_names[CodomainType::set_int]           = "set_int"; 
+            _codomainChoice.setTypeNames(type_names);
+        }
 
-		void setInvalid() { _isValid = false; }
+        void setInvalid() { _isValid = false; }
 
-		AlgebraValidater* choiceError(int value, const ChoiceT& choice)
-		{
-			reportTypeChoiceError(value, choice); 
-			setInvalid();
-			return NULL; 
-		}
+        AlgebraValidater* choiceError(const std::string& location, int value, const ChoiceT& choice)
+        {
+            reportTypeChoiceError(location, value, choice); 
+            setInvalid();
+            return NULL; 
+        }
 
-	public:
-		bool hasValidProfile()const { return _isValid; }
+    public:
+        bool hasValidProfile()const { return _isValid; }
 
         void setProfile()
         {
-			_isValid = true;
-            _typeChoice.setSize(Type::Types_size);
-            _typeChoice.setMaxWeights(100);
-            _typeChoice[Type::itl_set]               = 15;
-            _typeChoice[Type::interval_set]          = 15;
-            _typeChoice[Type::separate_interval_set] = 15;
-            _typeChoice[Type::split_interval_set]    = 15;
-            _typeChoice[Type::itl_map]               = 15;
-            _typeChoice[Type::split_interval_map]    = 25;
-			setTypeNames();
-            _typeChoice.init();
+            _isValid = true;
+            _rootChoice.setSize(RootType::Types_size);
+            _rootChoice.setMaxWeights(100);
+            _rootChoice[RootType::itl_set]               = 0;
+            _rootChoice[RootType::interval_set]          = 0;
+            _rootChoice[RootType::separate_interval_set] = 0;
+            _rootChoice[RootType::split_interval_set]    = 0;
+            _rootChoice[RootType::itl_map]               = 0;
+            _rootChoice[RootType::interval_map]          = 100;
+            _rootChoice[RootType::split_interval_map]    = 0;
+            setRootTypeNames();
+            _rootChoice.init();
 
-            _atomicTypeChoice.setSize(AtomicType::AtomicTypes_size);
-            _atomicTypeChoice.setMaxWeights(100);
-            _atomicTypeChoice[AtomicType::Int]     = 50;
-            _atomicTypeChoice[AtomicType::Double]  = 50;
-			setAtomicTypeNames();
-            _atomicTypeChoice.init();
+            _domainChoice.setSize(DomainType::DomainTypes_size);
+            _domainChoice.setMaxWeights(100);
+            _domainChoice[DomainType::Int]                = 100;
+            _domainChoice[DomainType::Double]             = 0;
+            setDomainTypeNames();
+            _domainChoice.init();
 
-			if(!_typeChoice.is_consistent())
-			{
-				setInvalid();
-				std::cout << _typeChoice.inconsitencyMessage("RealmValidater::setProfile()") << std::endl;
-			}
+            _codomainChoice.setSize(CodomainType::CodomainTypes_size);
+            _codomainChoice.setMaxWeights(100);
+            _codomainChoice[CodomainType::Int]            = 100;
+            _codomainChoice[CodomainType::Double]         = 0;
+            _codomainChoice[CodomainType::set_int]        = 0;
+            setCodomainTypeNames();
+            _codomainChoice.init();
 
-			if(!_atomicTypeChoice.is_consistent())
-			{
-				setInvalid();
-				std::cout << _atomicTypeChoice.inconsitencyMessage("RealmValidater::setProfile()") << std::endl;
-			}
+            if(!_rootChoice.is_consistent())
+            {
+                setInvalid();
+                std::cout << _rootChoice.inconsitencyMessage("RealmValidater::setProfile()") << std::endl;
+            }
+
+            if(!_domainChoice.is_consistent())
+            {
+                setInvalid();
+                std::cout << _domainChoice.inconsitencyMessage("RealmValidater::setProfile()") << std::endl;
+            }
+
+            if(!_codomainChoice.is_consistent())
+            {
+                setInvalid();
+                std::cout << _codomainChoice.inconsitencyMessage("RealmValidater::setProfile()") << std::endl;
+            }
 
         }
 
         void validate()
         {
-			srand(static_cast<unsigned>(time(NULL))); //Different numbers each run
-			//srand(static_cast<unsigned>(1)); //Same numbers each run (std)
-			//srand(static_cast<unsigned>(4711)); //Same numbers each run (varying)
+            //srand(static_cast<unsigned>(time(NULL))); //Different numbers each run
+            //srand(static_cast<unsigned>(1)); //Same numbers each run (std)
+            srand(static_cast<unsigned>(4711)); //Same numbers each run (varying)
 
-			for(int idx=0; hasValidProfile(); idx++)
-			{
-				if(idx>0 && idx % 100 == 0)
-					reportFrequencies();
-				validateType();
-			}
+            for(int idx=0; hasValidProfile(); idx++)
+            {
+                if(idx>0 && idx % 100 == 0)
+                    reportFrequencies();
+                validateType();
+            }
         }
 
         AlgebraValidater* chooseValidater()
         {
-			int typeChoice       = _typeChoice.some();
-			int atomicTypeChoice = _atomicTypeChoice.some();
+            int rootChoice = _rootChoice.some();
+            int domainChoice    = _domainChoice.some();
+            int codomainChoice  = _codomainChoice.some();
 
-            switch(typeChoice)
+            switch(rootChoice)
             {
-            case Type::itl_set: {
-                    switch(atomicTypeChoice) {
-                    case AtomicType::Int:    return new InplaceSetValidater<itl::set<int> >; 
-                    case AtomicType::Double: return new InplaceSetValidater<itl::set<double> >; 
-                    default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
-                    }
-                }
-            case Type::interval_set: {
-                    switch(atomicTypeChoice) {
-                    case AtomicType::Int:    return new IntervalSetValidater<interval_set<int> >;
-                    case AtomicType::Double: return new InplaceSetValidater<interval_set<double> >;
-                    default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
-                    }
-                }
-            case Type::separate_interval_set: {
-                    switch(atomicTypeChoice) {
-                    case AtomicType::Int:    return new IntervalSetValidater<split_interval_set<int> >;
-                    case AtomicType::Double: return new IntervalSetValidater<split_interval_set<double> >;
-                    default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
-                    }
-                 }
-            case Type::split_interval_set: {
-                    switch(atomicTypeChoice) {
-                    case AtomicType::Int:    return new IntervalSetValidater<split_interval_set<int> >;
-                    case AtomicType::Double: return new IntervalSetValidater<split_interval_set<double> >;
-                    default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
-                    }
-                }
-            case Type::itl_map: {
-                    switch(atomicTypeChoice) {
-                    case AtomicType::Int:    return new InplaceCopValidater<itl::map<int,int> >; 
-                    case AtomicType::Double: return new InplaceSetBaseValidater<itl::map<int,double> >; 
-                    default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
-                    }
-                }
-            case Type::split_interval_map: {
-                    switch(atomicTypeChoice) {
-                    case AtomicType::Int:    return new IntervalMapValidater<split_interval_map<int,double> >; 
-                    case AtomicType::Double: return new IntervalMapValidater<split_interval_map<double,int> >; 
-                    default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
-                    }
-                }
-            default: return choiceError(atomicTypeChoice, _atomicTypeChoice);
+            //case RootType::itl_set: {
+            //        switch(domainChoice) {
+            //        case DomainType::Int:    return new InplaceSetValidater<itl::set<int> >; 
+            //        case DomainType::Double: return new InplaceSetValidater<itl::set<double> >; 
+            //        default: return choiceError(ITL_LOCATION("\nRootType::itl_set: domainChoice:\n"), 
+            //                                    domainChoice, _domainChoice);
+            //        }
+            //    }
+            //case RootType::interval_set: {
+            //        switch(domainChoice) {
+            //        case DomainType::Int:    return new IntervalSetValidater<interval_set<int> >;
+            //        case DomainType::Double: return new InplaceSetValidater<interval_set<double> >;
+            //        default: return choiceError(ITL_LOCATION("\nRootType::interval_set: domainChoice:\n"), 
+            //                                    domainChoice, _domainChoice);
+            //        }
+            //    }
+            //case RootType::separate_interval_set: {
+            //        switch(domainChoice) {
+            //        case DomainType::Int:    return new IntervalSetValidater<split_interval_set<int> >;
+            //        case DomainType::Double: return new IntervalSetValidater<split_interval_set<double> >;
+            //        default: return choiceError(ITL_LOCATION("\nRootType::separate_interval_set: domainChoice:\n"), 
+            //                                    domainChoice, _domainChoice);
+            //        }
+            //     }
+            //case RootType::split_interval_set: {
+            //        switch(domainChoice) {
+            //        case DomainType::Int:    return new IntervalSetValidater<split_interval_set<int> >;
+            //        case DomainType::Double: return new IntervalSetValidater<split_interval_set<double> >;
+            //        default: return choiceError(ITL_LOCATION("\nRootType::split_interval_set: domainChoice:\n"), 
+            //                                    domainChoice, _domainChoice);
+            //        }
+            //    }
+            ////-----------------------------------------------------------------
+            //case RootType::itl_map: {
+            //    switch(domainChoice) {
+            //    case DomainType::Int: 
+            //        switch(codomainChoice) {
+            //        //JODO Cop and AbsorberMap have more Laws wrt add/subtract (SectionAbsorbtion and UnionInvertability, ...?)
+            //        // than enricher maps have.
+            //        case CodomainType::Int: return new InplaceSetBaseValidater<itl::map<int,int,neutron_enricher> >;
+            //        case CodomainType::set_int: return new InplaceCopValidater<itl::map<int,itl::set<int> > >;
+            //        default: return choiceError(ITL_LOCATION("\nRootType::itl_map: codomainChoice:\n"),
+            //                                    codomainChoice, _codomainChoice);
+            //        }//switch codomain
+
+            //    case DomainType::Double:
+            //        switch(codomainChoice) {
+            //        case CodomainType::Int:     return new InplaceCopValidater<itl::map<double,int> >; 
+            //        case CodomainType::set_int: return new InplaceSetBaseValidater<itl::map<double,itl::set<int>,neutron_enricher> >; 
+            //        default: return choiceError(ITL_LOCATION("\nRootType::itl_map: codomainChoice:\n"),
+            //                                    codomainChoice, _codomainChoice);
+            //        }//switch codomain
+
+            //    default: return choiceError(ITL_LOCATION("\nRootType::itl_map: domainChoice:\n"),
+            //                                domainChoice, _domainChoice);
+            //    }//switch domain
+            //}//case itl_map 
+            ////-----------------------------------------------------------------
+            case RootType::interval_map: {
+                switch(domainChoice) {
+                case DomainType::Int:
+                    switch(codomainChoice) {
+					//JODO SectionAbsorbtion has to be tested for all absorber maps
+                    //case CodomainType::Int:     return new InplaceCopValidater<interval_map<int,int> >; 
+                    case CodomainType::Int:     return new IntervalMapValidater<interval_map<int,int,neutron_enricher> >; 
+                //    case CodomainType::set_int: return new IntervalMapValidater<interval_map<int,itl::set<int> > >; 
+                    default: return choiceError(ITL_LOCATION("\nRootType::interval_map: codomainChoice:\n"),
+                                                codomainChoice, _codomainChoice);
+                    }// switch codomain
+                //case DomainType::Double:
+                //    switch(codomainChoice) {
+                //    case CodomainType::Int:     return new IntervalMapValidater<interval_map<double,int,neutron_enricher> >; 
+                //    case CodomainType::set_int: return new IntervalMapValidater<interval_map<double,itl::set<int>,neutron_absorber> >; 
+                //    default: return choiceError(ITL_LOCATION("\nRootType::interval_map: codomainChoice:\n"),
+                //                                codomainChoice, _codomainChoice);
+                //    }// switch codomain
+                default: return choiceError(ITL_LOCATION("\nRootType::interval_map: domainChoice:\n"),
+                                            domainChoice, _domainChoice);
+                }//switch domain
+            }//case split_interval_map
+            ////-----------------------------------------------------------------
+            //case RootType::split_interval_map: {
+            //    switch(domainChoice) {
+            //    case DomainType::Int:
+            //        switch(codomainChoice) {
+            //        case CodomainType::Int:     return new IntervalMapValidater<split_interval_map<int,int,neutron_enricher> >; 
+            //        case CodomainType::set_int: return new IntervalMapValidater<split_interval_map<int,itl::set<int> > >; 
+            //        default: return choiceError(ITL_LOCATION("\nRootType::split_interval_map: codomainChoice:\n"),
+            //                                    codomainChoice, _codomainChoice);
+            //        }
+            //    case DomainType::Double:
+            //        switch(codomainChoice) {
+            //        case CodomainType::Int:     return new IntervalMapValidater<split_interval_map<double,int,neutron_enricher> >; 
+            //        case CodomainType::set_int: return new IntervalMapValidater<split_interval_map<double,itl::set<int> > >; 
+            //        default: return choiceError(ITL_LOCATION("\nRootType::split_interval_map: codomainChoice:\n"),
+            //                                    codomainChoice, _codomainChoice);
+            //    }
+            //    default: return choiceError(ITL_LOCATION("\nRootType::split_interval_map: domainChoice:\n"),
+            //                                domainChoice, _domainChoice);
+            //    }//switch domain
+            //}//case split_interval_map
+            ////-----------------------------------------------------------------
+
+            default: return choiceError(ITL_LOCATION("rootChoice:\n"), rootChoice, _rootChoice);
             } //switch()
 
-			return NULL; //just to please the compiler ;)
+            return NULL; //just to please the compiler ;)
         }
 
 
         void validateType()
         {
             _validater = chooseValidater();
-			if(_validater)
-			{
-				_validater->validate();
-				_validater->addFrequencies(_frequencies);
-				_validater->addViolations(_violationsCount, _violations);
-				delete _validater;
-			}
+            if(_validater)
+            {
+                _validater->validate();
+                _validater->addFrequencies(_frequencies);
+                _validater->addViolations(_violationsCount, _violations);
+                delete _validater;
+            }
         }
 
         void reportFrequencies()
@@ -213,21 +314,23 @@ namespace itl
                 std::cout << "------------------------------------------------------------------------------" << std::endl;
         }
 
-		void reportTypeChoiceError(int typeChoice, const ChoiceT& chooser)const
-		{
-			std::cout << "Type choice: " << typeChoice << " is out of range or unselectable in switch clause\n"
-				<< "Expected types and their weights are:\n"
-				<< chooser.asString();
-		}
+        void reportTypeChoiceError(const std::string& location, int rootChoice, const ChoiceT& chooser)const
+        {
+            std::cout << location
+                << "Type choice: " << rootChoice << " is out of range or unselectable in switch clause.\n"
+                << "Expected types and their weights are:\n"
+                << chooser.asString();
+        }
 
     private:
-        ChoiceT            _typeChoice;
-        ChoiceT            _atomicTypeChoice;
+        ChoiceT            _rootChoice;
+        ChoiceT            _domainChoice;
+        ChoiceT            _codomainChoice;
         AlgebraValidater*  _validater;
         ValidationCounterT _frequencies;
         ViolationCounterT  _violationsCount;
         ViolationMapT      _violations;
-		bool               _isValid;
+        bool               _isValid;
     };
 
 

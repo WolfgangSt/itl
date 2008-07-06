@@ -68,6 +68,10 @@ typedef itl::set<string> GuestSetT;
 // is the set of names: GuestSetT.
 typedef split_interval_map<ptime, GuestSetT> BoostPartyAttendenceHistoryT;
 
+// A party's height shall be defined as the maximum height of all guests ;-)
+typedef interval_map<ptime, int> BoostPartyHeightHistoryT;
+
+typedef interval_map<ptime, GuestSetT> Party2T;
 
 void boost_party()
 {
@@ -82,15 +86,19 @@ void boost_party()
     GuestSetT peter; 
     peter.insert("Peter");
 
+    GuestSetT john; 
+    peter.insert("John");
+
     BoostPartyAttendenceHistoryT party;
 
-	party +=
+	party.add( // add and element
 	  make_pair( 
 		rightopen_interval<ptime>(
 		  time_from_string("2008-05-20 19:30"), 
 		  time_from_string("2008-05-20 23:00")), 
-		  mary_harry);
-	party +=
+		  mary_harry));
+
+	party += // element addition can also be done via operator +=
 	  make_pair( 
 		rightopen_interval<ptime>(
 		  time_from_string("2008-05-20 20:10"), 
@@ -103,7 +111,52 @@ void boost_party()
 		  time_from_string("2008-05-21 00:30")), 
 		  peter);
 
+	//-------------------------------------------------------------------------
+	Party2T party2;
+
+	party2 += 
+	  make_pair( 
+		rightopen_interval<ptime>(
+		  time_from_string("2008-05-20 19:00"), 
+		  time_from_string("2008-05-21 20:00")), 
+		  diana_susan);
+	party2 +=
+	  make_pair( 
+		rightopen_interval<ptime>(
+		  time_from_string("2008-05-20 19:30"), 
+		  time_from_string("2008-05-21 22:30")), 
+		  john);
+
+	party += party2;
+
+    BoostPartyHeightHistoryT tallest_guest;
+
+	// adding an element can be done wrt. simple aggregate functions
+	// like e.g. min, max etc. in their 'inplace' or op= incarnation
+	tallest_guest.add<inplace_max>(
+	  make_pair( 
+		rightopen_interval<ptime>(
+		  time_from_string("2008-05-20 19:30"), 
+		  time_from_string("2008-05-20 23:00")), 
+		  180));
+
+	tallest_guest.add<inplace_max>(
+	  make_pair( 
+		rightopen_interval<ptime>(
+		  time_from_string("2008-05-20 20:10"), 
+		  time_from_string("2008-05-21 00:00")), 
+		  170));
+
+	tallest_guest.add<inplace_max>(
+	  make_pair( 
+		rightopen_interval<ptime>(
+		  time_from_string("2008-05-20 22:15"), 
+		  time_from_string("2008-05-21 00:30")), 
+		  200));
+
+
     BoostPartyAttendenceHistoryT::iterator it = party.begin();
+	cout << "----- Histrory of party guests ------------------------\n";
     while(it != party.end())
     {
         interval<ptime> when = (*it).first;
@@ -111,6 +164,17 @@ void boost_party()
         GuestSetT who = (*it++).second;
         cout << "[" << when.first() << " - " << when.upper() << ")"
 			 << ": " << who.as_string() << endl;
+    }
+
+    BoostPartyHeightHistoryT::iterator height_ = tallest_guest.begin();
+	cout << "----- Histrory of maximum guest hight -----------------\n";
+    while(height_ != tallest_guest.end())
+    {
+        interval<ptime> when = height_->first;
+        // Who is at the party within the time interval 'when' ?
+        int height = (*height_++).second;
+        cout << "[" << when.first() << " - " << when.upper() << ")"
+			 << ": " << height <<" cm = " << height/30.48 << " ft" << endl;
     }
 }
 
@@ -127,9 +191,13 @@ int main()
 /*-----------------------------------------------------------------------------
 >> Interval Template Library: Sample boost_party.cpp <<
 -------------------------------------------------------
+----- Histrory of party guests ------------------------
 [2008-May-20 19:30:00 - 2008-May-20 20:10:00): Harry Mary
 [2008-May-20 20:10:00 - 2008-May-20 22:15:00): Diana Harry Mary Susan
 [2008-May-20 22:15:00 - 2008-May-20 23:00:00): Diana Harry Mary Peter Susan
 [2008-May-20 23:00:00 - 2008-May-21 00:00:00): Diana Peter Susan
 [2008-May-21 00:00:00 - 2008-May-21 00:30:00): Peter
+----- Histrory of maximum guest hight -----------------
+[2008-May-20 19:30:00 - 2008-May-20 22:15:00): 180 cm = 5.90551 ft
+[2008-May-20 22:15:00 - 2008-May-21 00:30:00): 200 cm = 6.56168 ft
 -----------------------------------------------------------------------------*/

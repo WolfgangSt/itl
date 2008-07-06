@@ -70,6 +70,20 @@ namespace itl
         bool operator() (const Type& x)const { return x.empty(); }
     } ;
 
+    template <class Type>
+    struct is_neutron: public property<Type>
+    {
+        bool operator() (const Type& x)const { return x == Type(); }
+    } ;
+
+	template <class Type>
+	class content_is_neutron: public property<Type>
+    {
+    public:
+        bool operator() (const Type& x)const 
+		{ return x.second == Type::second_type(); }
+    } ;
+
 
     // Binary predicates: relations
 
@@ -77,6 +91,7 @@ namespace itl
     class relation : public std::binary_function<LeftT,RightT,bool>
     {
     public:
+        virtual ~relation(){}
         virtual bool operator() (const LeftT& a, const RightT& b)const=0;
     } ;
 

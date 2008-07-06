@@ -119,6 +119,7 @@ template
 	class SubType,
     typename DomainT,
     typename CodomainT,
+	class NeutronHandler = itl::neutron_absorber,
     template<class>class Interval = itl::interval,
     template<class>class Compare  = std::less,
     template<class>class Alloc    = std::allocator
@@ -139,6 +140,9 @@ public:
 */
 //@{ 
 	typedef SubType sub_type;
+	typedef interval_base_map<SubType,DomainT,CodomainT,
+				              itl::neutron_absorber,Interval,Compare,Alloc>
+							  neutron_absorber_type;
 
     /// Domain type (type of the keys) of the map
     typedef DomainT   domain_type;
@@ -162,7 +166,8 @@ public:
         allocator_type;
 
     /// Container type for the implementation 
-    typedef itl::map<interval_type,codomain_type,exclusive_less,Alloc> ImplMapT;
+    typedef itl::map<interval_type,codomain_type,NeutronHandler,
+	                 exclusive_less,Alloc> ImplMapT;
 
     /// key type of the implementing container
     typedef typename ImplMapT::key_type   key_type;
@@ -180,7 +185,8 @@ public:
 	//typedef interval_base_set<SetSubType,DomainT,Interval,Compare,Alloc> interval_base_set_type;
 
     ///JODO Make exported types consistent
-    typedef typename itl::map<DomainT,CodomainT,Compare,Alloc> atomized_type;
+    typedef typename itl::map<DomainT,CodomainT,
+	                          NeutronHandler,Compare,Alloc> atomized_type;
 //@}
 
     // B: Constructors, destructors, assignment
@@ -224,20 +230,6 @@ public:
     interval_type first_interval()const { return (*(_map.begin())).KEY_VALUE; }
     interval_type last_interval()const { return (*(_map.rbegin())).KEY_VALUE; }
 
-
-/** @name D: Virtual functions
-    @memo By overwriting these functions we can implement interval maps
-        that join neighbouring interval-bounds, or those that keep them
-        distinct.        
-    */
-//@{ 
-    /// Does the map contain the element the value pair <tt>x := pair(interval_type(x1,x2)const, y)</tt>
-    //JODO doc virtual bool contains(const value_type& x)const=0;
-
-    /// Treatment of neighouring intervals on insertion
-    //JODO doc virtual void handle_neighbours(const typename ImplMapT::iterator& it)=0;
-//@}
-
     
     // Functions that are common with interval_base_set --------------------------------
 
@@ -255,7 +247,7 @@ public:
     /// Gives the domain of the map as interval set
 	template<class SetSubType>
     void domain(interval_base_set<SetSubType,DomainT,Interval,Compare,Alloc>& dom)const 
-    { dom.clear(); const_FOR_IMPLMAP(it) dom.insert((*it).KEY_VALUE); } 
+    { dom.clear(); const_FOR_IMPLMAP(it) dom += (*it).KEY_VALUE; } 
 //@}
     
 
@@ -272,7 +264,7 @@ public:
 
     ///  <tt>*this</tt> and <tt>x2</tt> are disjoint; their intersection is empty.
     bool disjoint_to(const interval_base_map& x2)const
-    { return ( empty() || x2.empty() || last_interval().excl_less(x2.first_interval()) ); }
+    { return ( empty() || x2.empty() || last_interval().exclusive_less(x2.first_interval()) ); }
 //@}
 
 
@@ -316,13 +308,13 @@ public:
     { add( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
 
 	void add(const value_type& x) { that()->add<inplace_plus>(x); }
+
     void operator += (const value_type& x) { that()->add(x); }
 
 
     //JODO doc 
-	void insert(const value_type& x){ that()->add<inplace_identity>(x); }
-
-
+	void insert(const value_type& x){ that()->insert(x); }
+	//== { that()->add<inplace_identity>(x); }
 
     /** Subtraction of a base value pair <tt>x := pair(k,y)</tt> where <tt>base_value_type:=pair<DomainT,CodomainT></tt>
 
@@ -336,8 +328,13 @@ public:
         Insertion and subtraction are reversible as follows:
         <tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
     */
-    void subtract(const base_value_type& x) { that()->add<inplace_minus>(x); }    
-	//{ subtract( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
+    void subtract(const base_value_type& x) //{ that()->add<inplace_minus>(x); }    
+	{ that()->subtract( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
+
+
+	void erase(const value_type& x){ that()->erase(x); }
+	//=={ that()->subtract<inplace_erasure>(x); }
+
 
 	
 	void operator -= (const value_type& x) { subtract(x); }
@@ -355,7 +352,10 @@ public:
         Insertion and subtraction are reversible as follows:
         <tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
     */
-    //CL virtual void subtract(const value_type& x);
+	template<template<class>class Combinator>
+	void subtract(const value_type& x){ that()->subtract<Combinator>(x); }
+
+	void subtract(const value_type& x){ that()->subtract<inplace_minus>(x); }
 
     /** Remove a value <tt>y</tt> at <tt>x</tt> from the map
 
@@ -393,12 +393,14 @@ public:
 	        erase(*x_);
 	}
 
-	template<class SetSubType>
-    interval_base_map& operator -= (const interval_base_set<SetSubType,DomainT,Interval,Compare,Alloc>& x)
-	{
-		erase(x);
-		return *this;
-	}
+
+	//CL?
+	//template<class SetSubType>
+	//interval_base_map& operator -= (const interval_base_set<SetSubType,DomainT,Interval,Compare,Alloc>& x)
+	//{
+	//	erase(x);
+	//	return *this;
+	//}
 
     void erase(const interval_base_map& x);
 
@@ -474,23 +476,35 @@ public:
     */
     interval_base_map& operator *= (const interval_base_map& x);
 
-    
+
     // void intersect(interval_base_map& section, const interval_base_map&)const; JODO
     
     /// Compute union with <tt>x</tt>
-    interval_base_map& operator +=(const interval_base_map& x)
-    { 
-		const_FORALL(typename ImplMapT, it, x._map) that()->add(*it); 
-		return *this; 
-	}
+    //CL
+	//interval_base_map& operator +=(const interval_base_map& x)
+    //{ 
+	//	const_FORALL(typename ImplMapT, it, x._map) that()->add(*it); 
+	//	return *this; 
+	//}
     
     /// Compute difference with <tt>x</tt>
-    interval_base_map& operator -= (const interval_base_map& x)
-    { 
-		const_FORALL(typename ImplMapT, it, x._map) that()->subtract(*it); 
-		return *this; 
+    //interval_base_map& operator -=(const interval_base_map& x)
+    //{ 
+    //  const_FORALL(typename ImplMapT, it, x._map) that()->subtract(*it); 
+    //  return *this; 
+    //}
+
+	///
+	void absorb_neutrons()
+	{
+		//content_is_neutron<key_type, data_type> neutron_dropper;
+		if(!NeutronHandler::absorbs_neutrons())
+			drop_if(content_is_neutron<value_type>());
 	}
-    
+
+	void as_neutron_absorber(neutron_absorber_type& x)const
+	{ FOR_IMPLMAP(it) x.add(*it); }
+
     /// Join bounding intervals    
     interval_base_map& join();
     
@@ -632,9 +646,9 @@ protected:
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-bool interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::contained_in(const interval_base_map& super)const
+bool interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>::contained_in(const interval_base_map& super)const
 {
     // x2 should be larger than *this; so every element in this should be in x2
     const_FOR_IMPLMAP(it) 
@@ -647,9 +661,9 @@ bool interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::contai
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>
+void interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>
     ::intersect(interval_base_map& section, const interval_type& x)const
 {
     section.clear();
@@ -671,10 +685,12 @@ void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::intersect(interval_base_map& section, 
-                                                 const typename interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::value_type& sectant)const
+void interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>
+	::intersect(interval_base_map& section, 
+                const typename interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>
+				::value_type& sectant)const
 {
     section.clear();
     interval_type sectant_interval = sectant.KEY_VALUE;
@@ -690,8 +706,14 @@ void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::inters
 
         if(!common_interval.empty())
         {
-			section.that()->add( value_type(common_interval, (*it).CONT_VALUE) );
-            section.that()->add( value_type(common_interval, sectant.CONT_VALUE) );
+			//CodomainT inner_section = (*it).CONT_VALUE;
+			//inner_section *= sectant.CONT_VALUE;
+            //section.that()->add( value_type(common_interval, inner_section) );
+            section.that()->add( value_type(common_interval, (*it).CONT_VALUE) );
+			if(type<CodomainT>::is_set())
+				section.that()->add<inplace_star>( value_type(common_interval, sectant.CONT_VALUE) );
+			else
+				section.that()->add<inplace_plus>( value_type(common_interval, sectant.CONT_VALUE) );
         }
     }
 }
@@ -701,9 +723,9 @@ void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::inters
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::
+void interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>::
     intersect(interval_base_map& interSection, 
               const interval_base_map& sectant)const
 {
@@ -713,7 +735,7 @@ void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::
     interval_base_map aux;
     // THINK JODO optimize using the ordering: if intervalls are beyond borders we can terminate
 
-    typename interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::const_iterator 
+    typename interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>::const_iterator 
         it = sectant.begin();
     while(it != sectant.end())
     {
@@ -726,9 +748,9 @@ void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>& interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>
+interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>& interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>
 ::operator *= (const interval_base_map& x)
 {
     interval_base_map section;
@@ -738,69 +760,13 @@ interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>& interval_ba
 }
 
 
-
-/*
-template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::intersect(interval_base_map& section, 
-                                              const value_type& x)const
-{
-}
-*/
-
-
-
-// JODO USE FOR TESTCODE OR DELETE
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::recJoin()
-{
-    iterator it=_map.begin();
-    if(it==_map.end()) return;
-    iterator nxt=it; nxt++;
-    if(nxt==_map.end()) return;
-
-    while(nxt != _map.end())
-    {
-        if(    (*it).KEY_VALUE.touches((*nxt).KEY_VALUE)
-            && (*it).CONT_VALUE == (*nxt).CONT_VALUE      ) //CodomainT::OP ==
-        {
-            iterator fst_mem = it;  // hold the fist member
-            
-            // go noodling on while touchin members found
-            it++; nxt++;
-            while(     nxt != _map.end()
-                    && (*it).KEY_VALUE.touches((*nxt).KEY_VALUE)
-                    && (*it).CONT_VALUE == (*nxt).CONT_VALUE     ) //CodomainT::OP ==
-            { it++; nxt++; }
-
-            // finally we arrive at the end of a sequence of joinable intervals
-            // and it points to the last member of that sequence
-            iterator lst_mem = it, end_mem = nxt;
-            interval_type joinedInterval((*fst_mem).KEY_VALUE);
-            joinedInterval.extend((*lst_mem).KEY_VALUE);
-            CodomainT value = (*fst_mem).CONT_VALUE; //CodomainT::OP =
-            
-            _map.erase(fst_mem, end_mem);
-            _map.insert(value_type(joinedInterval, value));
-
-            // start a new search from a new beginning
-            recJoin();
-            return;
-        }
-        else { it++; nxt++; }
-    }
-}
-
-
-template 
-<
-    class SubType,
-    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
->
-interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>& interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::join()
+interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>& interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>
+	::join()
 {
     iterator it=_map.begin();
     if(it==_map.end()) 
@@ -845,9 +811,9 @@ interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>& interval_ba
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::merge()
+void interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>::merge()
 {
     iterator it=_map.begin();
     if(it==_map.end()) return;
@@ -894,9 +860,9 @@ void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::merge(
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-std::string interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::as_string()const
+std::string interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>::as_string()const
 {
     std::string res(""); 
     const_FOR_IMPLMAP(it) {
@@ -913,37 +879,22 @@ std::string interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>:
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-DomainT interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::size()const
+DomainT interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>::size()const
 {
     DomainT size = DomainT();
     const_FOR_IMPLMAP(it) size += (*it).KEY_VALUE.size();
     return size;
 }
 
-#ifdef UNISTAT
-// JODO: volume ist zu speziell. Geht nicht mit beliebigen WerteTypen für CodomainT
-template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-CodomainT interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::volume()const
-{
-    CodomainT vol = CodomainT();
-    const_FOR_IMPLMAP(it) 
-    {
-        CodomainT value = (*it).CONT_VALUE;
-        value *= (*it).KEY_VALUE.size();
-        vol += value;
-    }
-    return vol;
-}
-#endif
 
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-CodomainT interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::sum()const
+CodomainT interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>::sum()const
 {
     CodomainT sum = CodomainT();
     const_FOR_IMPLMAP(it) 
@@ -955,9 +906,9 @@ CodomainT interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::s
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::uniformBounds( typename interval<DomainT>::bound_types bt)
+void interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>::uniformBounds( typename interval<DomainT>::bound_types bt)
 {
     // I can do this only, because I am shure that the contents and the
     // ordering < on interval is invariant wrt. this transformation on bounds
@@ -967,9 +918,9 @@ void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::unifor
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::closeLeftBounds()
+void interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>::closeLeftBounds()
 {
     // I can do this only, because I am shure that the contents and the
     // ordering < on interval is invariant wrt. this transformation on bounds
@@ -981,9 +932,10 @@ void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::closeL
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::erase(const interval_type& x_itv)
+void interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>
+	::erase(const interval_type& x_itv)
 {
     if(x_itv.empty()) return;
     iterator fst_it = _map.lower_bound(x_itv);
@@ -1012,45 +964,34 @@ void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::erase(
     add(value_type(rightResid, rightResid_ContVal));
 }
 
-//CL
-//template <class SetSubType,
-//          typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-//void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::erase(const interval_base_set<SetSubType,DomainT,Interval,Compare,Alloc>& x)
-//{
-//    const_FORALL(typename interval_base_set<SetSubType,DomainT,Interval,Compare,Alloc>, x_, x)
-//        erase(*x_);
-//}
 
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::erase(const interval_base_map& x)
+void interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>::erase(const interval_base_map& erasure)
 {
-    const_FORALL(typename interval_base_map, x_, x)
-        erase((*x_).KEY_VALUE);
+    const_FORALL(typename interval_base_map, value_pair_, erasure)
+        that()->erase(*value_pair_);
 }
 
-/*
-error C2244: 'interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::-=' : Funktionsueberladung kann nicht aufgeloest werden
-template <typename DomainT, typename CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>::operator -= (const interval_base_set<SetSubType,DomainT,Interval,Compare,Alloc>& x)
-{
-    interval_base_set<SetSubType,DomainT,Interval,Compare,Alloc>::const_iterator x_ = x.begin();
-    while(x_ != x.end()) subtractItv(*x_);
-    return *this;
-}
-*/
-
-
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+// itl::global function templates
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+	
+//-----------------------------------------------------------------------------
+// equality
+//-----------------------------------------------------------------------------
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-inline bool operator == (const interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>& lhs,
-                         const interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>& rhs)
+inline bool operator == (const interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>& lhs,
+                         const interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>& rhs)
 {
     //MEMO PORT: This implemetation worked with stlport, sgi and gnu 
     // implementations of the stl. But using MSVC-implementation
@@ -1060,13 +1001,16 @@ inline bool operator == (const interval_base_map<SubType,DomainT,CodomainT,Inter
     return Set::lexicographical_equal(lhs, rhs);
 }
 
+//-----------------------------------------------------------------------------
+// order
+//-----------------------------------------------------------------------------
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-inline bool operator < (const interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>& lhs,
-                        const interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>& rhs)
+inline bool operator < (const interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>& lhs,
+                        const interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>& rhs)
 {
     return std::lexicographical_compare(
         lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), 
@@ -1077,14 +1021,203 @@ inline bool operator < (const interval_base_map<SubType,DomainT,CodomainT,Interv
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-inline bool operator <= (const interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>& lhs,
-                        const interval_base_map<SubType,DomainT,CodomainT,Interval,Compare,Alloc>& rhs)
+inline bool operator <= (const interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>& lhs,
+                        const interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>& rhs)
 {
     return lhs < rhs || lhs == rhs;
 }
 
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+// op= op_assign inplace_ops
+//-----------------------------------------------------------------------------
+// insertion, erasure
+//-----------------------------------------------------------------------------
+template 
+<
+    class SubType,
+    class DomainT, class CodomainT, 
+	class NeutronHandler, template<class>class Interval, 
+	template<class>class Compare, template<class>class Alloc
+>
+interval_base_map<SubType,DomainT,CodomainT,
+                  NeutronHandler,Interval,Compare,Alloc>& 
+insert
+(
+          interval_base_map<SubType,DomainT,CodomainT,
+		                    NeutronHandler,Interval,Compare,Alloc>& object,
+    const interval_base_map<SubType,DomainT,CodomainT,
+	                        NeutronHandler,Interval,Compare,Alloc>& insertee
+)
+{
+	typedef interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,
+		                      Interval,Compare,Alloc>    map_type;
+	const_FORALL(typename map_type, elem_, insertee) 
+		object.insert(*elem_); 
+
+	return object; 
+}
+
+
+template 
+<
+    class SubType,
+    class DomainT, class CodomainT, 
+	class NeutronHandler, template<class>class Interval, 
+	template<class>class Compare, template<class>class Alloc
+>
+interval_base_map<SubType,DomainT,CodomainT,
+                  NeutronHandler,Interval,Compare,Alloc>& 
+erase
+(
+          interval_base_map<SubType,DomainT,CodomainT,
+	                        NeutronHandler,Interval,Compare,Alloc>& object,
+	const interval_base_map<SubType,DomainT,CodomainT,
+	                        NeutronHandler,Interval,Compare,Alloc>& erasee
+)
+{
+	typedef interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,
+		                      Interval,Compare,Alloc>    map_type;
+	const_FORALL(typename map_type, elem_, erasee) 
+		object.erase(*elem_); 
+
+	return object; 
+}
+
+//-----------------------------------------------------------------------------
+// addition += and subtraction -=
+//-----------------------------------------------------------------------------
+template 
+<
+    class SubType,
+    class DomainT, class CodomainT, 
+	class NeutronHandler, template<class>class Interval, 
+	template<class>class Compare, template<class>class Alloc
+>
+interval_base_map<SubType,DomainT,CodomainT,
+                  NeutronHandler,Interval,Compare,Alloc>& 
+operator +=
+(
+          interval_base_map<SubType,DomainT,CodomainT,
+	                        NeutronHandler,Interval,Compare,Alloc>& object,
+	const interval_base_map<SubType,DomainT,CodomainT,
+	                        NeutronHandler,Interval,Compare,Alloc>& operand
+)
+{
+	typedef interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,
+		                      Interval,Compare,Alloc>    map_type;
+	const_FORALL(typename map_type, elem_, operand) 
+		object.add(*elem_); 
+
+	return object; 
+}
+
+template 
+<
+    class SubType,
+    class DomainT, class CodomainT, 
+	class NeutronHandler, template<class>class Interval, 
+	template<class>class Compare, template<class>class Alloc
+>
+interval_base_map<SubType,DomainT,CodomainT,
+                  NeutronHandler,Interval,Compare,Alloc>& 
+operator -=
+(
+          interval_base_map<SubType,DomainT,CodomainT,
+	                        NeutronHandler,Interval,Compare,Alloc>& object,
+	const interval_base_map<SubType,DomainT,CodomainT,
+	                        NeutronHandler,Interval,Compare,Alloc>& operand
+)
+{
+	typedef interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,
+		                      Interval,Compare,Alloc>    map_type;
+	const_FORALL(typename map_type, elem_, operand) 
+		object.subtract(*elem_); 
+
+	return object; 
+}
+
+
+//-----------------------------------------------------------------------------
+// erasure via keysets: map -= key_set
+//-----------------------------------------------------------------------------
+template 
+<
+    class SubType, class SetSubType,
+    class DomainT, class CodomainT, 
+	class NeutronHandler, template<class>class Interval, 
+	template<class>class Compare, template<class>class Alloc
+>
+interval_base_map<SubType,DomainT,CodomainT,
+                  NeutronHandler,Interval,Compare,Alloc>& 
+operator -=
+(
+          interval_base_map<SubType,DomainT,CodomainT,
+	                        NeutronHandler,Interval,Compare,Alloc>& object,
+	const interval_base_set<SetSubType,DomainT,
+	                        Interval,Compare,Alloc>& erasure
+)
+{
+	object.template erase<SetSubType>(erasure);
+	return object; 
+}
+
+//-----------------------------------------------------------------------------
+// min, max
+//-----------------------------------------------------------------------------
+template 
+<
+    class SubType,
+    class DomainT, class CodomainT, 
+	class NeutronHandler, template<class>class Interval, 
+	template<class>class Compare, template<class>class Alloc
+>
+interval_base_map<SubType,DomainT,CodomainT,
+                  NeutronHandler,Interval,Compare,Alloc>& 
+min_assign
+(
+          interval_base_map<SubType,DomainT,CodomainT,
+	                        NeutronHandler,Interval,Compare,Alloc>& object,
+	const interval_base_map<SubType,DomainT,CodomainT,
+	                        NeutronHandler,Interval,Compare,Alloc>& operand
+)
+{
+	typedef interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,
+		                      Interval,Compare,Alloc>    map_type;
+	const_FORALL(typename map_type, elem_, operand) 
+		object.template add<inplace_min >(*elem_); 
+
+	return object; 
+}
+
+template 
+<
+    class SubType,
+    class DomainT, class CodomainT, 
+	class NeutronHandler, template<class>class Interval, 
+	template<class>class Compare, template<class>class Alloc
+>
+interval_base_map<SubType,DomainT,CodomainT,
+                  NeutronHandler,Interval,Compare,Alloc>& 
+max_assign
+(
+          interval_base_map<SubType,DomainT,CodomainT,
+	                        NeutronHandler,Interval,Compare,Alloc>& object,
+	const interval_base_map<SubType,DomainT,CodomainT,
+	                        NeutronHandler,Interval,Compare,Alloc>& operand
+)
+{
+	typedef interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,
+		                      Interval,Compare,Alloc>    map_type;
+	const_FORALL(typename map_type, elem_, operand) 
+		object.template add<inplace_max>(*elem_); 
+
+	return object; 
+}
+
+//---------------------------------------------------------------------------------
 
 
 } // namespace itl

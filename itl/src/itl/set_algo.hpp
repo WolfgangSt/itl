@@ -33,6 +33,7 @@ DEALINGS IN THE SOFTWARE.
 #include <itl/notate.hpp>
 #include <itl/itl_type.hpp>
 #include <itl/predicates.hpp>
+#include <itl/functors.hpp>
 
 /*
 <b>SetAlgo </b>

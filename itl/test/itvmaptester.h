@@ -356,6 +356,7 @@ bool ItvMapTesterT<ItvMapTV>::isInsertReversible2
     xx2 += yy_permJoin;
     xx_plus_yy_pj = xx2;
     xx2 -= yy;
+	xx2.join();
     
     if(! xx.equal(xx2) ) {
         x = xx; y = yy; y_perm = yy_perm; y_permJoin = yy_permJoin;
@@ -403,7 +404,7 @@ bool ItvMapTesterT<ItvMapTV>::testInsertReversibility2(int nTries, char* errFile
     }
 
     if(!correct) {
-        std::cout << "InsertReversibility2: x + join(perm(y)) - y == x =: x2  violated --------" << std::endl;
+        std::cout << "InsertReversibility2: (x + join(perm(y)) - y).join() == x =: x2  violated --------" << std::endl;
         std::cout << "x       :" << min_x.as_string().c_str() << std::endl;
         std::cout << "y       :" << min_y.as_string().c_str() << std::endl;
         std::cout << "y_perm  :" << min_y_perm.as_string().c_str() << std::endl;
@@ -461,7 +462,9 @@ bool ItvMapTesterT<ItvMapTV>::hasErasureAsIntersectionComputability(ItvMapTV& x,
     erasure.domain(erasureDomain);
 
     ItvMapTV xxResid = xx;
-    xxResid.erase(erasure);
+    //JODO URG xxResid.erase(erasure);
+	//itl::erase(xxResid,erasure);
+	xxResid -= erasureDomain;
 
     interval_set_type xxDomain;
     xx.domain(xxDomain);

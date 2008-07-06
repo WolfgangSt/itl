@@ -94,7 +94,7 @@ void party()
 
 int main()
 {
-    cout << ">> Interval Template Library: Sample boost_party.cpp <<\n";
+    cout << ">> Interval Template Library: Sample party.cpp       <<\n";
     cout << "-------------------------------------------------------\n";
     party();
     return 0;

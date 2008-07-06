@@ -102,7 +102,7 @@ namespace itl
         typedef var_tuple<VarCount> var_tuple_type;
         typedef var_tuple_order<var_tuple_type> tuple_order_type;
         /// Container type for the implementation 
-        typedef itl::map<var_tuple_type, CounterT, var_tuple_order> ImplMapTD;
+		typedef itl::map<var_tuple_type, CounterT, neutron_absorber, var_tuple_order> ImplMapTD;
         /// iterator
         typedef typename ImplMapTD::iterator iterator;
         /// const_iterator
@@ -450,11 +450,12 @@ namespace itl
 
 
     //JODO: Where to put this kind of functionality
-    template <class ItvDomTV, class CodomTV>
-    void intervalize(interval_base_map<ItvDomTV, CodomTV>& itvMap, const itl::map<ItvDomTV, CodomTV>& dateMap)
+    template <class SubType, class ItvDomTV, class CodomTV>
+    void intervalize(interval_base_map<SubType, ItvDomTV, CodomTV>& itvMap, 
+		             const itl::map<ItvDomTV, CodomTV>& dateMap)
     {
         typedef itl::map<ItvDomTV, CodomTV> DateMapTD;
-        typedef interval_base_map<ItvDomTV, CodomTV> ItvMapTD;
+		typedef interval_base_map<SubType, ItvDomTV, CodomTV> ItvMapTD;
 
         itvMap.clear();
         const_FORALL(typename DateMapTD, date_, dateMap)
@@ -472,13 +473,13 @@ namespace itl
     //JODO DESIGN: Memfunction of interval_base_set? destructive + constructive. Self-deviding
 
     //NOTE: ItvMap GridSum
-    template <class ItvDomTV, class CodomTV>
-    void sumWithin(interval_base_map<ItvDomTV, CodomTV>& gridSums, 
-                   interval_base_map<ItvDomTV, CodomTV>& interSection, 
-                   const interval_base_map<ItvDomTV, CodomTV>& itvMap, 
+    template <class SubType, class ItvDomTV, class CodomTV>
+    void sumWithin(interval_base_map<SubType, ItvDomTV, CodomTV>& gridSums, 
+                   interval_base_map<SubType, ItvDomTV, CodomTV>& interSection, 
+                   const interval_base_map<SubType, ItvDomTV, CodomTV>& itvMap, 
                    const split_interval_set<ItvDomTV>& grid)
     {
-        typedef interval_base_map<ItvDomTV, CodomTV> ItvMapTD;
+        typedef interval_base_map<SubType, ItvDomTV, CodomTV> ItvMapTD;
         typedef split_interval_set<ItvDomTV> DiscItvSetTD;
 
         gridSums.clear();

@@ -650,6 +650,33 @@ inline bool operator <= (const interval_base_set<SubType,DomainT,Interval,Compar
 }
 
 
+template 
+<
+    class SubType, class DomainT, template<class>class Interval, 
+	template<class>class Compare, template<class>class Alloc
+>
+interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
+insert(interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
+	   const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
+	   insertee)
+{
+	return object += insertee; 
+}
+    
+
+template 
+<
+    class SubType, class DomainT, template<class>class Interval, 
+	template<class>class Compare, template<class>class Alloc
+>
+interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
+erase(interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
+	  const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
+	  erasee)
+{
+	return object -= erasee;
+}
+    
 
 
 } // namespace itl

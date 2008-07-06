@@ -228,6 +228,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\validate\gentor\randomgentor.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\validate\realmvalidater.h"
 				>
 			</File>

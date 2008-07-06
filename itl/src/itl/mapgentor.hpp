@@ -78,11 +78,11 @@ public:
     { J_ASSERT(szRange.is_rightopen()); m_sampleSizeRange = szRange; }
 
 private:
-    RandomGentorAT<DomainTD>*        p_domainGentor;
-    RandomGentorAT<CodomainTD>*        p_codomainGentor;
-    interval<int>                    m_sampleSizeRange;
-    SampleTypeTD                    m_sample;
-    int                                m_sampleSize;
+    RandomGentorAT<DomainTD>*    p_domainGentor;
+    RandomGentorAT<CodomainTD>*  p_codomainGentor;
+    interval<int>                m_sampleSizeRange;
+    SampleTypeTD                 m_sample;
+    int                          m_sampleSize;
 };
 
 
@@ -110,7 +110,8 @@ template <class MapTV>
 void MapGentorT<MapTV>::last(MapTV& x)const
 {
     x.clear();
-    const_FORALL(typename SampleTypeTD, it, m_sample) x.insert(*it);
+    const_FORALL(typename SampleTypeTD, it, m_sample) 
+		x.add(*it);
 }
 
 template <class MapTV>
@@ -127,7 +128,8 @@ void MapGentorT<MapTV>::last_permuted(MapTV& x)const
         else perm.push_front(*it);
     }
 
-    const_FORALL(typename SampleTypeTD, pit, perm) x.insert(*pit);
+    const_FORALL(typename SampleTypeTD, pit, perm) 
+		x.add(*pit);
 }
 
 

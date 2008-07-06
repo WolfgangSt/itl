@@ -486,10 +486,9 @@ namespace Loki
         : public tup::TupleGentor<Types, 0>
     {
     public:
-        typedef tuple<Types>                SelfType;
+        typedef tuple<Types>                        SelfType;
         typedef typename tup::TupleGentor<Types, 0> BaseClass;
-        typedef NullType                    HeadType; //JODO NullType
-        //CL?typedef typename BaseClass::TList::Head        HeadType; //JODO NullType
+        typedef NullType                            HeadType;
         
         enum { Size = TL::Length<Types>::value };
 

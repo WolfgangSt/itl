@@ -61,7 +61,7 @@ void test_realmvalidater()
     ">> ------------------------------------------------------ <<\n"
     ">> -------- Law based test automaton 'LaBatea' ---------- <<\n"
     ">> Output will be generated in a few seconds\n"
-    ">> teminate by typing <CTRL>C\n"
+    ">> terminate by typing <CTRL>C\n"
     ">> ------------------------------------------------------ <<\n";
 	validater.validate();
 };

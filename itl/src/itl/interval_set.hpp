@@ -116,6 +116,9 @@ public:
 	typedef interval_base_set<itl::interval_set<DomainT,Interval,Compare,Alloc>,
                               DomainT,Interval,Compare,Alloc> base_type;
 
+	typedef interval_set<DomainT,Interval,Compare,Alloc> type;
+	typedef type joint_type;
+
     /// The domain type of the set
     typedef DomainT   domain_type;
     /// The codomaintype is the same as domain_type
@@ -215,11 +218,9 @@ bool interval_set<DomainT,Interval,Compare,Alloc>::contains(const interval_type&
 template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 void interval_set<DomainT,Interval,Compare,Alloc>::handle_neighbours(const iterator& it)
 {
-    interval_type x = *it;
-
     if(it == this->_set.begin())
     {
-        typename ImplSetT::iterator it_nxt=it; it_nxt++;
+        iterator it_nxt=it; it_nxt++;
         if(it_nxt!=this->_set.end() && (*it).touches(*it_nxt)) 
             joint_insert(it, it_nxt);
     }
@@ -270,7 +271,7 @@ typename interval_set<DomainT,Interval,Compare,Alloc>::iterator
     this->_set.erase(left_it);
     this->_set.erase(right_it);
     
-    typename ImplSetT::iterator new_it = this->_set.insert(curItv).ITERATOR;
+    iterator new_it = this->_set.insert(curItv).ITERATOR;
     J_ASSERT(new_it!=this->_set.end());
     return new_it;
 }
@@ -342,9 +343,10 @@ inline bool is_element_equal(const interval_set<DomainT,Interval,Compare,Alloc>&
 
 
 template <class Type>
-class type<itl::interval_set<Type> >
+struct type<itl::interval_set<Type> >
 {
-public:
+	static bool is_set() { return true; }
+
     static std::string to_string()
     { return "interval_set<"+ type<Type>::to_string() +">"; }
 };
