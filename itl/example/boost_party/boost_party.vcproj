@@ -4,7 +4,7 @@
 	Version="8,00"
 	Name="boost_party"
 	ProjectGUID="{0D1DB87E-E72A-4FE9-A067-1907CC6613F6}"
-	RootNamespace="Party"
+	RootNamespace="Boost_party"
 	Keyword="Win32Proj"
 	>
 	<Platforms>

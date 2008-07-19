@@ -42,7 +42,7 @@ LOAD_LIBS  = -L/usr/lib
 #LOAD_LIBS  = -L/usr/lib64 
 
 #--- loadflags ----------------------------------------------------------------
-LOAD_FLAGS = $(LOAD_LIBS) -lstdc++
+LOAD_FLAGS = $(LOAD_LIBS) -lboost_date_time-gcc-mt-s  -lstdc++
 
 #--- compileflags ---------------------------------------------------
 # COMPILE_FLAGS = -o2 -DUSE_CONCEPTS
@@ -75,7 +75,16 @@ examples:
 	make overlap_counter
 	make history
 	make amount_cube
+	
+boost_examples:
 	make boost_party
+	make user_groups
+	make month_and_week_grid
+	make man_power
+
+all_examples:
+	examples
+	boost_examples
 
 tests:
 	make itvset_shell
@@ -152,6 +161,33 @@ boost_party_TARGET  = $(BIN_PATH)/boost_party$(EXE_TAG)
 
 boost_party:
 	$(COMPILE) $(COMPILE_FLAGS)  $(INCLUDE) $(boost_party_SOURCES) $(LOAD_FLAGS) -o $(boost_party_TARGET)
+
+#--- project user_groups --------------------------------------------------
+user_groups_PATH = $(ITL_ROOT_PATH)/$(EXAMPLE_DIR)/user_groups
+user_groups_MAIN = $(user_groups_PATH)/user_groups.cpp
+user_groups_SOURCES = $(user_groups_MAIN)
+user_groups_TARGET  = $(BIN_PATH)/user_groups$(EXE_TAG)
+
+user_groups:
+	$(COMPILE) $(COMPILE_FLAGS)  $(INCLUDE) $(user_groups_SOURCES) $(LOAD_FLAGS) -o $(user_groups_TARGET)
+
+#--- project month_and_week_grid --------------------------------------------------
+month_and_week_grid_PATH = $(ITL_ROOT_PATH)/$(EXAMPLE_DIR)/month_and_week_grid
+month_and_week_grid_MAIN = $(month_and_week_grid_PATH)/month_and_week_grid.cpp
+month_and_week_grid_SOURCES = $(month_and_week_grid_MAIN)
+month_and_week_grid_TARGET  = $(BIN_PATH)/month_and_week_grid$(EXE_TAG)
+
+month_and_week_grid:
+	$(COMPILE) $(COMPILE_FLAGS)  $(INCLUDE) $(month_and_week_grid_SOURCES) $(LOAD_FLAGS) -o $(month_and_week_grid_TARGET)
+
+#--- project man_power --------------------------------------------------
+man_power_PATH = $(ITL_ROOT_PATH)/$(EXAMPLE_DIR)/man_power
+man_power_MAIN = $(man_power_PATH)/man_power.cpp
+man_power_SOURCES = $(man_power_MAIN)
+man_power_TARGET  = $(BIN_PATH)/man_power$(EXE_TAG)
+
+man_power:
+	$(COMPILE) $(COMPILE_FLAGS)  $(INCLUDE) $(man_power_SOURCES) $(LOAD_FLAGS) -o $(man_power_TARGET)
 
 	
 	

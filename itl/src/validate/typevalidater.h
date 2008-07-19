@@ -253,7 +253,6 @@ namespace itl
             inplacePlusCommutativity,
             inplaceStarAssociativity,
             inplaceStarCommutativity,
-            inplaceSymmetricDifference,
             Laws_size 
         };
 
@@ -263,15 +262,15 @@ namespace itl
         {
             _lawChoice.setSize(Laws_size);
             _lawChoice.setMaxWeights(100);
-            _lawChoice[strictWeakStdOrder]         = 18;
-            _lawChoice[partialStdOrder]            = 16;
-            _lawChoice[containedInOrder]           = 16;
-            _lawChoice[inplacePlusAssociativity]   = 8;
-            _lawChoice[inplacePlusNeutrality]      = 8;
-            _lawChoice[inplacePlusCommutativity]   = 8;
-            _lawChoice[inplaceStarAssociativity]   = 8;
-            _lawChoice[inplaceStarCommutativity]   = 8;
-            _lawChoice[inplaceSymmetricDifference] = 10;
+            _lawChoice[strictWeakStdOrder]         = 19;
+            _lawChoice[partialStdOrder]            = 18;
+            _lawChoice[containedInOrder]           = 18;
+            _lawChoice[inplacePlusAssociativity]   = 9;
+            _lawChoice[inplacePlusNeutrality]      = 9;
+            _lawChoice[inplacePlusCommutativity]   = 9;
+            _lawChoice[inplaceStarAssociativity]   = 9;
+            _lawChoice[inplaceStarCommutativity]   = 9;
+            //JODO _lawChoice[inplaceSymmetricDifference] = 10; // only (map|cop)<set> NOT (map|cop)<group>
             //JODO _lawChoice[inplacePlusDistributivity] = 100; // only (map|cop)<set> NOT (map|cop)<group>
             //JODO _lawChoice[inplaceStarDistributivity] = 100; // only (map|cop)<set> NOT (map|cop)<group>
             //JODO _lawChoice[inplacePlusDeMorgan]       = 100; // only (map|cop)<set> NOT (map|cop)<group>
@@ -288,12 +287,21 @@ namespace itl
             case strictWeakStdOrder:         return _lessValidater.chooseValidater();
             case partialStdOrder:            return _lessEqualValidater.chooseValidater();
             case containedInOrder:           return _containedInValidater.chooseValidater();
-            case inplacePlusAssociativity:   return new LawValidater<InplaceAssociativity<Type>, RandomGentor>;
+            case inplacePlusAssociativity:   
+				if(   itl::type<Type>::is_interval_container() && type<Type>::is_interval_splitter()
+				   && type<Type>::is_neutron_absorber() && type<Type>::is_neutron_emitter())
+					return new LawValidater<InplaceAssociativity<Type, inplace_plus, element_equal>, RandomGentor>;
+				else
+					return new LawValidater<InplaceAssociativity<Type>, RandomGentor>;
             case inplacePlusNeutrality:      return new LawValidater<InplaceNeutrality<Type>, RandomGentor>;
             case inplacePlusCommutativity:   return new LawValidater<InplaceCommutativity<Type>, RandomGentor>;
-            case inplaceStarAssociativity:   return new LawValidater<InplaceAssociativity<Type, inplace_star>, RandomGentor>;
+            case inplaceStarAssociativity:
+				if(   type<Type>::is_interval_container() && type<Type>::is_interval_splitter()
+				   && type<Type>::is_neutron_absorber() && type<Type>::is_neutron_emitter())
+					return new LawValidater<InplaceAssociativity<Type, inplace_star, element_equal>, RandomGentor>;
+				else
+					return new LawValidater<InplaceAssociativity<Type, inplace_star>, RandomGentor>;
             case inplaceStarCommutativity:   return new LawValidater<InplaceCommutativity<Type, inplace_star>, RandomGentor>;
-            case inplaceSymmetricDifference: return new LawValidater<InplaceSymmetricDifference<Type>, RandomGentor>;
             default: return NULL;
             }
         }
@@ -333,26 +341,37 @@ namespace itl
 
 
     template <typename Type>
-    class InplaceCopValidater : public InplaceSetBaseValidater<Type>
+    class InplaceMapValidater : public InplaceSetBaseValidater<Type>
     {
     public:
         enum Laws 
         { 
             inplaceSetBaseLaws,
+			inplaceSymmetricDifference,
             inplaceUnionInvertability,
             sectionAbsorbtion,
             Laws_size 
         };
 
-        InplaceCopValidater() {setProfile();}
+        InplaceMapValidater() {setProfile();}
 
         void setProfile()
         {
             _lawChoice.setSize(Laws_size);
             _lawChoice.setMaxWeights(100);
-            _lawChoice[inplaceSetBaseLaws]         = 86;
-            _lawChoice[inplaceUnionInvertability]  = 7;
-            _lawChoice[sectionAbsorbtion]          = 7;
+            _lawChoice[inplaceSetBaseLaws]             = 85;
+			if(Type::has_symmetric_difference())
+			{
+				_lawChoice[inplaceSymmetricDifference] = 5;
+				_lawChoice[inplaceUnionInvertability]  = 5;
+				_lawChoice[sectionAbsorbtion]          = 5;
+			}
+			else
+			{
+				_lawChoice[inplaceSymmetricDifference] = 0;
+				_lawChoice[inplaceUnionInvertability]  = 7;
+				_lawChoice[sectionAbsorbtion]          = 8;
+			}
             _lawChoice.init();
         }
 
@@ -363,10 +382,12 @@ namespace itl
             {
             case inplaceSetBaseLaws:        
                 return InplaceSetBaseValidater<Type>::chooseValidater();
+            case inplaceSymmetricDifference: 
+				return new LawValidater<InplaceSymmetricDifference<Type>, RandomGentor>;
             case inplaceUnionInvertability: 
-                return new LawValidater<InplaceUnionInvertability<Type>, RandomGentor >;
+				return new LawValidater<InplaceUnionInvertability<Type,itl::protonic_equal>, RandomGentor >;
             case sectionAbsorbtion:            
-                return new LawValidater<SectionAbsorbtion<Type>, RandomGentor>;
+                return new LawValidater<SectionAbsorbtion<Type,itl::protonic_equal>, RandomGentor>;
             default: 
                 return NULL;
             }
@@ -408,6 +429,7 @@ namespace itl
         enum Laws 
         { 
             inplaceSetBaseLaws,
+			inplaceSymmetricDifference,
             inplaceUnionInvertability,
             inplacePlusDistributivity,
             inplaceStarDistributivity,
@@ -425,13 +447,14 @@ namespace itl
             _lawChoice.setSize(Laws_size);
             _lawChoice.setMaxWeights(100);
             _lawChoice[inplaceSetBaseLaws]          = 44;
-            _lawChoice[inplaceUnionInvertability]   = 8;
-            _lawChoice[inplacePlusDistributivity]   = 8;
-            _lawChoice[inplaceStarDistributivity]   = 8;
-            _lawChoice[inplacePlusDashRightDistrib] = 8;
-            _lawChoice[inplaceStarDashRightDistrib] = 8;
-            _lawChoice[inplacePlusDeMorgan]         = 8;
-            _lawChoice[inplaceStarDeMorgan]         = 8;
+            _lawChoice[inplaceSymmetricDifference]  = 7;
+            _lawChoice[inplaceUnionInvertability]   = 7;
+            _lawChoice[inplacePlusDistributivity]   = 7;
+            _lawChoice[inplaceStarDistributivity]   = 7;
+            _lawChoice[inplacePlusDashRightDistrib] = 7;
+            _lawChoice[inplaceStarDashRightDistrib] = 7;
+            _lawChoice[inplacePlusDeMorgan]         = 7;
+            _lawChoice[inplaceStarDeMorgan]         = 7;
             _lawChoice.init();
         }
 
@@ -440,14 +463,15 @@ namespace itl
         {
             switch(_lawChoice.some())
             {
-            case inplaceSetBaseLaws:          return InplaceSetBaseValidater<Type>::chooseValidater();
-            case inplaceUnionInvertability:   return new LawValidater<InplaceUnionInvertability<Type>, RandomGentor>;
-            case inplacePlusDistributivity:   return new LawValidater<InplaceDistributivity<Type, inplace_plus, inplace_star, itl::element_equal>, RandomGentor>;
-            case inplaceStarDistributivity:   return new LawValidater<InplaceDistributivity<Type, inplace_star, inplace_plus>, RandomGentor>;
-            case inplacePlusDashRightDistrib: return new LawValidater<InplaceRightDistributivity<Type, inplace_plus, inplace_minus>, RandomGentor>;
-            case inplaceStarDashRightDistrib: return new LawValidater<InplaceRightDistributivity<Type, inplace_star, inplace_minus>, RandomGentor>;
-            case inplacePlusDeMorgan:         return new LawValidater<InplaceDeMorgan<Type, inplace_plus, inplace_star, itl::element_equal>, RandomGentor>;
-            case inplaceStarDeMorgan:         return new LawValidater<InplaceDeMorgan<Type, inplace_star, inplace_plus, itl::element_equal>, RandomGentor>;
+            case inplaceSetBaseLaws:         return InplaceSetBaseValidater<Type>::chooseValidater();
+			case inplaceSymmetricDifference: return new LawValidater<InplaceSymmetricDifference<Type>, RandomGentor>;
+            case inplaceUnionInvertability:  return new LawValidater<InplaceUnionInvertability<Type>, RandomGentor>;
+            case inplacePlusDistributivity:  return new LawValidater<InplaceDistributivity<Type, inplace_plus, inplace_star, itl::element_equal>, RandomGentor>;
+            case inplaceStarDistributivity:  return new LawValidater<InplaceDistributivity<Type, inplace_star, inplace_plus>, RandomGentor>;
+            case inplacePlusDashRightDistrib:return new LawValidater<InplaceRightDistributivity<Type, inplace_plus, inplace_minus>, RandomGentor>;
+            case inplaceStarDashRightDistrib:return new LawValidater<InplaceRightDistributivity<Type, inplace_star, inplace_minus>, RandomGentor>;
+            case inplacePlusDeMorgan:        return new LawValidater<InplaceDeMorgan<Type, inplace_plus, inplace_star, itl::element_equal>, RandomGentor>;
+            case inplaceStarDeMorgan:        return new LawValidater<InplaceDeMorgan<Type, inplace_star, inplace_plus, itl::element_equal>, RandomGentor>;
             default: return NULL;
             }
         }
@@ -650,12 +674,12 @@ namespace itl
 
 
     template <typename Type>
-    class IntervalMapValidater : public InplaceSetBaseValidater<Type>
+    class IntervalMapValidater : public InplaceMapValidater<Type>
     {
     public:
         enum Laws 
         { 
-            inplaceSetBaseLaws,
+            inplaceMapLaws,
             homomorphismLaws,
             Laws_size 
         };
@@ -667,9 +691,9 @@ namespace itl
             _lawChoice.setSize(Laws_size);
             _lawChoice.setMaxWeights(100);
             const bool morphism_exists    = !type<typename Type::domain_type>::is_continuous();
-            const int  morphism_share     = 20;
-            _lawChoice[inplaceSetBaseLaws]= morphism_exists ? 100 - morphism_share : 100;
-            _lawChoice[homomorphismLaws]  = 100 - _lawChoice[inplaceSetBaseLaws];
+            const int  morphism_share     = 30;
+            _lawChoice[inplaceMapLaws]= morphism_exists ? 100 - morphism_share : 100;
+            _lawChoice[homomorphismLaws]  = 100 - _lawChoice[inplaceMapLaws];
             _lawChoice.init();
         }
 
@@ -681,7 +705,7 @@ namespace itl
         {
             switch(_lawChoice.some())
             {
-            case inplaceSetBaseLaws: return InplaceSetBaseValidater<Type>::chooseValidater();
+            case inplaceMapLaws: return InplaceMapValidater<Type>::chooseValidater();
             case homomorphismLaws:   return _morphicValidater.chooseValidater();
             default: return NULL;
             }

@@ -119,7 +119,7 @@ template
 	class SubType,
     typename DomainT,
     typename CodomainT,
-	class NeutronHandler = itl::neutron_absorber,
+	class Traits = itl::neutron_absorber,
     template<class>class Interval = itl::interval,
     template<class>class Compare  = std::less,
     template<class>class Alloc    = std::allocator
@@ -139,6 +139,7 @@ public:
 /** @name A: Type definitions for the template class 
 */
 //@{ 
+	typedef Traits traits;
 	typedef SubType sub_type;
 	typedef interval_base_map<SubType,DomainT,CodomainT,
 				              itl::neutron_absorber,Interval,Compare,Alloc>
@@ -166,7 +167,7 @@ public:
         allocator_type;
 
     /// Container type for the implementation 
-    typedef itl::map<interval_type,codomain_type,NeutronHandler,
+    typedef itl::map<interval_type,codomain_type,Traits,
 	                 exclusive_less,Alloc> ImplMapT;
 
     /// key type of the implementing container
@@ -181,15 +182,22 @@ public:
     /// const_iterator for iteration over intervals
     typedef typename ImplMapT::const_iterator const_iterator;
 
-    /// Corresponding abstract interval set type
+    // Corresponding abstract interval set type
 	//typedef interval_base_set<SetSubType,DomainT,Interval,Compare,Alloc> interval_base_set_type;
 
-    ///JODO Make exported types consistent
+    /// The atomized type is elementbased map that is equivalent to the interval map
     typedef typename itl::map<DomainT,CodomainT,
-	                          NeutronHandler,Compare,Alloc> atomized_type;
+	                          Traits,Compare,Alloc> atomized_type;
 //@}
 
-    // B: Constructors, destructors, assignment
+public:
+	inline static bool has_symmetric_difference() 
+	{ return type<codomain_type>::is_set() || !traits::absorbs_neutrons() || traits::emits_neutrons(); }
+
+public:
+/** @name B: Constructors, destructors, assignment 
+*/
+//@{ 
     /// Default constructor for the empty map 
     interval_base_map(){}
     /// Copy constructor
@@ -201,27 +209,35 @@ public:
         _map.ImplMapT::operator=(src._map);
         return *this;  
     }
+//@}
 
-    // ------------------------------------------------------------------------
-    // Interface MapIT
-    // C:
+/** @name C: Basic container functions
+*/
+//@{ 
+	/// clear the map
     void clear() { _map.clear(); }
+
+	/// is the map empty?
     bool empty()const { return _map.empty(); }
 
-	void swap(interval_base_map& x) { _map.swap(x._map); }
-
-
+	/// Does the map contain the key element \c x
     bool contains(const DomainT& x)const
     { 
         typename ImplMapT::const_iterator it = _map.find(interval_type(x)); 
         return it != _map.end(); 
     }
 
+	/// Does the map contain the element pair <tt>x = (key_element,value)</tt>?
     bool contains(const base_value_type& x)const
     {
         typename ImplMapT::const_iterator it = _map.find(interval_type(x.KEY_VALUE));
         return (it!=_map.end() && (*it).CONT_VALUE==x.CONT_VALUE);  //CodomainT::OP == 
     }
+
+	/// swap the content of containers
+	void swap(interval_base_map& x) { _map.swap(x._map); }
+//@}
+
 
     DomainT lower()const { return (*(_map.begin())).KEY_VALUE.lower(); }
     DomainT upper()const { return (*(_map.rbegin())).KEY_VALUE.upper(); }
@@ -237,8 +253,9 @@ public:
     */
 //@{ 
     // JODO: bounds of the map like interval_base_set
-    /// number of intervals
+    /// Number of intervals which is also the size of the iteration over the map
     size_t interval_count()const { return _map.size(); }
+	/// Size of the iteration over this container
     size_t iterative_size()const { return _map.size(); }
 
     /// enclosing Interval
@@ -267,123 +284,250 @@ public:
     { return ( empty() || x2.empty() || last_interval().exclusive_less(x2.first_interval()) ); }
 //@}
 
-
-/** @name G: Modificators
-    */
-//@{ 
-    /** Insertion of a base value pair <tt>x := pair(k,y)</tt> where <tt>base_value_type:=pair<DomainT,CodomainT></tt>
+//-----------------------------------------------------------------------------
+/** @name G.add: Addition */
+//@{
+	/// Addition of a base value pair using a Combinator operation.
+    /** Addition of a base value pair <tt>x := pair(k,y)</tt> where 
+	    <tt>base_value_type:=pair<DomainT,CodomainT></tt>
     
-        This inserts a value <tt>y</tt> for a single key <tt>k</tt> into the map.
+        This adds (inserts) a value <tt>y</tt> for a single key <tt>k</tt> into the map.
         If <tt>k</tt> already has a value <tt>y0</tt> associated with it, <tt>y0</tt>
-        will be incremented by <tt>y</tt>: <tt>y0 += y</tt> via operator <tt>+=</tt>
-        which has to be implemented for CodomainT.
-        
-        Insertion and subtraction are reversible as follows:
-        <tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
+        will be 'incremented' by <tt>y</tt> calling <tt>Combinator(y0,y)</tt>.
+
+		If Combinator implements addition (+=) associated values will contain sums.
+		If Combinator implements max, associated values will contain maximal values and so on.
     */
-    void insert(const base_value_type& x) 
-    { insert( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
+	template<template<class>class Combinator>
+    void add(const base_value_type& x) 
+    { that()->add<Combinator>( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
 
-    /** Insertion of an interval value pair <tt>x := pair(interval_type(x1,x2)const ,y)</tt>
+	/// Addition of a value pair using a Combinator operation.
+    /** Addition of a value pair <tt>x := pair(I,y)</tt> where <tt>base_value_type:=pair<DomainT,CodomainT></tt>
+    
+        This adds (inserts) a value <tt>y</tt> an interval <tt>I</tt> into the map.
 
-        This inserts a value <tt>y</tt> for an interval <tt>x</tt> into the map.
-
-        If no values are associated already within the range of <tt>x</tt>,
+        If no values are associated already within the range of <tt>I</tt>,
         <tt>y</tt> will be associated to that interval.
 
-        If there are associated values, in the range of <tt>x</tt>, then all
+        If there are associated values, in the range of <tt>I</tt>, then all
+        those values within the ranges of their intervals,
+        are combined by <tt>y</tt>. This is done via the <tt>Combinator</tt> function
+		that is passed as template parameter.
+
+		If Combinator implements addition (+=) associated values will contain sums.
+		If Combinator implements max, associated values will contain maximal values and so on.
+    */
+	template<template<class>class Combinator>
+	void add(const value_type& x) { that()->add<Combinator>(x); };
+
+	/// Addition of a base value pair.
+    /** Addition of a base value pair <tt>x := pair(k,y)</tt> where <tt>base_value_type:=pair<DomainT,CodomainT></tt>
+    
+        This adds (inserts) a value <tt>y</tt> for a single key <tt>k</tt> into the map.
+        If <tt>k</tt> already has a value <tt>y0</tt> associated with it, <tt>y0</tt>
+        will be incremented by <tt>y</tt> using operator <tt>+=</tt>.
+        
+        Addition and subtraction are reversible as follows:
+        <tt>m0=m; m.add(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
+    */
+    void add(const base_value_type& x) 
+    { add( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
+
+	/// Addition of a base value pair.
+    /** Addition of an value pair <tt>x=(I,y)</tt>
+
+        This adds (inserts) a value <tt>y</tt> for an interval <tt>I</tt> into the map.
+
+        If no values are associated already within the range of <tt>I</tt>,
+        <tt>y</tt> will be associated to that interval.
+
+        If there are associated values, in the range of <tt>I</tt>, then all
         those values within the ranges of their intervals,
         are incremented by <tt>y</tt>. This is done via operator <tt>+=</tt>
         which has to be implemented for CodomainT. 
 
         Insertion and subtraction are reversible as follows:
-        <tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
+        <tt>m0=m; m.add(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
     */
-
-	//JODO doc
-	template<template<class>class Combinator>
-	void add(const value_type& x) { that()->add<Combinator>(x); };
-
-    void add(const base_value_type& x) 
-    { add( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
-
 	void add(const value_type& x) { that()->add<inplace_plus>(x); }
 
-    void operator += (const value_type& x) { that()->add(x); }
+	/// Addition of a base value pair.
+    /** Addition of an value pair <tt>x=(I,y)</tt>
+
+        This adds (inserts) a value <tt>y</tt> for an interval <tt>I</tt> into the map,
+		identical member function add. 
+
+        If no values are associated already within the range of <tt>I</tt>,
+        <tt>y</tt> will be associated to that interval.
+
+        If there are associated values, in the range of <tt>I</tt>, then all
+        those values within the ranges of their intervals,
+        are incremented by <tt>y</tt>. This is done via operator <tt>+=</tt>
+        which has to be implemented for CodomainT. 
+
+        Insertion and subtraction are reversible as follows:
+        <tt>m0=m; m += x; m -= x;</tt> implies <tt>m==m0 </tt>         
+    */
+    interval_base_map& operator += (const value_type& x) 
+	{ that()->add(x); return *this; }
+//@}
 
 
-    //JODO doc 
-	void insert(const value_type& x){ that()->insert(x); }
-	//== { that()->add<inplace_identity>(x); }
+//-----------------------------------------------------------------------------
+/** @name G.sub: Subtraction */
+//@{
 
-    /** Subtraction of a base value pair <tt>x := pair(k,y)</tt> where <tt>base_value_type:=pair<DomainT,CodomainT></tt>
+	/// Subtraction of an base value pair using a Combinator operation
+    /** Subtraction of an base value pair <tt>x=(k,y)</tt> 
+
+        This subtracts a value <tt>y</tt> for a key <tt>k</tt> from the map.
+
+        If there is an associated values \c y0, in for <tt>k</tt>, 
+		\c y0 is combined with \c y by <tt>Combinator(y0,y)</tt>.
+
+		A Combinator for subtract is usually an inverse function of
+		the corresponding add<Combinator>. 
+	*/
+	template<template<class>class Combinator>
+	void subtract(const base_value_type& x)
+	{ that()->subtract<Combinator>( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
+
+
+	/// Subtraction of an interval value pair using a Combinator operation
+    /** Subtraction of an interval value pair  <tt>x=(I,y)</tt> 
+
+        This subtracts a value <tt>y</tt> for an interval <tt>I</tt> from the map.
+
+        If there are associated values, in the range of <tt>I</tt>, all
+        those values within the ranges of their intervals,
+        are decremented by <tt>y</tt>. This is done via the Combinator function
+		that is passed a template parameter.
+    */
+	template<template<class>class Combinator>
+	void subtract(const value_type& x){ that()->subtract<Combinator>(x); }
+
+
+	/// Subtraction of a base value pair.
+    /** Subtraction of a base value pair <tt>x=(k,y)</tt> where <tt>base_value_type:=pair<DomainT,CodomainT></tt>
 
         This subtracts a value <tt>y</tt> for a single key <tt>k</tt> from the map.
         If <tt>k</tt> already has a value <tt>y0</tt> associated with it, <tt>y0</tt>
         will be decremented by <tt>y</tt>: <tt>y0 -= y</tt> via operator <tt>-=</tt>
         which has to be implemented for CodomainT. If <tt>y</tt> becomes
         the neutral element CodomainT() <tt>k</tt> will also be removed from
-        the map.
+        the map, if the Traits include the property neutron_absorber. 
 
         Insertion and subtraction are reversible as follows:
-        <tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
+        <tt>m0=m; m.add(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
     */
-    void subtract(const base_value_type& x) //{ that()->add<inplace_minus>(x); }    
+    void subtract(const base_value_type& x)
 	{ that()->subtract( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
 
 
-	void erase(const value_type& x){ that()->erase(x); }
-	//=={ that()->subtract<inplace_erasure>(x); }
+	/// Subtraction of an interval value pair
+    /** Subtraction of an interval value pair  <tt>x=(I,y)</tt> 
 
+        This subtracts a value <tt>y</tt> for an interval <tt>I</tt> from the map.
 
-	
+        If there are associated values, in the range of <tt>I</tt>, all
+        those values within the ranges of their intervals,
+        are decremented by <tt>y</tt>. This is done usign operator -=.
+
+        If <tt>y</tt> becomes the neutral element CodomainT() <tt>k</tt> will
+		also be removed from the map, if the Traits include the property 
+		neutron_absorber. 
+    */
+	void subtract(const value_type& x)
+	{
+		if(Traits::emits_neutrons())
+			that()->add<inplace_minus>(x); 
+		else 
+			that()->subtract<inplace_minus>(x); 
+	}
+
+	/// Subtraction of an interval value pair
+    /** Subtraction of an interval value pair  <tt>x=(I,y)</tt>.
+        This subtracts a value <tt>y</tt> for an interval <tt>I</tt> from the map.
+
+        If there are associated values, in the range of <tt>I</tt>, all
+        those values within the ranges of their intervals,
+        are decremented by <tt>y</tt>. This is done usign operator -=.
+
+        If <tt>y</tt> becomes the neutral element CodomainT() <tt>k</tt> will
+		also be removed from the map, if the Traits include the property 
+		neutron_absorber. 
+    */
 	void operator -= (const value_type& x) { subtract(x); }
 
+//@}
+
+
+//-----------------------------------------------------------------------------
+/** @name G.ins&ers: Insertion and Erasure */
+//@{
+
+    /// Insertion of a base value pair.
+    /** Insertion of a base value pair <tt>x=(k,y)</tt> where <tt>base_value_type:=pair<DomainT,CodomainT></tt>
     
-    /** Subtraction of an interval value pair  <tt>x := pair(interval_type(x1,x2)const ,y)</tt> 
+        This inserts a value <tt>y</tt> for a single key <tt>k</tt> into the map.
+		Insertion is done only if there is no value \c y0 in the map for key \c k.
 
-        This subtracts a value <tt>y</tt> for an interval <tt>x</tt> from the map.
-
-          If there are associated values, in the range of <tt>x</tt>, all
-        those values within the ranges of their intervals,
-        are decremented by <tt>y</tt>. This is done via operator <tt>-=</tt>
-        which has to be implemented for CodomainT. 
-
-        Insertion and subtraction are reversible as follows:
-        <tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
+		This is the insertion semantics known from std::map::insert.
     */
-	template<template<class>class Combinator>
-	void subtract(const value_type& x){ that()->subtract<Combinator>(x); }
+    void insert(const base_value_type& x) 
+    { insert( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
 
-	void subtract(const value_type& x){ that()->subtract<inplace_minus>(x); }
+    /// Insertion of an interval value pair
+    /** Insertion of an interval value pair <tt>x=(I,y)</tt>
 
-    /** Remove a value <tt>y</tt> at <tt>x</tt> from the map
+        This inserts a value <tt>y</tt> for an interval <tt>I</tt> into the map.
+		Insertion is done for all sections of interval \c I that are not yet
+		associated with a value.
 
-        We are shooting a whole at key position <tt>x</tt> into the map. The value <tt>y</tt>
-        associated whith key value <tt>x</tt> drops out. If <tt>x </tt> is part of a
-        greater interval that interval will then be divided.
+		This is the insertion semantics known from std::map::insert.
+
+		\c insert(x) is equivalent to \c add<inplace_identity>(x)
+    */
+	void insert(const value_type& x){ that()->insert(x); }
+
+	/// Erase a base value pair from the map
+	/** Erase a base value pair <tt>x=(k,y)</tt>.
+		This does erase a base value pair <tt>x=(k,y)</tt> form the map, if
+		a value \c y is stored for key \c k.
+	*/
+    void erase(const base_value_type& x) 
+    { erase( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
+
+	/// Erase a interval value pair from the map
+	/** Erase a interval value pair <tt>x=(I,y)</tt>.
+		This does erase a interval value pair <tt>x=(I,y)</tt> form the map.
+
+		At all places in the range of interval \c I, where a value of \c y
+		is stored, it will be erased.
+
+		\c erase(x) is equivalent to \c subtract<inplace_erasure>(x)
+	*/
+	void erase(const value_type& x){ that()->erase(x); }
+
+
+	/// Erase an associated value for a key
+    /** Erase an associated value <tt>y</tt> for the key <tt>k</tt> from the map.
+
+		Any value \c y that is stored for key \c k will be erased.
     */
     void erase(const DomainT& x) { erase(interval_type(x)); }
 
-    /** Remove all associated values within the range of the interval <tt>x</tt>
+	/// Erase all associated values for an interval
+    /** Erase all associated values within the range of the interval <tt>x</tt>
         from the map.
-
-        We shoot down an interval <tt>x</tt> from the map. All associated values within that
-        interval are dropping out of the map.
-
-        Insertion and subtraction are reversible as follows:
-        <tt>m0=m; m.insert(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
     */
     void erase(const interval_type& x);
 
-    // JODO CONTINUE
-    /** Remove an entire interval set <tt>x</tt> from the map.
+    /// Erase all associated values for a set of intervals
+    /** Erase an entire interval set <tt>x</tt> from the map.
 
-        We shoot down all intervals contained in the interval set <tt>x</tt>
-        from the map. All values of the map that in the range of inerval set
-        <tt>x</tt> are dropping out.
-
-        So this is the most general function for removal of values from interval sets.
+		All values within the scope of the interval set \c x will be erased.
     */
 	template<class SetSubType>
     void erase(const interval_base_set<SetSubType,DomainT,Interval,Compare,Alloc>& x)
@@ -393,18 +537,22 @@ public:
 	        erase(*x_);
 	}
 
+    /// Erase an interval map from this interval map
+    /** Erase an entire interval map <tt>x</tt> from the map.
 
-	//CL?
-	//template<class SetSubType>
-	//interval_base_map& operator -= (const interval_base_set<SetSubType,DomainT,Interval,Compare,Alloc>& x)
-	//{
-	//	erase(x);
-	//	return *this;
-	//}
-
+		All values within the scope of the interval map \c x will be erased,
+		If there are equal values associated in \c *this map.
+    */
     void erase(const interval_base_map& x);
 
-    /** Compute the intersection of <tt>*this</tt> and the intervall <tt>x</tt>; assign
+//@}
+
+//-----------------------------------------------------------------------------
+/** @name G.sect: Intersection */
+//@{
+
+	/// Intersection with an interval
+    /** Compute the intersection of <tt>*this</tt> and the interval <tt>x</tt>; assign
         result to the interval map <tt>section</tt>.
 
         The result of the intersection with an interval has to be a interval map,
@@ -423,14 +571,45 @@ public:
 
         <tt>sec.size()==1</tt> and <tt>(*sec.begin()).first==i</tt>
 
-        No find function in implemented, because all find operations can be expressed
+        No find function is implemented, because all find operations can be expressed
         as intersections.
     */
     void intersect(interval_base_map& section, const interval_type& x)const;
 
+	/// Intersect with an interval and assign
+	interval_base_map& operator *= (const interval_type& x)
+	{ 
+		interval_base_map section; 
+		intersect(section, x); 
+		swap(section); 
+		return *this; 
+	}
 
-    void intersect(interval_base_map& section, const value_type& x)const;
+	/// Intersection with an interval value pair
+	/** Compute an intersection with the value pair \c x=(I,y). The intersection
+		operation is progagated to the associated values: For common intervals
+		the intersection of associated values is stored in the resulting map
+		\c section.
+	*/
+    void map_intersect(interval_base_map& section, const value_type& x)const;
 
+	/// Intersect with an interval value pair and assign
+	interval_base_map& operator *= (const value_type& x)
+	{ 
+		if(Traits::emits_neutrons())
+			return (*this) += x;
+		else if(Traits::absorbs_neutrons() && !type<CodomainT>::is_set())
+			return (*this) += x;
+		else
+		{
+			interval_base_map section; 
+			map_intersect(section, x); 
+			swap(section); 
+			return *this; 
+		}
+	}
+
+	/// Intersection with an interval set
     /** Compute the intersection of <tt>*this</tt> and the interval set <tt>x</tt>;
         assign result to the interval map <tt>section</tt>.    */
 	template<class SetSubType>
@@ -451,57 +630,60 @@ public:
 		}
 	}
 
+	/// Intersect with an interval set and assign
     /** Compute the intersection of <tt>*this</tt> and the interval set <tt>x</tt>;
         assign result to <tt>*this</tt> interval map
 
         Call of <tt>x *= y</tt> stands for <tt>x = x intersection with y </tt>
     */
 	template<class SetSubType>
-    interval_base_map& operator *= (const interval_base_set<SetSubType,DomainT,Interval,Compare,Alloc>& sectant)
+    interval_base_map& operator *= (const interval_base_set<SetSubType,DomainT,Interval,Compare,Alloc>& x)
 	{
 		interval_base_map section;
-		intersect(section, sectant);
-		section._map.swap(_map);
+		intersect(section, x);
+		swap(section); 
 		return *this;
 	}
 
+	/// Intersection with an interval map
     /** Compute the intersection of <tt>*this</tt> and the interval map <tt>x</tt>;
         assign result to the interval map <tt>section</tt>.    */
-    void intersect(interval_base_map& section, const interval_base_map& x)const;
+	template<class SubMapType>
+    void map_intersect(interval_base_map& section, 
+		               const interval_base_map<SubMapType,DomainT,CodomainT,
+                                               Traits,Interval,Compare,Alloc>& x)const;
 
-    /** Compute the intersection of <tt>*this</tt> and the interval map <tt>x</tt>;
+
+    /*  Compute the intersection of <tt>*this</tt> and the interval map <tt>x</tt>;
         assign result to <tt>*this</tt> interval map
 
         Call of <tt>x *= y</tt> stands for <tt>x = x intersection with y </tt>
     */
-    interval_base_map& operator *= (const interval_base_map& x);
+    //CL interval_base_map& operator *= (const interval_base_map& x);
+//@}
 
 
-    // void intersect(interval_base_map& section, const interval_base_map&)const; JODO
-    
-    /// Compute union with <tt>x</tt>
-    //CL
-	//interval_base_map& operator +=(const interval_base_map& x)
-    //{ 
-	//	const_FORALL(typename ImplMapT, it, x._map) that()->add(*it); 
-	//	return *this; 
-	//}
-    
-    /// Compute difference with <tt>x</tt>
-    //interval_base_map& operator -=(const interval_base_map& x)
-    //{ 
-    //  const_FORALL(typename ImplMapT, it, x._map) that()->subtract(*it); 
-    //  return *this; 
-    //}
+//-----------------------------------------------------------------------------
+/** @name H.mor: Morphic modifiers */
+//@{
 
-	///
+	/// Removal of neutral element values
+	/** All value pairs \c (I,y) that have neutral elements \c y==codomain_type()
+		as associated values are removed form the map.
+	*/
 	void absorb_neutrons()
 	{
 		//content_is_neutron<key_type, data_type> neutron_dropper;
-		if(!NeutronHandler::absorbs_neutrons())
+		if(!Traits::absorbs_neutrons())
 			drop_if(content_is_neutron<value_type>());
 	}
 
+	/// Copies this map into a neutron_absorber type.
+	/** \c x is a copy of \c *this as a neutron_aborber.
+		A neutron absorber is a map that does not store neutral elements
+		(<tt>neutron() == codomain_type()</tt>)
+		as associated values.
+	*/
 	void as_neutron_absorber(neutron_absorber_type& x)const
 	{ FOR_IMPLMAP(it) x.add(*it); }
 
@@ -519,7 +701,7 @@ public:
  
 
 
-/** @name H: Interval search
+/** @name I: Interval search
     */
 //@{
     /** A find function has <b>NOT</b> been implemented; Use \ref intersect
@@ -532,7 +714,7 @@ public:
 //@}
 
 
-/** @name I: Interval iterators
+/** @name J: Interval iterators
     */
 //@{
     ///
@@ -547,7 +729,7 @@ public:
 
 
 
-/** @name M: Selection by predicates
+/** @name K: Selection by predicates
     */
 //@{
     /// Keep all elements where property <tt>p</tt> holds, remove otherwise
@@ -646,9 +828,9 @@ protected:
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-bool interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>::contained_in(const interval_base_map& super)const
+bool interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>::contained_in(const interval_base_map& super)const
 {
     // x2 should be larger than *this; so every element in this should be in x2
     const_FOR_IMPLMAP(it) 
@@ -661,9 +843,9 @@ bool interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-void interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>
+void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>
     ::intersect(interval_base_map& section, const interval_type& x)const
 {
     section.clear();
@@ -682,15 +864,16 @@ void interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare
     }
 }
 
+
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-void interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>
-	::intersect(interval_base_map& section, 
-                const typename interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>
-				::value_type& sectant)const
+void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>
+	::map_intersect(interval_base_map& section, 
+                    const typename interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>
+				    ::value_type& sectant)const
 {
     section.clear();
     interval_type sectant_interval = sectant.KEY_VALUE;
@@ -723,11 +906,12 @@ void interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-void interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>::
-    intersect(interval_base_map& interSection, 
-              const interval_base_map& sectant)const
+	template<class SubType2>
+void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>::
+    map_intersect(interval_base_map& interSection, 
+                  const interval_base_map<SubType2,DomainT,CodomainT,Traits,Interval,Compare,Alloc>& sectant)const
 {
     interSection.clear();
     if(sectant.empty()) return;
@@ -735,37 +919,24 @@ void interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare
     interval_base_map aux;
     // THINK JODO optimize using the ordering: if intervalls are beyond borders we can terminate
 
-    typename interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>::const_iterator 
+    typename interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>::const_iterator 
         it = sectant.begin();
     while(it != sectant.end())
     {
         aux.clear();
-        intersect(aux, *it++);
+        map_intersect(aux, *it++);
         interSection += aux;
     }
 }
 
-template 
-<
-    class SubType,
-    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
->
-interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>& interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>
-::operator *= (const interval_base_map& x)
-{
-    interval_base_map section;
-    intersect(section, x);
-    section._map.swap(_map);
-    return *this;
-}
 
 
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>& interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>
+interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>& interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>
 	::join()
 {
     iterator it=_map.begin();
@@ -811,9 +982,9 @@ interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Allo
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-void interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>::merge()
+void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>::merge()
 {
     iterator it=_map.begin();
     if(it==_map.end()) return;
@@ -860,9 +1031,9 @@ void interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-std::string interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>::as_string()const
+std::string interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>::as_string()const
 {
     std::string res(""); 
     const_FOR_IMPLMAP(it) {
@@ -879,9 +1050,9 @@ std::string interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-DomainT interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>::size()const
+DomainT interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>::size()const
 {
     DomainT size = DomainT();
     const_FOR_IMPLMAP(it) size += (*it).KEY_VALUE.size();
@@ -892,9 +1063,9 @@ DomainT interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Comp
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-CodomainT interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>::sum()const
+CodomainT interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>::sum()const
 {
     CodomainT sum = CodomainT();
     const_FOR_IMPLMAP(it) 
@@ -906,9 +1077,9 @@ CodomainT interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Co
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-void interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>::uniformBounds( typename interval<DomainT>::bound_types bt)
+void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>::uniformBounds( typename interval<DomainT>::bound_types bt)
 {
     // I can do this only, because I am shure that the contents and the
     // ordering < on interval is invariant wrt. this transformation on bounds
@@ -918,9 +1089,9 @@ void interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-void interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>::closeLeftBounds()
+void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>::closeLeftBounds()
 {
     // I can do this only, because I am shure that the contents and the
     // ordering < on interval is invariant wrt. this transformation on bounds
@@ -932,9 +1103,9 @@ void interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-void interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>
+void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>
 	::erase(const interval_type& x_itv)
 {
     if(x_itv.empty()) return;
@@ -968,9 +1139,9 @@ void interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-void interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>::erase(const interval_base_map& erasure)
+void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>::erase(const interval_base_map& erasure)
 {
     const_FORALL(typename interval_base_map, value_pair_, erasure)
         that()->erase(*value_pair_);
@@ -988,10 +1159,10 @@ void interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-inline bool operator == (const interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>& lhs,
-                         const interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>& rhs)
+inline bool operator == (const interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>& lhs,
+                         const interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>& rhs)
 {
     //MEMO PORT: This implemetation worked with stlport, sgi and gnu 
     // implementations of the stl. But using MSVC-implementation
@@ -1001,16 +1172,51 @@ inline bool operator == (const interval_base_map<SubType,DomainT,CodomainT,Neutr
     return Set::lexicographical_equal(lhs, rhs);
 }
 
+template 
+<
+    class SubType,
+    class DomainT, class CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+>
+inline bool is_protonic_equal(const interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>& lhs,
+                              const interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>& rhs)
+{
+	interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc> lhs0 = lhs;
+	interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc> rhs0 = rhs;
+
+	lhs0.absorb_neutrons();
+	rhs0.absorb_neutrons();
+
+    return Set::lexicographical_equal(lhs0, rhs0);
+}
+
+template 
+<
+    class SubType,
+    class DomainT, class CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+>
+inline bool is_element_equal(const interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>& lhs,
+                             const interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>& rhs)
+{
+	interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc> lhs_joined = lhs;
+	interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc> rhs_joined = rhs;
+
+	lhs_joined.join();
+	rhs_joined.join();
+
+    return Set::lexicographical_equal(lhs_joined, rhs_joined);
+}
+
+
 //-----------------------------------------------------------------------------
 // order
 //-----------------------------------------------------------------------------
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-inline bool operator < (const interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>& lhs,
-                        const interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>& rhs)
+inline bool operator < (const interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>& lhs,
+                        const interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>& rhs)
 {
     return std::lexicographical_compare(
         lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), 
@@ -1021,10 +1227,10 @@ inline bool operator < (const interval_base_map<SubType,DomainT,CodomainT,Neutro
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, class NeutronHandler, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
-inline bool operator <= (const interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>& lhs,
-                        const interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,Interval,Compare,Alloc>& rhs)
+inline bool operator <= (const interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>& lhs,
+                        const interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>& rhs)
 {
     return lhs < rhs || lhs == rhs;
 }
@@ -1039,20 +1245,20 @@ template
 <
     class SubType,
     class DomainT, class CodomainT, 
-	class NeutronHandler, template<class>class Interval, 
+	class Traits, template<class>class Interval, 
 	template<class>class Compare, template<class>class Alloc
 >
 interval_base_map<SubType,DomainT,CodomainT,
-                  NeutronHandler,Interval,Compare,Alloc>& 
+                  Traits,Interval,Compare,Alloc>& 
 insert
 (
           interval_base_map<SubType,DomainT,CodomainT,
-		                    NeutronHandler,Interval,Compare,Alloc>& object,
+		                    Traits,Interval,Compare,Alloc>& object,
     const interval_base_map<SubType,DomainT,CodomainT,
-	                        NeutronHandler,Interval,Compare,Alloc>& insertee
+	                        Traits,Interval,Compare,Alloc>& insertee
 )
 {
-	typedef interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,
+	typedef interval_base_map<SubType,DomainT,CodomainT,Traits,
 		                      Interval,Compare,Alloc>    map_type;
 	const_FORALL(typename map_type, elem_, insertee) 
 		object.insert(*elem_); 
@@ -1065,20 +1271,20 @@ template
 <
     class SubType,
     class DomainT, class CodomainT, 
-	class NeutronHandler, template<class>class Interval, 
+	class Traits, template<class>class Interval, 
 	template<class>class Compare, template<class>class Alloc
 >
 interval_base_map<SubType,DomainT,CodomainT,
-                  NeutronHandler,Interval,Compare,Alloc>& 
+                  Traits,Interval,Compare,Alloc>& 
 erase
 (
           interval_base_map<SubType,DomainT,CodomainT,
-	                        NeutronHandler,Interval,Compare,Alloc>& object,
+	                        Traits,Interval,Compare,Alloc>& object,
 	const interval_base_map<SubType,DomainT,CodomainT,
-	                        NeutronHandler,Interval,Compare,Alloc>& erasee
+	                        Traits,Interval,Compare,Alloc>& erasee
 )
 {
-	typedef interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,
+	typedef interval_base_map<SubType,DomainT,CodomainT,Traits,
 		                      Interval,Compare,Alloc>    map_type;
 	const_FORALL(typename map_type, elem_, erasee) 
 		object.erase(*elem_); 
@@ -1087,26 +1293,27 @@ erase
 }
 
 //-----------------------------------------------------------------------------
-// addition += and subtraction -=
+// addition (set union) += and subtraction (set difference) -=
 //-----------------------------------------------------------------------------
+
 template 
 <
     class SubType,
     class DomainT, class CodomainT, 
-	class NeutronHandler, template<class>class Interval, 
+	class Traits, template<class>class Interval, 
 	template<class>class Compare, template<class>class Alloc
 >
 interval_base_map<SubType,DomainT,CodomainT,
-                  NeutronHandler,Interval,Compare,Alloc>& 
+                  Traits,Interval,Compare,Alloc>& 
 operator +=
 (
           interval_base_map<SubType,DomainT,CodomainT,
-	                        NeutronHandler,Interval,Compare,Alloc>& object,
+	                        Traits,Interval,Compare,Alloc>& object,
 	const interval_base_map<SubType,DomainT,CodomainT,
-	                        NeutronHandler,Interval,Compare,Alloc>& operand
+	                        Traits,Interval,Compare,Alloc>& operand
 )
 {
-	typedef interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,
+	typedef interval_base_map<SubType,DomainT,CodomainT,Traits,
 		                      Interval,Compare,Alloc>    map_type;
 	const_FORALL(typename map_type, elem_, operand) 
 		object.add(*elem_); 
@@ -1118,20 +1325,20 @@ template
 <
     class SubType,
     class DomainT, class CodomainT, 
-	class NeutronHandler, template<class>class Interval, 
+	class Traits, template<class>class Interval, 
 	template<class>class Compare, template<class>class Alloc
 >
 interval_base_map<SubType,DomainT,CodomainT,
-                  NeutronHandler,Interval,Compare,Alloc>& 
+                  Traits,Interval,Compare,Alloc>& 
 operator -=
 (
           interval_base_map<SubType,DomainT,CodomainT,
-	                        NeutronHandler,Interval,Compare,Alloc>& object,
+	                        Traits,Interval,Compare,Alloc>& object,
 	const interval_base_map<SubType,DomainT,CodomainT,
-	                        NeutronHandler,Interval,Compare,Alloc>& operand
+	                        Traits,Interval,Compare,Alloc>& operand
 )
 {
-	typedef interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,
+	typedef interval_base_map<SubType,DomainT,CodomainT,Traits,
 		                      Interval,Compare,Alloc>    map_type;
 	const_FORALL(typename map_type, elem_, operand) 
 		object.subtract(*elem_); 
@@ -1147,15 +1354,15 @@ template
 <
     class SubType, class SetSubType,
     class DomainT, class CodomainT, 
-	class NeutronHandler, template<class>class Interval, 
+	class Traits, template<class>class Interval, 
 	template<class>class Compare, template<class>class Alloc
 >
 interval_base_map<SubType,DomainT,CodomainT,
-                  NeutronHandler,Interval,Compare,Alloc>& 
+                  Traits,Interval,Compare,Alloc>& 
 operator -=
 (
           interval_base_map<SubType,DomainT,CodomainT,
-	                        NeutronHandler,Interval,Compare,Alloc>& object,
+	                        Traits,Interval,Compare,Alloc>& object,
 	const interval_base_set<SetSubType,DomainT,
 	                        Interval,Compare,Alloc>& erasure
 )
@@ -1164,6 +1371,47 @@ operator -=
 	return object; 
 }
 
+
+
+//-----------------------------------------------------------------------------
+// intersection *=
+//-----------------------------------------------------------------------------
+template 
+<
+    class SubType,
+    class DomainT, class CodomainT, 
+	class Traits, template<class>class Interval, 
+	template<class>class Compare, template<class>class Alloc
+>
+interval_base_map<SubType,DomainT,CodomainT,
+                  Traits,Interval,Compare,Alloc>& 
+operator *=
+(
+          interval_base_map<SubType,DomainT,CodomainT,
+	                        Traits,Interval,Compare,Alloc>& object,
+	const interval_base_map<SubType,DomainT,CodomainT,
+	                        Traits,Interval,Compare,Alloc>& operand
+)
+{
+
+	typedef interval_base_map
+		    <SubType,DomainT,CodomainT,
+			 Traits,Interval,Compare,Alloc> map_type;
+
+	if(Traits::emits_neutrons())
+		return object += operand;
+	else if(Traits::absorbs_neutrons() && !type<CodomainT>::is_set())
+		return object += operand;
+	else
+	{
+		map_type section;
+		object.map_intersect(section, operand);
+		object.swap(section);
+		return object;
+	}
+}
+
+
 //-----------------------------------------------------------------------------
 // min, max
 //-----------------------------------------------------------------------------
@@ -1171,20 +1419,20 @@ template
 <
     class SubType,
     class DomainT, class CodomainT, 
-	class NeutronHandler, template<class>class Interval, 
+	class Traits, template<class>class Interval, 
 	template<class>class Compare, template<class>class Alloc
 >
 interval_base_map<SubType,DomainT,CodomainT,
-                  NeutronHandler,Interval,Compare,Alloc>& 
+                  Traits,Interval,Compare,Alloc>& 
 min_assign
 (
           interval_base_map<SubType,DomainT,CodomainT,
-	                        NeutronHandler,Interval,Compare,Alloc>& object,
+	                        Traits,Interval,Compare,Alloc>& object,
 	const interval_base_map<SubType,DomainT,CodomainT,
-	                        NeutronHandler,Interval,Compare,Alloc>& operand
+	                        Traits,Interval,Compare,Alloc>& operand
 )
 {
-	typedef interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,
+	typedef interval_base_map<SubType,DomainT,CodomainT,Traits,
 		                      Interval,Compare,Alloc>    map_type;
 	const_FORALL(typename map_type, elem_, operand) 
 		object.template add<inplace_min >(*elem_); 
@@ -1196,20 +1444,20 @@ template
 <
     class SubType,
     class DomainT, class CodomainT, 
-	class NeutronHandler, template<class>class Interval, 
+	class Traits, template<class>class Interval, 
 	template<class>class Compare, template<class>class Alloc
 >
 interval_base_map<SubType,DomainT,CodomainT,
-                  NeutronHandler,Interval,Compare,Alloc>& 
+                  Traits,Interval,Compare,Alloc>& 
 max_assign
 (
           interval_base_map<SubType,DomainT,CodomainT,
-	                        NeutronHandler,Interval,Compare,Alloc>& object,
+	                        Traits,Interval,Compare,Alloc>& object,
 	const interval_base_map<SubType,DomainT,CodomainT,
-	                        NeutronHandler,Interval,Compare,Alloc>& operand
+	                        Traits,Interval,Compare,Alloc>& operand
 )
 {
-	typedef interval_base_map<SubType,DomainT,CodomainT,NeutronHandler,
+	typedef interval_base_map<SubType,DomainT,CodomainT,Traits,
 		                      Interval,Compare,Alloc>    map_type;
 	const_FORALL(typename map_type, elem_, operand) 
 		object.template add<inplace_max>(*elem_); 

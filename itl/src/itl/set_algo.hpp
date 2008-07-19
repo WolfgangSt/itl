@@ -86,6 +86,9 @@ namespace itl
         template<class ObjectT>
         ObjectT& add(ObjectT& result, const ObjectT& x2)
         {
+			if(&result == &x2)
+				return result;
+
             typedef typename ObjectT::const_iterator Object_const_iterator;
             for(Object_const_iterator x2_ = x2.begin(); x2_ != x2.end(); x2_++)
                 result += *x2_;
@@ -97,7 +100,7 @@ namespace itl
 		ObjectT& operator += (ObjectT& result, const ObjectT& x2)
 		{ return Set::add(result, x2); }
 
-
+		//JODO CL
         template<class ObjectT, class CoObjectT>
         ObjectT& subtract(ObjectT& result, const CoObjectT& x2)
         {
@@ -111,6 +114,23 @@ namespace itl
 
             while(x2_ != common_upb_)
                 result.subtract(*x2_++);
+
+			return result;
+		}
+
+		template<class ObjectT, class CoObjectT>
+        ObjectT& erase(ObjectT& result, const CoObjectT& x2)
+        {
+            typename CoObjectT::const_iterator common_lwb_;
+            typename CoObjectT::const_iterator common_upb_;
+            if(!common_range(common_lwb_, common_upb_, x2, result))
+                return result;
+
+            typename CoObjectT::const_iterator x2_ = common_lwb_;
+            typename ObjectT::iterator common_;
+
+            while(x2_ != common_upb_)
+                result.erase(*x2_++);
 
 			return result;
 		}

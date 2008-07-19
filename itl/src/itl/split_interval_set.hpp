@@ -422,6 +422,11 @@ namespace itl
     struct type<itl::split_interval_set<Type> >
     {
     	static bool is_set() { return true; }
+		static bool is_interval_container() { return true; }
+		static bool is_interval_splitter() { return true; }
+		static bool is_neutron_absorber() { return false; }
+		static bool is_neutron_emitter() { return false; }
+
 
         static std::string to_string()
         { return "sp_itv_set<"+ type<Type>::to_string() +">"; }

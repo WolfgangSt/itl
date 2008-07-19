@@ -71,10 +71,10 @@ public:
     DomainGentorPT domainGentor()const { return p_domainGentor; } 
 
 private:
-    RandomGentorAT<DomainTD>*    p_domainGentor;
-    interval<int>                m_sampleSizeRange;
-    SampleTypeTD                m_sample;
-    int                            m_sampleSize;
+    RandomGentorAT<DomainTD>*  p_domainGentor;
+    interval<int>              m_sampleSizeRange;
+    SampleTypeTD               m_sample;
+    int                        m_sampleSize;
 };
 
 
@@ -91,7 +91,7 @@ void SetGentorT<SetTV>::some(SetTV& x)
         DomainTD key;
         //CL m_domainGentor->some(key);
         domainGentor()->some(key);
-		x.insert(key);
+		x += key;
         m_sample.push_back(key);
     }
 }
@@ -101,7 +101,8 @@ template <class SetTV>
 void SetGentorT<SetTV>::last(SetTV& x)const
 {
     x.clear();
-    const_FORALL(typename SampleTypeTD, it, m_sample) x.insert(*it);
+    const_FORALL(typename SampleTypeTD, it, m_sample) 
+		x += *it;
 }
 
 template <class SetTV>
@@ -118,7 +119,8 @@ void SetGentorT<SetTV>::last_permuted(SetTV& x)const
         else perm.push_front(*it);
     }
 
-    const_FORALL(typename SampleTypeTD, pit, perm) x.insert(*pit);
+    const_FORALL(typename SampleTypeTD, pit, perm) 
+		x += *pit;
 }
 
 

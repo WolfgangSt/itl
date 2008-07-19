@@ -27,6 +27,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "month_and_week_grid", "..\.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "man_power", "..\..\example\man_power\man_power.vcproj", "{360BCFA9-9EB6-4D22-8469-CDC290478F78}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "user_groups", "..\..\example\user_groups\user_groups.vcproj", "{0D1DB87E-E72A-4FE9-A067-1907CC6613F7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "operators", "..\..\test\operators\operators.vcproj", "{0D1DB87E-E72A-4FE9-A067-1907CC6613F8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -85,6 +89,14 @@ Global
 		{360BCFA9-9EB6-4D22-8469-CDC290478F78}.Debug|Win32.Build.0 = Debug|Win32
 		{360BCFA9-9EB6-4D22-8469-CDC290478F78}.Release|Win32.ActiveCfg = Release|Win32
 		{360BCFA9-9EB6-4D22-8469-CDC290478F78}.Release|Win32.Build.0 = Release|Win32
+		{0D1DB87E-E72A-4FE9-A067-1907CC6613F7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0D1DB87E-E72A-4FE9-A067-1907CC6613F7}.Debug|Win32.Build.0 = Debug|Win32
+		{0D1DB87E-E72A-4FE9-A067-1907CC6613F7}.Release|Win32.ActiveCfg = Release|Win32
+		{0D1DB87E-E72A-4FE9-A067-1907CC6613F7}.Release|Win32.Build.0 = Release|Win32
+		{0D1DB87E-E72A-4FE9-A067-1907CC6613F8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0D1DB87E-E72A-4FE9-A067-1907CC6613F8}.Debug|Win32.Build.0 = Debug|Win32
+		{0D1DB87E-E72A-4FE9-A067-1907CC6613F8}.Release|Win32.ActiveCfg = Release|Win32
+		{0D1DB87E-E72A-4FE9-A067-1907CC6613F8}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -95,6 +95,15 @@ namespace itl
 
 		static bool is_set();
 
+		static bool is_interval_container();
+
+		static bool is_interval_splitter();
+
+		static bool is_neutron_emitter();
+
+		static bool is_neutron_absorber();
+
+
         /** Represent the type by a string which is it's typename */
         static std::string to_string();
     };
@@ -147,6 +156,20 @@ namespace itl
     template <class Type>
 	inline bool type<Type>::is_set() { return false; }
 
+	//-------------------------------------------------------------------------
+	template <class Type>
+	inline bool type<Type>::is_interval_container() { return false; }
+
+	template <class Type>
+	inline bool type<Type>::is_interval_splitter() { return false; }
+
+	template <class Type>
+	inline bool type<Type>::is_neutron_emitter() { return false; }
+
+	template <class Type>
+	inline bool type<Type>::is_neutron_absorber() { return false; }
+
+	//-------------------------------------------------------------------------
     template<>
     inline std::string type<int>::to_string() { return "int"; }
     template<>
@@ -154,7 +177,7 @@ namespace itl
     template<>
     inline std::string type<std::string>::to_string() { return "string"; }
 
-    // ------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
     template<template<class> class Templ>
     struct unary_template
     {

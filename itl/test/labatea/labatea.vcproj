@@ -224,6 +224,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\src\itl\predicates.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\src\validate\laws\pushouts.h"
 				>
 			</File>

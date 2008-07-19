@@ -194,10 +194,14 @@ public:
     }
 
 	/// insert an element to the container
-    void insert(const DomainT& x) { insert(interval_type(x)); } //JODO URG
+    void insert(const DomainT& x) { insert(interval_type(x)); }
+	void add(const DomainT& x) { insert(x); }
+	interval_base_set& operator += (const DomainT& x) { insert(x); return *this; }
 
 	/// subtract an element from the container
+    void erase(const DomainT& x) { subtract(interval_type(x)); }
     void subtract(const DomainT& x) { subtract(interval_type(x)); }
+	interval_base_set& operator -= (const DomainT& x) { subtract(x); return *this; }
 
 	/** Is <tt>*this</tt> contained in <tt>super</tt>? */
     bool contained_in(const interval_base_set& super)const;
@@ -252,13 +256,14 @@ public:
     /// Insertion of an interval <tt>x</tt>
 	void insert(const value_type& x) { that()->insert(x); }
 
-	void add(const value_type& x) { insert(x); }
-    void operator += (const value_type& x) { add(x); }
+	void add(const value_type& x) { that()->insert(x); }
+    interval_base_set& operator += (const value_type& x) { that()->insert(x); return *this; }
 
 
     /// Removal of an interval <tt>x</tt>
+    void erase(const value_type& x) { that()->subtract(x); }
     void subtract(const value_type& x) { that()->subtract(x); }
-    void operator -= (const value_type& x) { subtract(x); }
+    interval_base_set& operator -= (const value_type& x) { that()->subtract(x); return *this; }
 
     /** Intersection with interval x; The intersection is assigned to <tt>section</tt>. 
     

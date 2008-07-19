@@ -148,11 +148,15 @@ namespace itl
         /** <tt>*this</tt> and <tt>x2</tt> are disjoint, if their intersection is empty */
         bool disjoint(const set& x2)const { return disjoint(*this, x2); }
 
+		iterator add(const value_type& vp) { return insert(vp).ITERATOR; } 
+		set& operator += (const value_type& vp) { insert(vp); return *this; } 
+
         // Default subtract-function using -= on CodomTV
         iterator subtract(const value_type& vp);
+		set& operator -= (const value_type& vp) { subtract(vp); return *this; } 
 
         /// Add a set \c x2 to this set.
-        set& operator += (const set& x2);
+        set& operator += (const set& x2) { Set::add(*this, x2); return *this; }
 
         /// Subtract a set \c x2 from this set.
         set& operator -= (const set& x2) { Set::subtract(*this, x2); return *this; }
@@ -259,6 +263,7 @@ namespace itl
     }
 
 
+	/*CL
     template <typename KeyT, template<class>class Compare, 
                              template<class>class Alloc>
     set<KeyT,Compare,Alloc>& 
@@ -274,6 +279,7 @@ namespace itl
 
         return *this; 
     }
+	*/
 
     template <typename KeyT, template<class>class Compare, template<class>class Alloc>
     std::string set<KeyT,Compare,Alloc>::as_string(const char* sep)const
@@ -350,6 +356,11 @@ namespace itl
     struct type<itl::set<Type> >
     {
 		static bool is_set() { return true; }
+		static bool is_interval_container() { return false; }
+		static bool is_interval_splitter() { return false; }
+		static bool is_neutron_absorber() { return false; }
+		static bool is_neutron_emitter() { return false; }
+
 
         static std::string to_string()
         { return "set<"+ type<Type>::to_string() +">"; }

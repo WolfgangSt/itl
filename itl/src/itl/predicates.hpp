@@ -119,6 +119,21 @@ namespace itl
     inline std::string unary_template<itl::element_equal>::to_string()  
     { return "="; }
 
+    template <class Type> 
+    struct protonic_equal : public relation<Type, Type>
+    {
+        bool operator()(const Type& lhs, const Type& rhs)const
+        {
+            return is_protonic_equal(lhs, rhs);
+        }
+    };
+
+    template<>
+    inline std::string unary_template<itl::protonic_equal>::to_string()  
+    { return "==/0"; }
+
+
+
     /// Functor class template contained_in implements the subset relation.
     template<class Type> 
     struct contained_in : public relation<Type, Type>

@@ -18,7 +18,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 namespace itl
 {
 
-    template <typename Type>
+    template <typename Type, template<class>class Equality = itl::std_equal>
     class InplaceUnionInvertability 
 		: public Law<InplaceUnionInvertability<Type>, 
                      LOKI_TYPELIST_1(Type), LOKI_TYPELIST_2(Type,Type)>
@@ -35,7 +35,8 @@ namespace itl
 
         std::string typeString()const
         {
-            return "UnionInvertability<"+type<Type>::to_string()+">";
+            return "UnionInvertability<"+type<Type>::to_string()+","
+				                        +unary_template<Equality>::to_string()+">";
         }
 
     public:
@@ -50,7 +51,7 @@ namespace itl
             this->template setOutputValue<lhs_result>(lhs);
             this->template setOutputValue<rhs_result>(rhs);
 
-            return lhs == rhs;
+            return Equality<Type>()(lhs, rhs);
         }
 
 		bool debug_holds(){ return holds(); }
@@ -319,7 +320,7 @@ namespace itl
     };
 
     // ---------------------------------------------------------------------------
-    template <typename Type>
+    template <typename Type, template<class>class Equality = itl::std_equal>
     class InplaceSymmetricDifference 
 		: public Law<InplaceSymmetricDifference<Type>, 
                      LOKI_TYPELIST_2(Type,Type), LOKI_TYPELIST_2(Type,Type)>
@@ -335,7 +336,8 @@ namespace itl
 
         std::string typeString()const
         {
-            return "SymmetricDifference<"+type<Type>::to_string()+">";
+            return "SymmetricDifference<"+type<Type>::to_string()+","
+				                         +unary_template<Equality>::to_string()+">";
         }
 
     public:
@@ -365,7 +367,7 @@ namespace itl
             this->template setOutputValue<lhs_result>(lhs);
             this->template setOutputValue<rhs_result>(rhs);
 
-            return lhs == rhs;
+            return Equality<Type>()(lhs, rhs);
         }
 
         bool debug_holds()
@@ -402,7 +404,7 @@ namespace itl
             this->template setOutputValue<lhs_result>(lhs);
             this->template setOutputValue<rhs_result>(rhs);
 
-            return lhs == rhs;
+            return Equality<Type>()(lhs, rhs);
         }
 
         size_t size()const 
@@ -414,7 +416,7 @@ namespace itl
     };
 
     // ---------------------------------------------------------------------------
-    template <typename MapT>
+    template <typename MapT, template<class>class Equality = itl::std_equal>
     class SectionAbsorbtion 
 		: public Law<SectionAbsorbtion<MapT>, 
                      LOKI_TYPELIST_2(MapT, typename MapT::set_type), LOKI_TYPELIST_2(MapT,MapT)>
@@ -430,7 +432,8 @@ namespace itl
 
         std::string typeString()const
         {
-            return "SectionAbsorbtion<"+type<MapT>::to_string()+">";
+            return "SectionAbsorbtion<"+type<MapT>::to_string()+","
+				                       +unary_template<Equality>::to_string()+">";
         }
 
     public:
@@ -453,7 +456,7 @@ namespace itl
             this->template setOutputValue<lhs_result>(lhs);
             this->template setOutputValue<rhs_result>(rhs);
 
-            return lhs == rhs;
+            return Equality<MapT>()(lhs, rhs);
         }
 
 		bool debug_holds(){ return holds(); }

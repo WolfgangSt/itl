@@ -209,7 +209,9 @@ namespace itl
     };
 
 
-    template <typename Type, template<class>class Accumulator = inplace_plus>
+    template <typename Type, 
+		      template<class>class Accumulator = inplace_plus, 
+			  template<class>class Equality = itl::std_equal>
     class InplaceAssociativity 
 		: public Law<InplaceAssociativity<Type,Accumulator>, 
                      LOKI_TYPELIST_3(Type,Type,Type), LOKI_TYPELIST_2(Type,Type)>
@@ -264,7 +266,7 @@ namespace itl
             this->template setOutputValue<lhs_sum>(lsum);
             this->template setOutputValue<rhs_sum>(rsum);
 
-            return lsum == rsum;
+            return Equality<Type>()(lsum, rsum);
         }
 
 		bool debug_holds()
@@ -292,7 +294,7 @@ namespace itl
             this->template setOutputValue<lhs_sum>(lsum);
             this->template setOutputValue<rhs_sum>(rsum);
 
-            return lsum == rsum;
+            return Equality<Type>()(lsum, rsum);
         }
 
     };

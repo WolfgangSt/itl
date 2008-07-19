@@ -111,7 +111,7 @@ void MapGentorT<MapTV>::last(MapTV& x)const
 {
     x.clear();
     const_FORALL(typename SampleTypeTD, it, m_sample) 
-		x.add(*it);
+		x += *it;
 }
 
 template <class MapTV>
@@ -129,7 +129,7 @@ void MapGentorT<MapTV>::last_permuted(MapTV& x)const
     }
 
     const_FORALL(typename SampleTypeTD, pit, perm) 
-		x.add(*pit);
+		x += *pit;
 }
 
 

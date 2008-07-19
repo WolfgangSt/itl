@@ -13,7 +13,6 @@ Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
 #include <itl/itl_value.hpp>
 #include <itl/string_set.hpp>
 #include <itl/split_interval_map.hpp>
-#include "../toytime.h"
 
 // The next line includes <boost/gregorian/date.hpp>
 // and a few lines of adapter code.
@@ -29,7 +28,7 @@ using namespace itl;
 	set style operation like union +=, difference -= and intersection
 	*=.
 
-	In this example man_power a number of those operations are
+	In this example <em>man_power</em> a number of those operations are
 	demonstrated in the process of calculation the available working 
 	times (man-power) of it's employees accounting for weekends,
 	holidays, sickness times and vacations.
