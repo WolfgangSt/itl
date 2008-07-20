@@ -98,15 +98,14 @@ namespace itl
     boost_party.cpp is the ITL's <em>flagship example</em> because it demonstrates
     at least two important aspects of the library design in a 
     comprehensible way.
-    In boost_party.cpp the change of guests of a party in time is calculated using a 
-    split_interval_map simply by inserting pairs of intervals and guest sets
-    into the split_interval_map.
-    As can be seen from this example split_interval_map has a 
+    In boost_party.cpp the change of guests of a party in time is calculated using
+    an interval_map simply by adding pairs of intervals and guest sets
+    to the interval_map. As can be seen from this example interval_map has a 
     <em>decompositional behavior</em> on the time part: time intervals are
     split up whenever the set of guests is changing. And it has an 
     <em>aggregational behavior</em> on the associated values: Guest sets are 
     added up on insertion. (party.cpp is a variant of the example that does not use 
-	boost::date_time)  
+	boost::date_time).  
     \n \n
 
     \subsection interval_subsec Intervals 
@@ -144,7 +143,7 @@ namespace itl
 
     \subsection history_subsec History
 
-    History is a more sophisticated application of a split_interval_map to decompose
+    History is a more sophisticated application of an interval_map to decompose
     data in time. Sample history.cpp shows how we can monitor a set of attributes in a history.
     \n \n
 
@@ -171,13 +170,61 @@ namespace itl
 
     On of the most fruitful concept of the ITL is the <em>aggregation on overlap</em>
     mechanism on interval maps. The associated values of an interval map are 
-    aggregated on insertion, whenever an interval value pair is inserted and
-    the inserted interval overlaps intervals within the map. Depending on the value
+    aggregated on insertion, whenever an interval value pair is added and
+    the added interval overlaps intervals within the map. Depending on the value
     type this aggration can be summation (for numbers), concatentation 
     (for lists, strings), set union (for sets) and more. Samples of the 
     <em>aggreation on overlap</em> mechanics are demonstrated in
-    files party.cpp, overlap_counter.cpp and history.cpp.
-    \n \n
+    files boost_party.cpp (party.cpp), overlap_counter.cpp, man_power.cpp 
+	and history.cpp.
+    \n \n \n
+
+    \subsection itv_cont_subsec Overview over interval containers 
+
+	Interval containers are sets or maps that are implemented as sets or maps of
+	intervals. They are efficient and useful containers in all problem domains
+	where elements of sets apperar in continguous chunks (intervals).
+
+	The design of the itl provides five kinds of interval containers: 3 set
+	class templates and 2 map class templated. The above table presents an
+	overview over interval containers:
+
+	<table>
+		<tr>
+			<th></td>
+			<th>joining</td>
+			<th>separating</td>    
+			<th>splitting</td>       
+		</tr>
+		<tr>
+			<td>set</td>
+			<td>interval_set</td>
+			<td>separate_interval_set</td>    
+			<td>split_interval_set</td>       
+		</tr>
+		<tr>
+			<td>map</td>
+			<td>interval_map</td>
+			<td></td>                   
+			<td>split_interval_map</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><em>intervals are joined on overlap or touch<br>
+			        (if associated values are equal)</em></td>
+			<td><em>intervals are joined on overlap, not on touch</em></td>                   
+			<td><em>intervals are split on overlap.<br>All interval borders are thus preserved</em></td>
+		</tr>
+		<tr>
+			<td></td><td colspan=3 align="center">
+				The different behavior of interval_containers is clarified 
+				in interval_container_conduct.h by example.
+			</td>
+		</tr>
+	</table>
+
+	Aspects of the interval container's desing are presented in interval_container_design.h .
+
 
     \subsection decom_subsec Decomposition of Histories
 
@@ -190,6 +237,7 @@ namespace itl
     the change of monitored attributes. An example for product histories is
     given in file history.cpp. 
     \n \n
+
 
     \subsection cubes_subsec Cubes 
 
