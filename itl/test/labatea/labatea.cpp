@@ -106,11 +106,7 @@ void test_intersect()
 
 void test_realmvalidater()
 {
-	cout << spitv_map_of_intsets().as_string() << endl;
-	test_intersect();
-
     RealmValidater validater;
-
     cout << 
     ">> ------------------------------------------------------ <<\n"
     ">> -------- Law based test automaton 'LaBatea' ---------- <<\n"

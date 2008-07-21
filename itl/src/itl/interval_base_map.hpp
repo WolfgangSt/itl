@@ -287,6 +287,7 @@ public:
 //-----------------------------------------------------------------------------
 /** @name G.add: Addition */
 //@{
+
 	/// Addition of a base value pair using a Combinator operation.
     /** Addition of a base value pair <tt>x := pair(k,y)</tt> where 
 	    <tt>base_value_type:=pair<DomainT,CodomainT></tt>

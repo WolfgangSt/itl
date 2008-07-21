@@ -193,16 +193,6 @@ public:
         return it != _set.end(); 
     }
 
-	/// insert an element to the container
-    void insert(const DomainT& x) { insert(interval_type(x)); }
-	void add(const DomainT& x) { insert(x); }
-	interval_base_set& operator += (const DomainT& x) { insert(x); return *this; }
-
-	/// subtract an element from the container
-    void erase(const DomainT& x) { subtract(interval_type(x)); }
-    void subtract(const DomainT& x) { subtract(interval_type(x)); }
-	interval_base_set& operator -= (const DomainT& x) { subtract(x); return *this; }
-
 	/** Is <tt>*this</tt> contained in <tt>super</tt>? */
     bool contained_in(const interval_base_set& super)const;
 
@@ -248,22 +238,69 @@ public:
 //@}
 
 
-/** @name G: Modificators
-    */
-//@{ 
+//-----------------------------------------------------------------------------
+/** @name G.add: Addition */
+//@{
 
-    //CL
-    /// Insertion of an interval <tt>x</tt>
+	/// Add a single element \c x to the set
+	void add(const DomainT& x) { insert(x); }
+
+	/// Add an interval of elements \c x to the set
+	void add(const value_type& x) { that()->insert(x); }
+
+	/// Add an interval of elements \c x to the set
+	interval_base_set& operator += (const DomainT& x) 
+	{ insert(x); return *this; }
+
+	/// Add an interval of elements \c x to the set
+    interval_base_set& operator += (const value_type& x) 
+	{ that()->insert(x); return *this; }
+
+//@}
+
+//-----------------------------------------------------------------------------
+/** @name G.sub: Subtraction */
+//@{
+
+	/// Subtract a single element \c x from the set
+    void subtract(const DomainT& x) 
+	{ subtract(interval_type(x)); }
+
+	/// Subtract an interval of elements \c x from the set
+    void subtract(const value_type& x) 
+	{ that()->subtract(x); }
+
+	/// Subtract a single element \c x from the set
+	interval_base_set& operator -= (const DomainT& x) 
+	{ subtract(x); return *this; }
+
+	/// Subtract an interval of elements \c x from the set
+    interval_base_set& operator -= (const value_type& x)
+	{ that()->subtract(x); return *this; }
+
+//@}
+
+//-----------------------------------------------------------------------------
+/** @name G.ins&ers: Insertion and erasure  */
+//@{
+	/// Insert an element \c x into the set
+    void insert(const DomainT& x) { insert(interval_type(x)); }
+
+	/// Insert an interval of elements \c x to the set
 	void insert(const value_type& x) { that()->insert(x); }
 
-	void add(const value_type& x) { that()->insert(x); }
-    interval_base_set& operator += (const value_type& x) { that()->insert(x); return *this; }
+	/// Erase an element \c x from the set
+    void erase(const DomainT& x) 
+	{ subtract(interval_type(x)); }
 
+	/// Erase an interval of element \c x from the set
+    void erase(const value_type& x) 
+	{ that()->subtract(x); }
+//@}
 
-    /// Removal of an interval <tt>x</tt>
-    void erase(const value_type& x) { that()->subtract(x); }
-    void subtract(const value_type& x) { that()->subtract(x); }
-    interval_base_set& operator -= (const value_type& x) { that()->subtract(x); return *this; }
+//-----------------------------------------------------------------------------
+/** @name G.sect: Intersection */
+//@{
 
     /** Intersection with interval x; The intersection is assigned to <tt>section</tt>. 
     
@@ -300,7 +337,10 @@ public:
         Aufruf <tt>x *= y</tt> bedeutet <tt>x = x geschnitten mit y </tt>
     */
     interval_base_set& operator *= (const interval_base_set& x);
+//@}
 
+//-----------------------------------------------------------------------------
+/** @name G.jodo: JODO */
 
     /// Union with set <tt>x</tt>
     interval_base_set& operator +=(const interval_base_set& x)

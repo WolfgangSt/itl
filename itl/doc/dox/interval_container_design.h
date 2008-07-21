@@ -39,15 +39,14 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 	In order to generalize addition and subraction even further there are 
 	parameterized member function templates add<operator> and
 	subtract<operator>, that allow aggregate on overlap to be performed
-	with arbitrary functors. So	add(x) is equivalent to m.add<itl::inplace_plus>(x)
+	with arbitrary functors. So	m.add(x) is equivalent to m.add<itl::inplace_plus>(x)
 	but you can compute also say a maximum of associated values on 'addition'
 	using m.add<itl::inplace_max>(x).
 
 	On the other hand, interval_maps and sets are intended to implement stl 
-	maps as closely as possible. To provide the the interface of std::container
+	maps as closely as possible. To provide the interface of std::container
 	there are also functions insert and erase. Interestingly there is a
 	relationship between insert and add as well as subtract and erase.
-	
 	There are functors itl::inplace_identity and itl::inplace_erasure such that
 	the following are equivalent functions:
 
@@ -59,7 +58,13 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 		<tr><td>subtract<inplace_minus>(value_type&)</td> <td>subtract(value_type&)    <td>operator-=(value_type&)</td></td></tr>
 	</table>
 
-	If you 
+	So the common insert and erase functions can be expressed as 
+	specialisations of the more general member function templates 
+	add and subtract.
+
+	The following table gives an overview over addition, subtraction
+	insertion and erasure functions of itl maps and interval maps and
+	their relation to stl maps.
 
 	<table>
 		<!--    |1                                    |2         ||3                  |4               |5                    ||6                  |7                    |8                           ||9                     |10                 |11                   |12                         -->
