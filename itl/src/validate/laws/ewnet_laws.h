@@ -34,8 +34,8 @@ namespace itl
 {
 
     class AssignmentLimitEquivalence 
-		: public Law<itl::AssignmentLimitEquivalence, 
-		             LOKI_TYPELIST_6(int,int,int,int,int,int), LOKI_TYPELIST_2(int,int) >
+        : public Law<itl::AssignmentLimitEquivalence, 
+                     LOKI_TYPELIST_6(int,int,int,int,int,int), LOKI_TYPELIST_2(int,int) >
     {
     public:
         enum InputVarIndex  { min_free, max_free, avail, occ_hsp, vollst, avail_fg };
@@ -115,7 +115,7 @@ namespace itl
             return false;
         }
 
-		bool debug_holds() { return holds(); }
+        bool debug_holds() { return holds(); }
 
         size_t size()const { return 0; }
     };

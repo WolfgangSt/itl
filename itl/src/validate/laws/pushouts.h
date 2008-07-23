@@ -26,7 +26,7 @@ namespace itl
     // ---------------------------------------------------------------------------
     template <typename SourceT, typename TargetT, 
               template<class,class>class FunctionT, // morphic function f 
-			  template<typename>class OperatorT>    // operator like +=
+              template<typename>class OperatorT>    // operator like +=
     class BinaryPushout : 
         public Law<BinaryPushout<SourceT,TargetT,FunctionT,OperatorT>, 
                    LOKI_TYPELIST_2(SourceT, SourceT), LOKI_TYPELIST_2(TargetT,TargetT)>
@@ -85,12 +85,12 @@ namespace itl
                 value_size<SourceT>::get(this->template getInputValue<operand_b>());
         }
 
-		bool debug_holds()
+        bool debug_holds()
         {
-			std::cout << typeString() << std::endl;
-			std::cout << formula() << std::endl;
-			std::cout << "a: " << this->template getInputValue<operand_a>().as_string() << std::endl;
-			std::cout << "b: " << this->template getInputValue<operand_b>().as_string() << std::endl;
+            std::cout << typeString() << std::endl;
+            std::cout << formula() << std::endl;
+            std::cout << "a: " << this->template getInputValue<operand_a>().as_string() << std::endl;
+            std::cout << "b: " << this->template getInputValue<operand_b>().as_string() << std::endl;
 
             // f(a o b) == f(a) o f(b)
             // --- left hand side ------------------------
@@ -98,23 +98,23 @@ namespace itl
             SourceT a_o_b = this->template getInputValue<operand_a>();
             // a_o_b o=  this->template getInputValue<operand_b>();
             OperatorT<SourceT>()(a_o_b, this->template getInputValue<operand_b>());
-			std::cout << "a o b:" << a_o_b.as_string() << std::endl;
+            std::cout << "a o b:" << a_o_b.as_string() << std::endl;
 
             TargetT lhs;
             FunctionT<TargetT,SourceT>()(lhs, a_o_b);
-			std::cout << "f(a o b):" << lhs.as_string() << std::endl;
+            std::cout << "f(a o b):" << lhs.as_string() << std::endl;
 
             // --- right hand side -----------------------
             // rhs := atomize(a) * atomize(b)
             TargetT atomic_a;
             FunctionT<TargetT,SourceT>()(atomic_a, this->template getInputValue<operand_a>());
-			std::cout << "f(a):" << atomic_a.as_string() << std::endl;
+            std::cout << "f(a):" << atomic_a.as_string() << std::endl;
             TargetT atomic_b;
             FunctionT<TargetT,SourceT>()(atomic_b, this->template getInputValue<operand_b>());
-			std::cout << "f(b):" << atomic_b.as_string() << std::endl;
+            std::cout << "f(b):" << atomic_b.as_string() << std::endl;
             TargetT rhs = atomic_a;
             OperatorT<TargetT>()(rhs, atomic_b);
-			std::cout << "f(a) o f(b):" << rhs.as_string() << std::endl;
+            std::cout << "f(a) o f(b):" << rhs.as_string() << std::endl;
 
             this->template setOutputValue<lhs_result>(lhs);
             this->template setOutputValue<rhs_result>(rhs);

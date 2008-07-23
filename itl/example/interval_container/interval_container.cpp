@@ -44,22 +44,22 @@ void interval_container_basics()
     joinedTimes.insert(next_morning);  //touching
     joinedTimes.insert(next_evening);  //disjoint
 
-	cout << "Joined times  :" << joinedTimes.as_string() << endl;
+    cout << "Joined times  :" << joinedTimes.as_string() << endl;
 
     // A separate interval set of type separate_interval_set joins intervals that that 
-	// overlap but it preserves interval borders that just touch each other. You may 
-	// represent time grids like the months of a year as a split_interval_set.
+    // overlap but it preserves interval borders that just touch each other. You may 
+    // represent time grids like the months of a year as a split_interval_set.
     separate_interval_set<Time> separateTimes;
     separateTimes.insert(night_and_day);
     separateTimes.insert(day_and_night); //overlapping in 'day' [07:00, 20.00)
-    separateTimes.insert(next_morning);	 //touching
-    separateTimes.insert(next_evening);	 //disjoint
+    separateTimes.insert(next_morning);     //touching
+    separateTimes.insert(next_evening);     //disjoint
 
     cout << "Separate times:" << separateTimes.as_string() << endl;
 
-	// A split interval set of type split_interval_set preserves all interval
-	// borders. On insertion of overlapping intervals the intervals in the
-	// set are split up at the interval boreders of the inserted interval.
+    // A split interval set of type split_interval_set preserves all interval
+    // borders. On insertion of overlapping intervals the intervals in the
+    // set are split up at the interval boreders of the inserted interval.
     split_interval_set<Time> splitTimes;
     splitTimes.insert(night_and_day);
     splitTimes.insert(day_and_night); //overlapping in 'day' [07:00, 20.00)
@@ -73,10 +73,10 @@ void interval_container_basics()
     split_interval_map<Time, int> overlapCounter;
     overlapCounter.insert(make_pair(night_and_day, 1));
     overlapCounter.insert(make_pair(day_and_night, 1)); //overlapping in 'day' [07:00, 20.00)
-    overlapCounter.insert(make_pair(next_morning, 1));	//touching
-    overlapCounter.insert(make_pair(next_evening, 1));	//disjoint
+    overlapCounter.insert(make_pair(next_morning, 1));    //touching
+    overlapCounter.insert(make_pair(next_evening, 1));    //disjoint
 
-	cout << "Split times overlap counted:\n" << overlapCounter.as_string() << endl;
+    cout << "Split times overlap counted:\n" << overlapCounter.as_string() << endl;
 }
 
 int main()

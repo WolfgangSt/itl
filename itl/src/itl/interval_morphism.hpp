@@ -79,25 +79,25 @@ namespace itl
             }
         };
 
-		template <typename JointType, typename SplitType>
+        template <typename JointType, typename SplitType>
         struct Join
         {
             void operator()(JointType& joint, SplitType& split)
             {
-				split.join();
-				FORALL(typename SplitType, split_, split)
-					joint.insert(*split_);
+                split.join();
+                FORALL(typename SplitType, split_, split)
+                    joint.insert(*split_);
             }
         };
 
-		template <typename AbsorberType, typename EnricherType>
+        template <typename AbsorberType, typename EnricherType>
         struct AbsorbNeutrons
         {
             void operator()(AbsorberType& absorber, EnricherType& enricher)
             {
-				enricher.absorb_neutrons();
-				FORALL(typename EnricherType, enricher_, enricher)
-					absorber.insert(*enricher_);
+                enricher.absorb_neutrons();
+                FORALL(typename EnricherType, enricher_, enricher)
+                    absorber.insert(*enricher_);
             }
         };
 

@@ -92,58 +92,58 @@ namespace itl
         template<class>class Compare  = std::less,
         template<class>class Alloc    = std::allocator
     > 
-	class split_interval_set: 
-		public interval_base_set<split_interval_set<DomainT,Interval,Compare,Alloc>, 
-		                         DomainT,Interval,Compare,Alloc>
+    class split_interval_set: 
+        public interval_base_set<split_interval_set<DomainT,Interval,Compare,Alloc>, 
+                                 DomainT,Interval,Compare,Alloc>
     {
     public:
-		typedef interval_base_set<itl::split_interval_set<DomainT,Interval,Compare,Alloc>,
-			                      DomainT,Interval,Compare,Alloc> base_type;
+        typedef interval_base_set<itl::split_interval_set<DomainT,Interval,Compare,Alloc>,
+                                  DomainT,Interval,Compare,Alloc> base_type;
 
-		typedef interval_set<DomainT,Interval,Compare,Alloc> joint_type;
+        typedef interval_set<DomainT,Interval,Compare,Alloc> joint_type;
 
-		/// The domain type of the set
-		typedef DomainT   domain_type;
-		/// The codomaintype is the same as domain_type
-		typedef DomainT   codomain_type;
+        /// The domain type of the set
+        typedef DomainT   domain_type;
+        /// The codomaintype is the same as domain_type
+        typedef DomainT   codomain_type;
 
-		/// The interval type of the set
-		typedef Interval<DomainT> interval_type;
+        /// The interval type of the set
+        typedef Interval<DomainT> interval_type;
 
-		/// Comparison functor for domain values
-		typedef Compare<DomainT> domain_compare;
-		/// Comparison functor for intervals
-		typedef exclusive_less<interval_type> interval_compare;
+        /// Comparison functor for domain values
+        typedef Compare<DomainT> domain_compare;
+        /// Comparison functor for intervals
+        typedef exclusive_less<interval_type> interval_compare;
 
-		/// Comparison functor for keys
-		typedef exclusive_less<interval_type> key_compare;
+        /// Comparison functor for keys
+        typedef exclusive_less<interval_type> key_compare;
 
-		/// The allocator type of the set
-		typedef Alloc<interval_type> allocator_type;
+        /// The allocator type of the set
+        typedef Alloc<interval_type> allocator_type;
 
-		/// allocator type of the corresponding element set
-		typedef Alloc<DomainT> domain_allocator_type;
+        /// allocator type of the corresponding element set
+        typedef Alloc<DomainT> domain_allocator_type;
 
-		/// The type of the set of elements that is equivalent to the set of intervals
-		typedef typename itl::set<DomainT,Compare,Alloc> element_set;
+        /// The type of the set of elements that is equivalent to the set of intervals
+        typedef typename itl::set<DomainT,Compare,Alloc> element_set;
 
-		/// The corresponding atomized type representing this ineterval container of elements
-		typedef typename itl::set<DomainT,Compare,Alloc> atomized_type;
+        /// The corresponding atomized type representing this ineterval container of elements
+        typedef typename itl::set<DomainT,Compare,Alloc> atomized_type;
 
-		/// Container type for the implementation 
-		typedef typename itl::set<interval_type,exclusive_less,Alloc> ImplSetT;
+        /// Container type for the implementation 
+        typedef typename itl::set<interval_type,exclusive_less,Alloc> ImplSetT;
 
-		/// key type of the implementing container
-		typedef typename ImplSetT::key_type   key_type;
-		/// data type of the implementing container
-		typedef typename ImplSetT::data_type  data_type;
-		/// value type of the implementing container
-		typedef typename ImplSetT::value_type value_type;
+        /// key type of the implementing container
+        typedef typename ImplSetT::key_type   key_type;
+        /// data type of the implementing container
+        typedef typename ImplSetT::data_type  data_type;
+        /// value type of the implementing container
+        typedef typename ImplSetT::value_type value_type;
 
-		/// iterator for iteration over intervals
-		typedef typename ImplSetT::iterator iterator;
-		/// const_iterator for iteration over intervals
-		typedef typename ImplSetT::const_iterator const_iterator;
+        /// iterator for iteration over intervals
+        typedef typename ImplSetT::iterator iterator;
+        /// const_iterator for iteration over intervals
+        typedef typename ImplSetT::const_iterator const_iterator;
 
 
 
@@ -157,24 +157,24 @@ namespace itl
         
 
 
-		
+        
         /// Does the set contain the interval  <tt>x</tt>?
         bool contains(const interval_type& x)const;
 
-		/// Insertion of an interval <tt>x</tt>
-		void insert(const value_type& x){ recursive_insert(x); }
+        /// Insertion of an interval <tt>x</tt>
+        void insert(const value_type& x){ recursive_insert(x); }
 
-		/// Removal of an interval <tt>x</tt>
-		void subtract(const value_type& x){ recursive_subtract(x); }
+        /// Removal of an interval <tt>x</tt>
+        void subtract(const value_type& x){ recursive_subtract(x); }
 
         /// Treatment of adjoint intervals on insertion
         void handle_neighbours(const iterator& it){}
 
-	private:
-		void recursive_insert(const value_type& x);
-		void recursive_subtract(const value_type& x);
-		void insert_rest(const interval_type& x_itv, iterator& it, iterator& end_it);
-		void subtract_rest(const interval_type& x_itv, iterator& it, iterator& end_it);
+    private:
+        void recursive_insert(const value_type& x);
+        void recursive_subtract(const value_type& x);
+        void insert_rest(const interval_type& x_itv, iterator& it, iterator& end_it);
+        void subtract_rest(const interval_type& x_itv, iterator& it, iterator& end_it);
 
 
     } ;
@@ -193,10 +193,10 @@ namespace itl
 
         interval_set<DomainT,Interval,Compare,Alloc> matchSet;
         for(typename ImplSetT::const_iterator it=fst_it; it!=end_it; it++) 
-			matchSet.insert(*it);
+            matchSet.insert(*it);
 
         interval_set<DomainT,Interval,Compare,Alloc> x_asSet; 
-		x_asSet.insert(x);
+        x_asSet.insert(x);
         return x_asSet.contained_in(matchSet);
     }
 
@@ -213,8 +213,8 @@ namespace itl
             iterator fst_it = this->_set.lower_bound(x);
             iterator end_it = this->_set.upper_bound(x);
 
-			if(fst_it == this->_set.end())
-				fst_it = end_it;
+            if(fst_it == this->_set.end())
+                fst_it = end_it;
 
             iterator cur_it       = fst_it ;
             interval_type cur_itv = *cur_it;
@@ -308,15 +308,15 @@ namespace itl
     void split_interval_set<DomainT,Interval,Compare,Alloc>::recursive_subtract(const value_type& x)
     {
         if(x.empty()) return;
-		if(this->_set.empty()) return;
+        if(this->_set.empty()) return;
 
         iterator fst_it;
-		if(x.exclusive_less(*(this->_set.begin())))
-			return;
-		if(x.lower() < this->_set.begin()->upper())
-			fst_it = this->_set.begin();
-		else
-			fst_it = this->_set.lower_bound(x);
+        if(x.exclusive_less(*(this->_set.begin())))
+            return;
+        if(x.lower() < this->_set.begin()->upper())
+            fst_it = this->_set.begin();
+        else
+            fst_it = this->_set.lower_bound(x);
 
         if(fst_it==this->_set.end()) return;
         iterator end_it = this->_set.upper_bound(x);
@@ -421,11 +421,11 @@ namespace itl
     template <class Type>
     struct type<itl::split_interval_set<Type> >
     {
-    	static bool is_set() { return true; }
-		static bool is_interval_container() { return true; }
-		static bool is_interval_splitter() { return true; }
-		static bool is_neutron_absorber() { return false; }
-		static bool is_neutron_emitter() { return false; }
+        static bool is_set() { return true; }
+        static bool is_interval_container() { return true; }
+        static bool is_interval_splitter() { return true; }
+        static bool is_neutron_absorber() { return false; }
+        static bool is_neutron_emitter() { return false; }
 
 
         static std::string to_string()

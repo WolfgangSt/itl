@@ -46,41 +46,41 @@ class itl::map
 namespace itl
 {
 
-	struct neutron_absorber
-	{
-		inline static bool absorbs_neutrons(){ return true; }
-		inline static bool emits_neutrons(){ return false; }
-	};
+    struct neutron_absorber
+    {
+        inline static bool absorbs_neutrons(){ return true; }
+        inline static bool emits_neutrons(){ return false; }
+    };
 
-	template<> 
+    template<> 
     inline std::string type<neutron_absorber>::to_string() { return "@0"; }
 
 
-	struct neutron_enricher
-	{
-		inline static bool absorbs_neutrons(){ return false; }
-		inline static bool emits_neutrons(){ return false; }
-	};
+    struct neutron_enricher
+    {
+        inline static bool absorbs_neutrons(){ return false; }
+        inline static bool emits_neutrons(){ return false; }
+    };
 
-	template<> 
+    template<> 
     inline std::string type<neutron_enricher>::to_string() { return "e0"; }
 
-	struct neutron_emitter
-	{
-		inline static bool absorbs_neutrons(){ return true; }
-		inline static bool emits_neutrons(){ return true; }
-	};
+    struct neutron_emitter
+    {
+        inline static bool absorbs_neutrons(){ return true; }
+        inline static bool emits_neutrons(){ return true; }
+    };
 
-	template<> 
+    template<> 
     inline std::string type<neutron_emitter>::to_string() { return "^0"; }
 
-	struct neutron_emitter_and_enricher
-	{
-		inline static bool absorbs_neutrons(){ return false; }
-		inline static bool emits_neutrons(){ return true; }
-	};
+    struct neutron_emitter_and_enricher
+    {
+        inline static bool absorbs_neutrons(){ return false; }
+        inline static bool emits_neutrons(){ return true; }
+    };
 
-	template<> 
+    template<> 
     inline std::string type<neutron_emitter_and_enricher>::to_string() { return "e^0"; }
 
 
@@ -101,7 +101,7 @@ namespace itl
     <
         typename KeyT, 
         typename DataT, 
-	    class Traits = itl::neutron_absorber,
+        class Traits = itl::neutron_absorber,
         template<class>class Compare = std::less,
         template<class>class Alloc   = std::allocator 
     >
@@ -116,10 +116,10 @@ namespace itl
                                   allocator_type>              base_type;
         typedef typename itl::set<KeyT, Compare, Alloc >       set_type;
 
-		typedef itl::map<KeyT, DataT, itl::neutron_absorber, Compare, Alloc> 
+        typedef itl::map<KeyT, DataT, itl::neutron_absorber, Compare, Alloc> 
                                                                neutron_absorber_type;
 
-		typedef Traits traits;
+        typedef Traits traits;
 
     public:
         typedef KeyT                                       key_type;
@@ -182,9 +182,9 @@ namespace itl
 
         using base_type::operator[];
 
-	public:
-		inline static bool has_symmetric_difference() 
-		{ return itl::type<codomain_type>::is_set() || !traits::absorbs_neutrons() || traits::emits_neutrons(); }
+    public:
+        inline static bool has_symmetric_difference() 
+        { return itl::type<codomain_type>::is_set() || !traits::absorbs_neutrons() || traits::emits_neutrons(); }
 
     public:
         // --------------------------------------------------------------------
@@ -202,13 +202,13 @@ namespace itl
         bool contains(const map& sub)const 
         { return Map::contained_in(sub, *this); }
 
-		std::pair<iterator,bool> insert(const value_type& value_pair)
-		{
-			if(Traits::absorbs_neutrons() && value_pair.CONT_VALUE == DataT()) 
-				return std::pair<iterator,bool>(end(),true);
-			else
-				return base_type::insert(value_pair);
-		}
+        std::pair<iterator,bool> insert(const value_type& value_pair)
+        {
+            if(Traits::absorbs_neutrons() && value_pair.CONT_VALUE == DataT()) 
+                return std::pair<iterator,bool>(end(),true);
+            else
+                return base_type::insert(value_pair);
+        }
 
         /** \c add inserts \c value_pair into the map if it's key does 
             not exist in the map.    
@@ -216,10 +216,10 @@ namespace itl
             value is added to the data value already found in the map. */
         iterator add(const value_type& value_pair) { return add<inplace_plus>(value_pair); }
 
-		template<template<class>class Combinator>
-		iterator add(const value_type& value_pair);
+        template<template<class>class Combinator>
+        iterator add(const value_type& value_pair);
 
-		iterator operator += (const value_type& value_pair) { return add(value_pair); }
+        iterator operator += (const value_type& value_pair) { return add(value_pair); }
 
         /** If the \c value_pair's key value is in the map, it's data value is
             subtraced from the data value stored in the map. */
@@ -232,34 +232,34 @@ namespace itl
         /** Subtract a map \c x2 from this map. If an element of \c x2 already exists
             in \c *this, subtract the contents using <tt>operator -=</tt>. */
         map& operator -= (const map& x2) 
-		{ 
-			if(Traits::emits_neutrons())
-				const_FORALL(typename map, it_, x2)
-					this->add<inplace_minus>(*it_);
-			else Set::subtract(*this, x2); 
-			return *this; 
-		}
+        { 
+            if(Traits::emits_neutrons())
+                const_FORALL(typename map, it_, x2)
+                    this->add<inplace_minus>(*it_);
+            else Set::subtract(*this, x2); 
+            return *this; 
+        }
 
         /** Subtract a set \c x2 from this map. Every element of \c this map that
             has a key that is element of \c x2 is deleted from the map. */
         map& operator -= (const set_type& x2) { Set::erase(*this, x2); return *this; }
 
-		//JODO 
-		/** erase the value pair \c pair(key,val) from the map.
-		    Erase only if, the exact value content \c val is stored at key \key. */
-		size_type erase(const value_type& value);
+        //JODO 
+        /** erase the value pair \c pair(key,val) from the map.
+            Erase only if, the exact value content \c val is stored at key \key. */
+        size_type erase(const value_type& value);
 
         //JODO
         /** Intersect map \c x2 and \c *this.
             So \c *this becomes the intersection of \c *this and \c x2 */
         map& operator *= (const map& x2) 
-		{
-			if(Traits::emits_neutrons())
-			     { Set::add(*this, x2); return *this; }
-			else if(Traits::absorbs_neutrons() && !itl::type<DataT>::is_set())
-			     { Set::add(*this, x2); return *this; }
-			else { Map::intersect(*this, x2); return *this; }
-		}
+        {
+            if(Traits::emits_neutrons())
+                 { Set::add(*this, x2); return *this; }
+            else if(Traits::absorbs_neutrons() && !itl::type<DataT>::is_set())
+                 { Set::add(*this, x2); return *this; }
+            else { Map::intersect(*this, x2); return *this; }
+        }
 
         /** Intersect set \c x2 and \c *this.
             So \c *this becomes the intersection of \c *this and \c x2 */
@@ -292,12 +292,12 @@ namespace itl
             different from \c size(). */
         size_t iterative_size()const { return size(); }
 
-		void absorb_neutrons()
-		{
-			//content_is_neutron<key_type, data_type> neutron_dropper;
-			if(!Traits::absorbs_neutrons())
-				drop_if(content_is_neutron<value_type>());
-		}
+        void absorb_neutrons()
+        {
+            //content_is_neutron<key_type, data_type> neutron_dropper;
+            if(!Traits::absorbs_neutrons())
+                drop_if(content_is_neutron<value_type>());
+        }
 
         /** Keep the elements in *this map to which property \c hasProperty applies. 
         Erase all the rest. */
@@ -326,7 +326,7 @@ namespace itl
         return operator==((const base_type&)lhs, (const base_type&)rhs);
     }
 
-	//JODO comment... 
+    //JODO comment... 
     template <typename KeyT, typename DataT, class Traits, template<class>class Compare, template<class>class Alloc>
     inline bool is_element_equal(const itl::map<KeyT,DataT,Traits,Compare,Alloc>& lhs,
                                  const itl::map<KeyT,DataT,Traits,Compare,Alloc>& rhs)
@@ -335,18 +335,18 @@ namespace itl
         return operator==((const base_type&)lhs, (const base_type&)rhs);
     }
 
-	/** Protonic equality is equality on all elements that do not carry a neutron as content. */
+    /** Protonic equality is equality on all elements that do not carry a neutron as content. */
     template <typename KeyT, typename DataT, class Traits, template<class>class Compare, template<class>class Alloc>
     inline bool is_protonic_equal (const itl::map<KeyT,DataT,Traits,Compare,Alloc>& lhs,
                                    const itl::map<KeyT,DataT,Traits,Compare,Alloc>& rhs)
     {
-		//JODO: Efficient implementation.
+        //JODO: Efficient implementation.
         typedef std::map<KeyT,DataT,Compare<KeyT>,Alloc<KeyT> > base_type;
 
-		itl::map<KeyT,DataT,Traits,Compare,Alloc> lhs0 = lhs;
-		itl::map<KeyT,DataT,Traits,Compare,Alloc> rhs0 = rhs;
-		lhs0.absorb_neutrons();
-		rhs0.absorb_neutrons();
+        itl::map<KeyT,DataT,Traits,Compare,Alloc> lhs0 = lhs;
+        itl::map<KeyT,DataT,Traits,Compare,Alloc> rhs0 = rhs;
+        lhs0.absorb_neutrons();
+        rhs0.absorb_neutrons();
         return operator==((const base_type&)lhs0, (const base_type&)rhs0);
     }
 
@@ -369,31 +369,31 @@ namespace itl
     }
 
     template <typename KeyT, typename DataT, class Traits, template<class>class Compare, template<class>class Alloc>
-		template <template<class>class Combinator>
+        template <template<class>class Combinator>
     typename map<KeyT,DataT,Traits,Compare,Alloc>::iterator
         map<KeyT,DataT,Traits,Compare,Alloc>::add(const value_type& val)
     {
-		if(Traits::absorbs_neutrons() && val.CONT_VALUE == DataT())
+        if(Traits::absorbs_neutrons() && val.CONT_VALUE == DataT())
             return end();
 
         std::pair<iterator, bool> insertion;
-		if(Traits::emits_neutrons())
-		{
-			DataT added_val = DataT();
-			Combinator<DataT>()(added_val, val.CONT_VALUE);
-			insertion = insert(value_type(val.KEY_VALUE, added_val));
-		}
-		else // Existential case
-			insertion = insert(val);
+        if(Traits::emits_neutrons())
+        {
+            DataT added_val = DataT();
+            Combinator<DataT>()(added_val, val.CONT_VALUE);
+            insertion = insert(value_type(val.KEY_VALUE, added_val));
+        }
+        else // Existential case
+            insertion = insert(val);
 
         if( insertion.WAS_SUCCESSFUL )
             return insertion.ITERATOR ;
         else
         {
             iterator it = insertion.ITERATOR;
-			Combinator<DataT>()((*it).CONT_VALUE, val.CONT_VALUE);
+            Combinator<DataT>()((*it).CONT_VALUE, val.CONT_VALUE);
 
-			if(Traits::absorbs_neutrons() && (*it).CONT_VALUE == DataT())
+            if(Traits::absorbs_neutrons() && (*it).CONT_VALUE == DataT())
             {
                 erase(it);
                 return end();
@@ -404,20 +404,20 @@ namespace itl
     }
 
     template <typename KeyT, typename DataT, class Traits, template<class>class Compare, template<class>class Alloc>
-	typename map<KeyT,DataT,Traits,Compare,Alloc>::size_type 
-		map<KeyT,DataT,Traits,Compare,Alloc>
-		::erase(const value_type& value_pair)
+    typename map<KeyT,DataT,Traits,Compare,Alloc>::size_type 
+        map<KeyT,DataT,Traits,Compare,Alloc>
+        ::erase(const value_type& value_pair)
     {
-		if(Traits::absorbs_neutrons() && value_pair.CONT_VALUE == DataT())
-			return 0; // neutrons are never contained 'substantially' 
-		              // only 'virually'.
+        if(Traits::absorbs_neutrons() && value_pair.CONT_VALUE == DataT())
+            return 0; // neutrons are never contained 'substantially' 
+                      // only 'virually'.
 
         iterator it_ = find(value_pair.KEY_VALUE);
         if(it_ != end() && value_pair.CONT_VALUE == it_->CONT_VALUE)
-		{
+        {
             erase(it_);
-			return 1;
-		}
+            return 1;
+        }
 
         return 0;
     }
@@ -427,25 +427,25 @@ namespace itl
     typename map<KeyT,DataT,Traits,Compare,Alloc>::iterator
         map<KeyT,DataT,Traits,Compare,Alloc>::subtract(const value_type& val)
     {
-		if(Traits::emits_neutrons())
-			return add<inplace_minus>(val);
-		else
-		{
-			iterator it_ = find(val.KEY_VALUE);
-			if(it_ != end())
-			{
-				(*it_).CONT_VALUE -= val.CONT_VALUE;
+        if(Traits::emits_neutrons())
+            return add<inplace_minus>(val);
+        else
+        {
+            iterator it_ = find(val.KEY_VALUE);
+            if(it_ != end())
+            {
+                (*it_).CONT_VALUE -= val.CONT_VALUE;
 
-				if(Traits::absorbs_neutrons() && (*it_).CONT_VALUE == DataT())
-				{
-					erase(it_);
-					return end();
-				}
-				else
-					return it_;
-			}
-			return it_;
-		}
+                if(Traits::absorbs_neutrons() && (*it_).CONT_VALUE == DataT())
+                {
+                    erase(it_);
+                    return end();
+                }
+                else
+                    return it_;
+            }
+            return it_;
+        }
     }
 
 
@@ -473,8 +473,8 @@ namespace itl
         iterator it = begin(), victim;
         while(it != end())
             if(hasProperty(*it))
-				erase(it++); 
-			else ++it;
+                erase(it++); 
+            else ++it;
         return *this;
     }
 
@@ -485,8 +485,8 @@ namespace itl
         iterator it = begin(), victim;
         while(it != end())
             if(!hasProperty(*it))
-				erase(it++);
-			else ++it;
+                erase(it++);
+            else ++it;
         return *this;
     }
 
@@ -503,52 +503,52 @@ namespace itl
         }
         return *this;
     }
-	//-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
     template <typename KeyT, typename DataT, class Traits, 
-		      template<class>class Compare, template<class>class Alloc>
+              template<class>class Compare, template<class>class Alloc>
     map<KeyT,DataT,Traits,Compare,Alloc>& 
-		insert(map<KeyT,DataT,Traits,Compare,Alloc>& object, 
-			   const map<KeyT,DataT,Traits,Compare,Alloc>& insertee) 
-	{
-		typedef map<KeyT,DataT,Traits,Compare,Alloc> map_type;
+        insert(map<KeyT,DataT,Traits,Compare,Alloc>& object, 
+               const map<KeyT,DataT,Traits,Compare,Alloc>& insertee) 
+    {
+        typedef map<KeyT,DataT,Traits,Compare,Alloc> map_type;
 
-		const_FORALL(typename map_type, elem_, insertee) 
-			object.insert(*elem_); 
+        const_FORALL(typename map_type, elem_, insertee) 
+            object.insert(*elem_); 
 
-		return object; 
-	}
+        return object; 
+    }
 
     template <typename KeyT, typename DataT, class Traits, 
-		      template<class>class Compare, template<class>class Alloc>
+              template<class>class Compare, template<class>class Alloc>
     map<KeyT,DataT,Traits,Compare,Alloc>& 
-		erase(map<KeyT,DataT,Traits,Compare,Alloc>& object, 
-			  const map<KeyT,DataT,Traits,Compare,Alloc>& erasee) 
-	{
-		typedef map<KeyT,DataT,Traits,Compare,Alloc> map_type;
+        erase(map<KeyT,DataT,Traits,Compare,Alloc>& object, 
+              const map<KeyT,DataT,Traits,Compare,Alloc>& erasee) 
+    {
+        typedef map<KeyT,DataT,Traits,Compare,Alloc> map_type;
 
-		const_FORALL(typename map_type, elem_, erasee) 
-			object.erase(*elem_); 
+        const_FORALL(typename map_type, elem_, erasee) 
+            object.erase(*elem_); 
 
-		return object; 
-	}
+        return object; 
+    }
 
-	//-------------------------------------------------------------------------
-	template <class KeyT, class DataT, class Traits>
-	struct type<itl::map<KeyT,DataT,Traits> >
-	{
-		static bool is_set() { return true; }
-		static bool is_interval_container() { return false; }
-		static bool is_interval_splitter() { return false; }
-		static bool is_neutron_absorber() { return Traits::absorbs_neutrons(); }
-		static bool is_neutron_emitter() { return Traits::emits_neutrons(); }
+    //-------------------------------------------------------------------------
+    template <class KeyT, class DataT, class Traits>
+    struct type<itl::map<KeyT,DataT,Traits> >
+    {
+        static bool is_set() { return true; }
+        static bool is_interval_container() { return false; }
+        static bool is_interval_splitter() { return false; }
+        static bool is_neutron_absorber() { return Traits::absorbs_neutrons(); }
+        static bool is_neutron_emitter() { return Traits::emits_neutrons(); }
 
-		static std::string to_string()
-		{
-			return "map<"+ type<KeyT>::to_string()  + ","
-						 + type<DataT>::to_string() + ","
-						 + type<Traits>::to_string() +">"; 
-		}
-	};
+        static std::string to_string()
+        {
+            return "map<"+ type<KeyT>::to_string()  + ","
+                         + type<DataT>::to_string() + ","
+                         + type<Traits>::to_string() +">"; 
+        }
+    };
 
 
 } // namespace itl

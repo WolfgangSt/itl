@@ -93,15 +93,15 @@ namespace itl
         */
         static bool is_continuous();
 
-		static bool is_set();
+        static bool is_set();
 
-		static bool is_interval_container();
+        static bool is_interval_container();
 
-		static bool is_interval_splitter();
+        static bool is_interval_splitter();
 
-		static bool is_neutron_emitter();
+        static bool is_neutron_emitter();
 
-		static bool is_neutron_absorber();
+        static bool is_neutron_absorber();
 
 
         /** Represent the type by a string which is it's typename */
@@ -110,19 +110,19 @@ namespace itl
 
     template <class Type>
     inline Type type<Type>::neutron() 
-	{
-		return Type(); 
-	}
+    {
+        return Type(); 
+    }
 
     template<> inline float  type<float>::unon()  { return 1.0; }
     template<> inline double type<double>::unon() { return 1.0; }
-	template<> inline std::string type<std::string>::unon() { return std::string(" "); }
+    template<> inline std::string type<std::string>::unon() { return std::string(" "); }
 
     template <class Type>
     inline Type type<Type>::unon() 
-	{ 
-		return succ(type<Type>::neutron()); 
-	}
+    { 
+        return succ(type<Type>::neutron()); 
+    }
 
 
     template<> inline bool type<bool>::is_atomic() { return true; }
@@ -148,28 +148,28 @@ namespace itl
 
     template<> inline bool type<float>::is_continuous() { return true; }
     template<> inline bool type<double>::is_continuous() { return true; }
-	template<> inline bool type<std::string>::is_continuous() { return true; }
+    template<> inline bool type<std::string>::is_continuous() { return true; }
 
     template <class Type>
     inline bool type<Type>::is_continuous() { return false; }
 
     template <class Type>
-	inline bool type<Type>::is_set() { return false; }
+    inline bool type<Type>::is_set() { return false; }
 
-	//-------------------------------------------------------------------------
-	template <class Type>
-	inline bool type<Type>::is_interval_container() { return false; }
+    //-------------------------------------------------------------------------
+    template <class Type>
+    inline bool type<Type>::is_interval_container() { return false; }
 
-	template <class Type>
-	inline bool type<Type>::is_interval_splitter() { return false; }
+    template <class Type>
+    inline bool type<Type>::is_interval_splitter() { return false; }
 
-	template <class Type>
-	inline bool type<Type>::is_neutron_emitter() { return false; }
+    template <class Type>
+    inline bool type<Type>::is_neutron_emitter() { return false; }
 
-	template <class Type>
-	inline bool type<Type>::is_neutron_absorber() { return false; }
+    template <class Type>
+    inline bool type<Type>::is_neutron_absorber() { return false; }
 
-	//-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
     template<>
     inline std::string type<int>::to_string() { return "int"; }
     template<>
@@ -210,8 +210,8 @@ namespace itl
         }
     };
 
-	// ---------------------------------------------------------------------------
-	//KEEP only currently unused
+    // ---------------------------------------------------------------------------
+    //KEEP only currently unused
     //template<template<class,class,class>class Templ>
     //struct ternary_template
     //{

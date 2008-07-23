@@ -51,17 +51,11 @@ namespace itl
 /**
     \mainpage The Interval Template Library
 
-	\section news_sec News
+    \section news_sec News
 
-	New examples are available showing applications of interval containers
-	that use boost::date_time. boost::gregorian dates and boost::posix times
-	are used in examples boost_party.cpp, man_power.cpp and month_and_week_grid.cpp.
-
-	The ITL has been validated by a <em>Law based Test Automaton (LaBatea)</em>
-	which makes heavy use of c++ meta programming. Problems with compile time
-	and code generation efficiency are reported on http://groups.google.com/group/comp.lang.c++.moderated/ .
-	See related <a href="LaBatea_performance.xls">performance charts here.</a>
-
+    New examples are available showing applications of interval containers
+    that use boost::date_time. Boost::gregorian dates and boost::posix times
+    are used in examples boost_party.cpp, man_power.cpp and month_and_week_grid.cpp.
 
     \section intro_sec Introduction
 
@@ -73,17 +67,17 @@ namespace itl
     intervals and interval containers the library provides classes for
     generalized crosstables, which are tuple containers. We call such
     containers <em>tuple computers</em> or \e cubes.
-	\n \n
-	The Interval Template Library is currently hosted at the open source
-	platform sourceforge and can be downloaded from http://sourceforge.net/projects/itl .
-	This doxygen generated html documentation is part of the library release.
-	In addition it is available at http://www.herold-faulhaber.de/itl .
-	\n \n
-	Basic parts of the ITL (interval conainers) are currently discussed at the
-	boost developers mailing list as a contribution to the boost libraries.
-	Although the sourcecode of the ITL is mature and very well tested it's 
-	Design may be refactored significantly in a process of adapting to the
-	boost library design principles and coding standards.
+    \n \n
+    The Interval Template Library is currently hosted at the open source
+    platform sourceforge and can be downloaded from http://sourceforge.net/projects/itl .
+    This doxygen generated html documentation is part of the library release.
+    In addition it is available at http://www.herold-faulhaber.de/itl .
+    \n \n
+    Basic parts of the ITL (interval conainers) are currently discussed at the
+    boost developers mailing list as a contribution to the boost libraries.
+    Although the sourcecode of the ITL is mature and very well tested it's 
+    Design may be refactored significantly in a process of adapting to the
+    boost library design principles and coding standards.
     \n \n \n
 
     \section sample_sec Examples
@@ -105,7 +99,7 @@ namespace itl
     split up whenever the set of guests is changing. And it has an 
     <em>aggregational behavior</em> on the associated values: Guest sets are 
     added up on insertion. (party.cpp is a variant of the example that does not use 
-	boost::date_time).  
+    boost::date_time).  
     \n \n
 
     \subsection interval_subsec Intervals 
@@ -125,20 +119,20 @@ namespace itl
     the number of overlaps of intervals inserted into it as shown in overlap_counter.cpp.
     \n \n
 
-	\subsection man_power Man-power
+    \subsection man_power Man-power
 
-	Set style operations on interval_sets and interval_maps like union, difference
-	and intersection can be used to obtain calculations in a flexible way. Example
-	man_power.cpp demontrates such operations in the process of calculating the
-	available man-power of a company in a given time interval. The example uses 
-	boost::date_time.
+    Set style operations on interval_sets and interval_maps like union, difference
+    and intersection can be used to obtain calculations in a flexible way. Example
+    man_power.cpp demontrates such operations in the process of calculating the
+    available man-power of a company in a given time interval. The example uses 
+    boost::date_time.
     \n \n
 
-	\subsection month_and_week_grid Partitioning of times using split_interval_set
+    \subsection month_and_week_grid Partitioning of times using split_interval_set
 
-	Example month_and_week_grid.cpp shows how the <em>border preserving</em>
-	split_interval_set can be used to create time partitionigs where different
-	periodic time intervals overlay each other. The example uses boost::date_time.
+    Example month_and_week_grid.cpp shows how the <em>border preserving</em>
+    split_interval_set can be used to create time partitionigs where different
+    periodic time intervals overlay each other. The example uses boost::date_time.
     \n \n
 
     \subsection history_subsec History
@@ -172,58 +166,58 @@ namespace itl
     mechanism on interval maps. The associated values of an interval map are 
     aggregated on insertion, whenever an interval value pair is added and
     the added interval overlaps intervals within the map. Depending on the value
-    type this aggration can be summation (for numbers), concatentation 
+    type this aggregation can be summation (for numbers), concatentation 
     (for lists, strings), set union (for sets) and more. Samples of the 
     <em>aggreation on overlap</em> mechanics are demonstrated in
     files boost_party.cpp (party.cpp), overlap_counter.cpp, man_power.cpp 
-	and history.cpp.
+    and history.cpp.
     \n \n \n
 
     \subsection itv_cont_subsec Overview over interval containers 
 
-	Interval containers are sets or maps that are implemented as sets or maps of
-	intervals. They are efficient and useful containers in all problem domains
-	where elements of sets apperar in continguous chunks (intervals).
+    Interval containers are sets or maps that are implemented as sets or maps of
+    intervals. They are efficient and useful containers in all problem domains
+    where elements of sets apperar in continguous chunks (intervals).
 
-	The design of the itl provides five kinds of interval containers: 3 set
-	class templates and 2 map class templated. The above table presents an
-	overview over interval containers:
+    The design of the itl provides five kinds of interval containers: 3 set
+    class templates and 2 map class templated. The above table presents an
+    overview over interval containers:
 
-	<table>
-		<tr>
-			<th></td>
-			<th>joining</td>
-			<th>separating</td>    
-			<th>splitting</td>       
-		</tr>
-		<tr>
-			<td>set</td>
-			<td>interval_set</td>
-			<td>separate_interval_set</td>    
-			<td>split_interval_set</td>       
-		</tr>
-		<tr>
-			<td>map</td>
-			<td>interval_map</td>
-			<td></td>                   
-			<td>split_interval_map</td>
-		</tr>
-		<tr>
-			<td></td>
-			<td><em>intervals are joined on overlap or touch<br>
-			        (if associated values are equal)</em></td>
-			<td><em>intervals are joined on overlap, not on touch</em></td>                   
-			<td><em>intervals are split on overlap.<br>All interval borders are thus preserved</em></td>
-		</tr>
-		<tr>
-			<td></td><td colspan=3 align="center">
-				The different behavior of interval_containers is clarified 
-				in interval_container_conduct.h by example.
-			</td>
-		</tr>
-	</table>
+    <table>
+        <tr>
+            <th></td>
+            <th>joining</td>
+            <th>separating</td>    
+            <th>splitting</td>       
+        </tr>
+        <tr>
+            <td>set</td>
+            <td>interval_set</td>
+            <td>separate_interval_set</td>    
+            <td>split_interval_set</td>       
+        </tr>
+        <tr>
+            <td>map</td>
+            <td>interval_map</td>
+            <td></td>                   
+            <td>split_interval_map</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><em>intervals are joined on overlap or touch<br>
+                    (if associated values are equal)</em></td>
+            <td><em>intervals are joined on overlap, not on touch</em></td>                   
+            <td><em>intervals are split on overlap.<br>All interval borders are thus preserved</em></td>
+        </tr>
+        <tr>
+            <td></td><td colspan=3 align="center">
+                The different behavior of interval_containers is clarified 
+                in interval_container_conduct.h by example.
+            </td>
+        </tr>
+    </table>
 
-	Aspects of the interval container's desing are presented in interval_container_design.h .
+    Aspects of the interval container's desing are presented in interval_container_design.h .
 
 
     \subsection decom_subsec Decomposition of Histories
@@ -252,11 +246,11 @@ namespace itl
     provided by file amount_cube.cpp. 
     \n \n
 
-	\section thanks_sec Acknowledgements
+    \section thanks_sec Acknowledgements
 
     I would like to thank CEO Hermann Steppe and Chief Developer Peter Wuttke
-	of Cortex Software GmbH for their friendly support of my work on the
-	ITL and their permission to release the	library as open source.
+    of Cortex Software GmbH for their friendly support of my work on the
+    ITL and their permission to release the    library as open source.
     
 */
 
@@ -310,7 +304,7 @@ public:
 
     // JODO unon() dokumentieren
     /// Default constructor; yields an empty interval <tt>[1,0]</tt>
-	interval() : _lwb(type<DataT>::unon()), _upb(type<DataT>::neutron()), 
+    interval() : _lwb(type<DataT>::unon()), _upb(type<DataT>::neutron()), 
                  _boundtypes(CLOSED) {}
     /// Constructor for a closed singleton interval <tt>[val,val]</tt>
     interval(const DataT& val) : 
@@ -929,11 +923,11 @@ template <class DataT>
 DataT interval<DataT>::size()const
 { 
     if(empty()) 
-		return (type<DataT>::neutron() - type<DataT>::neutron()); 
+        return (type<DataT>::neutron() - type<DataT>::neutron()); 
     else if(type<DataT>::is_continuous()) 
-		return _upb - _lwb;
+        return _upb - _lwb;
     else 
-		return last()-first() + type<DataT>::unon() - type<DataT>::neutron(); 
+        return last()-first() + type<DataT>::unon() - type<DataT>::neutron(); 
 }
 
 template <class DataT>

@@ -38,7 +38,7 @@ using namespace itl;
 
     Party.cpp demonstrates a principle that we call 
     <b><em>aggregate on overlap (aggovering;)</em></b>:
-    On insertion a value associated to the interval is aggrgated (added) to those
+    On insertion a value associated to the interval is aggregated (added) to those
     values in the split_interval_map that overlap with the inserted value.
 
     There are two behavioral aspects to <b>aggovering</b>: a <em>decompositional

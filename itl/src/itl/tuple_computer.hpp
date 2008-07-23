@@ -102,7 +102,7 @@ namespace itl
         typedef var_tuple<VarCount> var_tuple_type;
         typedef var_tuple_order<var_tuple_type> tuple_order_type;
         /// Container type for the implementation 
-		typedef itl::map<var_tuple_type, CounterT, neutron_absorber, var_tuple_order> ImplMapTD;
+        typedef itl::map<var_tuple_type, CounterT, neutron_absorber, var_tuple_order> ImplMapTD;
         /// iterator
         typedef typename ImplMapTD::iterator iterator;
         /// const_iterator
@@ -452,10 +452,10 @@ namespace itl
     //JODO: Where to put this kind of functionality
     template <class SubType, class ItvDomTV, class CodomTV>
     void intervalize(interval_base_map<SubType, ItvDomTV, CodomTV>& itvMap, 
-		             const itl::map<ItvDomTV, CodomTV>& dateMap)
+                     const itl::map<ItvDomTV, CodomTV>& dateMap)
     {
         typedef itl::map<ItvDomTV, CodomTV> DateMapTD;
-		typedef interval_base_map<SubType, ItvDomTV, CodomTV> ItvMapTD;
+        typedef interval_base_map<SubType, ItvDomTV, CodomTV> ItvMapTD;
 
         itvMap.clear();
         const_FORALL(typename DateMapTD, date_, dateMap)

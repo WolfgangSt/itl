@@ -20,7 +20,7 @@ namespace itl
 
     template <typename Type, template<class>class Equality = itl::std_equal>
     class InplaceUnionInvertability 
-		: public Law<InplaceUnionInvertability<Type>, 
+        : public Law<InplaceUnionInvertability<Type>, 
                      LOKI_TYPELIST_1(Type), LOKI_TYPELIST_2(Type,Type)>
     {
         /** a - a == 0
@@ -36,7 +36,7 @@ namespace itl
         std::string typeString()const
         {
             return "UnionInvertability<"+type<Type>::to_string()+","
-				                        +unary_template<Equality>::to_string()+">";
+                                        +unary_template<Equality>::to_string()+">";
         }
 
     public:
@@ -54,17 +54,17 @@ namespace itl
             return Equality<Type>()(lhs, rhs);
         }
 
-		bool debug_holds(){ return holds(); }
+        bool debug_holds(){ return holds(); }
 
         size_t size()const { return value_size<Type>::get(this->template getInputValue<operand_a>()); }
     };
 
     // ---------------------------------------------------------------------------
     template <typename Type, template<class>class Operator1 = inplace_plus, 
-		                     template<class>class Operator2 = inplace_star,
+                             template<class>class Operator2 = inplace_star,
                              template<class>class Equality  = itl::std_equal>
     class InplaceDistributivity 
-		: public Law<InplaceDistributivity<Type,Operator1,Operator2,Equality>, 
+        : public Law<InplaceDistributivity<Type,Operator1,Operator2,Equality>, 
                      LOKI_TYPELIST_3(Type,Type,Type), LOKI_TYPELIST_2(Type,Type)>
     {
         /** a + (b * c) == (a + b) * (a + c)
@@ -82,7 +82,7 @@ namespace itl
                                     +unary_template<Operator1>::to_string()+","
                                     +unary_template<Operator2>::to_string()+","
                                     +unary_template<Equality>::to_string()+">";
-		}
+        }
 
     public:
 
@@ -117,32 +117,32 @@ namespace itl
         bool debug_holds()
         {
             // a + (b * c) == (a + b) * (a + c)
-			std::cout << "a:" << this->template getInputValue<operand_a>().as_string() << std::endl;
-			std::cout << "b:" << this->template getInputValue<operand_b>().as_string() << std::endl;
-			std::cout << "c:" << this->template getInputValue<operand_c>().as_string() << std::endl;
+            std::cout << "a:" << this->template getInputValue<operand_a>().as_string() << std::endl;
+            std::cout << "b:" << this->template getInputValue<operand_b>().as_string() << std::endl;
+            std::cout << "c:" << this->template getInputValue<operand_c>().as_string() << std::endl;
             // --- left hand side ------------------------
             Type b_star_c = this->template getInputValue<operand_b>();
             Operator2<Type>()(b_star_c, this->template getInputValue<operand_c>());
-			std::cout << "b*c:" << b_star_c.as_string() << std::endl;
+            std::cout << "b*c:" << b_star_c.as_string() << std::endl;
 
             // lhs := a + (b * c)
             Type lhs = this->template getInputValue<operand_a>();
             Operator1<Type>()(lhs, b_star_c);
-			std::cout << "l=a+(b*c):" << lhs.as_string() << std::endl;
+            std::cout << "l=a+(b*c):" << lhs.as_string() << std::endl;
 
             // --- right hand side -----------------------
             Type a_plus_b = this->template getInputValue<operand_a>();
             Operator1<Type>()(a_plus_b, this->template getInputValue<operand_b>());
-			std::cout << "a+b:" << a_plus_b.as_string() << std::endl;
+            std::cout << "a+b:" << a_plus_b.as_string() << std::endl;
 
             Type a_plus_c = this->template getInputValue<operand_a>();
             Operator1<Type>()(a_plus_c, this->template getInputValue<operand_c>());
-			std::cout << "a+c:" << a_plus_c.as_string() << std::endl;
+            std::cout << "a+c:" << a_plus_c.as_string() << std::endl;
 
             // rhs := (a + b) * (a + c)
             Type rhs = a_plus_b;
             Operator2<Type>()(rhs, a_plus_c);
-			std::cout << "r=(a+b)*(a+c):" << rhs.as_string() << std::endl;
+            std::cout << "r=(a+b)*(a+c):" << rhs.as_string() << std::endl;
 
             this->template setOutputValue<lhs_result>(lhs);
             this->template setOutputValue<rhs_result>(rhs);
@@ -163,7 +163,7 @@ namespace itl
                              template<class>class Operator2 = inplace_star, 
                              template<class>class Equality = itl::std_equal>
     class InplaceDeMorgan 
-		: public Law<InplaceDeMorgan<Type,Operator1,Operator2,Equality>, 
+        : public Law<InplaceDeMorgan<Type,Operator1,Operator2,Equality>, 
                      LOKI_TYPELIST_3(Type,Type,Type), LOKI_TYPELIST_2(Type,Type)>
     {
         /** a - (b + c) == (a - b) * (a - c)
@@ -213,7 +213,7 @@ namespace itl
             return Equality<Type>()(lhs, rhs);
         }
 
-		bool debug_holds(){ return holds(); }
+        bool debug_holds(){ return holds(); }
 
         size_t size()const 
         { 
@@ -226,10 +226,10 @@ namespace itl
 
     // ---------------------------------------------------------------------------
     template <typename Type, 
-		      template<class>class Operator1 = inplace_plus, 
-			  template<class>class Operator2 = inplace_minus>
+              template<class>class Operator1 = inplace_plus, 
+              template<class>class Operator2 = inplace_minus>
     class InplaceRightDistributivity 
-		: public Law<InplaceRightDistributivity<Type,Operator1,Operator2>, 
+        : public Law<InplaceRightDistributivity<Type,Operator1,Operator2>, 
                      LOKI_TYPELIST_3(Type,Type,Type), LOKI_TYPELIST_2(Type,Type)>
     {
         /** (a + b) - c == (a - c) + (b - c)
@@ -287,30 +287,30 @@ namespace itl
         bool debug_holds()
         {
             // (a + b) - c == (a - c) + (b - c)
-			std::cout << "a:" << this->template getInputValue<operand_a>().as_string() << std::endl;
-			std::cout << "b:" << this->template getInputValue<operand_b>().as_string() << std::endl;
-			std::cout << "c:" << this->template getInputValue<operand_c>().as_string() << std::endl;
+            std::cout << "a:" << this->template getInputValue<operand_a>().as_string() << std::endl;
+            std::cout << "b:" << this->template getInputValue<operand_b>().as_string() << std::endl;
+            std::cout << "c:" << this->template getInputValue<operand_c>().as_string() << std::endl;
             // --- left hand side ------------------------
             // lhs := (a + b) - c
             Type lhs = this->template getInputValue<operand_a>();
             Operator1<Type>()(lhs, this->template getInputValue<operand_b>());
-			std::cout << "a+b:" << lhs.as_string() << std::endl;
+            std::cout << "a+b:" << lhs.as_string() << std::endl;
             Operator2<Type>()(lhs, this->template getInputValue<operand_c>());
-			std::cout << "l=(a+b)-c:" << lhs.as_string() << std::endl;
+            std::cout << "l=(a+b)-c:" << lhs.as_string() << std::endl;
 
             // --- right hand side -----------------------
             Type a_minus_c = this->template getInputValue<operand_a>();
             Operator2<Type>()(a_minus_c, this->template getInputValue<operand_c>());
-			std::cout << "a-c:" << a_minus_c.as_string() << std::endl;
+            std::cout << "a-c:" << a_minus_c.as_string() << std::endl;
 
             Type b_minus_c = this->template getInputValue<operand_b>();
             Operator2<Type>()(b_minus_c, this->template getInputValue<operand_c>());
-			std::cout << "b-c:" << b_minus_c.as_string() << std::endl;
+            std::cout << "b-c:" << b_minus_c.as_string() << std::endl;
 
             // rhs := (a - c) + (b - c)
             Type rhs = a_minus_c;
             Operator1<Type>()(rhs, b_minus_c);
-			std::cout << "r=(a-c)+(b-c):" << b_minus_c.as_string() << std::endl;
+            std::cout << "r=(a-c)+(b-c):" << b_minus_c.as_string() << std::endl;
 
             this->template setOutputValue<lhs_result>(lhs);
             this->template setOutputValue<rhs_result>(rhs);
@@ -322,7 +322,7 @@ namespace itl
     // ---------------------------------------------------------------------------
     template <typename Type, template<class>class Equality = itl::std_equal>
     class InplaceSymmetricDifference 
-		: public Law<InplaceSymmetricDifference<Type>, 
+        : public Law<InplaceSymmetricDifference<Type>, 
                      LOKI_TYPELIST_2(Type,Type), LOKI_TYPELIST_2(Type,Type)>
     {
         /** (a + b) - (a * b) == (a - b) + (b - a)
@@ -337,7 +337,7 @@ namespace itl
         std::string typeString()const
         {
             return "SymmetricDifference<"+type<Type>::to_string()+","
-				                         +unary_template<Equality>::to_string()+">";
+                                         +unary_template<Equality>::to_string()+">";
         }
 
     public:
@@ -418,7 +418,7 @@ namespace itl
     // ---------------------------------------------------------------------------
     template <typename MapT, template<class>class Equality = itl::std_equal>
     class SectionAbsorbtion 
-		: public Law<SectionAbsorbtion<MapT>, 
+        : public Law<SectionAbsorbtion<MapT>, 
                      LOKI_TYPELIST_2(MapT, typename MapT::set_type), LOKI_TYPELIST_2(MapT,MapT)>
     {
         /** a - (a * b) == a - b
@@ -433,7 +433,7 @@ namespace itl
         std::string typeString()const
         {
             return "SectionAbsorbtion<"+type<MapT>::to_string()+","
-				                       +unary_template<Equality>::to_string()+">";
+                                       +unary_template<Equality>::to_string()+">";
         }
 
     public:
@@ -459,7 +459,7 @@ namespace itl
             return Equality<MapT>()(lhs, rhs);
         }
 
-		bool debug_holds(){ return holds(); }
+        bool debug_holds(){ return holds(); }
 
         size_t size()const 
         { 

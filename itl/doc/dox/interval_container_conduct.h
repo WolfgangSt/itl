@@ -118,17 +118,18 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 
 	\subsection sec2_joining_itv_cnt The joining interval containers
 
-	itl::interval_set and itl::interval_map are always in a minimal representation.
-	This is useful in many instances, whre the points of insertion or intersecton of
-	intervals is not relevant.
+	itl::interval_set and itl::interval_map are always in a <b><em>minimal representation</em></b>.
+	This is useful in many instances, where the points of insertion or intersecton of
+	intervals is not relevant. So in most instances itl::interval_set and 
+	itl::interval_map will be the first choice for an interval container.
 
 	\subsection sec2_splitting_itv_cnt The splitting interval containers
 
 	itl::split_interval_set and itl::split_interval_map	on the contrary have an
-	insertion memory. The do accumulate interval borders both from additions and
-	intersections. This is specifically useful, if we want to enrich an interval
-	container with certain time grids, like e.g. months or calendar weeks or both.
-	See example month_and_week_grid.cpp.
+	<b><em>insertion memory</em></b>. They do accumulate interval borders both 
+	from additions and intersections. This is specifically useful, if we want
+	to enrich an interval container with certain time grids, like e.g. months
+	or calendar weeks or both. See example month_and_week_grid.cpp.
 
 	\subsection sec2_separating_itv_cnt The separating interval containers
 

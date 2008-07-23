@@ -21,7 +21,7 @@ namespace itl
 
     template <typename Type, template<class>class Relation>
     class Reflexivity 
-		: public Law<Reflexivity<Type,Relation>, 
+        : public Law<Reflexivity<Type,Relation>, 
                      LOKI_TYPELIST_1(Type), Loki::NullType> 
     {
     public:
@@ -41,7 +41,7 @@ namespace itl
             return Relation<Type>()(a,a);
         }
 
-		bool debug_holds(){ return holds(); }
+        bool debug_holds(){ return holds(); }
 
         size_t size()const 
         { return value_size<Type>::get(this->template getInputValue<operand_a>());    }
@@ -57,7 +57,7 @@ namespace itl
     // ---------------------------------------------------------------------------
     template <typename Type, template<class>class Relation>
     class Irreflexivity 
-		: public Law<Irreflexivity<Type,Relation>, 
+        : public Law<Irreflexivity<Type,Relation>, 
                      LOKI_TYPELIST_1(Type), Loki::NullType> 
     {
     public:
@@ -77,7 +77,7 @@ namespace itl
             return !Relation<Type>()(a,a);
         }
 
-		bool debug_holds(){ return holds(); }
+        bool debug_holds(){ return holds(); }
 
         size_t size()const 
         { return value_size<Type>::get(this->template getInputValue<operand_a>());    }
@@ -86,7 +86,7 @@ namespace itl
     // ---------------------------------------------------------------------------
     template <typename Type, template<class>class Relation>
     class Antisymmetry 
-		: public Law<Antisymmetry<Type,Relation>, 
+        : public Law<Antisymmetry<Type,Relation>, 
                      LOKI_TYPELIST_2(Type,Type), LOKI_TYPELIST_1(Type)> 
     {
         /** a <= b && b <= a  =>  a == b 
@@ -113,7 +113,7 @@ namespace itl
             return !(Relation<Type>()(a,b) && Relation<Type>()(b,a)) || a == b;
         }
 
-		bool debug_holds(){ return holds(); }
+        bool debug_holds(){ return holds(); }
 
         size_t size()const 
         { 
@@ -125,7 +125,7 @@ namespace itl
     // ---------------------------------------------------------------------------
     template <typename Type, template<class>class Relation>
     class Antisymmetry2 
-		: public Law<Antisymmetry2<Type,Relation>, 
+        : public Law<Antisymmetry2<Type,Relation>, 
                      LOKI_TYPELIST_2(Type,Type), LOKI_TYPELIST_1(Type)> 
     {
         /** a < b  => !(b < a) 
@@ -152,7 +152,7 @@ namespace itl
             return !(Relation<Type>()(a,b) && Relation<Type>()(b,a));
         }
 
-		bool debug_holds(){ return holds(); }
+        bool debug_holds(){ return holds(); }
 
         size_t size()const 
         { 
@@ -165,7 +165,7 @@ namespace itl
     // ---------------------------------------------------------------------------
     template <typename Type, template<class>class Relation>
     class Transitivity 
-		: public Law<Transitivity<Type,Relation>, 
+        : public Law<Transitivity<Type,Relation>, 
                      LOKI_TYPELIST_3(Type,Type,Type), Loki::NullType> 
     {
         /** a < b && b < c  =>  a < c 
@@ -193,7 +193,7 @@ namespace itl
             return !(Relation<Type>()(a,b) && Relation<Type>()(b,c)) || Relation<Type>()(a,c);
         }
 
-		bool debug_holds(){ return holds(); }
+        bool debug_holds(){ return holds(); }
 
         size_t size()const 
         { 

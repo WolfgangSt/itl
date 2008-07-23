@@ -107,17 +107,17 @@ template
     template<class>class Alloc    = std::allocator
 > 
 class interval_set: 
-	public interval_base_set<interval_set<DomainT,Interval,Compare,Alloc>,
+    public interval_base_set<interval_set<DomainT,Interval,Compare,Alloc>,
                              DomainT,Interval,Compare,Alloc>
 {
 public:
 
-	/// The base_type of this class
-	typedef interval_base_set<itl::interval_set<DomainT,Interval,Compare,Alloc>,
+    /// The base_type of this class
+    typedef interval_base_set<itl::interval_set<DomainT,Interval,Compare,Alloc>,
                               DomainT,Interval,Compare,Alloc> base_type;
 
-	typedef interval_set<DomainT,Interval,Compare,Alloc> type;
-	typedef type joint_type;
+    typedef interval_set<DomainT,Interval,Compare,Alloc> type;
+    typedef type joint_type;
 
     /// The domain type of the set
     typedef DomainT   domain_type;
@@ -177,11 +177,11 @@ public:
     /// Does the set contain the interval  <tt>x</tt>?
     bool contains(const interval_type& x)const;
 
-	/// Insertion of an interval <tt>x</tt>
-	void insert(const value_type& x);
+    /// Insertion of an interval <tt>x</tt>
+    void insert(const value_type& x);
 
-	/// Removal of an interval <tt>x</tt>
-	void subtract(const value_type& x);
+    /// Removal of an interval <tt>x</tt>
+    void subtract(const value_type& x);
 
     /// Treatment of adjoint intervals on insertion
     void handle_neighbours(const iterator& it);
@@ -298,7 +298,7 @@ void interval_set<DomainT,Interval,Compare,Alloc>::insert(const value_type& x)
         while(it!=end_it)
         { 
             if((++nxt_it)==end_it) 
-				(*it).right_surplus(rightResid,x);
+                (*it).right_surplus(rightResid,x);
             victim = it; it++; this->_set.erase(victim);
         }
 
@@ -345,11 +345,11 @@ inline bool is_element_equal(const interval_set<DomainT,Interval,Compare,Alloc>&
 template <class Type>
 struct type<itl::interval_set<Type> >
 {
-	static bool is_set() { return true; }
-	static bool is_interval_container() { return true; }
-	static bool is_interval_splitter() { return false; }
-	static bool is_neutron_absorber() { return false; }
-	static bool is_neutron_emitter() { return false; }
+    static bool is_set() { return true; }
+    static bool is_interval_container() { return true; }
+    static bool is_interval_splitter() { return false; }
+    static bool is_neutron_absorber() { return false; }
+    static bool is_neutron_emitter() { return false; }
 
     static std::string to_string()
     { return "interval_set<"+ type<Type>::to_string() +">"; }

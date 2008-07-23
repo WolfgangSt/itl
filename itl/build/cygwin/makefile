@@ -58,6 +58,7 @@ COMPILE = gcc
 
 all:
 	make examples
+	make boost_examples
 	make tests
 
 # The concept_gcc compiler does not yet digest my loki::typelist based tuple type
@@ -90,7 +91,8 @@ tests:
 	make itvset_shell
 	make splititvmap_shell
 	make auto_itv_test
-	make labatea
+# labatea is cureently not compiling with gcc. It only compiles with msvc 
+#	make labatea
 	
 devels:
 	make validate

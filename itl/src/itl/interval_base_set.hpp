@@ -100,7 +100,7 @@ namespace itl
 */
 template 
 <
-	typename             SubType,
+    typename             SubType,
     typename             DomainT, 
     template<class>class Interval = itl::interval,
     template<class>class Compare  = std::less,
@@ -113,10 +113,10 @@ class interval_base_set
 {
 public:
 
-	//A: Type definitions for the template class 
+    //A: Type definitions for the template class 
 
-	/// The designated \e derived or \e sub_type of this base class
-	typedef SubType sub_type;
+    /// The designated \e derived or \e sub_type of this base class
+    typedef SubType sub_type;
 
     /// The domain type of the set
     typedef DomainT   domain_type;
@@ -179,21 +179,21 @@ public:
     // Basic set concept
     // C:
 
-	/// sets the container empty
+    /// sets the container empty
     void clear() { _set.clear(); }
-	/// is the container empty
+    /// is the container empty
     bool empty()const { return _set.empty(); }
 
-	void swap(interval_base_set& x) { _set.swap(x._set); }
+    void swap(interval_base_set& x) { _set.swap(x._set); }
 
-	/// does the container contain the element \c x
+    /// does the container contain the element \c x
     bool contains(const DomainT& x)const
     {
         typename ImplSetT::const_iterator it = _set.find(interval_type(x)); 
         return it != _set.end(); 
     }
 
-	/** Is <tt>*this</tt> contained in <tt>super</tt>? */
+    /** Is <tt>*this</tt> contained in <tt>super</tt>? */
     bool contained_in(const interval_base_set& super)const;
 
     /** Does <tt>*this</tt> container contain <tt>sub</tt>? */
@@ -242,19 +242,19 @@ public:
 /** @name G.add: Addition */
 //@{
 
-	/// Add a single element \c x to the set
-	void add(const DomainT& x) { insert(x); }
+    /// Add a single element \c x to the set
+    void add(const DomainT& x) { insert(x); }
 
-	/// Add an interval of elements \c x to the set
-	void add(const value_type& x) { that()->insert(x); }
+    /// Add an interval of elements \c x to the set
+    void add(const value_type& x) { that()->insert(x); }
 
-	/// Add an interval of elements \c x to the set
-	interval_base_set& operator += (const DomainT& x) 
-	{ insert(x); return *this; }
+    /// Add an interval of elements \c x to the set
+    interval_base_set& operator += (const DomainT& x) 
+    { insert(x); return *this; }
 
-	/// Add an interval of elements \c x to the set
+    /// Add an interval of elements \c x to the set
     interval_base_set& operator += (const value_type& x) 
-	{ that()->insert(x); return *this; }
+    { that()->insert(x); return *this; }
 
 //@}
 
@@ -262,40 +262,40 @@ public:
 /** @name G.sub: Subtraction */
 //@{
 
-	/// Subtract a single element \c x from the set
+    /// Subtract a single element \c x from the set
     void subtract(const DomainT& x) 
-	{ subtract(interval_type(x)); }
+    { subtract(interval_type(x)); }
 
-	/// Subtract an interval of elements \c x from the set
+    /// Subtract an interval of elements \c x from the set
     void subtract(const value_type& x) 
-	{ that()->subtract(x); }
+    { that()->subtract(x); }
 
-	/// Subtract a single element \c x from the set
-	interval_base_set& operator -= (const DomainT& x) 
-	{ subtract(x); return *this; }
+    /// Subtract a single element \c x from the set
+    interval_base_set& operator -= (const DomainT& x) 
+    { subtract(x); return *this; }
 
-	/// Subtract an interval of elements \c x from the set
+    /// Subtract an interval of elements \c x from the set
     interval_base_set& operator -= (const value_type& x)
-	{ that()->subtract(x); return *this; }
+    { that()->subtract(x); return *this; }
 
 //@}
 
 //-----------------------------------------------------------------------------
 /** @name G.ins&ers: Insertion and erasure  */
 //@{
-	/// Insert an element \c x into the set
+    /// Insert an element \c x into the set
     void insert(const DomainT& x) { insert(interval_type(x)); }
 
-	/// Insert an interval of elements \c x to the set
-	void insert(const value_type& x) { that()->insert(x); }
+    /// Insert an interval of elements \c x to the set
+    void insert(const value_type& x) { that()->insert(x); }
 
-	/// Erase an element \c x from the set
+    /// Erase an element \c x from the set
     void erase(const DomainT& x) 
-	{ subtract(interval_type(x)); }
+    { subtract(interval_type(x)); }
 
-	/// Erase an interval of element \c x from the set
+    /// Erase an interval of element \c x from the set
     void erase(const value_type& x) 
-	{ that()->subtract(x); }
+    { that()->subtract(x); }
 //@}
 
 //-----------------------------------------------------------------------------
@@ -323,12 +323,12 @@ public:
     void intersect(interval_base_set& section, const interval_base_set& x)const;
 
     interval_base_set& operator *= (const value_type& x)
-	{
-		interval_base_set section;
-		intersect(section, x); 
+    {
+        interval_base_set section;
+        intersect(section, x); 
         section._set.swap(_set);
         return *this;
-	}
+    }
 
 
     /** Perform intersection of <tt>*this</tt> and <tt>x</tt>; assign result
@@ -352,9 +352,9 @@ public:
     /// Perform set difference with the set <tt>x</tt>
     interval_base_set& operator -= (const interval_base_set& x)
     { 
-		const_FORALL(typename ImplSetT, it, x._set) subtract(*it); 
-		return *this; 
-	}
+        const_FORALL(typename ImplSetT, it, x._set) subtract(*it); 
+        return *this; 
+    }
 
     /// Join bordering intervals    
     interval_base_set& join();
@@ -378,15 +378,6 @@ public:
     interval_base_set& scale_down(const interval_base_set& src, DomainT factor);
 //@}
 
-/** @name H: Interval search
-    */
-//@{
-    /** A <tt>find</tt>-function is <b>NOT</b> implemented; use ref intersect
-    
-        All find operations can be expressed by means of ref intersect or  
-        ref operator *=.
-    */
-//@}
 
 
 /** @name I: Interval iterators
@@ -469,8 +460,8 @@ public:
     { element_set x1; to_set(x1); return x1.contained_in(x2) && x2.contained_in(x1); }
 
 protected:
-	sub_type* that() { return static_cast<sub_type*>(this); }
-	const sub_type* that()const { return static_cast<const sub_type*>(this); }
+    sub_type* that() { return static_cast<sub_type*>(this); }
+    const sub_type* that()const { return static_cast<const sub_type*>(this); }
 
 protected:
     ImplSetT _set;
@@ -504,7 +495,7 @@ bool interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::contained_in(con
     {
         // x2 should be larger than *this; so every element in this should be in x2
         const_FOR_IMPL(it) 
-			if(!x2.that()->contains(*it)) 
+            if(!x2.that()->contains(*it)) 
                 return false;
         return true;
     }
@@ -698,28 +689,28 @@ inline bool operator <= (const interval_base_set<SubType,DomainT,Interval,Compar
 template 
 <
     class SubType, class DomainT, template<class>class Interval, 
-	template<class>class Compare, template<class>class Alloc
+    template<class>class Compare, template<class>class Alloc
 >
 interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
 insert(interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
-	   const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
-	   insertee)
+       const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
+       insertee)
 {
-	return object += insertee; 
+    return object += insertee; 
 }
     
 
 template 
 <
     class SubType, class DomainT, template<class>class Interval, 
-	template<class>class Compare, template<class>class Alloc
+    template<class>class Compare, template<class>class Alloc
 >
 interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
 erase(interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
-	  const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
-	  erasee)
+      const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
+      erasee)
 {
-	return object -= erasee;
+    return object -= erasee;
 }
     
 

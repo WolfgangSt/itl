@@ -44,22 +44,22 @@ Function-templates for discrete Datatypes like int, unsigned or
 namespace itl
 {
 
-	boost::gregorian::date operator ++(boost::gregorian::date& x)
-	{
-		return x += boost::gregorian::date::duration_type::unit();
-	}
+    boost::gregorian::date operator ++(boost::gregorian::date& x)
+    {
+        return x += boost::gregorian::date::duration_type::unit();
+    }
 
-	boost::gregorian::date operator --(boost::gregorian::date& x)
-	{
-		return x -= boost::gregorian::date::duration_type::unit();
-	}
+    boost::gregorian::date operator --(boost::gregorian::date& x)
+    {
+        return x -= boost::gregorian::date::duration_type::unit();
+    }
 
     // ------------------------------------------------------------------------
-	template<> 
-	inline boost::gregorian::date type<boost::gregorian::date>::neutron()
-	{ 
-		return boost::gregorian::date(boost::gregorian::min_date_time); 
-	}
+    template<> 
+    inline boost::gregorian::date type<boost::gregorian::date>::neutron()
+    { 
+        return boost::gregorian::date(boost::gregorian::min_date_time); 
+    }
 
 } // namespace itl
 

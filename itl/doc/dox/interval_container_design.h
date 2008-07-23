@@ -20,7 +20,7 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 	The documentation of the ITL's design is work in progress and not considered
 	to be complete. In the process of refactoring and augmenting the ITL for becoming
 	boost compliant (boostification;) this documentaion may change and it will also
-	grow and became more complete.
+	grow and become more complete.
 
 
 	\subsection sec2_itv_cnt_dsgn_map_add_sub Relations between std::map, itl::map and itl::interval_map

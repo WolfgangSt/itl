@@ -76,12 +76,12 @@ namespace itl
         bool operator() (const Type& x)const { return x == Type(); }
     } ;
 
-	template <class Type>
-	class content_is_neutron: public property<Type>
+    template <class Type>
+    class content_is_neutron: public property<Type>
     {
     public:
         bool operator() (const Type& x)const 
-		{ return x.second == Type::second_type(); }
+        { return x.second == Type::second_type(); }
     } ;
 
 

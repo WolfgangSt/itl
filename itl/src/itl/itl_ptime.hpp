@@ -44,22 +44,22 @@ Function-templates for discrete Datatypes like int, unsigned or
 namespace itl
 {
 
-	boost::posix_time::ptime operator ++(boost::posix_time::ptime& x)
-	{
-		return x += boost::posix_time::ptime::time_duration_type::unit();
-	}
+    boost::posix_time::ptime operator ++(boost::posix_time::ptime& x)
+    {
+        return x += boost::posix_time::ptime::time_duration_type::unit();
+    }
 
-	boost::posix_time::ptime operator --(boost::posix_time::ptime& x)
-	{
-		return x -= boost::posix_time::ptime::time_duration_type::unit();
-	}
+    boost::posix_time::ptime operator --(boost::posix_time::ptime& x)
+    {
+        return x -= boost::posix_time::ptime::time_duration_type::unit();
+    }
 
     // ------------------------------------------------------------------------
-	template<> 
-	inline boost::posix_time::ptime type<boost::posix_time::ptime>::neutron()
-	{ 
-		return boost::posix_time::ptime(boost::posix_time::min_date_time); 
-	}
+    template<> 
+    inline boost::posix_time::ptime type<boost::posix_time::ptime>::neutron()
+    { 
+        return boost::posix_time::ptime(boost::posix_time::min_date_time); 
+    }
 
 } // namespace itl
 

@@ -18,7 +18,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 
 namespace itl
 {
-	std::string location(const std::string& file, int line, const std::string& message)
+    std::string location(const std::string& file, int line, const std::string& message)
     {
         std::string result = file;
         result += "(" + value<int>::to_string(line) + "): ";
@@ -227,7 +227,7 @@ namespace itl
      //           switch(domainChoice) {
      //           case DomainType::Int:
      //               switch(codomainChoice) {
-					////JODO SectionAbsorbtion has to be tested for all absorber maps
+                    ////JODO SectionAbsorbtion has to be tested for all absorber maps
      //               case CodomainType::Int:     return new InplaceMapValidater<interval_map<int,int> >; 
      //               //case CodomainType::Int:     return new IntervalMapValidater<interval_map<int,int,neutron_emitter_and_enricher> >; 
      //               case CodomainType::set_int: return new IntervalMapValidater<interval_map<int,itl::set<int> > >; 

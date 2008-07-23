@@ -23,23 +23,23 @@ using namespace std;
 using namespace boost::gregorian;
 using namespace itl;
 
-/** Example month_and_time_grid.cpp \file month_and_time_grid.cpp
+/** Example month_and_week_grid.cpp \file month_and_week_grid.cpp
 
-	As split_interval_set preserves all interval borders on insertion
-	and intersection operations. So given a split_interval_set
-	\code
-	x   =   {[1,     3)}
-	x.insert(     [2,     4)) then
-	x   ==  {[1,2)[2,3)[3,4)}
-	\endcode
-	Using this property we can intersect split_interval_maps in
-	order to iterate over intervals accounting for all occurring
-	changes of interval borders.
+    As split_interval_set preserves all interval borders on insertion
+    and intersection operations. So given a split_interval_set
+    \code
+    x =  {[1,     3)}
+    x.add(     [2,     4)) then
+    x == {[1,2)[2,3)[3,4)}
+    \endcode
+    Using this property we can intersect split_interval_maps in
+    order to iterate over intervals accounting for all occurring
+    changes of interval borders.
 
-	In this example we provide an intersection of two split_interval_sets
-	representing a month and week time grid. 
+    In this example we provide an intersection of two split_interval_sets
+    representing a month and week time grid. 
 
-    \include party/month_and_time_grid.cpp
+    \include month_and_week_grid/month_and_week_grid.cpp
 */
 
 typedef split_interval_set<boost::gregorian::date> date_grid;
@@ -49,17 +49,17 @@ typedef split_interval_set<boost::gregorian::date> date_grid;
 // in the resulting split_interval_set.
 date_grid month_grid(const interval<date>& scope)
 {
-	split_interval_set<date> month_grid;
+    split_interval_set<date> month_grid;
 
-	date frame_months_1st = scope.first().end_of_month() + days(1) - months(1);
-	month_iterator month_iter(frame_months_1st);
+    date frame_months_1st = scope.first().end_of_month() + days(1) - months(1);
+    month_iterator month_iter(frame_months_1st);
 
-	for(; month_iter <= scope.last(); ++month_iter)
-		month_grid.insert(rightopen_interval(*month_iter, *month_iter + months(1)));
+    for(; month_iter <= scope.last(); ++month_iter)
+        month_grid += rightopen_interval(*month_iter, *month_iter + months(1));
 
-	month_grid *= scope; // cut off the surplus
+    month_grid *= scope; // cut off the surplus
 
-	return month_grid;
+    return month_grid;
 }
 
 // This function splits a gregorian::date interval 'scope' into a week grid:
@@ -67,17 +67,17 @@ date_grid month_grid(const interval<date>& scope)
 // in the resulting split_interval_set.
 date_grid week_grid(const interval<date>& scope)
 {
-	split_interval_set<date> week_grid;
+    split_interval_set<date> week_grid;
 
-	date frame_weeks_1st = scope.first() + days(days_until_weekday(scope.first(), greg_weekday(Monday))) - weeks(1);
-	week_iterator week_iter(frame_weeks_1st);
+    date frame_weeks_1st = scope.first() + days(days_until_weekday(scope.first(), greg_weekday(Monday))) - weeks(1);
+    week_iterator week_iter(frame_weeks_1st);
 
-	for(; week_iter <= scope.last(); ++week_iter)
-		week_grid.insert(rightopen_interval(*week_iter, *week_iter + weeks(1)));
+    for(; week_iter <= scope.last(); ++week_iter)
+        week_grid.insert(rightopen_interval(*week_iter, *week_iter + weeks(1)));
 
-	week_grid *= scope; // cut off the surplus
+    week_grid *= scope; // cut off the surplus
 
-	return week_grid;
+    return week_grid;
 }
 
 // For a period of two months, starting from today, the function
@@ -85,31 +85,31 @@ date_grid week_grid(const interval<date>& scope)
 // operator *= on split_interval_sets.
 void month_and_time_grid()
 {
-	date someday = day_clock::local_day();
-	date thenday = someday + months(2);
+    date someday = day_clock::local_day();
+    date thenday = someday + months(2);
 
-	interval<date> itv = rightopen_interval(someday, thenday);
+    interval<date> itv = rightopen_interval(someday, thenday);
 
-	// Compute a month grid
-	date_grid month_and_week_grid = month_grid(itv);
-	// Intersection of the month and week grids:
-	month_and_week_grid *= week_grid(itv);
+    // Compute a month grid
+    date_grid month_and_week_grid = month_grid(itv);
+    // Intersection of the month and week grids:
+    month_and_week_grid *= week_grid(itv);
 
-	cout << "interval : " << itv.first() << " - " << itv.last() 
-	     << " month and week partitions:" << endl;
+    cout << "interval : " << itv.first() << " - " << itv.last() 
+         << " month and week partitions:" << endl;
     cout << "---------------------------------------------------------------\n";
 
-	for(date_grid::iterator it = month_and_week_grid.begin(); 
-		it != month_and_week_grid.end(); it++)
-	{
-		if(it->first().day() == 1)
-			cout << "new month: ";
-		else if(it->first().day_of_week()==greg_weekday(Monday))
-			cout << "new week : " ;
-		else if(it == month_and_week_grid.begin())
-			cout << "first day: " ;
-		cout << it->first() << " - " << it->last() << endl;
-	}
+    for(date_grid::iterator it = month_and_week_grid.begin(); 
+        it != month_and_week_grid.end(); it++)
+    {
+        if(it->first().day() == 1)
+            cout << "new month: ";
+        else if(it->first().day_of_week()==greg_weekday(Monday))
+            cout << "new week : " ;
+        else if(it == month_and_week_grid.begin())
+            cout << "first day: " ;
+        cout << it->first() << " - " << it->last() << endl;
+    }
 }
 
 

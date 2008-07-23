@@ -26,7 +26,7 @@ namespace itl
 
     template <typename Type>
     class AdditionNeutrality 
-		: public Law<AdditionNeutrality<Type>, LOKI_TYPELIST_1(Type), LOKI_TYPELIST_1(Type)> 
+        : public Law<AdditionNeutrality<Type>, LOKI_TYPELIST_1(Type), LOKI_TYPELIST_1(Type)> 
     {
     public:
         std::string name()const { return "Addition Neutrality"; }
@@ -46,7 +46,7 @@ namespace itl
             return inVal == outVal;
         }
 
-		bool debug_holds(){ return holds(); }
+        bool debug_holds(){ return holds(); }
 
         size_t size()const;
 
@@ -62,7 +62,7 @@ namespace itl
 
     template <typename Type>
     class AdditionCommutativity 
-		: public Law<AdditionCommutativity<Type>, LOKI_TYPELIST_2(Type,Type), LOKI_TYPELIST_2(Type,Type)> 
+        : public Law<AdditionCommutativity<Type>, LOKI_TYPELIST_2(Type,Type), LOKI_TYPELIST_2(Type,Type)> 
     {
         /** a + b == b + a 
         Input  = (a := inVal1, b := inVal2)
@@ -96,7 +96,7 @@ namespace itl
             return this->template getOutputValue<lhs_sum>() == this->template getOutputValue<rhs_sum>();
         }
 
-		bool debug_holds(){ return holds(); }
+        bool debug_holds(){ return holds(); }
 
         size_t size()const 
         { 
@@ -108,8 +108,8 @@ namespace itl
 
     template <typename TypeA, typename TypeB>
     class MixedAdditionCommutativity 
-		: public Law<MixedAdditionCommutativity<TypeA, TypeB>, 
-		             LOKI_TYPELIST_2(TypeA,TypeB), LOKI_TYPELIST_2(TypeB,TypeB)> 
+        : public Law<MixedAdditionCommutativity<TypeA, TypeB>, 
+                     LOKI_TYPELIST_2(TypeA,TypeB), LOKI_TYPELIST_2(TypeB,TypeB)> 
     {
         /** a + b == b + a 
         Input  = (a := inVal1, b := inVal2)
@@ -144,7 +144,7 @@ namespace itl
             return this->template getOutputValue<lhs_sum>() == this->template getOutputValue<rhs_sum>();
         }
 
-		bool debug_holds(){ return holds(); }
+        bool debug_holds(){ return holds(); }
 
         size_t size()const 
         { 
@@ -163,8 +163,8 @@ namespace itl
     //template <typename Type, template<class>class Accumulator = inplace_plus, int aux=0>
     template <typename Type, template<class>class Accumulator = inplace_plus, template<class>class NeutronT = neutron>
     class InplaceNeutrality 
-		: public Law<InplaceNeutrality<Type,Accumulator,NeutronT>, 
-		             LOKI_TYPELIST_1(Type), LOKI_TYPELIST_1(Type)>
+        : public Law<InplaceNeutrality<Type,Accumulator,NeutronT>, 
+                     LOKI_TYPELIST_1(Type), LOKI_TYPELIST_1(Type)>
     {
         /** a o 0 == a computed as
         l=a; l o= 0; => l==a 
@@ -204,16 +204,16 @@ namespace itl
             return lhs == this->template getInputValue<operand_a>();
         }
 
-		bool debug_holds(){ return holds(); }
+        bool debug_holds(){ return holds(); }
 
     };
 
 
     template <typename Type, 
-		      template<class>class Accumulator = inplace_plus, 
-			  template<class>class Equality = itl::std_equal>
+              template<class>class Accumulator = inplace_plus, 
+              template<class>class Equality = itl::std_equal>
     class InplaceAssociativity 
-		: public Law<InplaceAssociativity<Type,Accumulator>, 
+        : public Law<InplaceAssociativity<Type,Accumulator>, 
                      LOKI_TYPELIST_3(Type,Type,Type), LOKI_TYPELIST_2(Type,Type)>
     {
         /** (a o b) o c == a o (b o c) 'inplace'
@@ -269,27 +269,27 @@ namespace itl
             return Equality<Type>()(lsum, rsum);
         }
 
-		bool debug_holds()
+        bool debug_holds()
         {
-			std::cout << typeString() << std::endl;
-			std::cout << formula() << std::endl;
-			std::cout << "a: " << this->template getInputValue<operand_a>().as_string() << std::endl;
-			std::cout << "b: " << this->template getInputValue<operand_b>().as_string() << std::endl;
-			std::cout << "c: " << this->template getInputValue<operand_c>().as_string() << std::endl;
+            std::cout << typeString() << std::endl;
+            std::cout << formula() << std::endl;
+            std::cout << "a: " << this->template getInputValue<operand_a>().as_string() << std::endl;
+            std::cout << "b: " << this->template getInputValue<operand_b>().as_string() << std::endl;
+            std::cout << "c: " << this->template getInputValue<operand_c>().as_string() << std::endl;
 
             Type lsum = this->template getInputValue<operand_a>();
             Accumulator<Type>()(lsum, this->template getInputValue<operand_b>());
-			std::cout << "a o b: " << lsum.as_string() << std::endl;
+            std::cout << "a o b: " << lsum.as_string() << std::endl;
 
             Accumulator<Type>()(lsum, this->template getInputValue<operand_c>());
-			std::cout << "(a o b) o c: " << lsum.as_string() << std::endl;
+            std::cout << "(a o b) o c: " << lsum.as_string() << std::endl;
 
             Type rsum = this->template getInputValue<operand_a>();
             Type b_plus_c = this->template getInputValue<operand_b>();
             Accumulator<Type>()(b_plus_c, this->template getInputValue<operand_c>());
-			std::cout << "b o c: " << b_plus_c.as_string() << std::endl;
+            std::cout << "b o c: " << b_plus_c.as_string() << std::endl;
             Accumulator<Type>()(rsum, b_plus_c);
-			std::cout << "a o (b o c): " << rsum.as_string() << std::endl;
+            std::cout << "a o (b o c): " << rsum.as_string() << std::endl;
 
             this->template setOutputValue<lhs_sum>(lsum);
             this->template setOutputValue<rhs_sum>(rsum);
@@ -302,7 +302,7 @@ namespace itl
 
     template <typename Type, template<class>class Accumulator = inplace_plus>
     class InplaceCommutativity 
-		: public Law<InplaceCommutativity<Type,Accumulator>, 
+        : public Law<InplaceCommutativity<Type,Accumulator>, 
                      LOKI_TYPELIST_2(Type,Type), LOKI_TYPELIST_2(Type,Type)>
     {
         /** a o b == b o a computed as
@@ -352,26 +352,26 @@ namespace itl
             return lsum == rsum;
         }
 
-		bool debug_holds()
-		{ 
-			std::cout << typeString() << std::endl;
-			std::cout << formula() << std::endl;
-			std::cout << "a: " << this->template getInputValue<operand_a>().as_string() << std::endl;
-			std::cout << "b: " << this->template getInputValue<operand_b>().as_string() << std::endl;
+        bool debug_holds()
+        { 
+            std::cout << typeString() << std::endl;
+            std::cout << formula() << std::endl;
+            std::cout << "a: " << this->template getInputValue<operand_a>().as_string() << std::endl;
+            std::cout << "b: " << this->template getInputValue<operand_b>().as_string() << std::endl;
 
             Type lsum = this->template getInputValue<operand_a>();
             lsum += this->template getInputValue<operand_b>();
-			std::cout << "a o b: " << lsum.as_string() << std::endl;
+            std::cout << "a o b: " << lsum.as_string() << std::endl;
 
             Type rsum = this->template getInputValue<operand_b>();
             rsum += this->template getInputValue<operand_a>();
-			std::cout << "b o a: " << rsum.as_string() << std::endl;
+            std::cout << "b o a: " << rsum.as_string() << std::endl;
 
             this->template setOutputValue<lhs_sum>(lsum);
             this->template setOutputValue<rhs_sum>(rsum);
 
             return lsum == rsum;
-		}
+        }
 
     };
 

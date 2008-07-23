@@ -20,16 +20,16 @@ using namespace itl;
 
 /** Example overlap_counter.cpp \file overlap_counter.cpp
 
-    The most basic application of a split_interval_map is a counter counting
+    The most basic application of an interval_map is a counter counting
     the number of overlaps of intervals inserted into it.
 
-    On could call a split_interval_map an aggregate on overlap machine. A very basic
-    aggregation is summation of an integer. A split_interval_map<int,int> maps
+    On could call an interval_map an aggregate on overlap machine. A very basic
+    aggregation is summation of an integer. A interval_map<int,int> maps
     intervals of int to ints. 
 
-    If we insert a value pair (Interval<int>(2,6), 1) into the SpliItvMap, it
+    If we insert a value pair (interval<int>(2,6), 1) into the interval_map, it
     increases the content of all value pairs in the map by 1, if their interval
-    part overlaps with Interval<int>(2,6).
+    part overlaps with interval<int>(2,6).
 
     \include overlap_counter/overlap_counter.cpp
 */
@@ -37,7 +37,7 @@ using namespace itl;
 /*  A split_interval_map<int, int> is a map<Interval<int>, int> that maps intervals
     to int values. On overlap of intervals it summs up the associated int 
     values.    */
-typedef itl::split_interval_map<int, int> OverlapCounterTD;
+typedef itl::interval_map<int, int> OverlapCounterTD;
 
 void print_overlaps(const OverlapCounterTD& counter)
 {

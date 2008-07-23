@@ -33,7 +33,7 @@ DEALINGS IN THE SOFTWARE.
 namespace itl
 {
 
-	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     template <typename Type> struct neutron
     {
         inline Type operator()()const { return Type(); }
@@ -42,61 +42,61 @@ namespace itl
     template<>
     inline std::string unary_template<neutron>::to_string() { return "0"; }
 
-	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     template <typename Type> struct inplace_identity
     {
         void operator()(Type& object, const Type& operand)const{}
     };
 
-	template<>
+    template<>
     inline std::string unary_template<inplace_identity>::to_string() 
-	{ return "i="; }
+    { return "i="; }
 
-	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     template <typename Type> struct inplace_erasure
     {
         void operator()(Type& object, const Type& operand)const
         { 
-			if(object == operand)
-				object = Type();
-				//object -= operand;
-		}
+            if(object == operand)
+                object = Type();
+                //object -= operand;
+        }
     };
 
-	template<>
+    template<>
     inline std::string unary_template<inplace_erasure>::to_string() 
-	{ return "0="; }
+    { return "0="; }
 
-	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     template <typename Type> struct inplace_plus
     {
-		typedef Type type;
+        typedef Type type;
 
         void operator()(Type& object, const Type& operand)const
         { object += operand; }
 
-		static void complement(Type& object, const Type& operand)
+        static void complement(Type& object, const Type& operand)
         { object -= operand; }
     };
 
     template<>
     inline std::string unary_template<inplace_plus>::to_string() { return "+="; }
 
-	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     template <typename Type> struct inplace_minus
     {
-		typedef Type type;
+        typedef Type type;
         void operator()(Type& object, const Type& operand)const
         { object -= operand; }
 
-		static void complement(Type& object, const Type& operand)
+        static void complement(Type& object, const Type& operand)
         { object += operand; }
     };
 
     template<>
     inline std::string unary_template<inplace_minus>::to_string() { return "-="; }
 
-	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     template <typename Type> struct inserter
     {
         void operator()(Type& object, const Type& operand)const
@@ -106,7 +106,7 @@ namespace itl
     template<>
     inline std::string unary_template<inserter>::to_string() { return "ins="; }
 
-	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     template <typename Type> struct eraser
     {
         void operator()(Type& object, const Type& operand)const
@@ -116,7 +116,7 @@ namespace itl
     template<>
     inline std::string unary_template<eraser>::to_string() { return "ers="; }
 
-	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     template <typename Type> struct inplace_star
     {
         void operator()(Type& object, const Type& operand)const
@@ -126,42 +126,42 @@ namespace itl
     template<>
     inline std::string unary_template<inplace_star>::to_string() { return "*="; }
 
-	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     template <typename Type> struct inplace_max
     {
         void operator()(Type& object, const Type& operand)const
         {
-			if(object < operand)
-				object = operand;
-		}
+            if(object < operand)
+                object = operand;
+        }
     };
 
     template<>
     inline std::string unary_template<inplace_max>::to_string() { return "max="; }
 
-	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     template <typename Type> struct inplace_min
     {
         void operator()(Type& object, const Type& operand)const
         {
-			if(object > operand)
-				object = operand;
-		}
+            if(object > operand)
+                object = operand;
+        }
     };
 
     template<>
     inline std::string unary_template<inplace_min>::to_string() { return "min="; }
 
 
-	// ------------------------------------------------------------------------
-	template<template<class>class InplaceBinaryOp, class Type> struct complement
-	{
-		void operator()(typename InplaceBinaryOp<Type>::type& object, 
-			            const typename InplaceBinaryOp<Type>::type& operand)
-		{
-			return InplaceBinaryOp<Type>::complement(object, operand);
-		}
-	};
+    // ------------------------------------------------------------------------
+    template<template<class>class InplaceBinaryOp, class Type> struct complement
+    {
+        void operator()(typename InplaceBinaryOp<Type>::type& object, 
+                        const typename InplaceBinaryOp<Type>::type& operand)
+        {
+            return InplaceBinaryOp<Type>::complement(object, operand);
+        }
+    };
 
 } // namespace itl
 

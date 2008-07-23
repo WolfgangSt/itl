@@ -71,16 +71,16 @@ template
     template<class>class Alloc    = std::allocator
 > 
 class separate_interval_set: 
-	public interval_base_set<separate_interval_set<DomainT,Interval,Compare,Alloc>,
-	                         DomainT,Interval,Compare,Alloc>
+    public interval_base_set<separate_interval_set<DomainT,Interval,Compare,Alloc>,
+                             DomainT,Interval,Compare,Alloc>
 {
 public:
     // inherit all typedefs
 
-	typedef interval_base_set<itl::separate_interval_set<DomainT,Interval,Compare,Alloc>,
-		                      DomainT,Interval,Compare,Alloc> base_type;
+    typedef interval_base_set<itl::separate_interval_set<DomainT,Interval,Compare,Alloc>,
+                              DomainT,Interval,Compare,Alloc> base_type;
 
-	typedef interval_set<DomainT,Interval,Compare,Alloc> joint_type;
+    typedef interval_set<DomainT,Interval,Compare,Alloc> joint_type;
 
     /// The domain type of the set
     typedef DomainT   domain_type;
@@ -140,11 +140,11 @@ public:
     /// Does the set contain the interval  <tt>x</tt>?
     bool contains(const interval_type& x)const;
 
-	/// Insertion of an interval <tt>x</tt>
-	void insert(const value_type& x);
+    /// Insertion of an interval <tt>x</tt>
+    void insert(const value_type& x);
 
-	/// Removal of an interval <tt>x</tt>
-	void subtract(const value_type& x);
+    /// Removal of an interval <tt>x</tt>
+    void subtract(const value_type& x);
 
     /// Treatment of adjoint intervals on insertion
     void handle_neighbours(const iterator& it){}
@@ -161,10 +161,10 @@ bool separate_interval_set<DomainT,Interval,Compare,Alloc>::contains(const inter
 
     interval_set<DomainT,Interval,Compare,Alloc> matchSet;
     for(typename ImplSetT::const_iterator it=fst_it; it!=end_it; it++) 
-		matchSet.insert(*it);
+        matchSet.insert(*it);
 
     interval_set<DomainT,Interval,Compare,Alloc> x_asSet; 
-	x_asSet.insert(x);
+    x_asSet.insert(x);
     return x_asSet.contained_in(matchSet);
 }
 
@@ -173,33 +173,33 @@ bool separate_interval_set<DomainT,Interval,Compare,Alloc>::contains(const inter
 template<class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 void separate_interval_set<DomainT,Interval,Compare,Alloc>::insert(const value_type& x)
 {
-	if(x.empty()) return;
+    if(x.empty()) return;
 
-	std::pair<typename ImplSetT::iterator,bool> insertion = this->_set.insert(x);
+    std::pair<typename ImplSetT::iterator,bool> insertion = this->_set.insert(x);
 
-	if(insertion.WAS_SUCCESSFUL)
-		handle_neighbours(insertion.ITERATOR);
-	else
-	{
-		typename ImplSetT::iterator fst_it = this->_set.lower_bound(x);
-		typename ImplSetT::iterator end_it = this->_set.upper_bound(x);
+    if(insertion.WAS_SUCCESSFUL)
+        handle_neighbours(insertion.ITERATOR);
+    else
+    {
+        typename ImplSetT::iterator fst_it = this->_set.lower_bound(x);
+        typename ImplSetT::iterator end_it = this->_set.upper_bound(x);
 
-		typename ImplSetT::iterator it=fst_it, nxt_it=fst_it, victim;
-		Interval<DomainT> leftResid;  (*it).left_surplus(leftResid,x);
-		Interval<DomainT> rightResid;
+        typename ImplSetT::iterator it=fst_it, nxt_it=fst_it, victim;
+        Interval<DomainT> leftResid;  (*it).left_surplus(leftResid,x);
+        Interval<DomainT> rightResid;
 
-		while(it!=end_it)
-		{ 
-			if((++nxt_it)==end_it) 
-				(*it).right_surplus(rightResid,x);
-			victim = it; it++; this->_set.erase(victim);
-		}
+        while(it!=end_it)
+        { 
+            if((++nxt_it)==end_it) 
+                (*it).right_surplus(rightResid,x);
+            victim = it; it++; this->_set.erase(victim);
+        }
 
-		Interval<DomainT> extended = x;
-		extended.extend(leftResid).extend(rightResid);
-		extended.extend(rightResid);
-		insert(extended);
-	}
+        Interval<DomainT> extended = x;
+        extended.extend(leftResid).extend(rightResid);
+        extended.extend(rightResid);
+        insert(extended);
+    }
 
 }
 
@@ -207,23 +207,23 @@ void separate_interval_set<DomainT,Interval,Compare,Alloc>::insert(const value_t
 template<class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 void separate_interval_set<DomainT,Interval,Compare,Alloc>::subtract(const value_type& x)
 {
-	if(x.empty()) return;
-	typename ImplSetT::iterator fst_it = this->_set.lower_bound(x);
-	if(fst_it==this->_set.end()) return;
-	typename ImplSetT::iterator end_it = this->_set.upper_bound(x);
+    if(x.empty()) return;
+    typename ImplSetT::iterator fst_it = this->_set.lower_bound(x);
+    if(fst_it==this->_set.end()) return;
+    typename ImplSetT::iterator end_it = this->_set.upper_bound(x);
 
-	typename ImplSetT::iterator it=fst_it, nxt_it=fst_it, victim;
-	interval_type leftResid; (*it).left_surplus(leftResid,x);
-	interval_type rightResid;
+    typename ImplSetT::iterator it=fst_it, nxt_it=fst_it, victim;
+    interval_type leftResid; (*it).left_surplus(leftResid,x);
+    interval_type rightResid;
 
-	while(it!=end_it)
-	{ 
-		if((++nxt_it)==end_it) (*it).right_surplus(rightResid,x);
-		victim = it; it++; this->_set.erase(victim);
-	}
+    while(it!=end_it)
+    { 
+        if((++nxt_it)==end_it) (*it).right_surplus(rightResid,x);
+        victim = it; it++; this->_set.erase(victim);
+    }
 
-	insert(leftResid);
-	insert(rightResid);
+    insert(leftResid);
+    insert(rightResid);
 }
 
 
@@ -237,11 +237,11 @@ inline bool is_element_equal(const separate_interval_set<DomainT,Interval,Compar
 template <class Type>
 struct type<itl::separate_interval_set<Type> >
 {
-	static bool is_set() { return true; }
-	static bool is_interval_container() { return true; }
-	static bool is_interval_splitter() { return false; }
-	static bool is_neutron_absorber() { return false; }
-	static bool is_neutron_emitter() { return false; }
+    static bool is_set() { return true; }
+    static bool is_interval_container() { return true; }
+    static bool is_interval_splitter() { return false; }
+    static bool is_neutron_absorber() { return false; }
+    static bool is_neutron_emitter() { return false; }
 
     static std::string to_string()
     { return "separate_interval_set<"+ type<Type>::to_string() +">"; }

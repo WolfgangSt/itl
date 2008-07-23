@@ -20,8 +20,8 @@ using namespace itl;
 
 /** Example history.cpp \file history.cpp
 
-History demonstrates further possibilities of a split interval map
-(split_interval_map). For a more basic example see party.cpp.
+History demonstrates further possibilities of an interval map
+(interval_map or split_interval_map). For a more basic example see party.cpp.
 
 Here we show the mechanics of a product_history which is split_interval_map that
 maps intervals to products of attributes that change over time.
@@ -46,16 +46,19 @@ Tuesday 07:00: The person falls into an acute delirium due to deprivation of
 alcohol.
 
 This history of events could be formalized like that:
+\code
 [mon:22:00, mon:22:05) -> { DIAG->{susp.cran.frac.}, WARD->{emergency ward} }
 [mon:22:05, mon:22:15) -> { DIAG->{susp.cran.frac., alc.intox.}, WARD->{emergency ward} }
 [mon:22:15, mon:22:30) -> { DIAG->{susp.cran.frac., alc.intox.} }
 [mon:22:30, mon:22:50) -> { DIAG->{alc.intox.}, WARD->{radiology} }
 [mon:22:50, tue:07:00) -> { DIAG->{laceration, alc.intox.}, WARD->{ward A} }
 [tue:07:00, tue:07:20) -> { DIAG->{laceration, acute delirium}, WARD->{ward A} }
+\endcode
 
 Now suppose the episodes of that history are recorded separately for diagnoses and
 ward. A situation that is often found if data are stored in a well designed database.
 
+\code
 Diagnosis:
 [mon:22:00, mon:22:30) -> susp.cran.frac.
 [mon:22:05, mon:07:00) -> alc.intox.
@@ -67,6 +70,7 @@ Stays:
 (unregistered gap)
 [mon:22:30, mon:22:50) -> radiology
 [mon:22:50, mon:07:20) -> ward A
+\endcode
 
 A product_history allows to compute the history of events by simply adding all
 separate episode data to a history object.
@@ -104,7 +108,7 @@ public:
         {
         case diagnosis: return std::string("DIAG");
         case ward:      return std::string("WARD");
-		default:        return std::string("Unknown");
+        default:        return std::string("Unknown");
         }
     }
 };

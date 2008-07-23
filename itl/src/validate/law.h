@@ -24,21 +24,21 @@ namespace itl
         Output variables hold interim and final results of the evaluation of the law.
     */
     template 
-	<
-		class SubType,
-		typename InputTypes, typename OutputTypes
-	>
+    <
+        class SubType,
+        typename InputTypes, typename OutputTypes
+    >
     class Law
     {
     public:
-		typedef SubType                           sub_type;
+        typedef SubType                           sub_type;
         typedef InputTypes                        input_types;
         typedef OutputTypes                       output_types;
         typedef typename Loki::tuple<InputTypes>  input_tuple;
         typedef typename Loki::tuple<OutputTypes> output_tuple;
 
     public:
-		bool holds(){ return that()->holds(); }
+        bool holds(){ return that()->holds(); }
         bool debug_holds(){ return that()->debug_holds(); }
 
         void setInstance(const input_tuple& inVars)
@@ -53,7 +53,7 @@ namespace itl
         void getOutputInstance(output_tuple& outVars)const
         { outVars = _outputTuple; }
 
-		size_t size()const{ return that()->size(); }
+        size_t size()const{ return that()->size(); }
 
         bool operator == (const Law& rhs)const
         { return size() == rhs.size(); }
@@ -83,9 +83,9 @@ namespace itl
         typename Loki::TL::TypeAt<OutputTypes, index>::Result getOutputValue()const 
         { return Loki::tup::get<index>(_outputTuple); }
 
-	protected:
-		      sub_type* that()      { return static_cast      <sub_type*>(this); }
-		const sub_type* that()const { return static_cast<const sub_type*>(this); }
+    protected:
+              sub_type* that()      { return static_cast      <sub_type*>(this); }
+        const sub_type* that()const { return static_cast<const sub_type*>(this); }
 
     private:
         input_tuple  _inputTuple;

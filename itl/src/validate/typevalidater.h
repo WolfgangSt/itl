@@ -32,7 +32,7 @@ namespace itl
         virtual void addFrequencies(ValidationCounterT&)=0;
         virtual void addViolations(ViolationCounterT&, ViolationMapT&)=0;
 
-		virtual bool hasValidProfile()const{ return true; }
+        virtual bool hasValidProfile()const{ return true; }
     };
 
 
@@ -79,13 +79,13 @@ namespace itl
         void validate()
         {
             _validater = chooseValidater();
-			if(_validater)
-			{
-				_validater->run();
-				_validater->addFrequencies(_frequencies);
-				_validater->addViolations(_violationsCount, _violations);
-				delete _validater;
-			}
+            if(_validater)
+            {
+                _validater->run();
+                _validater->addFrequencies(_frequencies);
+                _validater->addViolations(_violationsCount, _violations);
+                delete _validater;
+            }
         }
 
         void addFrequencies(ValidationCounterT& summary) { summary += _frequencies; }
@@ -146,13 +146,13 @@ namespace itl
         void validate()
         {
             _validater = chooseValidater();
-			if(_validater)
-			{
-				_validater->run();
-				_validater->addFrequencies(_frequencies);
-				_validater->addViolations(_violationsCount, _violations);
-				delete _validater;
-			}
+            if(_validater)
+            {
+                _validater->run();
+                _validater->addFrequencies(_frequencies);
+                _validater->addViolations(_violationsCount, _violations);
+                delete _validater;
+            }
         }
 
         void addFrequencies(ValidationCounterT& summary) { summary += _frequencies; }
@@ -288,19 +288,19 @@ namespace itl
             case partialStdOrder:            return _lessEqualValidater.chooseValidater();
             case containedInOrder:           return _containedInValidater.chooseValidater();
             case inplacePlusAssociativity:   
-				if(   itl::type<Type>::is_interval_container() && type<Type>::is_interval_splitter()
-				   && type<Type>::is_neutron_absorber() && type<Type>::is_neutron_emitter())
-					return new LawValidater<InplaceAssociativity<Type, inplace_plus, element_equal>, RandomGentor>;
-				else
-					return new LawValidater<InplaceAssociativity<Type>, RandomGentor>;
+                if(   itl::type<Type>::is_interval_container() && type<Type>::is_interval_splitter()
+                   && type<Type>::is_neutron_absorber() && type<Type>::is_neutron_emitter())
+                    return new LawValidater<InplaceAssociativity<Type, inplace_plus, element_equal>, RandomGentor>;
+                else
+                    return new LawValidater<InplaceAssociativity<Type>, RandomGentor>;
             case inplacePlusNeutrality:      return new LawValidater<InplaceNeutrality<Type>, RandomGentor>;
             case inplacePlusCommutativity:   return new LawValidater<InplaceCommutativity<Type>, RandomGentor>;
             case inplaceStarAssociativity:
-				if(   type<Type>::is_interval_container() && type<Type>::is_interval_splitter()
-				   && type<Type>::is_neutron_absorber() && type<Type>::is_neutron_emitter())
-					return new LawValidater<InplaceAssociativity<Type, inplace_star, element_equal>, RandomGentor>;
-				else
-					return new LawValidater<InplaceAssociativity<Type, inplace_star>, RandomGentor>;
+                if(   type<Type>::is_interval_container() && type<Type>::is_interval_splitter()
+                   && type<Type>::is_neutron_absorber() && type<Type>::is_neutron_emitter())
+                    return new LawValidater<InplaceAssociativity<Type, inplace_star, element_equal>, RandomGentor>;
+                else
+                    return new LawValidater<InplaceAssociativity<Type, inplace_star>, RandomGentor>;
             case inplaceStarCommutativity:   return new LawValidater<InplaceCommutativity<Type, inplace_star>, RandomGentor>;
             default: return NULL;
             }
@@ -309,13 +309,13 @@ namespace itl
         void validate()
         {
             _validater = chooseValidater();
-			if(_validater)
-			{
-				_validater->run();
-				_validater->addFrequencies(_frequencies);
-				_validater->addViolations(_violationsCount, _violations);
-				delete _validater;
-			}
+            if(_validater)
+            {
+                _validater->run();
+                _validater->addFrequencies(_frequencies);
+                _validater->addViolations(_violationsCount, _violations);
+                delete _validater;
+            }
         }
 
         void addFrequencies(ValidationCounterT& summary) { summary += _frequencies; }
@@ -347,7 +347,7 @@ namespace itl
         enum Laws 
         { 
             inplaceSetBaseLaws,
-			inplaceSymmetricDifference,
+            inplaceSymmetricDifference,
             inplaceUnionInvertability,
             sectionAbsorbtion,
             Laws_size 
@@ -360,18 +360,18 @@ namespace itl
             _lawChoice.setSize(Laws_size);
             _lawChoice.setMaxWeights(100);
             _lawChoice[inplaceSetBaseLaws]             = 85;
-			if(Type::has_symmetric_difference())
-			{
-				_lawChoice[inplaceSymmetricDifference] = 5;
-				_lawChoice[inplaceUnionInvertability]  = 5;
-				_lawChoice[sectionAbsorbtion]          = 5;
-			}
-			else
-			{
-				_lawChoice[inplaceSymmetricDifference] = 0;
-				_lawChoice[inplaceUnionInvertability]  = 7;
-				_lawChoice[sectionAbsorbtion]          = 8;
-			}
+            if(Type::has_symmetric_difference())
+            {
+                _lawChoice[inplaceSymmetricDifference] = 5;
+                _lawChoice[inplaceUnionInvertability]  = 5;
+                _lawChoice[sectionAbsorbtion]          = 5;
+            }
+            else
+            {
+                _lawChoice[inplaceSymmetricDifference] = 0;
+                _lawChoice[inplaceUnionInvertability]  = 7;
+                _lawChoice[sectionAbsorbtion]          = 8;
+            }
             _lawChoice.init();
         }
 
@@ -383,9 +383,9 @@ namespace itl
             case inplaceSetBaseLaws:        
                 return InplaceSetBaseValidater<Type>::chooseValidater();
             case inplaceSymmetricDifference: 
-				return new LawValidater<InplaceSymmetricDifference<Type>, RandomGentor>;
+                return new LawValidater<InplaceSymmetricDifference<Type>, RandomGentor>;
             case inplaceUnionInvertability: 
-				return new LawValidater<InplaceUnionInvertability<Type,itl::protonic_equal>, RandomGentor >;
+                return new LawValidater<InplaceUnionInvertability<Type,itl::protonic_equal>, RandomGentor >;
             case sectionAbsorbtion:            
                 return new LawValidater<SectionAbsorbtion<Type,itl::protonic_equal>, RandomGentor>;
             default: 
@@ -396,13 +396,13 @@ namespace itl
         void validate()
         {
             _validater = chooseValidater();
-			if(_validater)
-			{
-				_validater->run();
-				_validater->addFrequencies(_frequencies);
-				_validater->addViolations(_violationsCount, _violations);
-				delete _validater;
-			}
+            if(_validater)
+            {
+                _validater->run();
+                _validater->addFrequencies(_frequencies);
+                _validater->addViolations(_violationsCount, _violations);
+                delete _validater;
+            }
         }
 
         void addFrequencies(ValidationCounterT& summary) { summary += _frequencies; }
@@ -429,7 +429,7 @@ namespace itl
         enum Laws 
         { 
             inplaceSetBaseLaws,
-			inplaceSymmetricDifference,
+            inplaceSymmetricDifference,
             inplaceUnionInvertability,
             inplacePlusDistributivity,
             inplaceStarDistributivity,
@@ -464,7 +464,7 @@ namespace itl
             switch(_lawChoice.some())
             {
             case inplaceSetBaseLaws:         return InplaceSetBaseValidater<Type>::chooseValidater();
-			case inplaceSymmetricDifference: return new LawValidater<InplaceSymmetricDifference<Type>, RandomGentor>;
+            case inplaceSymmetricDifference: return new LawValidater<InplaceSymmetricDifference<Type>, RandomGentor>;
             case inplaceUnionInvertability:  return new LawValidater<InplaceUnionInvertability<Type>, RandomGentor>;
             case inplacePlusDistributivity:  return new LawValidater<InplaceDistributivity<Type, inplace_plus, inplace_star, itl::element_equal>, RandomGentor>;
             case inplaceStarDistributivity:  return new LawValidater<InplaceDistributivity<Type, inplace_star, inplace_plus>, RandomGentor>;
@@ -479,13 +479,13 @@ namespace itl
         void validate()
         {
             _validater = chooseValidater();
-			if(_validater)
-			{
-				_validater->run();
-				_validater->addFrequencies(_frequencies);
-				_validater->addViolations(_violationsCount, _violations);
-				delete _validater;
-			}
+            if(_validater)
+            {
+                _validater->run();
+                _validater->addFrequencies(_frequencies);
+                _validater->addViolations(_violationsCount, _violations);
+                delete _validater;
+            }
         }
 
         void addFrequencies(ValidationCounterT& summary) { summary += _frequencies; }
@@ -516,12 +516,12 @@ namespace itl
             cluster_plus,
             cluster_minus,
             cluster_star,
-			atomize_insert,
-			atomize_erase,
-			cluster_insert,
-			cluster_erase,
-			join_plus,
-			absorb_plus,
+            atomize_insert,
+            atomize_erase,
+            cluster_insert,
+            cluster_erase,
+            join_plus,
+            absorb_plus,
             Laws_size 
         };
 
@@ -573,7 +573,7 @@ namespace itl
             case cluster_insert: return new LawValidater<BinaryPushout<typename Type::atomized_type, Type, Interval::Cluster, inserter>,      RandomGentor>();
             case cluster_erase:  return new LawValidater<BinaryPushout<typename Type::atomized_type, Type, Interval::Cluster, eraser>,        RandomGentor>();
             case join_plus:      return new LawValidater<BinaryPushout<Type, typename Type::joint_type,    Interval::Join,    inplace_plus>,  RandomGentor>();
-			//JODO absorb_plus holds for interval_map. For split_interval_map element_equal has to be used as equality-relation.
+            //JODO absorb_plus holds for interval_map. For split_interval_map element_equal has to be used as equality-relation.
             //case absorb_plus:    return new LawValidater<BinaryPushout<Type, typename Type::neutron_absorber_type, Interval::AbsorbNeutrons, inplace_plus>,  RandomGentor>();
             //JODO doc: violated: inverse required: case absorb_minus:    return new LawValidater<BinaryPushout<Type, typename Type::neutron_absorber_type, Interval::AbsorbNeutrons, inplace_minus>,  RandomGentor>();
             default: return NULL;
@@ -583,13 +583,13 @@ namespace itl
         void validate()
         {
             _validater = chooseValidater();
-			if(_validater)
-			{
-				_validater->run();
-				_validater->addFrequencies(_frequencies);
-				_validater->addViolations(_violationsCount, _violations);
-				delete _validater;
-			}
+            if(_validater)
+            {
+                _validater->run();
+                _validater->addFrequencies(_frequencies);
+                _validater->addViolations(_violationsCount, _violations);
+                delete _validater;
+            }
         }
 
         void addFrequencies(ValidationCounterT& summary) { summary += _frequencies; }
@@ -646,13 +646,13 @@ namespace itl
         void validate()
         {
             _validater = chooseValidater();
-			if(_validater)
-			{
-				_validater->run();
-				_validater->addFrequencies(_frequencies);
-				_validater->addViolations(_violationsCount, _violations);
-				delete _validater;
-			}
+            if(_validater)
+            {
+                _validater->run();
+                _validater->addFrequencies(_frequencies);
+                _validater->addViolations(_violationsCount, _violations);
+                delete _validater;
+            }
         }
 
         void addFrequencies(ValidationCounterT& summary) { summary += _frequencies; }
@@ -697,9 +697,9 @@ namespace itl
             _lawChoice.init();
         }
 
-		bool hasValidProfile()
-		{
-		}
+        bool hasValidProfile()
+        {
+        }
 
         LawValidaterI* chooseValidater()
         {
@@ -714,13 +714,13 @@ namespace itl
         void validate()
         {
             _validater = chooseValidater();
-			if(_validater)
-			{
-				_validater->run();
-				_validater->addFrequencies(_frequencies);
-				_validater->addViolations(_violationsCount, _violations);
-				delete _validater;
-			}
+            if(_validater)
+            {
+                _validater->run();
+                _validater->addFrequencies(_frequencies);
+                _validater->addViolations(_violationsCount, _violations);
+                delete _validater;
+            }
         }
 
         void addFrequencies(ValidationCounterT& summary) { summary += _frequencies; }

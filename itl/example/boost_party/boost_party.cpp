@@ -25,9 +25,9 @@ using namespace itl;
 /** Example boost_party.cpp \file boost_party.cpp
 
     boost_party.cpp demonstrates the possibilities of an interval map 
-	(interval_map or split_interval_map). Boost::posix_time::ptime is used as time
-	parameter. An interval_map maps intervals to a given content. In this case the 
-	content is a set of party guests represented by their name strings.
+    (interval_map or split_interval_map). Boost::posix_time::ptime is used as time
+    parameter. An interval_map maps intervals to a given content. In this case the 
+    content is a set of party guests represented by their name strings.
 
     As time goes by, groups of people join the party and leave later in the evening.
     So we add a time interval and a name set to the interval_map for the attendance
@@ -43,7 +43,7 @@ using namespace itl;
 
     boost_party.cpp demonstrates a principle that we call 
     <b><em>aggregate on overlap (aggovering;)</em></b>:
-    On insertion a value associated to the interval is aggrgated (added) to those
+    On insertion a value associated to the interval is aggregated (added) to those
     values in the interval_map that overlap with the inserted value.
 
     There are two behavioral aspects to <b>aggovering</b>: a <em>decompositional
@@ -86,73 +86,73 @@ void boost_party()
 
     BoostPartyAttendenceHistoryT party;
 
-	party.add( // add and element
-	  make_pair( 
-		rightopen_interval<ptime>(
-		  time_from_string("2008-05-20 19:30"), 
-		  time_from_string("2008-05-20 23:00")), 
-		  mary_harry));
+    party.add( // add and element
+      make_pair( 
+        rightopen_interval<ptime>(
+          time_from_string("2008-05-20 19:30"), 
+          time_from_string("2008-05-20 23:00")), 
+          mary_harry));
 
-	party += // element addition can also be done via operator +=
-	  make_pair( 
-		rightopen_interval<ptime>(
-		  time_from_string("2008-05-20 20:10"), 
-		  time_from_string("2008-05-21 00:00")), 
-		  diana_susan);
-	party +=
-	  make_pair( 
-		rightopen_interval<ptime>(
-		  time_from_string("2008-05-20 22:15"), 
-		  time_from_string("2008-05-21 00:30")), 
-		  peter);
+    party += // element addition can also be done via operator +=
+      make_pair( 
+        rightopen_interval<ptime>(
+          time_from_string("2008-05-20 20:10"), 
+          time_from_string("2008-05-21 00:00")), 
+          diana_susan);
+    party +=
+      make_pair( 
+        rightopen_interval<ptime>(
+          time_from_string("2008-05-20 22:15"), 
+          time_from_string("2008-05-21 00:30")), 
+          peter);
 
-	//-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
     BoostPartyHeightHistoryT tallest_guest;
 
-	// adding an element can be done wrt. simple aggregate functions
-	// like e.g. min, max etc. in their 'inplace' or op= incarnation
-	tallest_guest.add<inplace_max>(
-	  make_pair( 
-		rightopen_interval<ptime>(
-		  time_from_string("2008-05-20 19:30"), 
-		  time_from_string("2008-05-20 23:00")), 
-		  180));
+    // adding an element can be done wrt. simple aggregate functions
+    // like e.g. min, max etc. in their 'inplace' or op= incarnation
+    tallest_guest.add<inplace_max>(
+      make_pair( 
+        rightopen_interval<ptime>(
+          time_from_string("2008-05-20 19:30"), 
+          time_from_string("2008-05-20 23:00")), 
+          180));
 
-	tallest_guest.add<inplace_max>(
-	  make_pair( 
-		rightopen_interval<ptime>(
-		  time_from_string("2008-05-20 20:10"), 
-		  time_from_string("2008-05-21 00:00")), 
-		  170));
+    tallest_guest.add<inplace_max>(
+      make_pair( 
+        rightopen_interval<ptime>(
+          time_from_string("2008-05-20 20:10"), 
+          time_from_string("2008-05-21 00:00")), 
+          170));
 
-	tallest_guest.add<inplace_max>(
-	  make_pair( 
-		rightopen_interval<ptime>(
-		  time_from_string("2008-05-20 22:15"), 
-		  time_from_string("2008-05-21 00:30")), 
-		  200));
+    tallest_guest.add<inplace_max>(
+      make_pair( 
+        rightopen_interval<ptime>(
+          time_from_string("2008-05-20 22:15"), 
+          time_from_string("2008-05-21 00:30")), 
+          200));
 
 
     BoostPartyAttendenceHistoryT::iterator it = party.begin();
-	cout << "----- Histrory of party guests ------------------------\n";
+    cout << "----- Histrory of party guests ------------------------\n";
     while(it != party.end())
     {
         interval<ptime> when = (*it).first;
         // Who is at the party within the time interval 'when' ?
         GuestSetT who = (*it++).second;
         cout << "[" << when.first() << " - " << when.upper() << ")"
-			 << ": " << who.as_string() << endl;
+             << ": " << who.as_string() << endl;
     }
 
     BoostPartyHeightHistoryT::iterator height_ = tallest_guest.begin();
-	cout << "----- Histrory of maximum guest height ----------------\n";
+    cout << "----- Histrory of maximum guest height ----------------\n";
     while(height_ != tallest_guest.end())
     {
         interval<ptime> when = height_->first;
         // Who is at the party within the time interval 'when' ?
         int height = (*height_++).second;
         cout << "[" << when.first() << " - " << when.upper() << ")"
-			 << ": " << height <<" cm = " << height/30.48 << " ft" << endl;
+             << ": " << height <<" cm = " << height/30.48 << " ft" << endl;
     }
 }
 

@@ -90,11 +90,11 @@ public:
         BaseTypeTD::add(value_type(epi->interval(), epiRec));
     }
 
-	product_history& operator +=(EpisodePTD epi)
-	{
-		add(epi);
-		return *this;
-	}
+    product_history& operator +=(EpisodePTD epi)
+    {
+        add(epi);
+        return *this;
+    }
 
 
 protected:

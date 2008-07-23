@@ -73,13 +73,13 @@ namespace itl
             {
                 i2 = x2.find(i1->first);
                 if(i2 != x2.end())
-				{
-					tmp += *i1; 
-					if(type<typename MapType::codomain_type>::is_set())
-						tmp *= *i2;
-					else
-						tmp += *i2;
-				}
+                {
+                    tmp += *i1; 
+                    if(type<typename MapType::codomain_type>::is_set())
+                        tmp *= *i2;
+                    else
+                        tmp += *i2;
+                }
                 i1++;
             }
             tmp.swap(y);
@@ -104,10 +104,10 @@ namespace itl
                 if(x2_ != x2.end())
                 {
                     result.insert(*x1_);
-					if(type<typename MapType::data_type>::is_set())
-						result.template add<inplace_star>(*x2_); //MEMO template cast for gcc
-					else
-						result.template add<inplace_plus>(*x2_);
+                    if(type<typename MapType::data_type>::is_set())
+                        result.template add<inplace_star>(*x2_); //MEMO template cast for gcc
+                    else
+                        result.template add<inplace_plus>(*x2_);
                 }
                 x1_++;
             }

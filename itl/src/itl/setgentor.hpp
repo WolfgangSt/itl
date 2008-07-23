@@ -91,7 +91,7 @@ void SetGentorT<SetTV>::some(SetTV& x)
         DomainTD key;
         //CL m_domainGentor->some(key);
         domainGentor()->some(key);
-		x += key;
+        x += key;
         m_sample.push_back(key);
     }
 }
@@ -102,7 +102,7 @@ void SetGentorT<SetTV>::last(SetTV& x)const
 {
     x.clear();
     const_FORALL(typename SampleTypeTD, it, m_sample) 
-		x += *it;
+        x += *it;
 }
 
 template <class SetTV>
@@ -120,7 +120,7 @@ void SetGentorT<SetTV>::last_permuted(SetTV& x)const
     }
 
     const_FORALL(typename SampleTypeTD, pit, perm) 
-		x += *pit;
+        x += *pit;
 }
 
 
