@@ -34,8 +34,8 @@ using namespace itl;
     \include overlap_counter/overlap_counter.cpp
 */
 
-/*  A split_interval_map<int, int> is a map<Interval<int>, int> that maps intervals
-    to int values. On overlap of intervals it summs up the associated int 
+/*  A interval_map<int, int> is a map<Interval<int>, int> that maps intervals
+    to int values. On overlap of intervals it sums up the associated int 
     values.    */
 typedef itl::interval_map<int, int> OverlapCounterTD;
 

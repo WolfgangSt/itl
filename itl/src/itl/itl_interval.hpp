@@ -55,7 +55,8 @@ namespace itl
 
     New examples are available showing applications of interval containers
     that use boost::date_time. Boost::gregorian dates and boost::posix times
-    are used in examples boost_party.cpp, man_power.cpp and month_and_week_grid.cpp.
+    are used in examples boost_party.cpp, man_power.cpp, user_groups.cpp
+    and month_and_week_grid.cpp.
 
     \section intro_sec Introduction
 
@@ -99,7 +100,7 @@ namespace itl
     split up whenever the set of guests is changing. And it has an 
     <em>aggregational behavior</em> on the associated values: Guest sets are 
     added up on insertion. (party.cpp is a variant of the example that does not use 
-    boost::date_time).  
+    boost::date_time).
     \n \n
 
     \subsection interval_subsec Intervals 
@@ -113,13 +114,22 @@ namespace itl
     interval container objects: interval_set, split_interval_set and split_interval_map.
     \n \n
 
-    \subsection overlap_counter_subsec Overlap counter
+    \subsection month_and_week_grid Partitioning of times using split_interval_set
 
-    The most basic application of a split_interval_map is a counter counting
+    Example month_and_week_grid.cpp shows how the <em>border preserving</em>
+    split_interval_set can be used to create time partitionigs where different
+    periodic time intervals overlay each other. The example uses boost::date_time.
+    \n \n
+
+
+
+    \subsection overlap_counter_subsec Overlap counter: The most basic interval_map application
+
+    The most basic application of an interval_map is a counter counting
     the number of overlaps of intervals inserted into it as shown in overlap_counter.cpp.
     \n \n
 
-    \subsection man_power Man-power
+    \subsection man_power Man-power: Set operations on interval containers
 
     Set style operations on interval_sets and interval_maps like union, difference
     and intersection can be used to obtain calculations in a flexible way. Example
@@ -128,18 +138,25 @@ namespace itl
     boost::date_time.
     \n \n
 
-    \subsection month_and_week_grid Partitioning of times using split_interval_set
-
-    Example month_and_week_grid.cpp shows how the <em>border preserving</em>
-    split_interval_set can be used to create time partitionigs where different
-    periodic time intervals overlay each other. The example uses boost::date_time.
-    \n \n
-
     \subsection history_subsec History
 
     History is a more sophisticated application of an interval_map to decompose
     data in time. Sample history.cpp shows how we can monitor a set of attributes in a history.
     \n \n
+
+
+    \subsection user_groups_subsec User Groups: Union and intersecion of histories
+
+    Example user_groups.cpp shows how interval_maps can be unified (+=) or 
+    intersected    (*=) to calculate desired informations. We have a group of
+    admin users and    of medcial staff, who have different authorisations in
+    a ficticious system. The interval_maps for
+    the groups show the history of the group membership: The members
+    and how they change in time. The union of the groups is a 
+    history that shows the memberships of employees who have
+    any rights (admin or medical). And the intersection represents the
+    group of employees who have both rights: The superusers.
+
 
     \subsection amount_cube_subsec Amount cube
 

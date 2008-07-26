@@ -19,7 +19,9 @@ MAKE_PATH = .
 ITL_ROOT_PATH = ../..
 #--- root directory of the interval template library --------------------------
 ITL_SRC_PATH  = $(ITL_ROOT_PATH)/src
-BOOST_PATH = $(ITL_ROOT_PATH)/boost_1_35_0
+
+#BOOST_PATH = /usr/include/boost-1_33_1
+BOOST_PATH = /usr/include/boost_1_35_0
 
 #--- binaries -----------------------------------------------------------------
 BIN_PATH = $(ITL_ROOT_PATH)/bin

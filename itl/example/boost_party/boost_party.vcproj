@@ -40,7 +40,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../src; ../../boost_1_35_0"
+				AdditionalIncludeDirectories="../../src; ../../boost_1_35_0_mini"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -65,7 +65,7 @@
 				AdditionalDependencies="boost_date_time-vc80-mt-gd-1_35.lib"
 				OutputFile="../../bin/debug/$(ProjectName).exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../lib;../../boost_1_35_0/lib"
+				AdditionalLibraryDirectories="../../lib"
 				IgnoreAllDefaultLibraries="false"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
@@ -123,7 +123,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../../src; ../../boost_1_35_0"
+				AdditionalIncludeDirectories="../../src; ../../boost_1_35_0_mini"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -145,7 +145,7 @@
 				UseUnicodeResponseFiles="false"
 				OutputFile="../../bin/release/$(ProjectName).exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../lib;../../boost_1_35_0/lib"
+				AdditionalLibraryDirectories="../../lib"
 				IgnoreAllDefaultLibraries="false"
 				GenerateDebugInformation="true"
 				SubSystem="1"

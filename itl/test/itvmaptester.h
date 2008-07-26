@@ -356,7 +356,7 @@ bool ItvMapTesterT<ItvMapTV>::isInsertReversible2
     xx2 += yy_permJoin;
     xx_plus_yy_pj = xx2;
     xx2 -= yy;
-	xx2.join();
+    xx2.join();
     
     if(! xx.equal(xx2) ) {
         x = xx; y = yy; y_perm = yy_perm; y_permJoin = yy_permJoin;
@@ -463,8 +463,8 @@ bool ItvMapTesterT<ItvMapTV>::hasErasureAsIntersectionComputability(ItvMapTV& x,
 
     ItvMapTV xxResid = xx;
     //JODO URG xxResid.erase(erasure);
-	//itl::erase(xxResid,erasure);
-	xxResid -= erasureDomain;
+    //itl::erase(xxResid,erasure);
+    xxResid -= erasureDomain;
 
     interval_set_type xxDomain;
     xx.domain(xxDomain);
