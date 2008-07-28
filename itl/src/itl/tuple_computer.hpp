@@ -308,7 +308,7 @@ namespace itl
         void alignFor(const tuple_set_type& domain)
         {
             const_FORALL(typename tuple_set_type, it_, domain)
-                insert(*it_, CounteeT());
+                this->insert(*it_, CounteeT());
         }
 
     };
@@ -318,7 +318,7 @@ namespace itl
     {
         const amount_tuple_computer& src = dynamic_cast<const amount_tuple_computer&>(srcI);
         const_FORALL(typename amount_tuple_computer, it_, src)
-            insert(*it_);
+            this->insert(*it_);
     }
 
 

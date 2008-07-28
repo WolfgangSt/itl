@@ -21,7 +21,8 @@ ITL_ROOT_PATH = ../..
 ITL_SRC_PATH  = $(ITL_ROOT_PATH)/src
 
 #BOOST_PATH = /usr/include/boost-1_33_1
-BOOST_PATH = /usr/include/boost_1_35_0
+#BOOST_PATH = /usr/include/boost_1_35_0
+BOOST_PATH = /usr/include
 
 #--- binaries -----------------------------------------------------------------
 BIN_PATH = $(ITL_ROOT_PATH)/bin
@@ -44,7 +45,8 @@ LOAD_LIBS  = -L/usr/lib
 #LOAD_LIBS  = -L/usr/lib64 
 
 #--- loadflags ----------------------------------------------------------------
-LOAD_FLAGS = $(LOAD_LIBS) -lboost_date_time-gcc-mt-s -lstdc++
+LOAD_FLAGS = $(LOAD_LIBS) -lstdc++
+LOAD_FLAGS4BOOST = $(LOAD_FLAGS) -lboost_date_time
 
 #--- compileflags ---------------------------------------------------
 # COMPILE_FLAGS = -o2 -DUSE_CONCEPTS
@@ -164,7 +166,7 @@ boost_party_SOURCES = $(boost_party_MAIN)
 boost_party_TARGET  = $(BIN_PATH)/boost_party$(EXE_TAG)
 
 boost_party:
-	$(COMPILE) $(COMPILE_FLAGS)  $(INCLUDE) $(boost_party_SOURCES) $(LOAD_FLAGS) -o $(boost_party_TARGET)
+	$(COMPILE) $(COMPILE_FLAGS)  $(INCLUDE) $(boost_party_SOURCES) $(LOAD_FLAGS4BOOST) -o $(boost_party_TARGET)
 
 #--- project user_groups --------------------------------------------------
 user_groups_PATH = $(ITL_ROOT_PATH)/$(EXAMPLE_DIR)/user_groups
@@ -173,7 +175,7 @@ user_groups_SOURCES = $(user_groups_MAIN)
 user_groups_TARGET  = $(BIN_PATH)/user_groups$(EXE_TAG)
 
 user_groups:
-	$(COMPILE) $(COMPILE_FLAGS)  $(INCLUDE) $(user_groups_SOURCES) $(LOAD_FLAGS) -o $(user_groups_TARGET)
+	$(COMPILE) $(COMPILE_FLAGS)  $(INCLUDE) $(user_groups_SOURCES) $(LOAD_FLAGS4BOOST) -o $(user_groups_TARGET)
 
 #--- project month_and_week_grid --------------------------------------------------
 month_and_week_grid_PATH = $(ITL_ROOT_PATH)/$(EXAMPLE_DIR)/month_and_week_grid
@@ -182,7 +184,7 @@ month_and_week_grid_SOURCES = $(month_and_week_grid_MAIN)
 month_and_week_grid_TARGET  = $(BIN_PATH)/month_and_week_grid$(EXE_TAG)
 
 month_and_week_grid:
-	$(COMPILE) $(COMPILE_FLAGS)  $(INCLUDE) $(month_and_week_grid_SOURCES) $(LOAD_FLAGS) -o $(month_and_week_grid_TARGET)
+	$(COMPILE) $(COMPILE_FLAGS)  $(INCLUDE) $(month_and_week_grid_SOURCES) $(LOAD_FLAGS4BOOST) -o $(month_and_week_grid_TARGET)
 
 #--- project man_power --------------------------------------------------
 man_power_PATH = $(ITL_ROOT_PATH)/$(EXAMPLE_DIR)/man_power
@@ -191,7 +193,7 @@ man_power_SOURCES = $(man_power_MAIN)
 man_power_TARGET  = $(BIN_PATH)/man_power$(EXE_TAG)
 
 man_power:
-	$(COMPILE) $(COMPILE_FLAGS)  $(INCLUDE) $(man_power_SOURCES) $(LOAD_FLAGS) -o $(man_power_TARGET)
+	$(COMPILE) $(COMPILE_FLAGS)  $(INCLUDE) $(man_power_SOURCES) $(LOAD_FLAGS4BOOST) -o $(man_power_TARGET)
 
 	
 	

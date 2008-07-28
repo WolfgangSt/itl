@@ -37,11 +37,6 @@ using namespace itl;
 */
 
 
-
-// This function splits a gregorian::date interval 'scope' into a week grid:
-// For every week contained in 'scope' that month is contained as interval
-// in the resulting split_interval_set.
-
 // Function weekends return the interval_set of weekends that are contained in
 // the date interval 'scope'
 interval_set<date> weekends(const interval<date>& scope)
