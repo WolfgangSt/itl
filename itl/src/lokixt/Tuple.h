@@ -527,7 +527,7 @@ namespace Loki
         // Need example here to reduce abstraction pain
         //        A value generator template     A generator-function-type: value generating function  value-tuple-type        
         //                              GentorT                                   e.g.  SomeValue      to be generated
-        template <template<class>class UnaryTpl, template<typename,template<class>class>class Fun, class TrgTupleT>
+        template <template<class>class UnaryTpl, template<class TrgTupleT,template<class>class>class Fun, class TrgTupleT>
         void map_template(TrgTupleT& target)
         {
             tup::TemplateMapper<UnaryTpl, Fun, TrgTupleT, SelfType>::Do(target, *this);
@@ -565,7 +565,7 @@ namespace Loki
         */
         // --------------------------------------------------------------------
 
-        template <template<class>class UnaryTpl, template<typename,template<class>class>class Fun, class TrgTupleT>
+        template <template<class>class UnaryTpl, template<class TrgTupleT,template<class>class>class Fun, class TrgTupleT>
         void apply()
         {
             tup::Apply<UnaryTpl, Fun, TrgTupleT, SelfType>::Do(*this);

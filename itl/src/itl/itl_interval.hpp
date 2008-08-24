@@ -77,7 +77,7 @@ namespace itl
     Basic parts of the ITL (interval conainers) are currently discussed at the
     boost developers mailing list as a contribution to the boost libraries.
     Although the sourcecode of the ITL is mature and very well tested it's 
-    Design may be refactored significantly in a process of adapting to the
+    design may be refactored significantly in a process of adapting to the
     boost library design principles and coding standards.
     \n \n \n
 

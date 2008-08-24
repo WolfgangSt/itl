@@ -5,7 +5,7 @@
 #---------------------------------------------------------------------------
 DOXYFILE_ENCODING      = UTF-8
 PROJECT_NAME           = "interval template library"
-PROJECT_NUMBER         = "itl 2.0.0"
+PROJECT_NUMBER         = "itl 2.0.1"
 OUTPUT_DIRECTORY       = ./doc
 CREATE_SUBDIRS         = NO
 OUTPUT_LANGUAGE        = English
@@ -119,14 +119,13 @@ EXCLUDE                = ./src/itl/itl_cop.hpp \
                          ./src/validate/law.h \
                          ./src/validate/lawviolations.h
 EXCLUDE_SYMLINKS       = NO
-EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       = ./src/loki/* \
                          ./src/lokixt/* \
                          ./src/validate/*.h \
-						 ./boost_1_35_0/* \
-						 ./boost_1_35_0_mini/* \
-						 */boost_1_35_0/* \
-						 */boost_1_35_0_mini/*
+                         ./boost_1_35_0/* \
+                         ./boost_1_35_0_mini/* \
+                         */boost_1_35_0/* \
+                         */boost_1_35_0_mini/*
 EXCLUDE_SYMBOLS        = 
 EXAMPLE_PATH           = ./example
 EXAMPLE_PATTERNS       = *
