@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="vc9_user_groups"
-	ProjectGUID="{0D1DB87E-E72A-4FE9-A067-1907CC6613F7}"
+	ProjectGUID="{900B8478-E01B-4ECD-A4D6-DC88DD5BF4A0}"
 	RootNamespace="User_groups"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
@@ -48,7 +48,7 @@
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -128,7 +128,7 @@
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 			/>
 			<Tool

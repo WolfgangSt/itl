@@ -32,24 +32,24 @@ using namespace itl;
 
 void test_Validater()
 {
-    GentorProfileSgl::it()->set_range_int(-10, 10);
-    GentorProfileSgl::it()->set_range_double(-10.0, 10.0);
-    GentorProfileSgl::it()->set_range_ContainerSize(0, 20);
-    GentorProfileSgl::it()->set_range_interval_int(-20, 20);
-    GentorProfileSgl::it()->set_maxIntervalLength(5);
+    //GentorProfileSgl::it()->set_range_int(-10, 10);
+    //GentorProfileSgl::it()->set_range_double(-10.0, 10.0);
+    //GentorProfileSgl::it()->set_range_ContainerSize(0, 20);
+    //GentorProfileSgl::it()->set_range_interval_int(-20, 20);
+    //GentorProfileSgl::it()->set_maxIntervalLength(5);
 
 
-    typedef BinaryPushout<itl::split_interval_map<int,double>, itl::map<int,double>, Interval::Atomize, inplace_plus>
-        Map_Atomize_Union_DiagramT;
-    LawValidater<Map_Atomize_Union_DiagramT, RandomGentor> map_atomize_plus_pushout;
-    map_atomize_plus_pushout.setTrialsCount(1000);
-    map_atomize_plus_pushout.run();
+    //typedef BinaryPushout<itl::split_interval_map<int,double>, itl::map<int,double>, Interval::Atomize, inplace_plus>
+    //    Map_Atomize_Union_DiagramT;
+    //LawValidater<Map_Atomize_Union_DiagramT, RandomGentor> map_atomize_plus_pushout;
+    //map_atomize_plus_pushout.setTrialsCount(1000);
+    //map_atomize_plus_pushout.run();
 
-    typedef BinaryPushout<itl::map<int,double>, itl::split_interval_map<int,double>, Interval::Cluster, inplace_star>
-        Map_Cluster_Intersect_DiagramT;
-    LawValidater<Map_Cluster_Intersect_DiagramT, RandomGentor> map_cluster_star_pushout;
-    map_cluster_star_pushout.setTrialsCount(1000);
-    map_cluster_star_pushout.run();
+    //typedef BinaryPushout<itl::map<int,double>, itl::split_interval_map<int,double>, Interval::Cluster, inplace_star>
+    //    Map_Cluster_Intersect_DiagramT;
+    //LawValidater<Map_Cluster_Intersect_DiagramT, RandomGentor> map_cluster_star_pushout;
+    //map_cluster_star_pushout.setTrialsCount(1000);
+    //map_cluster_star_pushout.run();
 }
 
 interval_map<int, itl::interval_set<int> > itv_map_of_intsets()

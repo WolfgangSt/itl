@@ -29,16 +29,27 @@ namespace itl
     template <class ValueT> class RandomGentor;
     template <> class RandomGentor<int> : public NumberGentorT<int> {};
     template <> class RandomGentor<double> : public NumberGentorT<double> {};
-    // ----- sets ----------------------------------------------------------------
-    template <> class RandomGentor<itl::set<int> > : public SetGentorT<itl::set<int> > {};
-    template <> class RandomGentor<interval_set<int> > : public SetGentorT<interval_set<int> > {};
-    template <> class RandomGentor<separate_interval_set<int> > : public SetGentorT<separate_interval_set<int> > {};
-    template <> class RandomGentor<split_interval_set<int> > : public SetGentorT<split_interval_set<int> > {};
-    template <> class RandomGentor<itl::set<double> > : public SetGentorT<itl::set<double> > {};
-    template <> class RandomGentor<interval_set<double> > : public SetGentorT<interval_set<double> > {};
-    template <> class RandomGentor<separate_interval_set<double> > : public SetGentorT<separate_interval_set<double> > {};
-    template <> class RandomGentor<split_interval_set<double> > : public SetGentorT<split_interval_set<double> > {};
 
+    // ----- sets ----------------------------------------------------------------
+	//template <class DomainT, template<class>class Set> 
+	//class RandomGentor<Set<DomainT> > :
+	//	public SetGentorT<Set<DomainT> > {};
+
+	template <class DomainT> 
+	class RandomGentor<itl::set<DomainT> > :
+		public SetGentorT<itl::set<DomainT> > {};
+
+	template <class DomainT> 
+	class RandomGentor<itl::interval_set<DomainT> > :
+		public SetGentorT<itl::interval_set<DomainT> > {};
+
+	template <class DomainT> 
+	class RandomGentor<itl::separate_interval_set<DomainT> > :
+		public SetGentorT<itl::separate_interval_set<DomainT> > {};
+
+	template <class DomainT> 
+	class RandomGentor<itl::split_interval_set<DomainT> > :
+		public SetGentorT<itl::split_interval_set<DomainT> > {};
 
     // ----- maps -------------------------------------------------------------
     template <class DomainT, class Neutronizer> 
@@ -51,10 +62,6 @@ namespace itl
 
 
     // ----- interval_map<D,C,N> ----------------------------------------
-    template <class Neutronizer> 
-    class RandomGentor<interval_map<int,int,Neutronizer> >: 
-        public MapGentorT<interval_map<int,int,Neutronizer> > {};
-
     template <class DomainT, class Neutronizer> 
     class RandomGentor<interval_map<DomainT,itl::set<int>,Neutronizer> > : 
         public MapGentorT<interval_map<DomainT,itl::set<int>,Neutronizer> > {};
@@ -64,10 +71,6 @@ namespace itl
         public MapGentorT<interval_map<DomainT,CodomainT,Neutronizer> > {};
 
     // ----- split_interval_map<D,C,N> ----------------------------------------
-    template <class Neutronizer> 
-    class RandomGentor<split_interval_map<int,int,Neutronizer> >: 
-        public MapGentorT<split_interval_map<int,int,Neutronizer> > {};
-
     template <class DomainT, class Neutronizer> 
     class RandomGentor<split_interval_map<DomainT,itl::set<int>,Neutronizer> > : 
         public MapGentorT<split_interval_map<DomainT,itl::set<int>,Neutronizer> > {};
@@ -77,7 +80,7 @@ namespace itl
         public MapGentorT<split_interval_map<DomainT,CodomainT,Neutronizer> > {};
 
 
-    // ----------------------------------------------------------
+    // ------------------------------------------------------------------------
     // class template SomeValue:
     // TargetT is a value tuple that fits to the value generator gentor
     // of type GentorT<TargetT>. The special kind of generator can be
@@ -97,35 +100,11 @@ namespace itl
             gentor.some(value);
         }
     };
-    // ----------------------------------------------------------
+    // ------------------------------------------------------------------------
 
-    /*JODO THINK
-    // ----------------------------------------------------------
-    // class template Calibrate:
-    // TargetT is a value tuple that fits to the value generator gentor
-    // of type GentorT<TargetT>. The special kind of generator can be
-    // passed by the user. The only requirement is that the generator
-    // implements a function 'calibrate' which is calls to calibrate 
-    // each generator of generator tuple GentorT<TargetT>
-    template <template<class>class GentorT, 
-    template<class>class GentorProfileT, class TargetT> struct Calibrate
-    {
-    static void apply(GentorT<TargetT>& gentor, GentorProfileT<TargetT>& profile); 
-    };
 
-    template <class TargetT> 
-    struct Calibrate<RandomGentor, RandomGentorProfile, TargetT>
-    {
-    static void apply(RandomGentor<TargetT>& gentor, RandomGentorProfile<TargetT>& profile) 
-    {
-    gentor.calibrate(profile);
-    }
-    };
-    // ----------------------------------------------------------
-    */
-
-    // ---------------------------------------------------------------------------
-    // ---------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     template <class TargetT, template<class>class GentorT> struct Calibrater
     {
         static void apply(GentorT<TargetT>& gentor); 
@@ -151,19 +130,13 @@ namespace itl
         }
     };
 
+
     template <> 
     struct Calibrater<itl::set<int>, RandomGentor>
     {
         static void apply(RandomGentor<itl::set<int> >& gentor) 
         {
-            // Set the range within which the sizes of the generated object varies.
-            // interval<int> range = rightOpenInterval<int>(0,10); //JODO: From SysCalibrater
-            //JODO gentor.calibrate(profile);
-
             gentor.setRangeOfSampleSize(GentorProfileSgl::it()->range_ContainerSize());
-
-            // If it is a container: (Create and) Pass the generator(s) for their contents
-            // NumberGentorT<int> intGentor;
             NumberGentorT<int>* intGentor = new NumberGentorT<int>;
             intGentor->setRange(GentorProfileSgl::it()->range_int());
             gentor.setDomainGentor(intGentor);
@@ -176,9 +149,6 @@ namespace itl
         static void apply(RandomGentor<itl::set<double> >& gentor) 
         {
             gentor.setRangeOfSampleSize(GentorProfileSgl::it()->range_ContainerSize());
-
-            // If it is a container: (Create and) Pass the generator(s) for their contents
-            // NumberGentorT<int> intGentor;
             NumberGentorT<double>* elemGentor = new NumberGentorT<double>;
             elemGentor->setRange(GentorProfileSgl::it()->range_double());
             gentor.setDomainGentor(elemGentor);
@@ -191,14 +161,7 @@ namespace itl
     {
         static void apply(RandomGentor<interval_set<int> >& gentor) 
         {
-            // Set the range within which the sizes of the generated object varies.
-            // interval<int> range = rightOpenInterval<int>(0,10); //JODO: From SysCalibrater
-            //JODO gentor.calibrate(profile);
-
             gentor.setRangeOfSampleSize(GentorProfileSgl::it()->range_ContainerSize());
-
-            // If it is a container: (Create and) Pass the generator(s) for their contents
-            // NumberGentorT<int> intGentor;
             ItvGentorT<int>* itvGentor = new ItvGentorT<int>;
             interval<int> valRange = GentorProfileSgl::it()->range_interval_int();
             itvGentor->setValueRange(valRange.lower(), valRange.upper());
@@ -213,9 +176,6 @@ namespace itl
         static void apply(RandomGentor<interval_set<double> >& gentor) 
         {
             gentor.setRangeOfSampleSize(GentorProfileSgl::it()->range_ContainerSize());
-
-            // If it is a container: (Create and) Pass the generator(s) for their contents
-            // NumberGentorT<int> intGentor;
             ItvGentorT<double>* itvGentor = new ItvGentorT<double>;
             interval<double> valRange = GentorProfileSgl::it()->range_interval_double();
             itvGentor->setValueRange(valRange.lower(), valRange.upper());
@@ -229,14 +189,7 @@ namespace itl
     {
         static void apply(RandomGentor<separate_interval_set<int> >& gentor) 
         {
-            // Set the range within which the sizes of the generated object varies.
-            // interval<int> range = rightOpenInterval<int>(0,10); //JODO: From SysCalibrater
-            //JODO gentor.calibrate(profile);
-
             gentor.setRangeOfSampleSize(GentorProfileSgl::it()->range_ContainerSize());
-
-            // If it is a container: (Create and) Pass the generator(s) for their contents
-            // NumberGentorT<int> intGentor;
             ItvGentorT<int>* itvGentor = new ItvGentorT<int>;
             interval<int> valRange = GentorProfileSgl::it()->range_interval_int();
             itvGentor->setValueRange(valRange.lower(), valRange.upper());

@@ -48,7 +48,7 @@
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -63,7 +63,6 @@
 			<Tool
 				Name="VCLinkerTool"
 				UseUnicodeResponseFiles="true"
-				AdditionalDependencies="boost_date_time-vc80-mt-gd-1_35.lib"
 				OutputFile="../../bin/debug/$(ProjectName).exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../lib"
@@ -128,7 +127,7 @@
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 			/>
 			<Tool

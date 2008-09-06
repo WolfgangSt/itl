@@ -98,20 +98,20 @@ namespace itl
             _isValid = true;
             _rootChoice.setSize(RootType::Types_size);
             _rootChoice.setMaxWeights(100);
-            _rootChoice[RootType::itl_set]               = 0;
-            _rootChoice[RootType::interval_set]          = 50;
+            _rootChoice[RootType::itl_set]               = 100;
+            _rootChoice[RootType::interval_set]          = 0;
             _rootChoice[RootType::separate_interval_set] = 0;
             _rootChoice[RootType::split_interval_set]    = 0;
             _rootChoice[RootType::itl_map]               = 0;
-            _rootChoice[RootType::interval_map]          = 50;
+            _rootChoice[RootType::interval_map]          = 0;
             _rootChoice[RootType::split_interval_map]    = 0;
             setRootTypeNames();
             _rootChoice.init();
 
             _domainChoice.setSize(DomainType::DomainTypes_size);
             _domainChoice.setMaxWeights(100);
-            _domainChoice[DomainType::Int]               = 50;
-            _domainChoice[DomainType::Double]            = 50;
+            _domainChoice[DomainType::Int]               = 100;
+            _domainChoice[DomainType::Double]            = 0;
             setDomainTypeNames();
             _domainChoice.init();
 
@@ -165,22 +165,22 @@ namespace itl
 
             switch(rootChoice)
             {
-            //case RootType::itl_set: {
-            //        switch(domainChoice) {
-            //        case DomainType::Int:    return new InplaceSetValidater<itl::set<int> >; 
-            //        case DomainType::Double: return new InplaceSetValidater<itl::set<double> >; 
-            //        default: return choiceError(ITL_LOCATION("\nRootType::itl_set: domainChoice:\n"), 
-            //                                    domainChoice, _domainChoice);
-            //        }
-            //    }
-            case RootType::interval_set: {
+            case RootType::itl_set: {
                     switch(domainChoice) {
-                    case DomainType::Int:    return new IntervalSetValidater<interval_set<int> >;
-                    case DomainType::Double: return new InplaceSetValidater<interval_set<double> >;
-                    default: return choiceError(ITL_LOCATION("\nRootType::interval_set: domainChoice:\n"), 
+                    case DomainType::Int:    return new InplaceSetValidater<itl::set<int> >; 
+                    case DomainType::Double: return new InplaceSetValidater<itl::set<double> >; 
+                    default: return choiceError(ITL_LOCATION("\nRootType::itl_set: domainChoice:\n"), 
                                                 domainChoice, _domainChoice);
                     }
                 }
+            //case RootType::interval_set: {
+            //        switch(domainChoice) {
+            //        case DomainType::Int:    return new IntervalSetValidater<interval_set<int> >;
+            //        case DomainType::Double: return new InplaceSetValidater<interval_set<double> >;
+            //        default: return choiceError(ITL_LOCATION("\nRootType::interval_set: domainChoice:\n"), 
+            //                                    domainChoice, _domainChoice);
+            //        }
+            //    }
             //case RootType::separate_interval_set: {
             //        switch(domainChoice) {
             //        case DomainType::Int:    return new IntervalSetValidater<split_interval_set<int> >;
@@ -198,30 +198,30 @@ namespace itl
             //        }
             //    }
             ////-----------------------------------------------------------------
-            case RootType::itl_map: {
-                switch(domainChoice) {
-                case DomainType::Int: 
-                    switch(codomainChoice) {
-                    //JODO Cop and AbsorberMap have more Laws wrt add/subtract (SectionAbsorbtion and UnionInvertability, ...?)
-                    // than enricher maps have.
-                    case CodomainType::Int:     return new InplaceMapValidater<itl::map<int,int,neutron_enricher> >;
-                    case CodomainType::set_int: return new InplaceMapValidater<itl::map<int,itl::set<int>,neutron_enricher > >;
-                    default: return choiceError(ITL_LOCATION("\nRootType::itl_map: codomainChoice:\n"),
-                                                codomainChoice, _codomainChoice);
-                    }//switch codomain
+            //case RootType::itl_map: {
+            //    switch(domainChoice) {
+            //    case DomainType::Int: 
+            //        switch(codomainChoice) {
+            //        //JODO Cop and AbsorberMap have more Laws wrt add/subtract (SectionAbsorbtion and UnionInvertability, ...?)
+            //        // than enricher maps have.
+            //        case CodomainType::Int:     return new InplaceMapValidater<itl::map<int,int,neutron_enricher> >;
+            //        case CodomainType::set_int: return new InplaceMapValidater<itl::map<int,itl::set<int>,neutron_enricher > >;
+            //        default: return choiceError(ITL_LOCATION("\nRootType::itl_map: codomainChoice:\n"),
+            //                                    codomainChoice, _codomainChoice);
+            //        }//switch codomain
 
-                case DomainType::Double:
-                    switch(codomainChoice) {
-                    case CodomainType::Int:     return new InplaceMapValidater<itl::map<double,int> >; 
-                    case CodomainType::set_int: return new InplaceSetBaseValidater<itl::map<double,itl::set<int>,neutron_enricher> >; 
-                    default: return choiceError(ITL_LOCATION("\nRootType::itl_map: codomainChoice:\n"),
-                                                codomainChoice, _codomainChoice);
-                    }//switch codomain
+            //    case DomainType::Double:
+            //        switch(codomainChoice) {
+            //        case CodomainType::Int:     return new InplaceMapValidater<itl::map<double,int> >; 
+            //        case CodomainType::set_int: return new InplaceSetBaseValidater<itl::map<double,itl::set<int>,neutron_enricher> >; 
+            //        default: return choiceError(ITL_LOCATION("\nRootType::itl_map: codomainChoice:\n"),
+            //                                    codomainChoice, _codomainChoice);
+            //        }//switch codomain
 
-                default: return choiceError(ITL_LOCATION("\nRootType::itl_map: domainChoice:\n"),
-                                            domainChoice, _domainChoice);
-                }//switch domain
-            }//case itl_map 
+            //    default: return choiceError(ITL_LOCATION("\nRootType::itl_map: domainChoice:\n"),
+            //                                domainChoice, _domainChoice);
+            //    }//switch domain
+            //}//case itl_map 
             ////-----------------------------------------------------------------
             //case RootType::interval_map: {
             //    switch(domainChoice) {

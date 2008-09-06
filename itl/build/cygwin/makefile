@@ -32,10 +32,11 @@ ITL_INCL = $(addprefix -I,$(ITL_SRC_PATH))
 BOOST_INCL = $(addprefix -I,$(BOOST_PATH))
 STD_INCL = -I/usr/include
 #GCC_INCL = $(addprefix -I,$(CMP_PATH))/include
-CONCEPTGCC_INCL = -I/opt/conceptgcc-boostcon/include
+#CONCEPTGCC_INCL = -I/opt/conceptgcc-boostcon/include
+CONCEPTGCC_INCL = -I/opt/conceptgcc-4.3.0-alpha-7/include
 
-#INCLUDE  = $(CONCEPTGCC_INCL) $(ITL_INCL) 
-INCLUDE  = $(STD_INCL) $(ITL_INCL) $(BOOST_INCL)
+INCLUDE  = $(CONCEPTGCC_INCL) $(ITL_INCL) $(BOOST_INCL)
+#NCLUDE  = $(STD_INCL) $(ITL_INCL) $(BOOST_INCL)
 
 #--- libraries ----------------------------------------------------------------
 #LOAD_LIBS  = -L$(CMP_PATH)/lib
@@ -55,8 +56,8 @@ COMPILE_FLAGS = -O2
 #--- location of the compiler -------------------------------------------------
 #CMP_PATH = /opt/conceptgcc-boostcon
 #COMPILE = $(CMP_PATH)/bin/gcc
-#COMPILE = /opt/conceptgcc-boostcon/bin/gcc
-COMPILE = gcc
+COMPILE = /opt/conceptgcc-4.3.0-alpha-7/bin/gcc
+#COMPILE = gcc
 
 
 all:
@@ -234,7 +235,6 @@ labatea_TARGET  = $(BIN_PATH)/labatea$(EXE_TAG)
 labatea:
 	$(COMPILE) $(COMPILE_FLAGS)  $(INCLUDE) $(labatea_SOURCES) $(LOAD_FLAGS) -o $(labatea_TARGET)
 
-
 	
 #--- group devels --------------------------------------------------------------
 #--- project itvset_shell -----------------------------------------------------
@@ -246,6 +246,15 @@ validate_TARGET  = $(BIN_PATH)/validate$(EXE_TAG)
 
 validate:
 	$(COMPILE) $(COMPILE_FLAGS)  $(INCLUDE) $(validate_SOURCES) $(LOAD_FLAGS) -o $(validate_TARGET)
+
+#--- project template_match ---------------------------------------------
+template_match_PATH = $(ITL_ROOT_PATH)/$(DEVEL_DIR)/template_match
+template_match_MAIN = $(template_match_PATH)/template_match.cpp
+template_match_SOURCES = $(template_match_MAIN)
+template_match_TARGET  = $(BIN_PATH)/template_match$(EXE_TAG)
+
+template_match:
+	$(COMPILE) $(COMPILE_FLAGS)  $(INCLUDE) $(template_match_SOURCES) $(LOAD_FLAGS) -o $(template_match_TARGET)
 
 
 show_temps:

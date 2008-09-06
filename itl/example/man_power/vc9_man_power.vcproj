@@ -3,7 +3,7 @@
 	ProjectType="Visual C++"
 	Version="9,00"
 	Name="vc9_man_power"
-	ProjectGUID="{360BCFA9-9EB6-4D22-8469-CDC290478F78}"
+	ProjectGUID="{8B9B91C9-E79C-4F24-BD5C-04ED0F38E8C2}"
 	RootNamespace="Party"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
@@ -48,7 +48,7 @@
 				RuntimeLibrary="3"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="4"
 			/>
 			<Tool
@@ -128,7 +128,7 @@
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
-				Detect64BitPortabilityProblems="true"
+				Detect64BitPortabilityProblems="false"
 				DebugInformationFormat="3"
 			/>
 			<Tool

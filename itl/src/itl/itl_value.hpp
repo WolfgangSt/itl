@@ -60,17 +60,19 @@ namespace itl
     For every object, including atomic the string converter function toString can
     be called, provides new classes implement a memberfunction <tt>as_string</tt>
   
-    @author  Jofa
+    @author  Joachim Faulhaber
 */
-template <class TypeTV>
+template <class Type>
 class value
 {
 public:
-    /** String converter for all types <tt>TypeTV</tt>
+    /** String converter for all types <tt>Type</tt>
 
         E.g.: <tt>int i=5; string s = value<int>::to_string(i);</tt>
     */
-    static const std::string to_string(const TypeTV &);    
+    static const std::string to_string(const Type&);
+
+	static void some(Type&); 
 };
 
 
@@ -102,8 +104,8 @@ template<> inline const std::string value<double>::to_string(const double& x) { 
 template<> inline const std::string value<CharPT>::to_string(const CharPT & x) { RETURN_AS_STRING("%s", x);   }
 template<> inline const std::string value<std::string>::to_string(const std::string& x) { return x; }
 
-template <class TypeTV>
-inline const std::string value<TypeTV>::to_string(const TypeTV& x) { return x.as_string(); }
+template <class Type>
+inline const std::string value<Type>::to_string(const Type& x) { return x.as_string(); }
 
 } // namespace itl
 
