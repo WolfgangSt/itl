@@ -32,7 +32,7 @@ class ItvSetTesterT
 #ifndef __ITVSETTESTER_H_JOFA_990230__
 #define __ITVSETTESTER_H_JOFA_990230__
 
-#include <itl_xt/setgentor.hpp>
+#include <itl/setgentor.hpp>
 
 namespace itl
 {
