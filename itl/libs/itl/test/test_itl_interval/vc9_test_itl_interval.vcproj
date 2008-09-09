@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="vc9_user_groups"
-	ProjectGUID="{900B8478-E01B-4ECD-A4D6-DC88DD5BF4A1}"
-	RootNamespace="User_groups"
+	Name="vc9_test_itl_interval"
+	ProjectGUID="{EE61B7EF-EC45-4165-8B49-FD5B7D2A9F8C}"
+	RootNamespace="Test_itl_interval"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -62,14 +62,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				UseUnicodeResponseFiles="true"
-				AdditionalDependencies="boost_date_time-vc80-mt-gd-1_35.lib"
 				OutputFile="../../../../bin/debug/$(ProjectName).exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../../../lib"
-				IgnoreAllDefaultLibraries="false"
 				GenerateDebugInformation="true"
-				AssemblyDebug="1"
 				SubSystem="1"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
@@ -80,7 +76,6 @@
 			/>
 			<Tool
 				Name="VCManifestTool"
-				UseUnicodeResponseFiles="true"
 			/>
 			<Tool
 				Name="VCXDCMakeTool"
@@ -142,11 +137,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				UseUnicodeResponseFiles="false"
 				OutputFile="../../../../bin/release/$(ProjectName).exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../../../lib;../../boost_1_35_0/lib"
-				IgnoreAllDefaultLibraries="false"
+				AdditionalLibraryDirectories="../../../../lib"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				OptimizeReferences="2"
@@ -187,7 +180,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\user_groups.cpp"
+				RelativePath=".\test_itl_interval.cpp"
 				>
 			</File>
 		</Filter>
@@ -196,18 +189,6 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath="..\..\src\itl\interval_base_map.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\itl\itl_interval.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\src\itl\split_interval_map.hpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Ressourcendateien"
@@ -215,10 +196,6 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 		</Filter>
-		<File
-			RelativePath=".\ReadMe.txt"
-			>
-		</File>
 	</Files>
 	<Globals>
 	</Globals>

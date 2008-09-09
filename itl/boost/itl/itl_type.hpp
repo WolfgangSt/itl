@@ -39,6 +39,9 @@ Function-templates for discrete Datatypes like int, unsigned or
 #include <string>
 #include <sstream>
 
+#include <boost/type_traits/is_integral.hpp>
+#include <boost/type_traits/is_float.hpp>
+#include <boost/mpl/if.hpp>
 
 namespace itl
 {
@@ -114,9 +117,11 @@ namespace itl
         return Type(); 
     }
 
-    template<> inline float  type<float>::unon()  { return 1.0; }
-    template<> inline double type<double>::unon() { return 1.0; }
+	//JODO THINK: 1.0 can always be expressed via ++T(), can't it?
+    //template<> inline float  type<float>::unon()  { return 1.0; }
+    //template<> inline double type<double>::unon() { return 1.0; }
     template<> inline std::string type<std::string>::unon() { return std::string(" "); }
+
 
     template <class Type>
     inline Type type<Type>::unon() 

@@ -33,6 +33,7 @@ DEALINGS IN THE SOFTWARE.
 #include <functional>
 #include <limits>
 #include <string>
+#include <boost/mpl/if.hpp> 
 #include <itl/itl_type.hpp>
 #include <itl/itl_value.hpp>
 
@@ -592,7 +593,20 @@ bool interval<DataT>::empty()const
     if(type<DataT>::is_continuous())   
                                                   return _upb <= _lwb;
                                              else return _upb <= succ(_lwb);
+
+	//JODO mpl::if_<type<DataT>::is_continuous(), discrete_type, continuous_type>::type::empty(_lwb, _upb);
 }
+
+struct discrete_type
+{
+	template<class DataT> 
+	static bool empty(const DataT& lwb, const DataT& upb) { return upb <= lwb; }
+};
+struct continuous_type
+{
+	template<class DataT> 
+	static bool empty(const DataT& lwb, const DataT& upb) { return upb <= succ(lwb); }
+};
 
 // NOTE structural similarities between empty and exclusive_less! 
 // emptieness can be defined as being exclusive less to oneself.
