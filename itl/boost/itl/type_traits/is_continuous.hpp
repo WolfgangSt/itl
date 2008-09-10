@@ -12,35 +12,20 @@ It implements incrementation (++) decrementation (--) and a neutral element
 w.r.t. addition (neutron()).
 -----------------------------------------------------------------------------*/
 
-#ifndef __itl_date_time_adapter_JOFA_080416_H__
-#define __itl_date_time_adapter_JOFA_080416_H__
+#ifndef __itl_type_traits_is_continuous_JOFA_080910_H__
+#define __itl_type_traits_is_continuous_JOFA_080910_H__
 
-#include <stdio.h>
 #include <string>
-#include <sstream>
-
-#include <boost/date_time/posix_time/posix_time.hpp>
-#include <itl/itl_type.hpp>
 
 namespace itl
 {
 
-    boost::posix_time::ptime operator ++(boost::posix_time::ptime& x)
-    {
-        return x += boost::posix_time::ptime::time_duration_type::unit();
-    }
+	template <class Type>
+	struct is_continuous{ enum {value = false}; };
 
-    boost::posix_time::ptime operator --(boost::posix_time::ptime& x)
-    {
-        return x -= boost::posix_time::ptime::time_duration_type::unit();
-    }
-
-    // ------------------------------------------------------------------------
-    template<> 
-    inline boost::posix_time::ptime type<boost::posix_time::ptime>::neutron()
-    { 
-        return boost::posix_time::ptime(boost::posix_time::min_date_time); 
-    }
+	template<> struct is_continuous<float>       { enum {value = true}; };
+	template<> struct is_continuous<double>      { enum {value = true}; };
+	template<> struct is_continuous<std::string> { enum {value = true}; };
 
 } // namespace itl
 

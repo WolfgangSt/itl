@@ -40,6 +40,7 @@ Function-templates for discrete Datatypes like int, unsigned or
 #include <sstream>
 
 #include <boost/date_time/gregorian/gregorian.hpp>
+#include <itl/itl_type.hpp>
 
 namespace itl
 {

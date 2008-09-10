@@ -158,6 +158,8 @@ namespace itl
     template <class Type>
     inline bool type<Type>::is_continuous() { return false; }
 
+    //-------------------------------------------------------------------------
+
     template <class Type>
     inline bool type<Type>::is_set() { return false; }
 

@@ -33,7 +33,10 @@ DEALINGS IN THE SOFTWARE.
 #include <functional>
 #include <limits>
 #include <string>
+#include <boost/call_traits.hpp> 
+#include <boost/mpl/bool.hpp> 
 #include <boost/mpl/if.hpp> 
+#include <itl/type_traits/is_continuous.hpp>
 #include <itl/itl_type.hpp>
 #include <itl/itl_value.hpp>
 
@@ -480,6 +483,12 @@ public:
     /// Last (largest) element of the interval
     DataT last()const;
 
+	/// Cardinality of the interval: The number of elements
+	std::size_t cardinality()const;
+
+	/// Arithmetic size of the interval
+	DataT length()const;
+
     /// Size of the interval
     DataT size()const;
 
@@ -585,27 +594,59 @@ typename interval<DataT>::bound_types interval<DataT>::succession_bounds()const
 template <class DataT>
 bool interval<DataT>::empty()const
 {
+	using namespace boost::mpl;
+
     if(rightbound_closed() && leftbound_closed()) return _upb <  _lwb;
     if(rightbound_open()   && leftbound_closed()) return _upb <= _lwb;
     if(rightbound_closed() && leftbound_open())   return _upb <= _lwb;
 
     // OTHERWISE (rightbound_open() && leftbound_open())
-    if(type<DataT>::is_continuous())   
-                                                  return _upb <= _lwb;
-                                             else return _upb <= succ(_lwb);
-
-	//JODO mpl::if_<type<DataT>::is_continuous(), discrete_type, continuous_type>::type::empty(_lwb, _upb);
+	return 
+		if_<
+			bool_<is_continuous<DataT>::value>, 
+			continuous_type<DataT>, 
+			discrete_type<DataT> 
+		   >
+		   ::type::open_bound_less(_lwb, _upb);
 }
 
-struct discrete_type
-{
-	template<class DataT> 
-	static bool empty(const DataT& lwb, const DataT& upb) { return upb <= lwb; }
-};
+template<class DataT> 
 struct continuous_type
 {
-	template<class DataT> 
-	static bool empty(const DataT& lwb, const DataT& upb) { return upb <= succ(lwb); }
+	typedef typename boost::call_traits<DataT>::param_type DataP;
+	static bool open_bound_less(DataP lwb, DataP upb) { return upb <= lwb; }
+};
+
+template<class DataT> 
+struct discrete_type
+{
+	typedef typename boost::call_traits<DataT>::param_type DataP;
+
+	static bool open_bound_less(DataP lwb, DataP upb) 
+	{ return upb <= succ(lwb); }
+
+	static std::size_t cardinality(DataP first, DataP last) 
+	{ return last-first + type<DataT>::unon(); }
+};
+
+template<class DataT> 
+struct continuous_interval
+{
+	static std::size_t cardinality(const interval<DataT>& x) 
+	{ return std::numeric_limits<size_t>::infinity(); }
+
+	static DataT length(const interval<DataT>& x) 
+	{ return x.upper() - x.lower(); }
+};
+
+template<class DataT> 
+struct discrete_interval
+{
+	static std::size_t cardinality(const interval<DataT>& x) 
+	{ return succ(x.last() - x.first()); }
+
+	static DataT length(const interval<DataT>& x) 
+	{ return x.last() - x.first(); }
 };
 
 // NOTE structural similarities between empty and exclusive_less! 
@@ -948,6 +989,37 @@ DataT interval<DataT>::first()const
 template <class DataT>
 DataT interval<DataT>::last()const
 { if(rightbound_closed()) return _upb; else return pred(_upb); }
+
+template <class DataT>
+std::size_t interval<DataT>::cardinality()const
+{
+	using namespace boost::mpl;
+    if(empty()) 
+        return 0;
+
+	return if_<
+				bool_<is_continuous<DataT>::value>,
+				continuous_interval<DataT>,
+				discrete_interval<DataT>
+			  >
+			  ::type::cardinality(*this);
+}
+
+template <class DataT>
+DataT interval<DataT>::length()const
+{
+	using namespace boost::mpl;
+    if(empty()) 
+		return itl::type<DataT>::neutron();
+
+	return if_<
+				bool_<is_continuous<DataT>::value>,
+				continuous_interval<DataT>,
+				discrete_interval<DataT>
+			  >
+			  ::type::length(*this);
+}
+
 
 template <class DataT>
 DataT interval<DataT>::size()const
