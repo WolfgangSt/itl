@@ -30,6 +30,7 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __itl_interval_JOFA_000626_H__
 #define __itl_interval_JOFA_000626_H__
 
+#include <ostream>
 #include <functional>
 #include <limits>
 #include <string>
@@ -37,6 +38,8 @@ DEALINGS IN THE SOFTWARE.
 #include <boost/mpl/bool.hpp> 
 #include <boost/mpl/if.hpp> 
 #include <itl/type_traits/is_continuous.hpp>
+#include <itl/type_traits/difference.hpp>
+#include <itl/type_traits/size.hpp>
 #include <itl/itl_type.hpp>
 #include <itl/itl_value.hpp>
 
@@ -270,7 +273,7 @@ namespace itl
 
     I would like to thank CEO Hermann Steppe and Chief Developer Peter Wuttke
     of Cortex Software GmbH for their friendly support of my work on the
-    ITL and their permission to release the    library as open source.
+    ITL and their permission to release the library as open source.
     
 */
 
@@ -285,7 +288,7 @@ namespace itl
 
     The class defines intervals with closed or open bounds for discrete
     <tt>(short, int, date, time etc.)</tt> and continuous 
-    <tt>float, double, Rational, Complex etc.</tt> elements. The domain parameter
+    <tt>float, double, Rational etc.</tt> elements. The domain parameter
     may be a built in c++ datatype or a class type. It has to implement
     the interface DataT.
 
@@ -301,6 +304,12 @@ public:
 //@{ 
     /// Domain type or element type
     typedef DataT data_type;
+
+	/// The difference type of an interval which is sometimes different form the data_type
+	typedef typename itl::difference<DataT>::type difference_type;
+
+	/// The size type of an interval which is mostly std::size_t
+	typedef typename itl::size<DataT>::type size_type;
 
     /// Interval bounds as bitset
     typedef unsigned char bound_types;
@@ -367,20 +376,15 @@ public:
 
     /// Left bound is open right unknown <tt>(x,y|</tt> ?
     bool leftbound_open()const { return !leftbound_closed(); }
-    //CL bool leftbound_open()const { return !leftbound_closed(); }
 
     /// Right bound is open left unknown <tt>|x,y)</tt> ?
     bool rightbound_open()const { return !rightbound_closed(); }
-    //CL bool rightbound_open()const { return !rightbound_closed(); }
 
     /// Left closed right unknown <tt>[x,y|</tt> ?
     bool leftbound_closed()const { return 0 != (_boundtypes & RIGHT_OPEN); }
-    //CL bool leftbound_closed()const { return 0 != (_boundtypes & RIGHT_OPEN); }
 
     /// Right closed left unknown <tt>|x,y]</tt> ?
     bool rightbound_closed()const { return 0 != (_boundtypes & LEFT_OPEN); }
-    //CL bool rightbound_closed()const { return 0 != (_boundtypes & LEFT_OPEN); }
-
 //@}
 
 /** @name F.R: Tester, relations
@@ -484,10 +488,33 @@ public:
     DataT last()const;
 
 	/// Cardinality of the interval: The number of elements
-	std::size_t cardinality()const;
+	size_type cardinality()const;
+
+	size_type continuous_cardinality()const
+	{ 
+		if(empty()) 
+			return itl::type<size_type>::neutron();
+		else if(is_closed() && _lwb == _upb)
+			return itl::type<size_type>::unon();
+		else return std::numeric_limits<size_type>::infinity();
+	}
+
+	size_type discrete_cardinality()const
+	{ return empty()? itl::type<size_type>::neutron() : succ(last()-first()); }
+
 
 	/// Arithmetic size of the interval
-	DataT length()const;
+	difference_type length()const;
+
+	difference_type continuous_length()const
+	{ return empty() ? itl::type<difference_type>::neutron() : _upb - _lwb; }
+
+	difference_type discrete_length()const
+	{
+		return empty() ? 
+			itl::type<difference_type>::neutron() : 
+			last() - first(); 
+	}
 
     /// Size of the interval
     DataT size()const;
@@ -607,14 +634,16 @@ bool interval<DataT>::empty()const
 			continuous_type<DataT>, 
 			discrete_type<DataT> 
 		   >
-		   ::type::open_bound_less(_lwb, _upb);
+		   ::type::open_bound_less_equal(_upb, _lwb);
 }
 
 template<class DataT> 
 struct continuous_type
 {
 	typedef typename boost::call_traits<DataT>::param_type DataP;
-	static bool open_bound_less(DataP lwb, DataP upb) { return upb <= lwb; }
+
+	static bool open_bound_less_equal(DataP x, DataP y) { return x <= y; }
+	static bool open_bound_less      (DataP x, DataP y) { return x <  y; }
 };
 
 template<class DataT> 
@@ -622,31 +651,52 @@ struct discrete_type
 {
 	typedef typename boost::call_traits<DataT>::param_type DataP;
 
-	static bool open_bound_less(DataP lwb, DataP upb) 
-	{ return upb <= succ(lwb); }
-
-	static std::size_t cardinality(DataP first, DataP last) 
-	{ return last-first + type<DataT>::unon(); }
+	static bool open_bound_less_equal(DataP x, DataP y) { return      x  <= succ(y); }
+	static bool open_bound_less      (DataP x, DataP y) { return succ(x) <       y ; }
 };
 
 template<class DataT> 
 struct continuous_interval
 {
-	static std::size_t cardinality(const interval<DataT>& x) 
-	{ return std::numeric_limits<size_t>::infinity(); }
+	static typename itl::interval<DataT>::size_type 
+		cardinality(const interval<DataT>& x) 
+	{ return x.continuous_cardinality(); }
 
-	static DataT length(const interval<DataT>& x) 
-	{ return x.upper() - x.lower(); }
+	static typename itl::interval<DataT>::difference_type 
+		length(const interval<DataT>& x) 
+	{ return x.continuous_length(); }
+
+	static bool unaligned_lwb_equal(const interval<DataT>& x1, const interval<DataT>& x2)
+	{ return false; }
+
+	static bool unaligned_upb_equal(const interval<DataT>& x1, const interval<DataT>& x2)
+	{ return false; }
 };
 
 template<class DataT> 
 struct discrete_interval
 {
-	static std::size_t cardinality(const interval<DataT>& x) 
-	{ return succ(x.last() - x.first()); }
+	static typename itl::interval<DataT>::size_type 
+		cardinality(const interval<DataT>& x) 
+	{ return x.discrete_cardinality(); }
 
-	static DataT length(const interval<DataT>& x) 
-	{ return x.last() - x.first(); }
+	static typename interval<DataT>::difference_type 
+		length(const interval<DataT>& x) 
+	{ return x.discrete_length(); }
+
+	static bool unaligned_lwb_equal(const interval<DataT>& x1, const interval<DataT>& x2)
+	{ 
+		if(x1.leftbound_open() &&  x2.leftbound_closed()) 
+             return succ(x1.lower()) ==      x2.lower();
+        else return      x1.lower()  == succ(x2.lower());
+	}
+
+	static bool unaligned_upb_equal(const interval<DataT>& x1, const interval<DataT>& x2)
+	{ 
+	    if(x1.rightbound_closed() && x2.rightbound_open())  
+             return succ(x1.upper()) ==      x2.upper();
+        else return      x1.upper()  == succ(x2.upper());
+	}
 };
 
 // NOTE structural similarities between empty and exclusive_less! 
@@ -654,69 +704,94 @@ struct discrete_interval
 template <class DataT>
 bool interval<DataT>::exclusive_less(const interval& x2)const
 {
+	using namespace boost::mpl;
     if(rightbound_closed() && x2.leftbound_closed()) return _upb <  x2._lwb;
     if(rightbound_open()   && x2.leftbound_closed()) return _upb <= x2._lwb;
     if(rightbound_closed() && x2.leftbound_open() )  return _upb <= x2._lwb;
 
-    // OTHERWISE (rightbound_open()  && x2.leftbound_open())
-    if(type<DataT>::is_continuous())   
-                                                     return _upb <= x2._lwb;
-                                                else return _upb <= succ(x2._lwb);
+    // OTHERWISE (rightbound_open() && leftbound_open())
+	return 
+		if_<
+			bool_<is_continuous<DataT>::value>, 
+			continuous_type<DataT>, 
+			discrete_type<DataT> 
+		   >
+		   ::type::open_bound_less_equal(_upb, x2._lwb);
 }
 
 
 template <class DataT>
 bool interval<DataT>::lwb_less(const interval& x2)const
 {
+	using namespace boost::mpl;
     if(leftbound_closed() && x2.leftbound_closed()) return _lwb <  x2._lwb;
     if(leftbound_open()   && x2.leftbound_open())   return _lwb <  x2._lwb;
     if(leftbound_closed() && x2.leftbound_open())   return _lwb <= x2._lwb;
 
     // OTHERWISE (leftbound_open()  && x2.leftbound_closed())
-    if(type<DataT>::is_continuous())   
-                                    return       _lwb <  x2._lwb;
-                               else return succ(_lwb) <  x2._lwb;
+	return 
+		if_<
+			bool_<is_continuous<DataT>::value>, 
+			continuous_type<DataT>, 
+			discrete_type<DataT> 
+		   >
+		   ::type::open_bound_less(_lwb, x2._lwb);
 }
 
 template <class DataT>
 bool interval<DataT>::upb_less(const interval& x2)const
 {
+	using namespace boost::mpl;
     if(rightbound_closed() && x2.rightbound_closed()) return _upb <  x2._upb;
     if(rightbound_open()   && x2.rightbound_open())   return _upb <  x2._upb;
     if(rightbound_open()   && x2.rightbound_closed()) return _upb <= x2._upb;
 
     // OTHERWISE (rightbound_closed()  && x2.rightbound_open())
-    if(type<DataT>::is_continuous())   
-                                     return      _upb  <  x2._upb;
-                                else return    succ(_upb) <  x2._upb;
+	return 
+		if_<
+			bool_<is_continuous<DataT>::value>, 
+			continuous_type<DataT>, 
+			discrete_type<DataT> 
+		   >
+		   ::type::open_bound_less(_upb, x2._upb);
 }
 
 
 template <class DataT>
 bool interval<DataT>::lwb_less_equal(const interval& x2)const
 {
+	using namespace boost::mpl;
     if(leftbound_closed() && x2.leftbound_closed()) return _lwb <= x2._lwb;
     if(leftbound_open()  && x2.leftbound_open())  return _lwb <= x2._lwb;
     if(leftbound_open() &&  x2.leftbound_closed()) return _lwb <  x2._lwb;
 
     // OTHERWISE (leftbound_closed() && x2.leftbound_open())
-    if(type<DataT>::is_continuous()) 
-                                          return _lwb <= x2._lwb;
-                                     else return _lwb <= succ(x2._lwb);
+	return 
+		if_<
+			bool_<is_continuous<DataT>::value>, 
+			continuous_type<DataT>, 
+			discrete_type<DataT> 
+		   >
+		   ::type::open_bound_less_equal(_lwb, x2._lwb);
 }
 
 
 template <class DataT>
 bool interval<DataT>::upb_less_equal(const interval& x2)const
 {
+	using namespace boost::mpl;
     if(rightbound_closed() && x2.rightbound_closed()) return _upb <= x2._upb;
     if(rightbound_open()  && x2.rightbound_open())  return _upb <= x2._upb;
     if(rightbound_closed() && x2.rightbound_open())  return _upb <  x2._upb;
 
     // OTHERWISE (rightbound_open()  && x2.rightbound_closed())
-    if(type<DataT>::is_continuous())   
-                                            return _upb <= x2._upb;
-                                       else return _upb <= succ(x2._upb);
+	return 
+		if_<
+			bool_<is_continuous<DataT>::value>, 
+			continuous_type<DataT>, 
+			discrete_type<DataT> 
+		   >
+		   ::type::open_bound_less_equal(_upb, x2._upb);
 }
 
 
@@ -725,23 +800,17 @@ bool interval<DataT>::upb_less_equal(const interval& x2)const
 template <class DataT>
 bool interval<DataT>::lwb_equal(const interval& x2)const
 {
+	using namespace boost::mpl;
     if(leftbound_closed() && x2.leftbound_closed()) return _lwb == x2._lwb;
     if(leftbound_open()  && x2.leftbound_open())  return _lwb == x2._lwb;
 
-    if(type<DataT>::is_continuous())
-    {
-        // mimimal (maximal) values of intervals of continuous values are never equal, if
-        // they have different bound types. Interestingly this seems to be true only
-        // in theory, because the very representations of doubles is discrete on a given
-        // machine. We implement the theory here.
-        return false;
-    }
-    else
-    {
-        if(leftbound_open() &&  x2.leftbound_closed()) 
-             return succ(_lwb) ==      x2._lwb;
-        else return      _lwb  == succ(x2._lwb);
-    }
+	return 
+		if_<
+			bool_<is_continuous<DataT>::value>, 
+			continuous_interval<DataT>, 
+			discrete_interval<DataT> 
+		   >
+		   ::type::unaligned_lwb_equal(*this, x2);
 }
 
 //NOTE THINK: This implementation is rather interesting wrt. continuous value types.
@@ -749,23 +818,17 @@ bool interval<DataT>::lwb_equal(const interval& x2)const
 template <class DataT>
 bool interval<DataT>::upb_equal(const interval& x2)const
 {
+	using namespace boost::mpl;
     if(rightbound_closed() && x2.rightbound_closed()) return _upb == x2._upb;
     if(rightbound_open()  && x2.rightbound_open())  return _upb == x2._upb;
 
-    if(type<DataT>::is_continuous())
-    {
-        // mimimal (maximal) values of intervals of continuous values are never equal, if
-        // they have different bound types. Interestingly this seems to be true only
-        // in theory, because the very representations of doubles is discrete on a given
-        // machine. We implement the theory here.
-        return false;
-    }
-    else
-    {
-        if(rightbound_closed() && x2.rightbound_open())  
-             return succ(_upb) ==      x2._upb;
-        else return      _upb  == succ(x2._upb);
-    }
+	return 
+		if_<
+			bool_<is_continuous<DataT>::value>, 
+			continuous_interval<DataT>, 
+			discrete_interval<DataT> 
+		   >
+		   ::type::unaligned_lwb_equal(*this, x2);
 }
 
 
@@ -991,12 +1054,9 @@ DataT interval<DataT>::last()const
 { if(rightbound_closed()) return _upb; else return pred(_upb); }
 
 template <class DataT>
-std::size_t interval<DataT>::cardinality()const
+typename interval<DataT>::size_type interval<DataT>::cardinality()const
 {
 	using namespace boost::mpl;
-    if(empty()) 
-        return 0;
-
 	return if_<
 				bool_<is_continuous<DataT>::value>,
 				continuous_interval<DataT>,
@@ -1006,12 +1066,9 @@ std::size_t interval<DataT>::cardinality()const
 }
 
 template <class DataT>
-DataT interval<DataT>::length()const
+typename interval<DataT>::difference_type interval<DataT>::length()const
 {
 	using namespace boost::mpl;
-    if(empty()) 
-		return itl::type<DataT>::neutron();
-
 	return if_<
 				bool_<is_continuous<DataT>::value>,
 				continuous_interval<DataT>,
@@ -1113,6 +1170,24 @@ struct exclusive_less {
 
 //JODO USENET: It is not a strict weak ordering because the induced equality in not 
 // even an equivalence. Still the relation works completely well!
+
+
+
+template<class CharType, class CharTraits, class DataT>
+std::basic_ostream<CharType, CharTraits> &operator<<
+  (std::basic_ostream<CharType, CharTraits> &stream, interval<DataT> const& x)
+{
+	if(x.empty())
+		return stream << "[]";
+	else
+	{
+		return stream << std::string(x.leftbound_open() ? "(" : "[")
+			          << x.lower() << "," << x.upper()
+					  << std::string(x.rightbound_open()? ")" : "]");
+	}
+}
+
+
 
 } // namespace itl
 

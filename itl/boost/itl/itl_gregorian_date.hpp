@@ -32,8 +32,8 @@ Function-templates for discrete Datatypes like int, unsigned or
     any class that provides a ++ operator c.f. iterators
 -----------------------------------------------------------------------------*/
 
-#ifndef __itl_date_time_adapter_JOFA_080416_H__
-#define __itl_date_time_adapter_JOFA_080416_H__
+#ifndef __itl_gregorian_date_JOFA_080416_H__
+#define __itl_gregorian_date_JOFA_080416_H__
 
 #include <stdio.h>
 #include <string>
