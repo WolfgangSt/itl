@@ -40,7 +40,10 @@ Function-templates for discrete Datatypes like int, unsigned or
 #include <sstream>
 
 #include <boost/date_time/gregorian/gregorian.hpp>
-#include <itl/itl_type.hpp>
+
+#define ITL_NEEDS_GREGORIAN_DATE_NEUTRON_VALUE
+#define ITL_NEEDS_GREGORIAN_DATE_DIFFERENCE_TYPE
+#define ITL_NEEDS_GREGORIAN_DATE_SIZE_TYPE
 
 namespace itl
 {
@@ -55,12 +58,31 @@ namespace itl
         return x -= boost::gregorian::date::duration_type::unit();
     }
 
-    // ------------------------------------------------------------------------
-    template<> 
-    inline boost::gregorian::date type<boost::gregorian::date>::neutron()
-    { 
-        return boost::gregorian::date(boost::gregorian::min_date_time); 
+	// ------------------------------------------------------------------------
+    boost::gregorian::date_duration operator ++(boost::gregorian::date_duration& x)
+    {
+		return x += boost::gregorian::date::duration_type::unit();
     }
+
+    boost::gregorian::date_duration operator --(boost::gregorian::date_duration& x)
+    {
+        return x -= boost::gregorian::date::duration_type::unit();
+    }
+
+	// ------------------------------------------------------------------------
+
+	//JODO testing of boost gregorian fails 
+	// boost::date_time::date_duration<duration_rep_traits> lacks op <<
+	//
+	//template<class CharType, class CharTraits, class duration_rep_traits>
+	//std::basic_ostream<CharType, CharTraits>& operator <<
+	//(std::basic_ostream<CharType, CharTraits> &stream, 
+	// boost::date_time::date_duration<duration_rep_traits> const& x)
+	//{
+	//	return stream << "[date_duration<duration_rep_traits>]";
+	//}
+
+	//boost::date_time::date_duration<duration_rep_traits>
 
 } // namespace itl
 

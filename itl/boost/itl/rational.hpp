@@ -12,27 +12,12 @@ It implements incrementation (++) decrementation (--) and a neutral element
 w.r.t. addition (neutron()).
 -----------------------------------------------------------------------------*/
 
-#ifndef __itl_type_traits_is_continuous_JOFA_080910_H__
-#define __itl_type_traits_is_continuous_JOFA_080910_H__
+#ifndef __itl_rational_JOFA_080913_H__
+#define __itl_rational_JOFA_080913_H__
 
-#include <string>
+#include <boost/rational.hpp>
 
-namespace itl
-{
-	template <class Type> struct is_continuous;
-
-	template<> struct is_continuous<float>       { enum {value = true}; };
-	template<> struct is_continuous<double>      { enum {value = true}; };
-	template<> struct is_continuous<std::string> { enum {value = true}; };
-
-#ifdef ITL_NEEDS_RATIONAL_IS_CONTINUOUS
-	template<class Integral> 
-	struct is_continuous<boost::rational<Integral> > { enum {value = true}; };
-#endif
-
-	template <class Type> struct is_continuous{ enum {value = false}; };
-
-} // namespace itl
+#define ITL_NEEDS_RATIONAL_IS_CONTINUOUS
 
 #endif
 

@@ -20,9 +20,10 @@ w.r.t. addition (neutron()).
 #include <sstream>
 
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include <itl/itl_type.hpp>
-#include <itl/type_traits/difference.hpp>
-#include <itl/type_traits/size.hpp>
+
+#define ITL_NEEDS_POSIX_TIME_PTIME_NEUTRON_VALUE
+#define ITL_NEEDS_POSIX_TIME_PTIME_DIFFERENCE_TYPE
+#define ITL_NEEDS_POSIX_TIME_PTIME_SIZE_TYPE
 
 namespace itl
 {
@@ -48,23 +49,6 @@ namespace itl
     {
         return x -= boost::posix_time::ptime::time_duration_type::unit();
     }
-
-    // ------------------------------------------------------------------------
-    template<> 
-    inline boost::posix_time::ptime type<boost::posix_time::ptime>::neutron()
-    { 
-        return boost::posix_time::ptime(boost::posix_time::min_date_time); 
-    }
-
-	// ------------------------------------------------------------------------
-	template<> 
-	struct difference<boost::posix_time::ptime> 
-	{ typedef boost::posix_time::time_duration type; };  
-
-	template<> 
-	struct size<boost::posix_time::ptime> 
-	{ typedef boost::posix_time::time_duration type; }; 
-
 } // namespace itl
 
 #endif

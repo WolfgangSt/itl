@@ -45,12 +45,13 @@ Function-templates for discrete Datatypes like int, unsigned or
 
 namespace itl
 {
+	/*CL
     template <class IncrementableT>
-    inline IncrementableT succ(IncrementableT x) { return ++x; }
+    inline static IncrementableT succ(IncrementableT x) { return ++x; }
 
     template <class DecrementableT>
-    inline DecrementableT pred(DecrementableT x) { return --x; }
-
+    inline static DecrementableT pred(DecrementableT x) { return --x; }
+	*/
 
     // ------------------------------------------------------------------------
     template<class Type>
@@ -68,7 +69,7 @@ namespace itl
 
             Neutral element of a datatype with respect to an operation <tt>*</tt>.
             This is a value that denotes 'oneness'. For many c++ classes such
-            a value does not exist. We need the <tt>type<T>::unon()</tt> to
+            a value is not available as denotatin. We need the <tt>type<T>::unon()</tt> to
             denote an empty Interval independent of it's domain-type <tt>T</tt> as
             <tt>IntervalT<T>( type<T>::unon(), type<T>::neutron() )</tt>
 

@@ -37,6 +37,8 @@ DEALINGS IN THE SOFTWARE.
 #include <boost/call_traits.hpp> 
 #include <boost/mpl/bool.hpp> 
 #include <boost/mpl/if.hpp> 
+#include <itl/type_traits/neutron.hpp>
+#include <itl/type_traits/unon.hpp>
 #include <itl/type_traits/is_continuous.hpp>
 #include <itl/type_traits/difference.hpp>
 #include <itl/type_traits/size.hpp>
@@ -331,9 +333,8 @@ public:
 //@}
 
 
-    // JODO unon() dokumentieren
     /// Default constructor; yields an empty interval <tt>[1,0]</tt>
-    interval() : _lwb(type<DataT>::unon()), _upb(type<DataT>::neutron()), 
+    interval() : _lwb(unon<DataT>::value()), _upb(neutron<DataT>::value()), 
                  _boundtypes(CLOSED) {}
     /// Constructor for a closed singleton interval <tt>[val,val]</tt>
     interval(const DataT& val) : 
@@ -393,12 +394,14 @@ public:
 
     /// <tt>*this</tt> is subset of <tt>super</tt>
     bool contained_in(const interval& super)const ;
+    /// <tt>*this</tt> is superset of <tt>sub</tt>
+	bool contains(const interval& sub)const;
+
     /// Equality
     bool equal(const interval& x2)const
-    { return contained_in(x2) && x2.contained_in(*this); } //JODO direct implementation via lwb_equal and upb_equal, then test of correctness
-    /// Equality operator
-    //CL bool operator == (const interval& x2)const { return isEqual(x2); }
-
+	{ return (empty() && x2.empty()) || (lwb_equal(x2) && upb_equal(x2)); }
+    //Equality can also be implemented this way:
+	//{ return contained_in(x2) && x2.contained_in(*this); }
 
     ///  <tt>*this</tt> and <tt>x2</tt> are disjoint; their intersection is empty
     bool disjoint_to(const interval& x2)const
@@ -420,7 +423,7 @@ public:
 //@{
     /// Set the interval empty
     void clear()
-    { set_lwb(type<DataT>::unon()); set_upb(type<DataT>::neutron()); _boundtypes=CLOSED; }
+    { set_lwb(unon<DataT>::value()); set_upb(neutron<DataT>::value()); _boundtypes=CLOSED; }
 
     /// Set the intervals values
     interval& set(const DataT& lw, const DataT& up, bound_types bt) 
@@ -493,31 +496,31 @@ public:
 	size_type continuous_cardinality()const
 	{ 
 		if(empty()) 
-			return itl::type<size_type>::neutron();
+			return itl::neutron<size_type>::value();
 		else if(is_closed() && _lwb == _upb)
-			return itl::type<size_type>::unon();
+			return itl::unon<size_type>::value();
 		else return std::numeric_limits<size_type>::infinity();
 	}
 
 	size_type discrete_cardinality()const
-	{ return empty()? itl::type<size_type>::neutron() : succ(last()-first()); }
+	{ return empty()? itl::neutron<size_type>::value() : succ(last()-first()); }
 
 
 	/// Arithmetic size of the interval
 	difference_type length()const;
 
 	difference_type continuous_length()const
-	{ return empty() ? itl::type<difference_type>::neutron() : _upb - _lwb; }
+	{ return empty() ? itl::neutron<difference_type>::value() : _upb - _lwb; }
 
 	difference_type discrete_length()const
 	{
 		return empty() ? 
-			itl::type<difference_type>::neutron() : 
+			itl::neutron<difference_type>::value() : 
 			last() - first(); 
 	}
 
     /// Size of the interval
-    DataT size()const;
+	size_type size()const { return cardinality(); }
 
     /// <tt>*this</tt> interval as closed <tt>[x,y]</tt> interval
     interval as_closed_interval()const;
@@ -802,7 +805,7 @@ bool interval<DataT>::lwb_equal(const interval& x2)const
 {
 	using namespace boost::mpl;
     if(leftbound_closed() && x2.leftbound_closed()) return _lwb == x2._lwb;
-    if(leftbound_open()  && x2.leftbound_open())  return _lwb == x2._lwb;
+    if(leftbound_open()   && x2.leftbound_open()  ) return _lwb == x2._lwb;
 
 	return 
 		if_<
@@ -820,7 +823,7 @@ bool interval<DataT>::upb_equal(const interval& x2)const
 {
 	using namespace boost::mpl;
     if(rightbound_closed() && x2.rightbound_closed()) return _upb == x2._upb;
-    if(rightbound_open()  && x2.rightbound_open())  return _upb == x2._upb;
+    if(rightbound_open()   && x2.rightbound_open()  ) return _upb == x2._upb;
 
 	return 
 		if_<
@@ -828,7 +831,7 @@ bool interval<DataT>::upb_equal(const interval& x2)const
 			continuous_interval<DataT>, 
 			discrete_interval<DataT> 
 		   >
-		   ::type::unaligned_lwb_equal(*this, x2);
+		   ::type::unaligned_upb_equal(*this, x2);
 }
 
 
@@ -914,6 +917,10 @@ bool interval<DataT>::contains(const DataT& x)const
 template <class DataT>
 bool interval<DataT>::contained_in(const interval& super)const
 { return super.lwb_less_equal(*this) && upb_less_equal(super); }
+
+template <class DataT>
+bool interval<DataT>::contains(const interval& sub)const
+{ return lwb_less_equal(sub) && sub.upb_less_equal(*this); }
 
 
 template <class DataT>
@@ -1079,17 +1086,6 @@ typename interval<DataT>::difference_type interval<DataT>::length()const
 
 
 template <class DataT>
-DataT interval<DataT>::size()const
-{ 
-    if(empty()) 
-        return (type<DataT>::neutron() - type<DataT>::neutron()); 
-    else if(type<DataT>::is_continuous()) 
-        return _upb - _lwb;
-    else 
-        return last()-first() + type<DataT>::unon() - type<DataT>::neutron(); 
-}
-
-template <class DataT>
 interval<DataT> interval<DataT>::as_closed_interval()const
 { return interval(first(), last(), CLOSED); }
 
@@ -1102,10 +1098,10 @@ void interval<DataT>::transform_bounds(bound_types bt)
 { 
     switch(bt)
     {
-    case CLOSED:    set(first(), last(), bt);                break;
+    case CLOSED:    set(first(), last(), bt);              break;
     case RIGHT_OPEN:set(first(), succ(last()), bt);        break;
     case LEFT_OPEN: set(pred(first()), last(), bt);        break;
-    case OPEN:        set(pred(first()), succ(last()), bt);    break;
+    case OPEN:      set(pred(first()), succ(last()), bt);  break;
     }
 }
 
@@ -1170,7 +1166,6 @@ struct exclusive_less {
 
 //JODO USENET: It is not a strict weak ordering because the induced equality in not 
 // even an equivalence. Still the relation works completely well!
-
 
 
 template<class CharType, class CharTraits, class DataT>

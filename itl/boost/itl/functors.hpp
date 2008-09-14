@@ -29,18 +29,20 @@ DEALINGS IN THE SOFTWARE.
 #define __itl_functors_H_JOFA_080315__
 
 #include <itl/itl_value.hpp>
+#include <itl/type_traits/neutron.hpp>
 
 namespace itl
 {
 
+	//CL JODO
     // ------------------------------------------------------------------------
-    template <typename Type> struct neutron
-    {
-        inline Type operator()()const { return Type(); }
-    };
+    //template <typename Type> struct neutron
+    //{
+    //    inline Type operator()()const { return Type(); }
+    //};
 
-    template<>
-    inline std::string unary_template<neutron>::to_string() { return "0"; }
+    //template<>
+    //inline std::string unary_template<neutron>::to_string() { return "0"; }
 
     // ------------------------------------------------------------------------
     template <typename Type> struct inplace_identity
