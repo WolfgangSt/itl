@@ -34,6 +34,7 @@ DEALINGS IN THE SOFTWARE.
 #include <functional>
 #include <limits>
 #include <string>
+#include <boost/assert.hpp> 
 #include <boost/call_traits.hpp> 
 #include <boost/mpl/bool.hpp> 
 #include <boost/mpl/if.hpp> 
@@ -412,6 +413,7 @@ public:
     /// Exclusive less: maximal element of <tt>*this</tt> is less than the minimal element of <tt>x2</tt>
     bool exclusive_less(const interval& x2)const;
 
+	/// less on intervals
     bool less(const interval& x2)const
     { return lwb_less(x2) || ( lwb_equal(x2) && upb_less(x2) ); }
 
@@ -466,7 +468,10 @@ public:
         Bordertypes according to the lower bound of *this and the upper bound of rhs.
     */
     interval span(const interval& rhs)const
-    { return interval(_lwb, rhs._upb, span(boundtypes(), rhs.boundtypes()));    }
+	{
+		BOOST_ASSERT(!empty() && !rhs.empty());
+		return empty() ? interval(_lwb, rhs._upb, span(boundtypes(), rhs.boundtypes()));    
+	}
 
     interval& left_subtract(const interval& x2);
 //@}
@@ -674,6 +679,9 @@ struct continuous_interval
 
 	static bool unaligned_upb_equal(const interval<DataT>& x1, const interval<DataT>& x2)
 	{ return false; }
+
+	static bool has_equal_border_touch(const interval<DataT>& x1, const interval<DataT>& x2)
+	{ return false; }
 };
 
 template<class DataT> 
@@ -700,6 +708,16 @@ struct discrete_interval
              return succ(x1.upper()) ==      x2.upper();
         else return      x1.upper()  == succ(x2.upper());
 	}
+
+	static bool has_equal_border_touch(const interval<DataT>& x1, const interval<DataT>& x2)
+	{
+        if(x1.rightbound_closed() && x2.leftbound_closed()) 
+			return succ(x1.upper()) == x2.lower();
+        if(x1.rightbound_open()  && x2.leftbound_open() ) 
+			return x1.upper() == succ(x2.lower());
+        return false;	
+	}
+
 };
 
 // NOTE structural similarities between empty and exclusive_less! 
@@ -892,17 +910,17 @@ typename interval<DataT>::BoundT interval<DataT>::lwb_rightOf(const interval& x2
 template <class DataT>
 bool interval<DataT>::touches(const interval& x2)const
 {
-    if(rightbound_open()  && x2.leftbound_closed()) return _upb == x2._lwb;
-    if(rightbound_closed() && x2.leftbound_open())  return _upb == x2._lwb;
+	using namespace boost::mpl;
+    if(rightbound_open() && x2.leftbound_closed()) return _upb == x2._lwb;
+    if(rightbound_closed() && x2.leftbound_open()) return _upb == x2._lwb;
 
-    if(type<DataT>::is_continuous()) {
-        // ... sie konnten zusammen nicht kommen
-        return false;
-    } else {
-        if(rightbound_closed() && x2.leftbound_closed()) return succ(_upb) == x2._lwb;
-        if(rightbound_open()  && x2.leftbound_open() ) return _upb == succ(x2._lwb);
-        return false;
-    }
+	return 
+		if_<
+			bool_<is_continuous<DataT>::value>, 
+			continuous_interval<DataT>, 
+			discrete_interval<DataT> 
+		   >
+		   ::type::has_equal_border_touch(*this, x2);
 }
 
 template <class DataT>
@@ -989,7 +1007,7 @@ interval<DataT>& interval<DataT>::scale_down(DataT factor)
 
 
 template <class DataT>
-interval<DataT>& interval<DataT>::left_subtract(const interval& x2)
+inline interval<DataT>& interval<DataT>::left_subtract(const interval& x2)
 {
     set_lwb( BoundT(x2._upb, x2.succession_bounds()) );
     return *this; 
@@ -1167,6 +1185,17 @@ struct exclusive_less {
 //JODO USENET: It is not a strict weak ordering because the induced equality in not 
 // even an equivalence. Still the relation works completely well!
 
+
+// ----------------------------------------------------------------------------
+// operators
+// ----------------------------------------------------------------------------
+template <class DataT>
+itl::interval<DataT>& operator *= (      itl::interval<DataT>& section, 
+                                   const itl::interval<DataT>& sectant)
+{
+    section.intersect(section, sectant);
+	return section;
+}
 
 template<class CharType, class CharTraits, class DataT>
 std::basic_ostream<CharType, CharTraits> &operator<<

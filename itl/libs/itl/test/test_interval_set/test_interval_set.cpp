@@ -5,7 +5,7 @@ Copyright (c) 2008-2008: Joachim Faulhaber
       (See accompanying file LICENCE.txt or copy at
            http://www.boost.org/LICENSE_1_0.txt)
 +----------------------------------------------------------------------------*/
-#define BOOST_TEST_MODULE itl::interval unit test
+#define BOOST_TEST_MODULE itl::interval_set unit test
 #include <string>
 #include <boost/mpl/list.hpp>
 #include <boost/test/unit_test.hpp>
@@ -15,7 +15,7 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 #include "../test_type_lists.hpp"
 #include "../test_value_maker.hpp"
 
-#include <itl/itl_interval.hpp>
+#include <itl/interval_set.hpp>
 
 using namespace std;
 using namespace boost;
@@ -23,18 +23,32 @@ using namespace unit_test;
 using namespace itl;
 
 
+// Most of the tests will be done uniformly for interval_sets:
+// interval_set, sepatate_interval_set and split_interval_set.
+// So here again is desire for doing test case development especially
+// on the level of types like
+// for_all(container in test_containers) 
+//    for_all(T in instance_types) { test(propery(container<T>)); }
+// But I do refrain from going in to new developments here and
+// try to keep it very simple:
+
+// passing interval_container via MACRO ... :(
+#define INTERVAL_SET interval_set;
+
+
+
 // Most general, largest set of types
 BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_ctor_4_ordered_types, T, ordered_types)
 {
-	// An empty interval is defined as the closed interval [1,0]
-	BOOST_CHECK_EQUAL(interval<T>().empty(), true);
-	BOOST_CHECK_EQUAL(interval<T>().cardinality(), itl::type<itl::size<T>::type>::neutron());
-	BOOST_CHECK_EQUAL(interval<T>().lower(), itl::unon<T>::value());
-	BOOST_CHECK_EQUAL(interval<T>().upper(), itl::neutron<T>::value());
+	//interval_set<T> is;
+	BOOST_CHECK_EQUAL(interval_set<T>().empty(), true);
+	//BOOST_CHECK_EQUAL(INTERVAL_SET<T>().cardinality(), itl::type<itl::size<T>::type>::neutron());
+	//BOOST_CHECK_EQUAL(INTERVAL_SET<T>().lower(), itl::unon<T>::value());
+	//BOOST_CHECK_EQUAL(INTERVAL_SET<T>().upper(), itl::neutron<T>::value());
 
-	BOOST_CHECK_EQUAL(interval<T>(), interval<T>());
-	BOOST_CHECK_EQUAL(interval<T>(), interval<T>(itl::unon<T>::value(), itl::neutron<T>::value()));
-	BOOST_CHECK_EQUAL(interval<T>(), interval<T>(itl::unon<T>::value(), itl::neutron<T>::value(), interval<T>::CLOSED));
+	//BOOST_CHECK_EQUAL(interval<T>(), interval<T>());
+	//BOOST_CHECK_EQUAL(interval<T>(), interval<T>(itl::unon<T>::value(), itl::neutron<T>::value()));
+	//BOOST_CHECK_EQUAL(interval<T>(), interval<T>(itl::unon<T>::value(), itl::neutron<T>::value(), interval<T>::CLOSED));
 
 }
 
