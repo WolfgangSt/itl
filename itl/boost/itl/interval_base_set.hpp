@@ -114,6 +114,7 @@ class interval_base_set
 public:
 
     //A: Type definitions for the template class 
+	typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> type;
 
     /// The designated \e derived or \e sub_type of this base class
     typedef SubType sub_type;
@@ -125,6 +126,13 @@ public:
 
     /// The interval type of the set
     typedef Interval<DomainT> interval_type;
+
+	/// The difference type of an interval which is sometimes different form the data_type
+	typedef typename interval_type::difference_type difference_type;
+
+	/// The size type of an interval which is mostly std::size_t
+	typedef typename interval_type::size_type size_type;
+
 
     /// Comparison functor for domain values
     typedef Compare<DomainT> domain_compare;
@@ -243,10 +251,12 @@ public:
 //@{
 
     /// Add a single element \c x to the set
-    void add(const DomainT& x) { insert(x); }
+    interval_base_set& add(const DomainT& x) 
+	{ insert(x); return *this; }
 
     /// Add an interval of elements \c x to the set
-    void add(const value_type& x) { that()->insert(x); }
+    interval_base_set& add(const value_type& x) 
+	{ that()->insert(x); return *this; }
 
     /// Add an interval of elements \c x to the set
     interval_base_set& operator += (const DomainT& x) 
@@ -418,12 +428,14 @@ public:
     */
     DomainT last()const { return (*(_set.rbegin())).last(); } // JODO NONCONT
 
-    // JODO TEST
     /** Number of elements in the set (cardinality). 
-        Infinite for continuous domain datatyps
-        <b>Nicht getestet</b>
-    */
-    DomainT size()const;
+        Infinite for continuous domain datatyps    */
+    size_type cardinality()const;
+
+	/// An interval set's size is it's cardinality
+	size_type size()const { return cardinality(); }
+
+	difference_type length()const;
 
     /**    Set interval bounds to the type <tt>bt</tt> for intervals in the set.
 
@@ -467,14 +479,89 @@ protected:
     ImplSetT _set;
 } ;
 
+//JODO locate these in itl_algo, interval_container_algo, interval_set_algo ...?
+template <class IntervalContainerT>
+typename IntervalContainerT::size_type continuous_cardinality(const IntervalContainerT& object)
+{
+	typedef typename IntervalContainerT::size_type size_type;
+
+	size_type size = neutron<size_type>::value();
+	size_type interval_size;
+    const_FORALL(IntervalContainerT, it, object)
+	{
+		interval_size = (*it).continuous_cardinality();
+		if(interval_size == std::numeric_limits<size_type>::infinity())
+			return interval_size;
+		else
+			size += interval_size;
+	}
+    return size;
+}
+
+template <class IntervalContainerT>
+typename IntervalContainerT::size_type discrete_cardinality(const IntervalContainerT& object)
+{
+	typedef typename IntervalContainerT::size_type size_type;
+
+	size_type size = neutron<size_type>::value();
+    const_FORALL(IntervalContainerT, it, object)
+			size += (*it).discrete_cardinality();
+    return size;
+}
+
+struct continuous_interval_container
+{
+	template<class IntervalContainerT> 
+	static typename IntervalContainerT::size_type 
+		cardinality(const IntervalContainerT& cont) 
+	{ return continuous_cardinality(cont); }
+};
+
+struct discrete_interval_container
+{
+	template<class IntervalContainerT> 
+	static typename IntervalContainerT::size_type 
+		cardinality(const IntervalContainerT& cont) 
+	{ return discrete_cardinality(cont); }
+};
 
 template<class SubType,
          class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-DomainT interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::size()const
+typename interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::size_type 
+interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::cardinality()const
 {
-    DomainT size = DomainT();
-    const_FOR_IMPL(it) size += (*it).size();
+	using namespace boost::mpl;
+	return if_<
+				bool_<is_continuous<DomainT>::value>,
+				continuous_interval_container,
+				discrete_interval_container
+			  >
+			  ::type::cardinality<type>(*this);
+
+	/*JODO BOOST: This more simple implementention fails because ptime::duration has no infinity
+	size_type size = neutron<size_type>::value();
+	size_type interval_size;
+    const_FOR_IMPL(it)
+	{
+		interval_size = (*it).cardinality();
+		if(interval_size == std::numeric_limits<size_type>::infinity())
+			return interval_size;
+		else
+			size += interval_size;
+	}
     return size;
+	*/
+}
+
+template<class SubType,
+         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+typename interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::difference_type 
+interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::length()const
+{
+	difference_type length = neutron<difference_type>::value();
+    const_FOR_IMPL(it)
+		length += (*it).length();
+	return length;
 }
 
 
@@ -739,7 +826,20 @@ operator +=
     return object; 
 }
 
+template<class CharType, class CharTraits, 
+    class SubType, class DomainT, template<class>class Interval, 
+    template<class>class Compare, template<class>class Alloc>
+std::basic_ostream<CharType, CharTraits>& operator <<
+  (std::basic_ostream<CharType, CharTraits>& stream, 
+   const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object)
+{
+	typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> IntervalSetT;
+	stream << "{";
+	const_FORALL(typename IntervalSetT, it, object)
+		stream << (*it);
 
+	return stream << "}";
+}
 
 } // namespace itl
 

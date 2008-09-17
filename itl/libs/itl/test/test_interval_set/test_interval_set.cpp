@@ -23,67 +23,69 @@ using namespace unit_test;
 using namespace itl;
 
 
-// Most of the tests will be done uniformly for interval_sets:
-// interval_set, sepatate_interval_set and split_interval_set.
-// So here again is desire for doing test case development especially
-// on the level of types like
-// for_all(container in test_containers) 
-//    for_all(T in instance_types) { test(propery(container<T>)); }
-// But I do refrain from going in to new developments here and
-// try to keep it very simple:
-
-// passing interval_container via MACRO ... :(
-#define INTERVAL_SET interval_set;
-
-
 
 // Most general, largest set of types
-BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_ctor_4_ordered_types, T, ordered_types)
+BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_set_ctor_4_ordered_types, T, ordered_types)
 {
-	//interval_set<T> is;
 	BOOST_CHECK_EQUAL(interval_set<T>().empty(), true);
-	//BOOST_CHECK_EQUAL(INTERVAL_SET<T>().cardinality(), itl::type<itl::size<T>::type>::neutron());
-	//BOOST_CHECK_EQUAL(INTERVAL_SET<T>().lower(), itl::unon<T>::value());
-	//BOOST_CHECK_EQUAL(INTERVAL_SET<T>().upper(), itl::neutron<T>::value());
+	BOOST_CHECK_EQUAL(interval_set<T>().cardinality(), itl::neutron<itl::size<T>::type>::value());
+	BOOST_CHECK_EQUAL(interval_set<T>().size(), itl::neutron<itl::size<T>::type>::value());
 
-	//BOOST_CHECK_EQUAL(interval<T>(), interval<T>());
-	//BOOST_CHECK_EQUAL(interval<T>(), interval<T>(itl::unon<T>::value(), itl::neutron<T>::value()));
-	//BOOST_CHECK_EQUAL(interval<T>(), interval<T>(itl::unon<T>::value(), itl::neutron<T>::value(), interval<T>::CLOSED));
-
+	BOOST_CHECK_EQUAL(interval_set<T>(), interval_set<T>());
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_ctor_4_bicremental_types, T, bicremental_types)
+BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_set_ctor_4_bicremental_types, T, bicremental_types)
 {
-	BOOST_CHECK_EQUAL( T(), pred(succ(T())));
-	BOOST_CHECK_EQUAL( itl::neutron<T>::value(), pred(succ(itl::neutron<T>::value()))       );
-	BOOST_CHECK_EQUAL( itl::unon<T>::value(),    succ(itl::neutron<T>::value())             );
-	BOOST_CHECK_EQUAL( interval<T>().length(),   itl::neutron<difference<T>::type>::value() );
-
 	T v4 = make<T>(4);
-	itl::interval<T> i_4_4(v4);
-	BOOST_CHECK_EQUAL( i_4_4.is_closed(),         true  );
-	BOOST_CHECK_EQUAL( i_4_4.is_leftopen(),       false );
-	BOOST_CHECK_EQUAL( i_4_4.is_rightopen(),      false );
-	BOOST_CHECK_EQUAL( i_4_4.is_open(),           false );
-	BOOST_CHECK_EQUAL( i_4_4.leftbound_closed(),  true  );
-	BOOST_CHECK_EQUAL( i_4_4.rightbound_closed(), true  );
-	BOOST_CHECK_EQUAL( i_4_4.leftbound_open(),    false );
-	BOOST_CHECK_EQUAL( i_4_4.rightbound_open(),   false );
+	itl::interval<T> I4_4I(v4);
 
-	BOOST_CHECK_EQUAL( i_4_4.lower(),             v4    );
-	BOOST_CHECK_EQUAL( i_4_4.upper(),             v4    );
+	interval_set<T> _I4_4I;
+	BOOST_CHECK_EQUAL( _I4_4I.empty(), true );
+	interval_set<T> _I4_4I_1;
+	interval_set<T> _I4_4I_2;
+	interval_set<T> _I4_4I_3;
+	_I4_4I   += v4;
+	_I4_4I_1 += I4_4I;
+	BOOST_CHECK_EQUAL( _I4_4I,                    _I4_4I_1 );
+	_I4_4I_2.add(v4);
+	BOOST_CHECK_EQUAL( _I4_4I,                    _I4_4I_2 );
+	_I4_4I_3.add(I4_4I);
+	BOOST_CHECK_EQUAL( _I4_4I,                    _I4_4I_3 );
+	_I4_4I_1.add(v4).add(I4_4I);
+	BOOST_CHECK_EQUAL( _I4_4I,                    _I4_4I_1 );
+	(_I4_4I_1 += v4) += I4_4I;
+	BOOST_CHECK_EQUAL( _I4_4I,                    _I4_4I_1 );
+	
+	BOOST_CHECK_EQUAL( _I4_4I.cardinality(),      unon<interval_set<T>::size_type>::value()  );
+	BOOST_CHECK_EQUAL( _I4_4I.size(),             unon<interval_set<T>::size_type>::value()  );
+	BOOST_CHECK_EQUAL( _I4_4I.length(),           neutron<interval_set<T>::difference_type>::value() );
+	BOOST_CHECK_EQUAL( _I4_4I.lower(),            v4 );
+	BOOST_CHECK_EQUAL( _I4_4I.upper(),            v4 );
 
-	BOOST_CHECK_EQUAL( i_4_4.contains(v4),        true  );
-	BOOST_CHECK_EQUAL( i_4_4.contains(i_4_4),     true  );
-	BOOST_CHECK_EQUAL( i_4_4.contained_in(i_4_4), true  );
-	BOOST_CHECK_EQUAL( i_4_4,                     i_4_4 );
+	//_I4_4I += I4_4I += v4 += I4_4I += v4;
 
-	BOOST_CHECK_EQUAL( i_4_4.cardinality(),       unon<interval<T>::size_type>::value()          );
-	BOOST_CHECK_EQUAL( i_4_4.size(),              unon<interval<T>::size_type>::value()          );
-	BOOST_CHECK_EQUAL( i_4_4.length(),            neutron<interval<T>::difference_type>::value() );
+	BOOST_CHECK_EQUAL( I4_4I.is_leftopen(),       false );
+	BOOST_CHECK_EQUAL( I4_4I.is_rightopen(),      false );
+	BOOST_CHECK_EQUAL( I4_4I.is_open(),           false );
+	BOOST_CHECK_EQUAL( I4_4I.leftbound_closed(),  true  );
+	BOOST_CHECK_EQUAL( I4_4I.rightbound_closed(), true  );
+	BOOST_CHECK_EQUAL( I4_4I.leftbound_open(),    false );
+	BOOST_CHECK_EQUAL( I4_4I.rightbound_open(),   false );
 
-	itl::interval<T> j_4_4(i_4_4);
-	BOOST_CHECK_EQUAL( i_4_4, j_4_4 );
+	BOOST_CHECK_EQUAL( I4_4I.lower(),             v4    );
+	BOOST_CHECK_EQUAL( I4_4I.upper(),             v4    );
+
+	BOOST_CHECK_EQUAL( I4_4I.contains(v4),        true  );
+	BOOST_CHECK_EQUAL( I4_4I.contains(I4_4I),     true  );
+	BOOST_CHECK_EQUAL( I4_4I.contained_in(I4_4I), true  );
+	BOOST_CHECK_EQUAL( I4_4I,                     I4_4I );
+
+	BOOST_CHECK_EQUAL( I4_4I.cardinality(),       unon<interval<T>::size_type>::value()          );
+	BOOST_CHECK_EQUAL( I4_4I.size(),              unon<interval<T>::size_type>::value()          );
+	BOOST_CHECK_EQUAL( I4_4I.length(),            neutron<interval<T>::difference_type>::value() );
+
+	itl::interval<T> j_4_4(I4_4I);
+	BOOST_CHECK_EQUAL( I4_4I, j_4_4 );
 
 	T v2 = make<T>(2);
 	BOOST_CHECK_EQUAL( closed_interval<T>(v2, v4),    interval<T>(v2, v4) );
@@ -121,14 +123,64 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_ctor_4_bicremental_types, T, bicremental_
 	BOOST_CHECK_EQUAL( open_interval<T>(v2, v4).rightbound_open(),       true );	
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_ctor_4_integral_types, T, integral_types)
+BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_set_distinct_4_bicremental_types, T, bicremental_types)
+{
+	typedef typename interval_set<T>::size_type       size_T;
+	typedef typename interval_set<T>::difference_type diff_T;
+	T v1 = make<T>(1);
+	T v3 = make<T>(3);
+	T v5 = make<T>(5);
+
+	size_T s3 = make<size_T>(3);
+	diff_T d0 = make<diff_T>(0);
+
+	interval_set<T> is_1_3_5;
+	is_1_3_5.add(v1).add(v3).add(v5);
+
+	BOOST_CHECK_EQUAL( is_1_3_5.cardinality(),      s3 );
+	BOOST_CHECK_EQUAL( is_1_3_5.size(),             s3 );
+	BOOST_CHECK_EQUAL( is_1_3_5.length(),           d0 );
+}
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_set_distinct_4_integral_types, T, integral_types)
+{
+	typedef typename interval_set<T>::size_type       size_T;
+	typedef typename interval_set<T>::difference_type diff_T;
+	T v1 = make<T>(1);
+	T v2 = make<T>(2);
+	T v3 = make<T>(3);
+	T v5 = make<T>(5);
+
+	size_T s3 = make<size_T>(3);
+	diff_T d0 = make<diff_T>(0);
+
+	interval_set<T> is_1_3_5;
+	is_1_3_5.add(v1).add(v3).add(v5);
+
+	BOOST_CHECK_EQUAL( is_1_3_5.cardinality(),      s3 );
+	BOOST_CHECK_EQUAL( is_1_3_5.size(),             s3 );
+	BOOST_CHECK_EQUAL( is_1_3_5.length(),           d0 );
+
+	size_T s4 = make<size_T>(4);
+	diff_T d2 = make<diff_T>(2);
+
+	interval_set<T> is_123_5;
+	is_123_5 = is_1_3_5;
+	is_123_5 += v2;
+
+	BOOST_CHECK_EQUAL( is_123_5.cardinality(),      s4 );
+	BOOST_CHECK_EQUAL( is_123_5.size(),             s4 );
+	BOOST_CHECK_EQUAL( is_123_5.length(),           d2 );
+}
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_set_ctor_4_integral_types, T, integral_types)
 {
 	BOOST_CHECK_EQUAL(interval<T>().first(), itl::unon<T>::value());
 	BOOST_CHECK_EQUAL(interval<T>().last(), itl::neutron<T>::value());
 	BOOST_CHECK_EQUAL(interval<T>().length(), 0);
 }
 
-BOOST_AUTO_TEST_CASE(test_itl_interval_ctor_specific)
+BOOST_AUTO_TEST_CASE(test_itl_interval_set_ctor_specific)
 {
 	BOOST_CHECK_EQUAL(interval<double>().continuous_length(), 0.0);
 	BOOST_CHECK_EQUAL(interval<double>(5.0,5.0).cardinality(), 1);
@@ -137,7 +189,7 @@ BOOST_AUTO_TEST_CASE(test_itl_interval_ctor_specific)
 }
 
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_equal_4_integral_types, T, integral_types)
+BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_set_equal_4_integral_types, T, integral_types)
 {
 	T v2 = make<T>(2);
 	T v3 = make<T>(3);
@@ -167,7 +219,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_equal_4_integral_types, T, integ
 	BOOST_CHECK_EQUAL( O2___8O, O2___8O );	
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_equal_4_bicremental_continuous_types, T, bicremental_continuous_types)
+BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_set_equal_4_bicremental_continuous_types, T, bicremental_continuous_types)
 {
 	T v3 = make<T>(3);
 	T v7 = make<T>(7);
@@ -195,7 +247,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_equal_4_bicremental_continuous_t
 	BOOST_CHECK_EQUAL( O3_7O,   O3_7O  );	
 } 
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_touches_4_bicremental_types, T, bicremental_types)
+BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_set_touches_4_bicremental_types, T, bicremental_types)
 {
 	T v3 = make<T>(3);
 	T v7 = make<T>(7);
@@ -213,7 +265,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_touches_4_bicremental_types, T, 
 	BOOST_CHECK_EQUAL( I3_7I.touches(I7_9I), false );	
 }
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_touches_4_integral_types, T, integral_types)
+BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_set_touches_4_integral_types, T, integral_types)
 {
 	T v3 = make<T>(3);
 	T v6 = make<T>(6);
@@ -230,7 +282,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_touches_4_integral_types, T, int
 }
 
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_intersect_4_bicremental_types, T, bicremental_types)
+BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_set_intersect_4_bicremental_types, T, bicremental_types)
 {
 	T v0 = make<T>(0);
 	T v3 = make<T>(3);
