@@ -201,11 +201,15 @@ public:
         return it != _set.end(); 
     }
 
+	bool contains(const interval_type& x)const
+	{ return that()->contains(x); }
+
     /** Is <tt>*this</tt> contained in <tt>super</tt>? */
     bool contained_in(const interval_base_set& super)const;
 
     /** Does <tt>*this</tt> container contain <tt>sub</tt>? */
-    bool contains(const interval_base_set& sub)const { return sub.contained_in(*this); }
+    bool contains(const interval_base_set& sub)const 
+	{ return sub.contained_in(*this); }
 
 
 
@@ -226,8 +230,8 @@ public:
     interval_type enclosure()const { return first_interval().span(last_interval()); }
 
     /// number of intervals
-    size_t interval_count()const { return _set.size(); }
-    size_t iterative_size()const { return _set.size(); }
+	std::size_t interval_count()const { return _set.size(); }
+    std::size_t iterative_size()const { return _set.size(); }
 //@}
 
 
@@ -596,7 +600,7 @@ bool interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::disjoint_to(cons
 {
     interval_base_set<SubType,DomainT,Interval,Compare,Alloc> section;
     intersect(section, x);
-    return section->empty();
+    return section.empty();
 }
 
 template<class SubType,
@@ -605,7 +609,7 @@ bool interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::disjoint_to(cons
 {
     interval_base_set<SubType,DomainT,Interval,Compare,Alloc> section;
     intersect(section, x);
-    return section->empty();
+    return section.empty();
 }
 
 

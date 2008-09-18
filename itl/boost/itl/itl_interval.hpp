@@ -504,7 +504,8 @@ public:
 			return itl::neutron<size_type>::value();
 		else if(is_closed() && _lwb == _upb)
 			return itl::unon<size_type>::value();
-		else return std::numeric_limits<size_type>::infinity();
+		else 
+			return std::numeric_limits<size_type>::infinity();
 	}
 
 	size_type discrete_cardinality()const
@@ -521,7 +522,7 @@ public:
 	{
 		return empty() ? 
 			itl::neutron<difference_type>::value() : 
-			last() - first(); 
+			succ(last() - first()); 
 	}
 
     /// Size of the interval
