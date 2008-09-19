@@ -194,22 +194,19 @@ public:
 
     void swap(interval_base_set& x) { _set.swap(x._set); }
 
-    /// does the container contain the element \c x
+    /// Does the container contain the element \c x
     bool contains(const DomainT& x)const
     {
         typename ImplSetT::const_iterator it = _set.find(interval_type(x)); 
         return it != _set.end(); 
     }
 
+	/// Does the container contain the interval x
 	bool contains(const interval_type& x)const
 	{ return that()->contains(x); }
 
     /** Is <tt>*this</tt> contained in <tt>super</tt>? */
     bool contained_in(const interval_base_set& super)const;
-
-    /** Does <tt>*this</tt> container contain <tt>sub</tt>? */
-    bool contains(const interval_base_set& sub)const 
-	{ return sub.contained_in(*this); }
 
 
 
@@ -217,17 +214,22 @@ public:
     */
 //@{ 
     /// lower bound of all intervals in the set
-    DomainT lower()const { return (*(_set.begin())).lower(); }
+    DomainT lower()const 
+	{ BOOST_ASSERT(!empty()); return (*(_set.begin())).lower(); }
     /// upper bound of all intervals in the set
-    DomainT upper()const { return (*(_set.rbegin())).upper(); }
+    DomainT upper()const 
+	{ BOOST_ASSERT(!empty()); return (*(_set.rbegin())).upper(); }
 
     /// first (smallest) interval in the set
-    interval_type first_interval()const { return (*(_set.begin())); }
+    interval_type first_interval()const 
+	{ BOOST_ASSERT(!empty()); return (*(_set.begin())); }
     /// last (largest) interval in the set
-    interval_type last_interval()const { return (*(_set.rbegin())); }
+    interval_type last_interval()const 
+	{ BOOST_ASSERT(!empty()); return (*(_set.rbegin())); }
 
     /// enclosing Interval
-    interval_type enclosure()const { return first_interval().span(last_interval()); }
+    interval_type enclosure()const 
+	{ BOOST_ASSERT(!empty()); return first_interval().span(last_interval()); }
 
     /// number of intervals
 	std::size_t interval_count()const { return _set.size(); }
@@ -260,7 +262,7 @@ public:
 
     /// Add an interval of elements \c x to the set
     interval_base_set& add(const value_type& x) 
-	{ that()->insert(x); return *this; }
+	{ that()->add__(x); return *this; }
 
     /// Add an interval of elements \c x to the set
     interval_base_set& operator += (const DomainT& x) 
@@ -268,7 +270,7 @@ public:
 
     /// Add an interval of elements \c x to the set
     interval_base_set& operator += (const value_type& x) 
-    { that()->insert(x); return *this; }
+    { that()->add__(x); return *this; }
 
 //@}
 
@@ -277,12 +279,12 @@ public:
 //@{
 
     /// Subtract a single element \c x from the set
-    void subtract(const DomainT& x) 
-    { subtract(interval_type(x)); }
+    interval_base_set& subtract(const DomainT& x) 
+    { return subtract(interval_type(x)); }
 
     /// Subtract an interval of elements \c x from the set
-    void subtract(const value_type& x) 
-    { that()->subtract(x); }
+    interval_base_set& subtract(const value_type& x) 
+    { that()->subtract(x); return *this; }
 
     /// Subtract a single element \c x from the set
     interval_base_set& operator -= (const DomainT& x) 
@@ -301,7 +303,7 @@ public:
     void insert(const DomainT& x) { insert(interval_type(x)); }
 
     /// Insert an interval of elements \c x to the set
-    void insert(const value_type& x) { that()->insert(x); }
+    void insert(const value_type& x) { that()->add__(x); }
 
     /// Erase an element \c x from the set
     void erase(const DomainT& x) 
@@ -578,9 +580,9 @@ bool interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::contained_in(con
         return true;
     else if (x2.empty())
         return false;
-    else if(last() < x2.first())
+    else if(upper() < x2.lower())
         return false;
-    else if(x2.last() < first())
+    else if(x2.upper() < lower())
         return false;
     else
     {

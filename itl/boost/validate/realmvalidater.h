@@ -237,6 +237,7 @@ namespace itl
                 case DomainType::Double:
                     switch(codomainChoice) {
                     case CodomainType::Int:     return new IntervalMapValidater<interval_map<double,int,neutron_enricher> >; 
+                    //case CodomainType::Double:  return new IntervalMapValidater<interval_map<double,double,neutron_enricher> >; 
                     case CodomainType::set_int: return new IntervalMapValidater<interval_map<double,itl::set<int>,neutron_enricher> >; 
                     default: return choiceError(ITL_LOCATION("\nRootType::interval_map: codomainChoice:\n"),
                                                 codomainChoice, _codomainChoice);

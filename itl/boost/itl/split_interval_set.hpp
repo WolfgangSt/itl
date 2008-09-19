@@ -153,7 +153,7 @@ namespace itl
         /// Copy constructor
         split_interval_set(const split_interval_set& src): base_type(src) {}
         /// Constructor for a single interval
-        explicit split_interval_set(const interval_type& itv): base_type() { insert(itv); }
+        explicit split_interval_set(const interval_type& itv): base_type() { add__(itv); }
         
 
 
@@ -162,17 +162,15 @@ namespace itl
         bool contains(const interval_type& x)const;
 
         /// Insertion of an interval <tt>x</tt>
-        void insert(const value_type& x){ recursive_insert(x); }
+        void add__(const value_type& x);
 
         /// Removal of an interval <tt>x</tt>
-        void subtract(const value_type& x){ recursive_subtract(x); }
+        void subtract(const value_type& x);
 
         /// Treatment of adjoint intervals on insertion
         void handle_neighbours(const iterator& it){}
 
     private:
-        void recursive_insert(const value_type& x);
-        void recursive_subtract(const value_type& x);
         void insert_rest(const interval_type& x_itv, iterator& it, iterator& end_it);
         void subtract_rest(const interval_type& x_itv, iterator& it, iterator& end_it);
 
@@ -193,16 +191,16 @@ namespace itl
 
         interval_set<DomainT,Interval,Compare,Alloc> matchSet;
         for(typename ImplSetT::const_iterator it=fst_it; it!=end_it; it++) 
-            matchSet.insert(*it);
+            matchSet.add__(*it);
 
         interval_set<DomainT,Interval,Compare,Alloc> x_asSet; 
-        x_asSet.insert(x);
+        x_asSet.add__(x);
         return x_asSet.contained_in(matchSet);
     }
 
 
     template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-    void split_interval_set<DomainT,Interval,Compare,Alloc>::recursive_insert(const value_type& x)
+    void split_interval_set<DomainT,Interval,Compare,Alloc>::add__(const value_type& x)
     {
         if(x.empty()) return;
 
@@ -221,7 +219,7 @@ namespace itl
 
             interval_type leadGap; x.left_surplus(leadGap, cur_itv);
             // this is a new Interval that is a gap in the current map
-            recursive_insert(leadGap);
+            add__(leadGap);
 
             // only for the first there can be a leftResid: a part of *it left of x
             interval_type leftResid;  cur_itv.left_surplus(leftResid, x);
@@ -237,21 +235,21 @@ namespace itl
 
                 interval_type endGap; x.right_surplus(endGap, cur_itv);
                 // this is a new Interval that is a gap in the current map
-                recursive_insert(endGap);
+                add__(endGap);
 
                 // only for the last there can be a rightResid: a part of *it right of x
                 interval_type rightResid;  (*cur_it).right_surplus(rightResid, x);
 
                 this->_set.erase(cur_it);
-                recursive_insert(leftResid);
-                recursive_insert(interSec);
-                recursive_insert(rightResid);
+                add__(leftResid);
+                add__(interSec);
+                add__(rightResid);
             }
             else
             {
                 this->_set.erase(cur_it);
-                recursive_insert(leftResid);
-                recursive_insert(interSec);
+                add__(leftResid);
+                add__(interSec);
 
                 // shrink interval
                 interval_type x_rest(x);
@@ -272,7 +270,7 @@ namespace itl
         
         interval_type newGap; x_itv.left_surplus(newGap, cur_itv);
         // this is a new Interval that is a gap in the current map
-        recursive_insert(newGap);
+        add__(newGap);
 
         interval_type interSec;
         cur_itv.intersect(interSec, x_itv);
@@ -281,19 +279,19 @@ namespace itl
         {
             interval_type endGap; x_itv.right_surplus(endGap, cur_itv);
             // this is a new Interval that is a gap in the current map
-            recursive_insert(endGap);
+            add__(endGap);
 
             // only for the last there can be a rightResid: a part of *it right of x
             interval_type rightResid;  cur_itv.right_surplus(rightResid, x_itv);
 
             this->_set.erase(it);
-            recursive_insert(interSec);
-            recursive_insert(rightResid);
+            add__(interSec);
+            add__(rightResid);
         }
         else
         {        
             this->_set.erase(it);
-            recursive_insert(interSec);
+            add__(interSec);
 
             // shrink interval
             interval_type x_rest(x_itv);
@@ -305,7 +303,7 @@ namespace itl
 
 
     template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-    void split_interval_set<DomainT,Interval,Compare,Alloc>::recursive_subtract(const value_type& x)
+    void split_interval_set<DomainT,Interval,Compare,Alloc>::subtract(const value_type& x)
     {
         if(x.empty()) return;
         if(this->_set.empty()) return;
@@ -340,14 +338,14 @@ namespace itl
             interval_type rightResid;  (*cur_it).right_surplus(rightResid, x);
 
             this->_set.erase(cur_it);
-            recursive_insert(leftResid);
-            recursive_insert(rightResid);
+            add__(leftResid);
+            add__(rightResid);
         }
         else
         {
             // first AND NOT last
             this->_set.erase(cur_it);
-            recursive_insert(leftResid);
+            add__(leftResid);
             subtract_rest(x, snd_it, end_it);
         }
     }

@@ -35,6 +35,7 @@ DEALINGS IN THE SOFTWARE.
 #include <limits>
 #include <string>
 #include <boost/assert.hpp> 
+#include <boost/static_assert.hpp> 
 #include <boost/call_traits.hpp> 
 #include <boost/mpl/bool.hpp> 
 #include <boost/mpl/if.hpp> 
@@ -784,8 +785,8 @@ bool interval<DataT>::lwb_less_equal(const interval& x2)const
 {
 	using namespace boost::mpl;
     if(leftbound_closed() && x2.leftbound_closed()) return _lwb <= x2._lwb;
-    if(leftbound_open()  && x2.leftbound_open())  return _lwb <= x2._lwb;
-    if(leftbound_open() &&  x2.leftbound_closed()) return _lwb <  x2._lwb;
+    if(leftbound_open()   && x2.leftbound_open())   return _lwb <= x2._lwb;
+    if(leftbound_open()   && x2.leftbound_closed()) return _lwb <  x2._lwb;
 
     // OTHERWISE (leftbound_closed() && x2.leftbound_open())
 	return 
@@ -803,8 +804,8 @@ bool interval<DataT>::upb_less_equal(const interval& x2)const
 {
 	using namespace boost::mpl;
     if(rightbound_closed() && x2.rightbound_closed()) return _upb <= x2._upb;
-    if(rightbound_open()  && x2.rightbound_open())  return _upb <= x2._upb;
-    if(rightbound_closed() && x2.rightbound_open())  return _upb <  x2._upb;
+    if(rightbound_open()   && x2.rightbound_open())   return _upb <= x2._upb;
+    if(rightbound_closed() && x2.rightbound_open())   return _upb <  x2._upb;
 
     // OTHERWISE (rightbound_open()  && x2.rightbound_closed())
 	return 
@@ -1073,11 +1074,20 @@ const std::string interval<DataT>::as_string()const
 
 template <class DataT>
 DataT interval<DataT>::first()const
-{ if(leftbound_closed()) return _lwb; else return succ(_lwb); }
+{
+	//JODO: BOOST_STATIC_ASSERT generates compiletime error even if 
+	// code is correctly not used
+	//BOOST_STATIC_ASSERT(!itl::is_continuous<DataT>::value);
+	BOOST_ASSERT(!itl::is_continuous<DataT>::value);
+	if(leftbound_closed()) return _lwb; else return succ(_lwb); 
+}
 
 template <class DataT>
 DataT interval<DataT>::last()const
-{ if(rightbound_closed()) return _upb; else return pred(_upb); }
+{ 
+	BOOST_ASSERT(!itl::is_continuous<DataT>::value);
+	if(rightbound_closed()) return _upb; else return pred(_upb); 
+}
 
 template <class DataT>
 typename interval<DataT>::size_type interval<DataT>::cardinality()const
@@ -1106,11 +1116,15 @@ typename interval<DataT>::difference_type interval<DataT>::length()const
 
 template <class DataT>
 interval<DataT> interval<DataT>::as_closed_interval()const
-{ return interval(first(), last(), CLOSED); }
+{ 
+	return interval(first(), last(), CLOSED); 
+}
 
 template <class DataT>
 interval<DataT> interval<DataT>::as_rightopen_interval()const
-{ return interval(first(), pred(last()), RIGHT_OPEN); }
+{ 
+	return interval(first(), pred(last()), RIGHT_OPEN); 
+}
 
 template <class DataT>
 void interval<DataT>::transform_bounds(bound_types bt)
