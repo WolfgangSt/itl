@@ -258,11 +258,11 @@ public:
 
     /// Add a single element \c x to the set
     interval_base_set& add(const DomainT& x) 
-	{ insert(x); return *this; }
+	{ return add(interval_type(x)); }
 
     /// Add an interval of elements \c x to the set
     interval_base_set& add(const value_type& x) 
-	{ that()->add__(x); return *this; }
+	{ that()->add(x); return *this; }
 
     /// Add an interval of elements \c x to the set
     interval_base_set& operator += (const DomainT& x) 
@@ -270,7 +270,7 @@ public:
 
     /// Add an interval of elements \c x to the set
     interval_base_set& operator += (const value_type& x) 
-    { that()->add__(x); return *this; }
+    { that()->add(x); return *this; }
 
 //@}
 
@@ -303,7 +303,7 @@ public:
     void insert(const DomainT& x) { insert(interval_type(x)); }
 
     /// Insert an interval of elements \c x to the set
-    void insert(const value_type& x) { that()->add__(x); }
+    void insert(const value_type& x) { that()->add(x); }
 
     /// Erase an element \c x from the set
     void erase(const DomainT& x) 

@@ -9,6 +9,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 #define __itl_separate_interval_set_h_JOFA_080608__
 
 #include <itl/interval_base_set.hpp>
+#include <itl/interval_set.hpp>
 #include <itl/j_assert.hpp>
 
 namespace itl
@@ -134,17 +135,17 @@ public:
     /// Copy constructor
     separate_interval_set(const separate_interval_set& src): base_type(src) {}
     /// Constructor for a single interval
-    explicit separate_interval_set(const interval_type& itv): base_type() { add__(itv); }
+    explicit separate_interval_set(const interval_type& itv): base_type() { add(itv); }
 
 
     /// Does the set contain the interval  <tt>x</tt>?
     bool contains(const interval_type& x)const;
 
     /// Insertion of an interval <tt>x</tt>
-    void add__(const value_type& x);
+    base_type& add(const value_type& x);
 
     /// Removal of an interval <tt>x</tt>
-    void subtract(const value_type& x);
+    base_type& subtract(const value_type& x);
 
     /// Treatment of adjoint intervals on insertion
     void handle_neighbours(const iterator& it){}
@@ -161,19 +162,21 @@ bool separate_interval_set<DomainT,Interval,Compare,Alloc>::contains(const inter
 
     interval_set<DomainT,Interval,Compare,Alloc> matchSet;
     for(typename ImplSetT::const_iterator it=fst_it; it!=end_it; it++) 
-        matchSet.add__(*it);
+        matchSet.add(*it);
 
     interval_set<DomainT,Interval,Compare,Alloc> x_asSet; 
-    x_asSet.add__(x);
+    x_asSet.add(x);
     return x_asSet.contained_in(matchSet);
 }
 
 
 
 template<class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void separate_interval_set<DomainT,Interval,Compare,Alloc>::add__(const value_type& x)
+interval_base_set<separate_interval_set<DomainT,Interval,Compare,Alloc>,
+                                        DomainT,Interval,Compare,Alloc>&
+separate_interval_set<DomainT,Interval,Compare,Alloc>::add(const value_type& x)
 {
-    if(x.empty()) return;
+    if(x.empty()) return *this;
 
     std::pair<typename ImplSetT::iterator,bool> insertion = this->_set.insert(x);
 
@@ -198,18 +201,20 @@ void separate_interval_set<DomainT,Interval,Compare,Alloc>::add__(const value_ty
         Interval<DomainT> extended = x;
         extended.extend(leftResid).extend(rightResid);
         extended.extend(rightResid);
-        add__(extended);
+        add(extended);
     }
-
+	return *this;
 }
 
 
 template<class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void separate_interval_set<DomainT,Interval,Compare,Alloc>::subtract(const value_type& x)
+interval_base_set<separate_interval_set<DomainT,Interval,Compare,Alloc>,
+                                        DomainT,Interval,Compare,Alloc>&
+separate_interval_set<DomainT,Interval,Compare,Alloc>::subtract(const value_type& x)
 {
-    if(x.empty()) return;
+    if(x.empty()) return *this;
     typename ImplSetT::iterator fst_it = this->_set.lower_bound(x);
-    if(fst_it==this->_set.end()) return;
+    if(fst_it==this->_set.end()) return *this;
     typename ImplSetT::iterator end_it = this->_set.upper_bound(x);
 
     typename ImplSetT::iterator it=fst_it, nxt_it=fst_it, victim;
@@ -222,8 +227,9 @@ void separate_interval_set<DomainT,Interval,Compare,Alloc>::subtract(const value
         victim = it; it++; this->_set.erase(victim);
     }
 
-    add__(leftResid);
-    add__(rightResid);
+    add(leftResid);
+    add(rightResid);
+	return *this;
 }
 
 

@@ -1079,14 +1079,14 @@ DataT interval<DataT>::first()const
 	// code is correctly not used
 	//BOOST_STATIC_ASSERT(!itl::is_continuous<DataT>::value);
 	BOOST_ASSERT(!itl::is_continuous<DataT>::value);
-	if(leftbound_closed()) return _lwb; else return succ(_lwb); 
+	return leftbound_closed() ? _lwb : succ(_lwb); 
 }
 
 template <class DataT>
 DataT interval<DataT>::last()const
 { 
 	BOOST_ASSERT(!itl::is_continuous<DataT>::value);
-	if(rightbound_closed()) return _upb; else return pred(_upb); 
+	return rightbound_closed() ? _upb : pred(_upb); 
 }
 
 template <class DataT>

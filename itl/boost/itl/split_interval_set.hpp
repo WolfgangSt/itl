@@ -153,7 +153,7 @@ namespace itl
         /// Copy constructor
         split_interval_set(const split_interval_set& src): base_type(src) {}
         /// Constructor for a single interval
-        explicit split_interval_set(const interval_type& itv): base_type() { add__(itv); }
+        explicit split_interval_set(const interval_type& itv): base_type() { add(itv); }
         
 
 
@@ -162,10 +162,10 @@ namespace itl
         bool contains(const interval_type& x)const;
 
         /// Insertion of an interval <tt>x</tt>
-        void add__(const value_type& x);
+        base_type& add(const value_type& x);
 
         /// Removal of an interval <tt>x</tt>
-        void subtract(const value_type& x);
+        base_type& subtract(const value_type& x);
 
         /// Treatment of adjoint intervals on insertion
         void handle_neighbours(const iterator& it){}
@@ -191,18 +191,20 @@ namespace itl
 
         interval_set<DomainT,Interval,Compare,Alloc> matchSet;
         for(typename ImplSetT::const_iterator it=fst_it; it!=end_it; it++) 
-            matchSet.add__(*it);
+            matchSet.add(*it);
 
         interval_set<DomainT,Interval,Compare,Alloc> x_asSet; 
-        x_asSet.add__(x);
+        x_asSet.add(x);
         return x_asSet.contained_in(matchSet);
     }
 
 
     template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-    void split_interval_set<DomainT,Interval,Compare,Alloc>::add__(const value_type& x)
+	interval_base_set<split_interval_set<DomainT,Interval,Compare,Alloc>,
+                                         DomainT,Interval,Compare,Alloc>&
+    split_interval_set<DomainT,Interval,Compare,Alloc>::add(const value_type& x)
     {
-        if(x.empty()) return;
+        if(x.empty()) return *this;
 
         std::pair<typename ImplSetT::iterator,bool> insertion = this->_set.insert(x);
 
@@ -219,7 +221,7 @@ namespace itl
 
             interval_type leadGap; x.left_surplus(leadGap, cur_itv);
             // this is a new Interval that is a gap in the current map
-            add__(leadGap);
+            add(leadGap);
 
             // only for the first there can be a leftResid: a part of *it left of x
             interval_type leftResid;  cur_itv.left_surplus(leftResid, x);
@@ -235,21 +237,21 @@ namespace itl
 
                 interval_type endGap; x.right_surplus(endGap, cur_itv);
                 // this is a new Interval that is a gap in the current map
-                add__(endGap);
+                add(endGap);
 
                 // only for the last there can be a rightResid: a part of *it right of x
                 interval_type rightResid;  (*cur_it).right_surplus(rightResid, x);
 
                 this->_set.erase(cur_it);
-                add__(leftResid);
-                add__(interSec);
-                add__(rightResid);
+                add(leftResid);
+                add(interSec);
+                add(rightResid);
             }
             else
             {
                 this->_set.erase(cur_it);
-                add__(leftResid);
-                add__(interSec);
+                add(leftResid);
+                add(interSec);
 
                 // shrink interval
                 interval_type x_rest(x);
@@ -258,6 +260,7 @@ namespace itl
                 insert_rest(x_rest, snd_it, end_it);
             }
         }
+		return *this;
     }
 
 
@@ -270,7 +273,7 @@ namespace itl
         
         interval_type newGap; x_itv.left_surplus(newGap, cur_itv);
         // this is a new Interval that is a gap in the current map
-        add__(newGap);
+        add(newGap);
 
         interval_type interSec;
         cur_itv.intersect(interSec, x_itv);
@@ -279,19 +282,19 @@ namespace itl
         {
             interval_type endGap; x_itv.right_surplus(endGap, cur_itv);
             // this is a new Interval that is a gap in the current map
-            add__(endGap);
+            add(endGap);
 
             // only for the last there can be a rightResid: a part of *it right of x
             interval_type rightResid;  cur_itv.right_surplus(rightResid, x_itv);
 
             this->_set.erase(it);
-            add__(interSec);
-            add__(rightResid);
+            add(interSec);
+            add(rightResid);
         }
         else
         {        
             this->_set.erase(it);
-            add__(interSec);
+            add(interSec);
 
             // shrink interval
             interval_type x_rest(x_itv);
@@ -303,22 +306,24 @@ namespace itl
 
 
     template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-    void split_interval_set<DomainT,Interval,Compare,Alloc>::subtract(const value_type& x)
+	interval_base_set<split_interval_set<DomainT,Interval,Compare,Alloc>,
+                                         DomainT,Interval,Compare,Alloc>&
+    split_interval_set<DomainT,Interval,Compare,Alloc>::subtract(const value_type& x)
     {
-        if(x.empty()) return;
-        if(this->_set.empty()) return;
+        if(x.empty()) return *this;
+        if(this->_set.empty()) return *this;
 
         iterator fst_it;
         if(x.exclusive_less(*(this->_set.begin())))
-            return;
+            return *this;
         if(x.lower() < this->_set.begin()->upper())
             fst_it = this->_set.begin();
         else
             fst_it = this->_set.lower_bound(x);
 
-        if(fst_it==this->_set.end()) return;
+        if(fst_it==this->_set.end()) return *this;
         iterator end_it = this->_set.upper_bound(x);
-        if(fst_it==end_it) return;
+        if(fst_it==end_it) return *this;
 
         iterator cur_it = fst_it ;
         interval_type cur_itv   = *cur_it ;
@@ -338,16 +343,17 @@ namespace itl
             interval_type rightResid;  (*cur_it).right_surplus(rightResid, x);
 
             this->_set.erase(cur_it);
-            add__(leftResid);
-            add__(rightResid);
+            add(leftResid);
+            add(rightResid);
         }
         else
         {
             // first AND NOT last
             this->_set.erase(cur_it);
-            add__(leftResid);
+            add(leftResid);
             subtract_rest(x, snd_it, end_it);
         }
+		return *this;
     }
 
 

@@ -30,8 +30,8 @@ DEALINGS IN THE SOFTWARE.
 /* ------------------------------------------------------------------
 class interval_set
 --------------------------------------------------------------------*/
-#ifndef __interval_set_h_JOFA_990223__
-#define __interval_set_h_JOFA_990223__
+#ifndef __itl_interval_set_h_JOFA_990223__
+#define __itl_interval_set_h_JOFA_990223__
 
 #include <itl/interval_base_set.hpp>
 #include <itl/j_assert.hpp>
@@ -170,7 +170,7 @@ public:
     /// Copy constructor
     interval_set(const interval_set& src): base_type(src) {}
     /// Constructor for a single interval
-	explicit interval_set(const interval_type& itv): base_type() { add__(itv); }
+	explicit interval_set(const interval_type& itv): base_type() { add(itv); }
 
 
 
@@ -183,7 +183,7 @@ public:
 
 
     /// Insertion of an interval <tt>x</tt>
-    void add__(const value_type& x);
+    base_type& add(const value_type& x);
 
     /// Removal of an interval <tt>x</tt>
     base_type& subtract(const value_type& x);
@@ -283,9 +283,11 @@ typename interval_set<DomainT,Interval,Compare,Alloc>::iterator
 
 
 template<class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_set<DomainT,Interval,Compare,Alloc>::add__(const value_type& x)
+interval_base_set<interval_set<DomainT,Interval,Compare,Alloc>,
+                               DomainT,Interval,Compare,Alloc>&
+interval_set<DomainT,Interval,Compare,Alloc>::add(const value_type& x)
 {
-    if(x.empty()) return;
+    if(x.empty()) return *this;
 
     std::pair<typename ImplSetT::iterator,bool> insertion = this->_set.insert(x);
 
@@ -310,9 +312,9 @@ void interval_set<DomainT,Interval,Compare,Alloc>::add__(const value_type& x)
         Interval<DomainT> extended = x;
         extended.extend(leftResid).extend(rightResid);
         extended.extend(rightResid);
-        add__(extended);
+        add(extended);
     }
-
+	return *this;
 }
 
 
@@ -336,8 +338,8 @@ interval_set<DomainT,Interval,Compare,Alloc>::subtract(const value_type& x)
         victim = it; it++; this->_set.erase(victim);
     }
 
-    add__(leftResid);
-    add__(rightResid);
+    add(leftResid);
+    add(rightResid);
 
 	return *this;
 }
