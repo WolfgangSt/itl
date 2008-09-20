@@ -339,7 +339,7 @@ public:
     interval() : _lwb(unon<DataT>::value()), _upb(neutron<DataT>::value()), 
                  _boundtypes(CLOSED) {}
     /// Constructor for a closed singleton interval <tt>[val,val]</tt>
-    interval(const DataT& val) : 
+    explicit interval(const DataT& val) : 
         _lwb(val), _upb(val), _boundtypes(CLOSED) {}
     /// Closed interval <tt>[lw,up]</tt>
     interval(const DataT& lw, const DataT& up) : 
