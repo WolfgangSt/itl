@@ -73,6 +73,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_ctor_4_bicremental_types, T, bic
 
 	itl::interval<T> j_4_4(I4_4I);
 	BOOST_CHECK_EQUAL( I4_4I, j_4_4 );
+	interval<T> k_4_4;
+	k_4_4 = j_4_4;
+	BOOST_CHECK_EQUAL( I4_4I, k_4_4 );
 
 	T v2 = make<T>(2);
 	BOOST_CHECK_EQUAL( closed_interval<T>(v2, v4),    interval<T>(v2, v4) );

@@ -152,11 +152,27 @@ namespace itl
         split_interval_set(): base_type() {}
         /// Copy constructor
         split_interval_set(const split_interval_set& src): base_type(src) {}
+
+		/// Copy constructor for base_type
+		template<class SubType>
+		split_interval_set
+			(const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
+		{ assign(src); }
+
         /// Constructor for a single element
         explicit split_interval_set(const interval_type& elem): base_type() { add(elem); }
         /// Constructor for a single interval
         explicit split_interval_set(const domain_type& itv): base_type() { add(itv); }
-        
+
+		/// Assignment from a base interval_set.
+		template<class SubType>
+		void assign(const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
+		{
+			typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> base_set_type;
+			// Can be implemented via _set.insert: Interval joining not necessary.
+			const_FORALL(base_set_type, it, src) 
+				this->_set.insert(*it); 
+		}
         
         /// Does the set contain the interval  <tt>x</tt>?
         bool contains_(const interval_type& x)const;

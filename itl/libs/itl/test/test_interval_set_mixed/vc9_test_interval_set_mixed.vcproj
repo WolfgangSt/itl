@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="vc9_test_split_interval_set"
-	ProjectGUID="{EE61B7EF-EC45-4165-8B49-FD5B7D4A9F9C}"
-	RootNamespace="Test_split_interval_set"
+	Name="vc9_test_interval_set_mixed"
+	ProjectGUID="{EE61B7EF-EC45-4165-8B49-FD5B8D3A9F9E}"
+	RootNamespace="Test_interval_set_mixed"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="131072"
 	>
@@ -180,7 +180,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\test_split_interval_set.cpp"
+				RelativePath=".\test_interval_set_mixed.cpp"
 				>
 			</File>
 		</Filter>
@@ -190,7 +190,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\..\..\boost\itl\split_interval_set.hpp"
+				RelativePath="..\..\..\..\boost\itl\interval_set_mixed.hpp"
 				>
 			</File>
 			<File

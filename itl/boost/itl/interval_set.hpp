@@ -169,12 +169,29 @@ public:
     interval_set(): base_type() {}
     /// Copy constructor
     interval_set(const interval_set& src): base_type(src) {}
+
+	/// Copy constructor for base_type
+	template<class SubType>
+    interval_set
+		(const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
+	{ assign(src); }
+
     /// Constructor for a single element
 	explicit interval_set(const domain_type& itv): base_type() 
 	{ add(interval_type(itv)); }
     /// Constructor for a single interval
 	explicit interval_set(const interval_type& itv): base_type() 
 	{ add(itv); }
+
+    /// Assignment from a base interval_set.
+	template<class SubType>
+	void assign(const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
+	{
+		typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> base_set_type;
+		// Has to be implemented via add. there might be touching borders to be joined
+		const_FORALL(base_set_type, it, src) 
+			this->add(*it);
+	}
 
     /// Does the set contain the interval  <tt>x</tt>?
     bool contains_(const interval_type& x)const;

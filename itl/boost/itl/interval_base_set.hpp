@@ -174,14 +174,20 @@ public:
     /// Default constructor for the empty set 
     interval_base_set(){}
     /// Copy constructor
-    interval_base_set(const interval_base_set& src): _set(src._set) {}
+    interval_base_set(const interval_base_set& src): _set() 
+	{ 
+		that()->assign(src); 
+	}
 
     /// Assignment operator
     interval_base_set& operator = (const interval_base_set& src) 
+	{ that()->assign(src); return *this; }
+	/*CL
     { 
         _set.ImplSetT::operator=(src._set);
         return *this;  
     }
+	*/
 
     // ------------------------------------------------------------------------
     // Basic set concept

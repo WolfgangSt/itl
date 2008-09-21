@@ -134,7 +134,14 @@ public:
     separate_interval_set(): base_type() {}
     /// Copy constructor
     separate_interval_set(const separate_interval_set& src): base_type(src) {}
-    /// Constructor for a single interval
+
+	/// Copy constructor for base_type
+	template<class SubType>
+    separate_interval_set
+		(const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
+	{ assign(src); }
+
+    /// Constructor for a single element
     explicit separate_interval_set(const domain_type& elem): base_type() { add(elem); }
     /// Constructor for a single interval
     explicit separate_interval_set(const interval_type& itv): base_type() { add(itv); }
@@ -142,6 +149,17 @@ public:
 
     /// Does the set contain the interval  <tt>x</tt>?
     bool contains_(const interval_type& x)const;
+
+	/// Assignment from a base interval_set.
+	template<class SubType>
+	void assign(const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
+	{
+		typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> base_set_type;
+		// Can be implemented via _set.insert: Interval joining not necessary.
+		const_FORALL(base_set_type, it, src) 
+			this->_set.insert(*it); 
+	}
+
 
     /// Insertion of an interval <tt>x</tt>
     void add_(const value_type& x);

@@ -190,6 +190,42 @@ template <template<class T, template<class>class = itl::interval,
 							template<class>class = std::allocator
                   >class IntervalSet, 
           class T>
+void interval_set_add_sub_4_bicremental_types()
+{
+	T v0 = make<T>(0);
+	T v5 = make<T>(5);
+	T v6 = make<T>(6);
+	T v9 = make<T>(9);
+	interval<T> I5_6I(v5,v6);
+	interval<T> I5_9I(v5,v9);
+
+	BOOST_CHECK_EQUAL( IntervalSet<T>(I5_6I).add(v0).add(v9), 
+		               IntervalSet<T>().insert(v9).insert(I5_6I).insert(v0) );
+
+	IntervalSet<T> set_A = IntervalSet<T>(I5_6I).add(v0).add(v9);
+	IntervalSet<T> set_B = IntervalSet<T>().insert(v9).insert(I5_6I).insert(v0);
+	BOOST_CHECK_EQUAL( set_A, set_B );
+
+	IntervalSet<T> set_A1 = set_A, set_B1 = set_B,
+	               set_A2 = set_A, set_B2 = set_B;
+
+	set_A1.subtract(I5_6I).subtract(v9);
+	set_B1.erase(v9).erase(I5_6I);
+	BOOST_CHECK_EQUAL( set_A1, set_B1 );
+
+	set_A2.subtract(I5_9I);
+	set_B2.erase(I5_9I);
+	BOOST_CHECK_EQUAL( set_A1, set_B1 );
+	BOOST_CHECK_EQUAL( set_A1, set_A2 );
+	BOOST_CHECK_EQUAL( set_B1, set_B2 );
+}
+
+
+template <template<class T, template<class>class = itl::interval,
+                            template<class>class = std::less,
+							template<class>class = std::allocator
+                  >class IntervalSet, 
+          class T>
 void interval_set_distinct_4_bicremental_types()
 {
 	typedef typename IntervalSet<T>::size_type       size_T;
