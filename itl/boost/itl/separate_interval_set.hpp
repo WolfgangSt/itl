@@ -254,6 +254,29 @@ inline bool is_element_equal(const separate_interval_set<DomainT,Interval,Compar
     return std::equal(lhs.begin(), lhs.end(), rhs.begin());
 }
 
+
+//-----------------------------------------------------------------------------
+// addition (set union) += and subtraction (set difference) -=
+//-----------------------------------------------------------------------------
+template 
+<
+    class SubType, class DomainT, template<class>class Interval, 
+    template<class>class Compare, template<class>class Alloc
+>
+interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
+operator +=
+(
+          interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
+    const separate_interval_set    <DomainT,Interval,Compare,Alloc>& operand
+)
+{
+	typedef itl::separate_interval_set<DomainT,Interval,Compare,Alloc> set_type;
+    const_FORALL(typename set_type, elem_, operand) 
+        object.add(*elem_); 
+
+    return object; 
+}
+
 template <class Type>
 struct type<itl::separate_interval_set<Type> >
 {

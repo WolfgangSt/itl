@@ -368,11 +368,11 @@ public:
 /** @name G.jodo: JODO */
 
     /// Union with set <tt>x</tt>
-    interval_base_set& operator +=(const interval_base_set& x)
-    { 
-        const_FORALL(typename ImplSetT, it, x._set) insert(*it); 
-        return *this; 
-    }
+    //CL? interval_base_set& operator +=(const interval_base_set& x)
+    //{ 
+    //    const_FORALL(typename ImplSetT, it, x._set) insert(*it); 
+    //    return *this; 
+    //}
 
     /// Perform set difference with the set <tt>x</tt>
     interval_base_set& operator -= (const interval_base_set& x)
