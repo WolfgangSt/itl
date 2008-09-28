@@ -352,12 +352,33 @@ void interval_set<DomainT,Interval,Compare,Alloc>::subtract_(const value_type& x
 }
 
 
+//-----------------------------------------------------------------------------
+// equality of elements
+//-----------------------------------------------------------------------------
 template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 inline bool is_element_equal(const interval_set<DomainT,Interval,Compare,Alloc>& lhs,
                              const interval_set<DomainT,Interval,Compare,Alloc>& rhs)
 {
-    return std::equal(lhs.begin(), lhs.end(), rhs.begin());
+	return &lhs == &rhs || Set::lexicographical_equal(lhs, rhs);
 }
+
+template 
+<
+    class SubType, class DomainT, template<class>class Interval, 
+    template<class>class Compare, template<class>class Alloc
+>
+inline bool 
+is_element_equal
+(
+    const interval_set             <DomainT,Interval,Compare,Alloc>& lhs,
+    const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& rhs
+)
+{
+	typedef itl::interval_set<DomainT,Interval,Compare,Alloc> joined_type;
+	joined_type joined_rhs(rhs);
+	return Set::lexicographical_equal(lhs, joined_rhs);
+}
+
 
 //-----------------------------------------------------------------------------
 // addition (set union) += and subtraction (set difference) -=
@@ -381,6 +402,43 @@ operator +=
     return object; 
 }
 
+template 
+<
+    class SubType, class DomainT, template<class>class Interval, 
+    template<class>class Compare, template<class>class Alloc
+>
+interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
+operator -=
+(
+          interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
+    const interval_set             <DomainT,Interval,Compare,Alloc>& operand
+)
+{
+	typedef itl::interval_set<DomainT,Interval,Compare,Alloc> set_type;
+    const_FORALL(typename set_type, elem_, operand) 
+        object.subtract(*elem_); 
+
+    return object; 
+}
+
+template 
+<
+    class SubType, class DomainT, template<class>class Interval, 
+    template<class>class Compare, template<class>class Alloc
+>
+interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
+erase
+(
+          interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
+    const interval_set             <DomainT,Interval,Compare,Alloc>& operand
+)
+{
+    return object -= operand;
+}
+
+//-----------------------------------------------------------------------------
+// intersection *=
+//-----------------------------------------------------------------------------
 
 
 template <class Type>

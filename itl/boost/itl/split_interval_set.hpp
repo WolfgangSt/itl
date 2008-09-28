@@ -408,17 +408,52 @@ namespace itl
     inline bool operator == (const split_interval_set<DomainT,Interval,Compare,Alloc>& lhs,
                              const split_interval_set<DomainT,Interval,Compare,Alloc>& rhs)
     {
-        return std::equal(lhs.begin(), lhs.end(), rhs.begin());
+		//MEMO PORT: This implemetation worked with stlport, sgi and gnu 
+		// implementations of the stl. But using MSVC-implementation
+		// results in runtime error! So I had to provide an independent
+		// safe implemetation.
+		//return std::equal(lhs.begin(), lhs.end(), rhs.begin());
+		return Set::lexicographical_equal(lhs, rhs);
     }
 
-    template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-    inline bool is_element_equal(const split_interval_set<DomainT,Interval,Compare,Alloc>& lhs,
-                                 const split_interval_set<DomainT,Interval,Compare,Alloc>& rhs)
-    {
-        split_interval_set<DomainT,Interval,Compare,Alloc> lhs_joined = lhs, rhs_joined = rhs;
-        lhs_joined.join(); rhs_joined.join();
-        return std::equal(lhs_joined.begin(), lhs_joined.end(), rhs_joined.begin());
-    }
+	template 
+	<
+		class DomainT, template<class>class Interval, 
+		template<class>class Compare, template<class>class Alloc
+	>
+	inline bool 
+	is_element_equal
+	(
+		const split_interval_set<DomainT,Interval,Compare,Alloc>& lhs,
+		const split_interval_set<DomainT,Interval,Compare,Alloc>& rhs
+	)
+	{
+		typedef itl::interval_set<DomainT,Interval,Compare,Alloc> joined_type;
+		if(&lhs == &rhs)
+			return true;
+		//OTHERWISE
+		joined_type joined_lhs(lhs);
+		joined_type joined_rhs(rhs);
+		return Set::lexicographical_equal(joined_lhs, joined_rhs);
+	}
+
+	template 
+	<
+		class SubType, class DomainT, template<class>class Interval, 
+		template<class>class Compare, template<class>class Alloc
+	>
+	inline bool 
+	is_element_equal
+	(
+		const split_interval_set    <DomainT,Interval,Compare,Alloc>& lhs,
+		const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& rhs
+	)
+	{
+		typedef itl::interval_set<DomainT,Interval,Compare,Alloc> joined_type;
+		joined_type joined_lhs(lhs);
+		joined_type joined_rhs(rhs);
+		return Set::lexicographical_equal(joined_lhs, joined_rhs);
+	}
 
     template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
     inline bool operator < (const split_interval_set<DomainT,Interval,Compare,Alloc>& lhs,
@@ -436,7 +471,6 @@ namespace itl
 	//-----------------------------------------------------------------------------
 	// addition (set union) += and subtraction (set difference) -=
 	//-----------------------------------------------------------------------------
-
 	template 
 	<
 		class SubType, class DomainT, template<class>class Interval, 
@@ -456,6 +490,41 @@ namespace itl
 		return object; 
 	}
 
+
+	template 
+	<
+		class SubType, class DomainT, template<class>class Interval, 
+		template<class>class Compare, template<class>class Alloc
+	>
+	interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
+	operator -=
+	(
+			  interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
+		const split_interval_set       <DomainT,Interval,Compare,Alloc>& operand
+	)
+	{
+		typedef split_interval_set<DomainT,Interval,Compare,Alloc> set_type;
+		const_FORALL(typename set_type, elem_, operand) 
+			object.subtract(*elem_); 
+
+		return object; 
+	}
+
+
+	template 
+	<
+		class SubType, class DomainT, template<class>class Interval, 
+		template<class>class Compare, template<class>class Alloc
+	>
+	interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
+	erase
+	(
+			  interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
+		const split_interval_set       <DomainT,Interval,Compare,Alloc>& operand
+	)
+	{
+		return object -= operand;
+	}
 
 
     template <class Type>

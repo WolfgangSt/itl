@@ -247,11 +247,46 @@ void separate_interval_set<DomainT,Interval,Compare,Alloc>::subtract_(const valu
 }
 
 
-template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-inline bool is_element_equal(const separate_interval_set<DomainT,Interval,Compare,Alloc>& lhs,
-                             const separate_interval_set<DomainT,Interval,Compare,Alloc>& rhs)
+//-----------------------------------------------------------------------------
+// equality of elements
+//-----------------------------------------------------------------------------
+template 
+<
+	class DomainT, template<class>class Interval, 
+	template<class>class Compare, template<class>class Alloc
+>
+inline bool 
+is_element_equal
+(
+	const separate_interval_set<DomainT,Interval,Compare,Alloc>& lhs,
+	const separate_interval_set<DomainT,Interval,Compare,Alloc>& rhs
+)
 {
-    return std::equal(lhs.begin(), lhs.end(), rhs.begin());
+	typedef itl::interval_set<DomainT,Interval,Compare,Alloc> joined_type;
+	if(&lhs == &rhs)
+		return true;
+	//OTHERWISE
+	joined_type joined_lhs(lhs);
+	joined_type joined_rhs(rhs);
+	return Set::lexicographical_equal(joined_lhs, joined_rhs);
+}
+
+template 
+<
+    class SubType, class DomainT, template<class>class Interval, 
+    template<class>class Compare, template<class>class Alloc
+>
+inline bool 
+is_element_equal
+(
+    const separate_interval_set    <DomainT,Interval,Compare,Alloc>& lhs,
+    const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& rhs
+)
+{
+	typedef itl::interval_set<DomainT,Interval,Compare,Alloc> joined_type;
+	joined_type joined_lhs(lhs);
+	joined_type joined_rhs(rhs);
+	return Set::lexicographical_equal(joined_lhs, joined_rhs);
 }
 
 
@@ -276,6 +311,42 @@ operator +=
 
     return object; 
 }
+
+template 
+<
+    class SubType, class DomainT, template<class>class Interval, 
+    template<class>class Compare, template<class>class Alloc
+>
+interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
+operator -=
+(
+          interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
+    const separate_interval_set    <DomainT,Interval,Compare,Alloc>& operand
+)
+{
+	typedef itl::separate_interval_set<DomainT,Interval,Compare,Alloc> set_type;
+    const_FORALL(typename set_type, elem_, operand) 
+        object.subtract(*elem_); 
+
+    return object; 
+}
+
+template 
+<
+    class SubType, class DomainT, template<class>class Interval, 
+    template<class>class Compare, template<class>class Alloc
+>
+interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
+erase
+(
+          interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
+    const separate_interval_set    <DomainT,Interval,Compare,Alloc>& operand
+)
+{
+    return object -= operand;
+}
+
+
 
 template <class Type>
 struct type<itl::separate_interval_set<Type> >

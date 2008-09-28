@@ -182,12 +182,6 @@ public:
     /// Assignment operator
     interval_base_set& operator = (const interval_base_set& src) 
 	{ that()->assign(src); return *this; }
-	/*CL
-    { 
-        _set.ImplSetT::operator=(src._set);
-        return *this;  
-    }
-	*/
 
     // ------------------------------------------------------------------------
     // Basic set concept
@@ -366,20 +360,6 @@ public:
 
 //-----------------------------------------------------------------------------
 /** @name G.jodo: JODO */
-
-    /// Union with set <tt>x</tt>
-    //CL? interval_base_set& operator +=(const interval_base_set& x)
-    //{ 
-    //    const_FORALL(typename ImplSetT, it, x._set) insert(*it); 
-    //    return *this; 
-    //}
-
-    /// Perform set difference with the set <tt>x</tt>
-    interval_base_set& operator -= (const interval_base_set& x)
-    { 
-        const_FORALL(typename ImplSetT, it, x._set) subtract(*it); 
-        return *this; 
-    }
 
     /// Join bordering intervals    
     interval_base_set& join();
