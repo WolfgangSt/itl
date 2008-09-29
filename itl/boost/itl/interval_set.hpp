@@ -188,6 +188,7 @@ public:
 	void assign(const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
 	{
 		typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> base_set_type;
+		this->clear();
 		// Has to be implemented via add. there might be touching borders to be joined
 		const_FORALL(base_set_type, it, src) 
 			this->add(*it);
@@ -439,6 +440,36 @@ erase
 //-----------------------------------------------------------------------------
 // intersection *=
 //-----------------------------------------------------------------------------
+template 
+<
+	class SubType, class DomainT, template<class>class Interval, 
+	template<class>class Compare, template<class>class Alloc
+>
+interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
+operator *=
+(
+		  interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
+	const interval_set             <DomainT,Interval,Compare,Alloc>& operand
+)
+{
+	typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> object_type;
+	typedef interval_set             <DomainT,Interval,Compare,Alloc> operand_type;
+	object_type intersection;
+
+	if(operand.empty())
+	{
+		object.clear();
+		return object;
+	}
+
+	const_FORALL(operand_type, it, operand)
+		object.add_intersection(intersection, *it);
+
+	object.swap(intersection);
+
+	return object; 
+}
+
 
 
 template <class Type>

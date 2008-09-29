@@ -510,35 +510,85 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_set_mixed_intersect_4_bicrementa
 
 	interval<T> I0_3D = rightopen_interval(v0,v3);
 	interval<T> I1_2D = rightopen_interval(v1,v2);
+	interval<T> I1_3D = rightopen_interval(v1,v3);
 	interval<T> I2_3D = rightopen_interval(v2,v3);
 	interval<T> I2_4D = rightopen_interval(v2,v4);
 	interval<T> I5_8D = rightopen_interval(v5,v8);
 	interval<T> I6_8D = rightopen_interval(v6,v8);
 	interval<T> I6_9D = rightopen_interval(v6,v9);
 
-	//spl     [0          3)       [6   9)
-	//spl *=      [1 2)[2    4) [5    8)
-	//spl ->      [1 2)[2 3)       [6 8)
-	split_interval_set<T>    split_A, split_B, split_AB, split_ab;
+	//--------------------------------------------------------------------------
+	// split_interval_set
+	//--------------------------------------------------------------------------
+	//split_A      [0          3)       [6   9)
+	//split_B  *=      [1 2)[2    4) [5    8)
+	//split_AB ->      [1 2)[2 3)       [6 8)
+	split_interval_set<T>    split_A, split_B, split_AB, split_ab, split_ab_jn;
 	separate_interval_set<T> sep_A,   sep_B,   sep_AB,   sep_ab;
 	interval_set<T>          join_A,  join_B,  join_AB,  join_ab;
 
 	split_A.add(I0_3D).add(I6_9D);
 	split_B.add(I1_2D).add(I2_4D).add(I5_8D);
 	split_ab.add(I1_2D).add(I2_3D).add(I6_8D);
+	split_ab_jn.add(I1_3D).add(I6_8D);
 	split_AB = split_A;
 	split_AB *= split_B;
 	BOOST_CHECK_EQUAL( split_AB.iterative_size(), 3 );
 	BOOST_CHECK_EQUAL( split_AB, split_ab );
 
-	/*
-	//spl     [0          3)       [6   9)
-	//sep *=      [1 2)[2    4) [5    8)
-	//spl ->      [1 2)[2 3)       [6 8)
+	//split_A      [0          3)       [6   9)
+	//sep_B    *=      [1 2)[2    4) [5    8)
+	//split_AB ->      [1 2)[2 3)       [6 8)
 	split_AB = split_A;
 	sep_B = split_B;
 	split_AB *= sep_B;
 	BOOST_CHECK_EQUAL( split_AB.iterative_size(), 3 );
 	BOOST_CHECK_EQUAL( split_AB, split_ab );
-	*/
+	
+	//split_A      [0          3)       [6   9)
+	//join_B   *=      [1         4) [5    8)
+	//split_AB ->      [1      3)       [6 8)
+	split_AB = split_A;
+	join_B = split_B;
+	split_AB *= join_B;
+
+	BOOST_CHECK_EQUAL( split_AB.iterative_size(), 2 );
+	BOOST_CHECK_EQUAL( split_AB, split_ab_jn );
+	
+	//--------------------------------------------------------------------------
+	// separate_interval_set
+	//--------------------------------------------------------------------------
+	//sep_A      [0          3)       [6   9)
+	//sep_B  *=      [1 2)[2    4) [5    8)
+	//sep_AB ->      [1 2)[2 3)       [6 8)
+	sep_ab = split_ab;
+	BOOST_CHECK_EQUAL( sep_ab.iterative_size(), 3 );
+
+	sep_AB = split_A;
+	sep_B  = split_B;
+	sep_AB *= sep_B;
+
+	BOOST_CHECK_EQUAL( sep_AB.iterative_size(), 3 );
+	BOOST_CHECK_EQUAL( sep_AB, sep_ab );
+	
+	//sep_A       [0          3)       [6   9)
+	//split_B *=      [1 2)[2    4) [5    8)
+	//sep_AB  ->      [1 2)[2 3)       [6 8)
+	sep_AB = split_A;
+	sep_AB *= split_B;
+
+	BOOST_CHECK_EQUAL( sep_AB.iterative_size(), 3 );
+	BOOST_CHECK_EQUAL( sep_AB, sep_ab );
+	
+	//sep_A       [0         3)        [6   9)
+	//join_B *=      [1          4) [5    8)
+	//sep_AB ->      [1      3)        [6 8)
+	separate_interval_set<T> sep_ab_jn = split_ab_jn;
+	sep_AB = split_A;
+	join_B = split_B;
+	sep_AB *= join_B;
+
+	BOOST_CHECK_EQUAL( sep_AB.iterative_size(), 2 );
+	BOOST_CHECK_EQUAL( sep_AB, sep_ab_jn );
+	
 }

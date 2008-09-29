@@ -169,6 +169,10 @@ namespace itl
 		void assign(const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
 		{
 			typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> base_set_type;
+			//JODO
+			//if(this == &src)
+			//	return;
+			this->clear();
 			// Can be implemented via _set.insert: Interval joining not necessary.
 			const_FORALL(base_set_type, it, src) 
 				this->_set.insert(*it); 
@@ -524,6 +528,40 @@ namespace itl
 	)
 	{
 		return object -= operand;
+	}
+
+
+	//-----------------------------------------------------------------------------
+	// intersection *= 
+	//-----------------------------------------------------------------------------
+	template 
+	<
+		class SubType, class DomainT, template<class>class Interval, 
+		template<class>class Compare, template<class>class Alloc
+	>
+	interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
+	operator *=
+	(
+			  interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
+		const split_interval_set       <DomainT,Interval,Compare,Alloc>& operand
+	)
+	{
+		typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> object_type;
+		typedef split_interval_set       <DomainT,Interval,Compare,Alloc> operand_type;
+		object_type intersection;
+
+		if(operand.empty())
+		{
+			object.clear();
+			return object;
+		}
+
+		const_FORALL(operand_type, it, operand)
+			object.add_intersection(intersection, *it);
+
+		object.swap(intersection);
+
+		return object; 
 	}
 
 

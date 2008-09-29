@@ -181,7 +181,10 @@ public:
 
     /// Assignment operator
     interval_base_set& operator = (const interval_base_set& src) 
-	{ that()->assign(src); return *this; }
+	{ 
+		that()->assign(src); 
+		return *this; 
+	}
 
     // ------------------------------------------------------------------------
     // Basic set concept
@@ -218,6 +221,18 @@ public:
     /// upper bound of all intervals in the set
     DomainT upper()const 
 	{ BOOST_ASSERT(!empty()); return (*(_set.rbegin())).upper(); }
+
+	iterator lower_bound(const value_type& interval)
+	{ return _set.lower_bound(interval); }
+
+	iterator upper_bound(const value_type& interval)
+	{ return _set.upper_bound(interval); }
+
+	const_iterator lower_bound(const value_type& interval)const
+	{ return _set.lower_bound(interval); }
+
+	const_iterator upper_bound(const value_type& interval)const
+	{ return _set.upper_bound(interval); }
 
     /// first (smallest) interval in the set
     interval_type first_interval()const 
@@ -333,6 +348,9 @@ public:
         <tt>sec.nOfIntervals()==1</tt> and <tt>*(sec.begin())==x</tt> 
     */
     void intersect(interval_base_set& section, const value_type& x)const;
+
+	//JODO doku; welche intersect-varianten kann ich ganz los werden.
+    void add_intersection(interval_base_set& section, const value_type& x)const;
 
     /** Perform intersection of <tt>*this</tt> and <tt>x</tt>; assign result
         to <tt>section</tt>
@@ -616,8 +634,28 @@ void interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::intersect(interv
     typename ImplSetT::const_iterator end_it = _set.upper_bound(x);
 
     for(typename ImplSetT::const_iterator it=fst_it; it != end_it; it++) {
-        interval_type isec; (*it).intersect(isec, x);
+        interval_type isec; 
+		(*it).intersect(isec, x);
         section.insert(isec);
+    }
+}
+
+
+template<class SubType,
+         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+void interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::add_intersection(interval_base_set& section, const value_type& x)const
+{
+    // any intersection with the empty intervall is empty
+    if(x.empty()) 
+		return;
+
+    typename ImplSetT::const_iterator fst_it = _set.lower_bound(x);
+    typename ImplSetT::const_iterator end_it = _set.upper_bound(x);
+
+    for(typename ImplSetT::const_iterator it=fst_it; it != end_it; it++) {
+        interval_type isec; 
+		(*it).intersect(isec, x);
+        section.add(isec);
     }
 }
 
