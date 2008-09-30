@@ -356,7 +356,8 @@ void interval_set<DomainT,Interval,Compare,Alloc>::subtract_(const value_type& x
 //-----------------------------------------------------------------------------
 // equality of elements
 //-----------------------------------------------------------------------------
-template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+template <typename DomainT, template<class>class Interval, 
+          template<class>class Compare, template<class>class Alloc>
 inline bool is_element_equal(const interval_set<DomainT,Interval,Compare,Alloc>& lhs,
                              const interval_set<DomainT,Interval,Compare,Alloc>& rhs)
 {

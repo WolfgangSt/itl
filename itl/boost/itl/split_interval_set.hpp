@@ -169,9 +169,6 @@ namespace itl
 		void assign(const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
 		{
 			typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> base_set_type;
-			//JODO
-			//if(this == &src)
-			//	return;
 			this->clear();
 			// Can be implemented via _set.insert: Interval joining not necessary.
 			const_FORALL(base_set_type, it, src) 
@@ -555,6 +552,22 @@ namespace itl
 			object.clear();
 			return object;
 		}
+
+		//JODO
+		//operand_type::const_iterator common_lwb;
+		//operand_type::const_iterator common_upb;
+		//if(!Set::common_range(common_lwb, common_upb, object, operand))
+		//{
+		//	object.clear();
+		//	return object;
+		//}
+
+		//operand_type::const_iterator it = common_lwb;
+		//while(it != common_upb)
+		//{
+		//	object.add_intersection(intersection, *it);
+		//	++it;
+		//}
 
 		const_FORALL(operand_type, it, operand)
 			object.add_intersection(intersection, *it);

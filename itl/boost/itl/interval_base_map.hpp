@@ -280,8 +280,8 @@ public:
     { return contained_in(x2) && x2.contained_in(*this); }
 
     ///  <tt>*this</tt> and <tt>x2</tt> are disjoint; their intersection is empty.
-    bool disjoint_to(const interval_base_map& x2)const
-    { return ( empty() || x2.empty() || last_interval().exclusive_less(x2.first_interval()) ); }
+    //JODO bool disjoint_to(const interval_base_map& x2)const
+    //wrong: { return ( empty() || x2.empty() || last_interval().exclusive_less(x2.first_interval()) ); }
 //@}
 
 //-----------------------------------------------------------------------------

@@ -175,14 +175,15 @@ public:
     interval_base_set(){}
     /// Copy constructor
     interval_base_set(const interval_base_set& src): _set() 
-	{ 
-		that()->assign(src); 
-	}
+	{ that()->assign(src); }
 
     /// Assignment operator
     interval_base_set& operator = (const interval_base_set& src) 
 	{ 
-		that()->assign(src); 
+		if(this==&src) 
+			return *this;
+
+		that()->assign(src);
 		return *this; 
 	}
 
@@ -222,6 +223,11 @@ public:
     DomainT upper()const 
 	{ BOOST_ASSERT(!empty()); return (*(_set.rbegin())).upper(); }
 
+	/// enclosing Interval
+    interval_type enclosure()const 
+	{ BOOST_ASSERT(!empty()); return first_interval().span(last_interval()); }
+
+
 	iterator lower_bound(const value_type& interval)
 	{ return _set.lower_bound(interval); }
 
@@ -241,10 +247,6 @@ public:
     interval_type last_interval()const 
 	{ BOOST_ASSERT(!empty()); return (*(_set.rbegin())); }
 
-    /// enclosing Interval
-    interval_type enclosure()const 
-	{ BOOST_ASSERT(!empty()); return first_interval().span(last_interval()); }
-
     /// number of intervals
 	std::size_t interval_count()const { return _set.size(); }
     std::size_t iterative_size()const { return _set.size(); }
@@ -255,8 +257,8 @@ public:
     */
 //@{
     /// Equality
-    bool equal(const interval_base_set& x2)const
-    { return contained_in(x2) && x2.contained_in(*this); }
+    //CL bool equal(const interval_base_set& x2)const
+    //{ return contained_in(x2) && x2.contained_in(*this); }
 
     ///  <tt>*this</tt> and <tt>x2</tt> are disjoint; their intersection is empty.
     bool disjoint_to(const interval_base_set& x2)const;
@@ -355,7 +357,7 @@ public:
     /** Perform intersection of <tt>*this</tt> and <tt>x</tt>; assign result
         to <tt>section</tt>
     */
-    void intersect(interval_base_set& section, const interval_base_set& x)const;
+    //CL void intersect(interval_base_set& section, const interval_base_set& x)const;
 
 	interval_base_set& operator *= (const domain_type& x)
 	{ return (*this) *= interval_type(x); }
@@ -373,7 +375,7 @@ public:
 
         Aufruf <tt>x *= y</tt> bedeutet <tt>x = x geschnitten mit y </tt>
     */
-    interval_base_set& operator *= (const interval_base_set& x);
+    //CL interval_base_set& operator *= (const interval_base_set& x);
 //@}
 
 //-----------------------------------------------------------------------------
@@ -382,23 +384,6 @@ public:
     /// Join bordering intervals    
     interval_base_set& join();
 
-    interval_base_set& scale_up(DomainT factor, DomainT max)
-    { 
-        FORALL(typename ImplSetT, it, _set) 
-            (const_cast<interval_type&>(*it)).scale_up(factor, max); 
-        return *this; 
-    }
-    
-    interval_base_set& scale_up(const interval_base_set& src, DomainT factor, DomainT max);
-
-    interval_base_set& scale_down(DomainT factor)
-    { 
-        FORALL(typename ImplSetT, it, _set) 
-            (const_cast<interval_type&>(*it)).scale_down(factor); 
-        return *this; 
-    }
-    
-    interval_base_set& scale_down(const interval_base_set& src, DomainT factor);
 //@}
 
 
@@ -662,38 +647,6 @@ void interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::add_intersection
 
 template<class SubType,
          class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::intersect(interval_base_set& interSection, 
-                                            const interval_base_set& x)const
-{
-    interSection.clear();
-    if(x.empty()) return;
-
-    interval_base_set<SubType,DomainT,Interval,Compare,Alloc> aux;
-    const_FORALL(typename ImplSetT, it, x._set)
-    {
-        intersect(aux, *it);
-        interSection += aux;
-    }
-}
-
-
-template<class SubType,
-         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
-    interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::operator *= (const interval_base_set& x)
-{
-    interval_base_set<SubType,DomainT,Interval,Compare,Alloc> section;
-    intersect(section, x);
-	swap(section);
-    return *this;
-}
-
-
-
-
-
-template<class SubType,
-         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::join()
 {
     iterator it=_set.begin();
@@ -743,36 +696,6 @@ void interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::uniform_bounds(t
     // ordering < on interval is invariant wrt. this transformation on bounds
     FOR_IMPL(it) const_cast<interval_type&>(*it).transform_bounds(bt);
 }
-
-
-template<class SubType,
-         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::scale_up(const interval_base_set& src, DomainT factor, DomainT max)
-{ 
-    clear();
-    const_FORALL(typename interval_base_set, it, src)
-    {
-        interval_type itv = *it;
-        itv.scale_up(factor, max);
-        _set.insert(itv);
-    }
-    return *this;
-}
-
-template<class SubType,
-         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::scale_down(const interval_base_set& src, DomainT factor)
-{ 
-    clear();
-    const_FORALL(typename interval_base_set, it, src)
-    {
-        interval_type itv = *it;
-        itv.scale_down(factor);
-        _set.insert(itv); //JODO THINK Preconditions
-    }
-    return *this;
-}
-
 
 
 template<class SubType,

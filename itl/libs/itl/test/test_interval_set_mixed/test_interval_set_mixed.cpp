@@ -116,6 +116,18 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_set_mixed_assign_4_ordered_types
 
 	BOOST_CHECK_EQUAL( split_set.lower(), sep_set.lower() );
 	BOOST_CHECK_EQUAL( split_set.lower(), join_set.lower() );
+
+	split_interval_set<T>    split_self = split_interval_set<T>().add(v0);
+	separate_interval_set<T> sep_self   = separate_interval_set<T>().add(v0).add(v1);
+	interval_set<T>          join_self  = interval_set<T>().add(v1);
+
+	split_self = split_self;
+	sep_self = sep_self;
+	join_self = join_self;
+
+	BOOST_CHECK_EQUAL( split_self, split_self );
+	BOOST_CHECK_EQUAL( sep_self, sep_self );
+	BOOST_CHECK_EQUAL( join_self, join_self );
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_set_mixed_ctor_4_bicremental_types, T, bicremental_types)
@@ -590,5 +602,39 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_set_mixed_intersect_4_bicrementa
 
 	BOOST_CHECK_EQUAL( sep_AB.iterative_size(), 2 );
 	BOOST_CHECK_EQUAL( sep_AB, sep_ab_jn );
+
+	//--------------------------------------------------------------------------
+	// separate_interval_set
+	//--------------------------------------------------------------------------
+	//join_A      [0          3)       [6   9)
+	//join_B  *=      [1         4) [5    8)
+	//join_AB ->      [1      3)       [6 8)
+	join_ab = split_ab;
+	BOOST_CHECK_EQUAL( join_ab.iterative_size(), 2 );
+
+	join_AB = split_A;
+	join_B  = split_B;
+	join_AB *= sep_B;
+
+	BOOST_CHECK_EQUAL( join_AB.iterative_size(), 2 );
+	BOOST_CHECK_EQUAL( join_AB, join_ab );
+	
+	//join_A      [0          3)       [6   9)
+	//split_B  *=     [1 2)[2    4) [5    8)
+	//join_AB  ->     [1      3)       [6 8)
+	join_AB = split_A;
+	join_AB *= split_B;
+
+	BOOST_CHECK_EQUAL( join_AB.iterative_size(), 2 );
+	BOOST_CHECK_EQUAL( join_AB, join_ab );
+	
+	//join_A      [0          3)       [6   9)
+	//sep_B    *=     [1 2)[2    4) [5    8)
+	//join_AB  ->     [1      3)       [6 8)
+	join_AB = split_A;
+	join_AB *= sep_B;
+
+	BOOST_CHECK_EQUAL( join_AB.iterative_size(), 2 );
+	BOOST_CHECK_EQUAL( join_AB, join_ab );
 	
 }
