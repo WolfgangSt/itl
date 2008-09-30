@@ -34,6 +34,7 @@ class interval_set
 #define __itl_interval_set_h_JOFA_990223__
 
 #include <itl/interval_base_set.hpp>
+#include <itl/interval_sets.hpp>
 #include <itl/j_assert.hpp>
 
 namespace itl
@@ -441,35 +442,45 @@ erase
 //-----------------------------------------------------------------------------
 // intersection *=
 //-----------------------------------------------------------------------------
-template 
-<
-	class SubType, class DomainT, template<class>class Interval, 
-	template<class>class Compare, template<class>class Alloc
->
-interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
-operator *=
-(
-		  interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
-	const interval_set             <DomainT,Interval,Compare,Alloc>& operand
-)
-{
-	typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> object_type;
-	typedef interval_set             <DomainT,Interval,Compare,Alloc> operand_type;
-	object_type intersection;
-
-	if(operand.empty())
-	{
-		object.clear();
-		return object;
-	}
-
-	const_FORALL(operand_type, it, operand)
-		object.add_intersection(intersection, *it);
-
-	object.swap(intersection);
-
-	return object; 
-}
+//template 
+//<
+//	class SubType, class DomainT, template<class>class Interval, 
+//	template<class>class Compare, template<class>class Alloc
+//>
+//interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
+//operator *=
+//(
+//		  interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
+//	const interval_set             <DomainT,Interval,Compare,Alloc>& operand
+//)
+//{
+//	typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> object_type;
+//	typedef interval_set             <DomainT,Interval,Compare,Alloc> operand_type;
+//	object_type intersection;
+//
+//	if(operand.empty())
+//	{
+//		object.clear();
+//		return object;
+//	}
+//
+//	operand_type::const_iterator common_lwb;
+//	operand_type::const_iterator common_upb;
+//
+//	if(!Set::common_range(common_lwb, common_upb, operand, object))
+//	{
+//		object.clear();
+//		return object;
+//	}
+//
+//	operand_type::const_iterator it = common_lwb;
+//	while(it != common_upb)
+//		object.add_intersection(intersection, *it++);
+//
+//	object.swap(intersection);
+//
+//	return object; 
+//}
 
 
 
