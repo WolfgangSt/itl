@@ -261,10 +261,10 @@ public:
     //{ return contained_in(x2) && x2.contained_in(*this); }
 
     ///  <tt>*this</tt> and <tt>x2</tt> are disjoint; their intersection is empty.
-    bool disjoint_to(const interval_base_set& x2)const;
+    //CL bool disjoint_to(const interval_base_set& x2)const;
 
     ///  <tt>*this</tt> and <tt>x2</tt> are disjoint; their intersection is empty.
-    bool disjoint_to(const interval_type& x2)const;
+    //CL bool disjoint_to(const interval_type& x2)const;
 //@}
 
 
@@ -587,7 +587,7 @@ bool interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::contained_in(con
 }
 
 
-
+/*CL
 template<class SubType,
          class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 bool interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::disjoint_to(const interval_type& x)const
@@ -605,7 +605,7 @@ bool interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::disjoint_to(cons
     intersect(section, x);
     return section.empty();
 }
-
+*/
 
 template<class SubType,
          class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>

@@ -638,3 +638,48 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_set_mixed_intersect_4_bicrementa
 	BOOST_CHECK_EQUAL( join_AB, join_ab );
 	
 }
+
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_set_mixed_disjoint_4_bicremental_types, T, bicremental_types)
+{         
+	T v0 = make<T>(0);
+	T v1 = make<T>(1);
+	T v2 = make<T>(2);
+	T v3 = make<T>(3);
+	T v4 = make<T>(4);
+	T v5 = make<T>(5);
+	T v6 = make<T>(6);
+	T v7 = make<T>(7);
+	T v8 = make<T>(8);
+	T v9 = make<T>(9);
+
+	interval<T> I0_2D = rightopen_interval(v0,v2);
+	interval<T> I2_3D = rightopen_interval(v2,v3);
+	interval<T> I3_4D = rightopen_interval(v3,v4);
+	interval<T> I4_4I = closed_interval(v4,v4);
+	interval<T> C4_6D = open_interval(v4,v6);
+	interval<T> I6_6I = closed_interval(v6,v6);
+
+	//--------------------------------------------------------------------------
+	//split_A: [0  2)          [4 4]      [6 6]
+	//split_B:       [2 3)[3 4)     (4  6)
+	split_interval_set<T> split_A, split_B;
+
+	split_A.add(I0_2D).add(I4_4I).add(I6_6I);
+	split_B.add(I2_3D).add(I3_4D).add(C4_6D);
+
+	separate_interval_set<T> sep_A(split_A), sep_B(split_B);
+	interval_set<T> join_A(split_A), join_B(split_B);
+
+	BOOST_CHECK_EQUAL( is_disjoint(split_A, split_B), true );
+	BOOST_CHECK_EQUAL( is_disjoint(split_A, sep_B),   true );
+	BOOST_CHECK_EQUAL( is_disjoint(split_A, join_B),  true );
+
+	BOOST_CHECK_EQUAL( is_disjoint(sep_A,   split_B), true );
+	BOOST_CHECK_EQUAL( is_disjoint(sep_A,   sep_B),   true );
+	BOOST_CHECK_EQUAL( is_disjoint(sep_A,   join_B),  true );
+
+	BOOST_CHECK_EQUAL( is_disjoint(join_A,  split_B), true );
+	BOOST_CHECK_EQUAL( is_disjoint(join_A,  sep_B),   true );
+	BOOST_CHECK_EQUAL( is_disjoint(join_A,  join_B),  true );
+}
