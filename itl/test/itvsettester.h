@@ -120,7 +120,7 @@ bool ItvSetTesterT<ItvSetTV>::valueIsInsertionIndependent(ItvSetTV& y, ItvSetTV&
     m_ContainerGentor.some(x);
     m_ContainerGentor.last_permuted(x_perm);
 
-    if(! x.equal(x_perm) ) {
+    if(! is_element_equal(x, x_perm) ) {
         y = x; y_perm = x_perm;
         return false;
     } 
@@ -165,7 +165,7 @@ bool ItvSetTesterT<ItvSetTV>::valueIsJoinIndependent(ItvSetTV& y, ItvSetTV& y_jo
     x_join = x;
     x_join.join();
     
-    if(! x.equal(x_join) ) { y = x; y_join = x_join; return false; } 
+    if(! is_element_equal(x, x_join) ) { y = x; y_join = x_join; return false; } 
     else return true;
 }
 
@@ -285,7 +285,7 @@ bool ItvSetTesterT<ItvSetTV>::isInsertReversible
     rhs = xx;
     rhs -= yy; // right hand side
     
-    if(! lhs.equal(rhs) ) {
+    if(! is_element_equal(lhs, rhs) ) {
         x = xx; y = yy; y_perm = yy_perm; y_permJoin = yy_permJoin;
         x_plus_y = xx_plus_yy; ls = lhs ; rs = rhs;
         return false;
@@ -525,7 +525,7 @@ bool ItvSetTesterT<ItvSetTV>::hasSymmetricDifference
     rhs += yy_sub_xx;
     // ---------------------------------
 
-    if(! lhs.equal(rhs) ) {
+    if(! is_element_equal(lhs, rhs) ) {
         x = xx; y = yy; x_uni_y = xx_uni_yy; x_sec_y = xx_sec_yy;
         x_sub_y = xx_sub_yy; y_sub_x = yy_sub_xx ;
         return false;

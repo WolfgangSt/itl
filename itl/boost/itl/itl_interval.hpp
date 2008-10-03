@@ -46,6 +46,7 @@ DEALINGS IN THE SOFTWARE.
 #include <itl/type_traits/size.hpp>
 #include <itl/itl_type.hpp>
 #include <itl/itl_value.hpp>
+#include <itl/type_traits/instance_check.hpp>
 
 #undef min
 #undef max

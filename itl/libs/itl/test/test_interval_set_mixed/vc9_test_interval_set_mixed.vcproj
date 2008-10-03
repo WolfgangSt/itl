@@ -190,10 +190,6 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\..\..\boost\itl\interval_set_mixed.hpp"
-				>
-			</File>
-			<File
 				RelativePath="..\test_interval_set_shared.hpp"
 				>
 			</File>

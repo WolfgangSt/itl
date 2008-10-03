@@ -492,24 +492,24 @@ namespace itl
 	}
 
 
-	template 
-	<
-		class SubType, class DomainT, template<class>class Interval, 
-		template<class>class Compare, template<class>class Alloc
-	>
-	interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
-	operator -=
-	(
-			  interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
-		const split_interval_set       <DomainT,Interval,Compare,Alloc>& operand
-	)
-	{
-		typedef split_interval_set<DomainT,Interval,Compare,Alloc> set_type;
-		const_FORALL(typename set_type, elem_, operand) 
-			object.subtract(*elem_); 
+	//template 
+	//<
+	//	class SubType, class DomainT, template<class>class Interval, 
+	//	template<class>class Compare, template<class>class Alloc
+	//>
+	//interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
+	//operator -=
+	//(
+	//		  interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
+	//	const split_interval_set       <DomainT,Interval,Compare,Alloc>& operand
+	//)
+	//{
+	//	typedef split_interval_set<DomainT,Interval,Compare,Alloc> set_type;
+	//	const_FORALL(typename set_type, elem_, operand) 
+	//		object.subtract(*elem_); 
 
-		return object; 
-	}
+	//	return object; 
+	//}
 
 
 	template 
@@ -526,50 +526,6 @@ namespace itl
 	{
 		return object -= operand;
 	}
-
-
-	//-----------------------------------------------------------------------------
-	// intersection *= 
-	//-----------------------------------------------------------------------------
-	//template 
-	//<
-	//	class SubType, class DomainT, template<class>class Interval, 
-	//	template<class>class Compare, template<class>class Alloc
-	//>
-	//interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
-	//operator *=
-	//(
-	//		  interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
-	//	const split_interval_set       <DomainT,Interval,Compare,Alloc>& operand
-	//)
-	//{
-	//	typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> object_type;
-	//	typedef split_interval_set       <DomainT,Interval,Compare,Alloc> operand_type;
-	//	object_type intersection;
-
-	//	if(operand.empty())
-	//	{
-	//		object.clear();
-	//		return object;
-	//	}
-
-	//	operand_type::const_iterator common_lwb;
-	//	operand_type::const_iterator common_upb;
-
-	//	if(!Set::common_range(common_lwb, common_upb, operand, object))
-	//	{
-	//		object.clear();
-	//		return object;
-	//	}
-
-	//	operand_type::const_iterator it = common_lwb;
-	//	while(it != common_upb)
-	//		object.add_intersection(intersection, *it++);
-
-	//	object.swap(intersection);
-
-	//	return object; 
-	//}
 
 
     template <class Type>

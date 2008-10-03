@@ -387,14 +387,14 @@ void interval_set_operators_4_bicremental_types()
 	left.add(closed_interval(v0,v1)).add(closed_interval(v3,v5));
 	(right += closed_interval(v3,v5)) += closed_interval(v7,v8);
 
-	BOOST_CHECK_EQUAL( left.disjoint_to(right), false );
+	BOOST_CHECK_EQUAL( is_disjoint(left, right), false );
 
 	(all += left) += right;
 	(section += left) *= right;
 	(complement += all) -= section;
 	(all2 += section) += complement; 
 
-	BOOST_CHECK_EQUAL( section.disjoint_to(complement), true );
+	BOOST_CHECK_EQUAL( is_disjoint(section, complement), true );
 	BOOST_CHECK_EQUAL( all, all2 );
 
 	BOOST_CHECK_EQUAL( all.contains(left), true );
@@ -408,6 +408,80 @@ void interval_set_operators_4_bicremental_types()
 	BOOST_CHECK_EQUAL( complement.contained_in(all), true );
 	BOOST_CHECK_EQUAL( section.contained_in(left), true );
 	BOOST_CHECK_EQUAL( section.contained_in(right), true );
+}
+
+// Test for nontrivial intersection of interval sets with intervals and values
+template <template<class T, template<class>class = itl::interval,
+                            template<class>class = std::less,
+							template<class>class = std::allocator
+                  >class IntervalSet, 
+          class T>
+void interval_set_base_intersect_4_bicremental_types()
+{
+	T v0 = make<T>(0);
+	T v1 = make<T>(1);
+	T v2 = make<T>(2);
+	T v3 = make<T>(3);
+	T v4 = make<T>(4);
+	T v5 = make<T>(5);
+	T v6 = make<T>(6);
+	T v7 = make<T>(7);
+	T v8 = make<T>(8);
+	T v9 = make<T>(9);
+
+	interval<T> I0_3D = rightopen_interval(v0,v3);
+	interval<T> I1_3D = rightopen_interval(v1,v3);
+	interval<T> I1_8D = rightopen_interval(v1,v8);
+	interval<T> I2_7D = rightopen_interval(v2,v7);
+	interval<T> I2_3D = rightopen_interval(v2,v3);
+	interval<T> I6_7D = rightopen_interval(v6,v7);
+	interval<T> I6_8D = rightopen_interval(v6,v8);
+	interval<T> I6_9D = rightopen_interval(v6,v9);
+
+	//--------------------------------------------------------------------------
+	// IntervalSet
+	//--------------------------------------------------------------------------
+	//split_A      [0       3)       [6    9)
+	//         *=      [1                8)
+	//split_AB ->      [1   3)       [6  8)
+	//         *=        [2             7)     
+	//         ->        [2 3)       [6 7)
+	IntervalSet<T>    split_A, split_B, split_AB, split_ab, split_ab2;
+
+	split_A.add(I0_3D).add(I6_9D);
+	split_AB = split_A;
+	split_AB *= I1_8D;
+	split_ab.add(I1_3D).add(I6_8D);
+
+	BOOST_CHECK_EQUAL( split_AB, split_ab );
+
+	split_AB = split_A;
+	(split_AB *= I1_8D) *= I2_7D;
+	split_ab2.add(I2_3D).add(I6_7D);
+
+	BOOST_CHECK_EQUAL( split_AB, split_ab2 );
+
+
+	//--------------------------------------------------------------------------
+	//split_A      [0       3)       [6    9)
+	//         *=       1
+	//split_AB ->      [1]
+	//         +=         (1             7)     
+	//         ->      [1](1             7)
+	split_A.add(I0_3D).add(I6_9D);
+	split_AB = split_A;
+	split_AB *= v1;
+	split_ab.clear();
+	split_ab.add(v1);
+
+	BOOST_CHECK_EQUAL( split_AB, split_ab );
+
+	split_AB = split_A;
+	(split_AB *= v1) += open_interval<T>(v1,v7);
+	split_ab2.clear();
+	split_ab2 += rightopen_interval<T>(v1,v7);
+
+	BOOST_CHECK_EQUAL( is_element_equal(split_AB, split_ab2), true );
 }
 
 #endif // __test_itl_interval_set_shared_h_JOFA_080920__

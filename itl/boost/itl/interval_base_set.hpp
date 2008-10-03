@@ -240,10 +240,10 @@ public:
 	const_iterator upper_bound(const value_type& interval)const
 	{ return _set.upper_bound(interval); }
 
-    /// first (smallest) interval in the set
+    /// first interval in the set
     interval_type first_interval()const 
 	{ BOOST_ASSERT(!empty()); return (*(_set.begin())); }
-    /// last (largest) interval in the set
+    /// last interval in the set
     interval_type last_interval()const 
 	{ BOOST_ASSERT(!empty()); return (*(_set.rbegin())); }
 
@@ -273,20 +273,20 @@ public:
 //@{
 
     /// Add a single element \c x to the set
-    interval_base_set& add(const DomainT& x) 
-	{ that()->add_(interval_type(x)); return *this; }
+    SubType& add(const DomainT& x) 
+	{ that()->add_(interval_type(x)); return *that(); }
 
     /// Add an interval of elements \c x to the set
-    interval_base_set& add(const value_type& x) 
-	{ that()->add_(x); return *this; }
+    SubType& add(const value_type& x) 
+	{ that()->add_(x); return *that(); }
 
-    /// Add an interval of elements \c x to the set
-    interval_base_set& operator += (const DomainT& x) 
-    { that()->add_(interval_type(x)); return *this; }
+    ///// Add an interval of elements \c x to the set
+    //interval_base_set& operator += (const DomainT& x) 
+    //{ that()->add_(interval_type(x)); return *this; }
 
-    /// Add an interval of elements \c x to the set
-    interval_base_set& operator += (const value_type& x) 
-    { that()->add_(x); return *this; }
+    ///// Add an interval of elements \c x to the set
+    //interval_base_set& operator += (const value_type& x) 
+    //{ that()->add_(x); return *this; }
 
 //@}
 
@@ -295,20 +295,20 @@ public:
 //@{
 
     /// Subtract a single element \c x from the set
-    interval_base_set& subtract(const DomainT& x) 
-    { that()->subtract_(interval_type(x)); return *this; }
+    SubType& subtract(const DomainT& x) 
+    { that()->subtract_(interval_type(x)); return *that(); }
 
     /// Subtract an interval of elements \c x from the set
-    interval_base_set& subtract(const value_type& x) 
-    { that()->subtract_(x); return *this; }
+    SubType& subtract(const value_type& x) 
+    { that()->subtract_(x); return *that(); }
 
-    /// Subtract a single element \c x from the set
-    interval_base_set& operator -= (const DomainT& x) 
-    { subtract(x); return *this; }
+    ///// Subtract a single element \c x from the set
+    //interval_base_set& operator -= (const DomainT& x) 
+    //{ subtract(x); return *this; }
 
-    /// Subtract an interval of elements \c x from the set
-    interval_base_set& operator -= (const value_type& x)
-    { that()->subtract(x); return *this; }
+    ///// Subtract an interval of elements \c x from the set
+    //interval_base_set& operator -= (const value_type& x)
+    //{ that()->subtract(x); return *this; }
 
 //@}
 
@@ -316,19 +316,19 @@ public:
 /** @name G.ins&ers: Insertion and erasure  */
 //@{
     /// Insert an element \c x into the set
-    interval_base_set& insert(const DomainT& x) 
+    SubType& insert(const DomainT& x) 
 	{ return add(interval_type(x)); }
 
     /// Insert an interval of elements \c x to the set
-    interval_base_set& insert(const value_type& x) 
+    SubType& insert(const value_type& x) 
 	{ return add(x); }
 
     /// Erase an element \c x from the set
-    interval_base_set& erase(const DomainT& x) 
+    SubType& erase(const DomainT& x) 
     { return subtract(interval_type(x)); }
 
     /// Erase an interval of element \c x from the set
-    interval_base_set& erase(const value_type& x) 
+    SubType& erase(const value_type& x) 
     { return subtract(x); }
 //@}
 
@@ -349,33 +349,21 @@ public:
         
         <tt>sec.nOfIntervals()==1</tt> and <tt>*(sec.begin())==x</tt> 
     */
-    void intersect(interval_base_set& section, const value_type& x)const;
+    //CL void intersect(interval_base_set& section, const value_type& x)const;
 
 	//JODO doku; welche intersect-varianten kann ich ganz los werden.
     void add_intersection(interval_base_set& section, const value_type& x)const;
 
+	//JODO doku
     /** Perform intersection of <tt>*this</tt> and <tt>x</tt>; assign result
         to <tt>section</tt>
     */
-    //CL void intersect(interval_base_set& section, const interval_base_set& x)const;
-
-	interval_base_set& operator *= (const domain_type& x)
-	{ return (*this) *= interval_type(x); }
-
-    interval_base_set& operator *= (const value_type& x)
-    {
-        interval_base_set section;
-        intersect(section, x); 
-		swap(section);
-        return *this;
-    }
 
     /** Perform intersection of <tt>*this</tt> and <tt>x</tt>; assign result
         to <tt>*this</tt>
 
         Aufruf <tt>x *= y</tt> bedeutet <tt>x = x geschnitten mit y </tt>
     */
-    //CL interval_base_set& operator *= (const interval_base_set& x);
 //@}
 
 //-----------------------------------------------------------------------------
@@ -461,14 +449,6 @@ public:
     static value_type make_domain_element(const domain_type& dom_val, const codomain_type& codom_val)
     { return value_type(interval_type(dom_val)); }
 
-
-    // TESTCODE KEEP
-    void to_set(element_set& s)const
-    { const_FOR_IMPL(it) for(DomainT i=(*it).first(); i<=last(); i++) s.insert(i); } // JODO NONCONT 
-
-    bool equal(element_set& x2)const
-    { element_set x1; to_set(x1); return x1.contained_in(x2) && x2.contained_in(x1); }
-
 protected:
     sub_type* that() { return static_cast<sub_type*>(this); }
     const sub_type* that()const { return static_cast<const sub_type*>(this); }
@@ -523,8 +503,11 @@ struct discrete_interval_container
 	{ return discrete_cardinality(cont); }
 };
 
-template<class SubType,
-         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+template
+<
+	class SubType, class DomainT, template<class>class Interval, 
+	template<class>class Compare, template<class>class Alloc
+>
 typename interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::size_type 
 interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::cardinality()const
 {
@@ -551,9 +534,13 @@ interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::cardinality()const
 	*/
 }
 
-template<class SubType,
-         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-typename interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::difference_type 
+template
+<
+	class SubType, class DomainT, template<class>class Interval, 
+	template<class>class Compare, template<class>class Alloc
+>
+typename 
+	interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::difference_type 
 interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::length()const
 {
 	difference_type length = neutron<difference_type>::value();
@@ -563,9 +550,13 @@ interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::length()const
 }
 
 
-template<class SubType,
-         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-bool interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::contained_in(const interval_base_set& x2)const
+template
+<
+	class SubType, class DomainT, template<class>class Interval, 
+	template<class>class Compare, template<class>class Alloc
+>
+bool interval_base_set<SubType,DomainT,Interval,Compare,Alloc>
+	::contained_in(const interval_base_set& x2)const
 {
     // The empty set is subset of every set
     if(empty())
@@ -607,6 +598,7 @@ bool interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::disjoint_to(cons
 }
 */
 
+/*CL
 template<class SubType,
          class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 void interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::intersect(interval_base_set& section, const value_type& x)const
@@ -624,7 +616,7 @@ void interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::intersect(interv
         section.insert(isec);
     }
 }
-
+*/
 
 template<class SubType,
          class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
@@ -637,7 +629,8 @@ void interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::add_intersection
     typename ImplSetT::const_iterator fst_it = _set.lower_bound(x);
     typename ImplSetT::const_iterator end_it = _set.upper_bound(x);
 
-    for(typename ImplSetT::const_iterator it=fst_it; it != end_it; it++) {
+    for(typename ImplSetT::const_iterator it=fst_it; it != end_it; it++) 
+	{
         interval_type isec; 
 		(*it).intersect(isec, x);
         section.add(isec);
@@ -728,7 +721,7 @@ inline bool operator <= (const interval_base_set<SubType,DomainT,Interval,Compar
     return lhs < rhs || lhs == rhs;
 }
 
-
+/*CL
 template 
 <
     class SubType, class DomainT, template<class>class Interval, 
@@ -740,6 +733,28 @@ insert(interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
        insertee)
 {
     return object += insertee; 
+}
+*/
+
+template 
+<
+	class SubType, class DomainT, template<class>class Interval, 
+	template<class>class Compare, template<class>class Alloc,
+	template
+	<	
+		class, template<class>class, 
+		template<class>class, template<class>class
+	>
+	class IntervalSet
+>
+interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
+insert
+(
+	      interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
+    const IntervalSet              <DomainT,Interval,Compare,Alloc>& operand
+)
+{
+    return object += operand; 
 }
     
 
@@ -762,7 +777,7 @@ erase(interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
 //-----------------------------------------------------------------------------
 // addition (set union) += and subtraction (set difference) -=
 //-----------------------------------------------------------------------------
-
+/*CL
 template 
 <
     class SubType, class DomainT, template<class>class Interval, 
@@ -781,6 +796,7 @@ operator +=
 
     return object; 
 }
+*/
 
 template<class CharType, class CharTraits, 
     class SubType, class DomainT, template<class>class Interval, 

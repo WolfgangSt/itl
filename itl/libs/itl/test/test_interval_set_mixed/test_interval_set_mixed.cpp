@@ -506,6 +506,73 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_set_mixed_erase_4_bicremental_ty
 	BOOST_CHECK_EQUAL( is_element_equal(join_diff,  join_diff),   true );
 }
 
+BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_set_mixed_basic_intersect_4_bicremental_types, T, bicremental_types)
+{         
+	T v0 = make<T>(0);
+	T v1 = make<T>(1);
+	T v2 = make<T>(2);
+	T v3 = make<T>(3);
+	T v4 = make<T>(4);
+	T v5 = make<T>(5);
+	T v6 = make<T>(6);
+	T v7 = make<T>(7);
+	T v8 = make<T>(8);
+	T v9 = make<T>(9);
+
+	interval<T> I0_3D = rightopen_interval(v0,v3);
+	interval<T> I1_3D = rightopen_interval(v1,v3);
+	interval<T> I1_8D = rightopen_interval(v1,v8);
+	interval<T> I2_7D = rightopen_interval(v2,v7);
+	interval<T> I2_3D = rightopen_interval(v2,v3);
+	interval<T> I6_7D = rightopen_interval(v6,v7);
+	interval<T> I6_8D = rightopen_interval(v6,v8);
+	interval<T> I6_9D = rightopen_interval(v6,v9);
+
+	//--------------------------------------------------------------------------
+	// split_interval_set
+	//--------------------------------------------------------------------------
+	//split_A      [0       3)       [6    9)
+	//         *=      [1                8)
+	//split_AB ->      [1   3)       [6  8)
+	//         *=        [2             7)     
+	//         ->        [2 3)       [6 7)
+	split_interval_set<T>    split_A, split_B, split_AB, split_ab, split_ab2;
+
+	split_A.add(I0_3D).add(I6_9D);
+	split_AB = split_A;
+	split_AB *= I1_8D;
+	split_ab.add(I1_3D).add(I6_8D);
+
+	BOOST_CHECK_EQUAL( split_AB, split_ab );
+
+	split_AB = split_A;
+	(split_AB *= I1_8D) *= I2_7D;
+	split_ab2.add(I2_3D).add(I6_7D);
+
+	BOOST_CHECK_EQUAL( split_AB, split_ab2 );
+
+
+	//--------------------------------------------------------------------------
+	//split_A      [0       3)       [6    9)
+	//         *=       1
+	//split_AB ->      [1]
+	//         +=         (1             7)     
+	//         ->      [1](1             7)
+	split_A.add(I0_3D).add(I6_9D);
+	split_AB = split_A;
+	split_AB *= v1;
+	split_ab.clear();
+	split_ab.add(v1);
+
+	BOOST_CHECK_EQUAL( split_AB, split_ab );
+
+	split_AB = split_A;
+	(split_AB *= v1) += open_interval<T>(v1,v7);
+	split_ab2.clear();
+	split_ab2 += rightopen_interval<T>(v1,v7);
+
+	BOOST_CHECK_EQUAL( is_element_equal(split_AB, split_ab2), true );
+}
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_set_mixed_intersect_4_bicremental_types, T, bicremental_types)
 {         

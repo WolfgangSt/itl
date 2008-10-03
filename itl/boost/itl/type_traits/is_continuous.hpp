@@ -26,6 +26,7 @@ namespace itl
 	template<> struct is_continuous<std::string> { enum {value = true}; };
 
 #ifdef ITL_NEEDS_RATIONAL_IS_CONTINUOUS
+#define ITL_HAS_RATIONAL_IS_CONTINUOUS
 	template<class Integral> 
 	struct is_continuous<boost::rational<Integral> > { enum {value = true}; };
 #endif

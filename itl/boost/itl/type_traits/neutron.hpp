@@ -23,6 +23,7 @@ namespace itl
 	};
 
 #ifdef ITL_NEEDS_GREGORIAN_DATE_NEUTRON_VALUE
+#define ITL_HAS_GREGORIAN_DATE_NEUTRON_VALUE
 	template<> 
     inline boost::gregorian::date neutron<boost::gregorian::date>::value()
     { 
@@ -41,6 +42,7 @@ namespace itl
 #endif
 
 #ifdef ITL_NEEDS_POSIX_TIME_PTIME_NEUTRON_VALUE
+#define ITL_HAS_POSIX_TIME_PTIME_NEUTRON_VALUE
     template<> 
     inline boost::posix_time::ptime neutron<boost::posix_time::ptime>::value()
     { 
@@ -58,6 +60,8 @@ namespace itl
     inline std::string unary_template<neutron>::to_string() { return "0"; }
 
 } // namespace itl
+
+#define ITL_NEUTRONS_PROVIDED
 
 #endif
 
