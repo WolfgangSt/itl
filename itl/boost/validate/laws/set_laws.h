@@ -10,7 +10,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 #ifndef __itl_set_laws_h_JOFA_071124__
 #define __itl_set_laws_h_JOFA_071124__
 
-#include <itl/itl_value.hpp>
+#include <itl/type_traits/value_size.hpp>
 #include <validate/law.h>
 #include <itl/functors.hpp>
 
@@ -55,7 +55,7 @@ namespace itl
 
         bool debug_holds(){ return holds(); }
 
-        size_t size()const { return value<Type>::size(this->template getInputValue<operand_a>()); }
+        size_t size()const { return value_size<Type>::apply(this->template getInputValue<operand_a>()); }
     };
 
     // ---------------------------------------------------------------------------
@@ -151,9 +151,9 @@ namespace itl
 
         size_t size()const 
         { 
-            return value<Type>::size(this->template getInputValue<operand_a>())+
-                value<Type>::size(this->template getInputValue<operand_b>())+
-                value<Type>::size(this->template getInputValue<operand_c>());
+            return value_size<Type>::apply(this->template getInputValue<operand_a>())+
+                value_size<Type>::apply(this->template getInputValue<operand_b>())+
+                value_size<Type>::apply(this->template getInputValue<operand_c>());
         }
     };
 
@@ -217,9 +217,9 @@ namespace itl
         size_t size()const 
         { 
             return 
-                value<Type>::size(this->template getInputValue<operand_a>())+
-                value<Type>::size(this->template getInputValue<operand_b>())+
-                value<Type>::size(this->template getInputValue<operand_c>());
+                value_size<Type>::apply(this->template getInputValue<operand_a>())+
+                value_size<Type>::apply(this->template getInputValue<operand_b>())+
+                value_size<Type>::apply(this->template getInputValue<operand_c>());
         }
     };
 
@@ -252,9 +252,9 @@ namespace itl
         size_t size()const 
         { 
             return 
-                value<Type>::size(this->template getInputValue<operand_a>())+
-                value<Type>::size(this->template getInputValue<operand_b>())+
-                value<Type>::size(this->template getInputValue<operand_c>());
+                value_size<Type>::apply(this->template getInputValue<operand_a>())+
+                value_size<Type>::apply(this->template getInputValue<operand_b>())+
+                value_size<Type>::apply(this->template getInputValue<operand_c>());
         }
 
         bool holds()
@@ -409,8 +409,8 @@ namespace itl
         size_t size()const 
         { 
             return 
-                value<Type>::size(this->template getInputValue<operand_a>())+
-                value<Type>::size(this->template getInputValue<operand_b>());
+                value_size<Type>::apply(this->template getInputValue<operand_a>())+
+                value_size<Type>::apply(this->template getInputValue<operand_b>());
         }
     };
 
@@ -463,8 +463,8 @@ namespace itl
         size_t size()const 
         { 
             return 
-                value<MapT>::size(this->template getInputValue<operand_a>())+
-                value<typename MapT::set_type>::size(this->template getInputValue<operand_b>());
+                value_size<MapT>::apply(this->template getInputValue<operand_a>())+
+                value_size<typename MapT::set_type>::apply(this->template getInputValue<operand_b>());
         }
     };
 

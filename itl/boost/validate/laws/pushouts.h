@@ -10,7 +10,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 #ifndef __itl_pushouts_h_JOFA_071124__
 #define __itl_pushouts_h_JOFA_071124__
 
-#include <itl/itl_value.hpp>
+#include <itl/type_traits/value_size.hpp>
 #include <validate/law.h>
 
 namespace itl
@@ -80,8 +80,8 @@ namespace itl
         size_t size()const 
         { 
             return 
-                value<SourceT>::size(this->template getInputValue<operand_a>())+
-                value<SourceT>::size(this->template getInputValue<operand_b>());
+                value_size<SourceT>::apply(this->template getInputValue<operand_a>())+
+                value_size<SourceT>::apply(this->template getInputValue<operand_b>());
         }
 
         bool debug_holds()

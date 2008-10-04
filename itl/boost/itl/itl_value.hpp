@@ -45,10 +45,6 @@ Function-templates for discrete Datatypes like int, unsigned or
 namespace itl
 {    
 
-template <typename Type>
-Type abs(Type val) { return val < 0 ? -val : val; } //JODO
-
-
 /// static class template for the string representation of values
 /**
     <b>value</b> serves as a base to for the representation
@@ -74,10 +70,6 @@ struct value
         E.g.: <tt>int i=5; string s = value<int>::to_string(i);</tt>
     */
     static const std::string to_string(const Type&);
-
-	/** The size of a value is used to be able to order values according to
-        their simplicity */
-	static std::size_t size(const Type& val);
 };
 
 
@@ -111,15 +103,6 @@ template<> inline const std::string value<std::string>::to_string(const std::str
 
 template <class Type>
 inline const std::string value<Type>::to_string(const Type& x) { return x.as_string(); }
-
-
-template<> inline std::size_t value<int>::size(const int& val) { return abs(val); }
-template<> inline std::size_t value<double>::size(const double& val) { return static_cast<int>(abs(val)); }
-
-template <typename Type> 
-inline std::size_t value<Type>::size(const Type& val){ return static_cast<int>(val.size()); }
-
-
 
 } // namespace itl
 

@@ -10,7 +10,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 #ifndef __itl_monoid_h_JOFA_070411__
 #define __itl_monoid_h_JOFA_070411__
 
-#include <itl/itl_value.hpp>
+#include <itl/type_traits/value_size.hpp>
 #include <itl/functors.hpp>
 #include <validate/law.h>
 
@@ -100,8 +100,8 @@ namespace itl
 
         size_t size()const 
         { 
-            return value<Type>::size(this->template getInputValue<operand_a>())+
-                   value<Type>::size(this->template getInputValue<operand_b>());
+            return value_size<Type>::apply(this->template getInputValue<operand_a>())+
+                   value_size<Type>::apply(this->template getInputValue<operand_b>());
         }
     };
 
@@ -193,7 +193,7 @@ namespace itl
 
         size_t size()const 
         { 
-            return value<Type>::size(this->template getInputValue<operand_a>());
+            return value_size<Type>::apply(this->template getInputValue<operand_a>());
         }
 
         bool holds()
@@ -247,9 +247,9 @@ namespace itl
         size_t size()const 
         { 
             return 
-                value<Type>::size(this->template getInputValue<operand_a>())+
-                value<Type>::size(this->template getInputValue<operand_b>())+
-                value<Type>::size(this->template getInputValue<operand_b>());
+                value_size<Type>::apply(this->template getInputValue<operand_a>())+
+                value_size<Type>::apply(this->template getInputValue<operand_b>())+
+                value_size<Type>::apply(this->template getInputValue<operand_b>());
         }
 
         bool holds()
@@ -335,8 +335,8 @@ namespace itl
 
         size_t size()const 
         { 
-            return value<Type>::size(this->template getInputValue<operand_a>())+
-                value<Type>::size(this->template getInputValue<operand_b>());
+            return value_size<Type>::apply(this->template getInputValue<operand_a>())+
+                value_size<Type>::apply(this->template getInputValue<operand_b>());
         }
 
         bool holds()

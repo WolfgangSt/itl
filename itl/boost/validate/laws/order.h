@@ -10,7 +10,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 #ifndef __itl_order_h_JOFA_071129__
 #define __itl_order_h_JOFA_071129__
 
-#include <itl/itl_value.hpp>
+#include <itl/type_traits/value_size.hpp>
 #include <validate/law.h>
 
 namespace itl
@@ -44,7 +44,7 @@ namespace itl
         bool debug_holds(){ return holds(); }
 
         size_t size()const 
-        { return value<Type>::size(this->template getInputValue<operand_a>());    }
+        { return value_size<Type>::apply(this->template getInputValue<operand_a>());    }
     };
 
     template<> 
@@ -80,7 +80,7 @@ namespace itl
         bool debug_holds(){ return holds(); }
 
         size_t size()const 
-        { return value<Type>::size(this->template getInputValue<operand_a>());    }
+        { return value_size<Type>::apply(this->template getInputValue<operand_a>());    }
     };
 
     // ---------------------------------------------------------------------------
@@ -117,8 +117,8 @@ namespace itl
 
         size_t size()const 
         { 
-            return value<Type>::size(this->template getInputValue<operand_a>())+
-                value<Type>::size(this->template getInputValue<operand_b>());
+            return value_size<Type>::apply(this->template getInputValue<operand_a>())+
+                value_size<Type>::apply(this->template getInputValue<operand_b>());
         }
     };
 
@@ -156,8 +156,8 @@ namespace itl
 
         size_t size()const 
         { 
-            return value<Type>::size(this->template getInputValue<operand_a>())+
-                value<Type>::size(this->template getInputValue<operand_b>());
+            return value_size<Type>::apply(this->template getInputValue<operand_a>())+
+                value_size<Type>::apply(this->template getInputValue<operand_b>());
         }
     };
 
@@ -197,9 +197,9 @@ namespace itl
 
         size_t size()const 
         { 
-            return value<Type>::size(this->template getInputValue<operand_a>())+
-                value<Type>::size(this->template getInputValue<operand_b>())+
-                value<Type>::size(this->template getInputValue<operand_c>());
+            return value_size<Type>::apply(this->template getInputValue<operand_a>())+
+                value_size<Type>::apply(this->template getInputValue<operand_b>())+
+                value_size<Type>::apply(this->template getInputValue<operand_c>());
         }
     };
 
