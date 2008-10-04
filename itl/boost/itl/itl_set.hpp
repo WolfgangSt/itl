@@ -38,6 +38,11 @@ for concepts InplaceAddable and InplaceSubtractable
 #include <string>
 #include <set>
 #include <itl/type_traits/to_string.hpp>
+#include <itl/type_traits/is_set.hpp>
+#include <itl/type_traits/is_interval_container.hpp>
+#include <itl/type_traits/is_interval_splitter.hpp>
+#include <itl/type_traits/is_neutron_absorber.hpp>
+#include <itl/type_traits/is_neutron_emitter.hpp>
 #include <itl/set_algo.hpp>
 #include <itl/predicates.hpp>
 
@@ -353,13 +358,30 @@ namespace itl
 
     //-------------------------------------------------------------------------
     template <class Type>
+	struct is_set<itl::set<Type> >
+	{ enum{value = true}; };
+
+    template <class Type>
+	struct is_interval_container<itl::set<Type> >
+	{ enum{value = true}; };
+
+    template <class Type>
+	struct is_interval_splitter<itl::set<Type> >
+	{ enum{value = false}; };
+
+    template <class Type>
+	struct is_neutron_absorber<itl::set<Type> >
+	{ enum{value = false}; };
+
+    template <class Type>
+	struct is_neutron_emitter<itl::set<Type> >
+	{ enum{value = false}; };
+
+	template <class Type>
     struct type<itl::set<Type> >
     {
-        static bool is_set() { return true; }
-        static bool is_interval_container() { return false; }
-        static bool is_interval_splitter() { return false; }
-        static bool is_neutron_absorber() { return false; }
-        static bool is_neutron_emitter() { return false; }
+        //static bool is_neutron_absorber() { return false; }
+        //static bool is_neutron_emitter() { return false; }
 
 
         static std::string to_string()

@@ -174,7 +174,7 @@ namespace itl
 
         void subtract(const value_type& value)
         {
-            if(Traits::emits_neutrons())
+            if(Traits::emits_neutrons)
                 add<inplace_minus>(value); 
             else
                 subtract<inplace_minus>(value); 
@@ -285,7 +285,7 @@ void split_interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
     //collision free insert is asserted
     if(value.KEY_VALUE.empty())
         return;
-    if(Traits::absorbs_neutrons() && value.CONT_VALUE == CodomainT())
+    if(Traits::absorbs_neutrons && value.CONT_VALUE == CodomainT())
         return;
     this->_map.insert(value);
 }
@@ -299,10 +299,10 @@ void split_interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
     //collision free insert is asserted
     if(value.KEY_VALUE.empty())
         return;
-    if(Traits::absorbs_neutrons() && value.CONT_VALUE == CodomainT())
+    if(Traits::absorbs_neutrons && value.CONT_VALUE == CodomainT())
         return;
 
-    if(Traits::emits_neutrons())
+    if(Traits::emits_neutrons)
     {
         CodomainT added_val = CodomainT();
         Combinator<CodomainT>()(added_val, value.CONT_VALUE);
@@ -325,11 +325,11 @@ void split_interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
         return;
 
     const CodomainT& x_val = x.CONT_VALUE;
-    if(Traits::absorbs_neutrons() && x_val==CodomainT()) 
+    if(Traits::absorbs_neutrons && x_val==CodomainT()) 
         return;
 
     std::pair<iterator,bool> insertion;
-    if(Traits::emits_neutrons())
+    if(Traits::emits_neutrons)
     {
         CodomainT added_val = CodomainT();
         Combinator<CodomainT>()(added_val, x_val);
@@ -416,7 +416,7 @@ void split_interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
         Combinator<CodomainT>()(it->CONT_VALUE, x_val);
         fill_gap<Combinator>(value_type(gap, x_val));
 
-        if(Traits::absorbs_neutrons() && it->CONT_VALUE == CodomainT())
+        if(Traits::absorbs_neutrons && it->CONT_VALUE == CodomainT())
             this->_map.erase(it++);
         else it++;
 
@@ -473,7 +473,7 @@ void split_interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
         return;
 
     const CodomainT& x_val = x.CONT_VALUE;
-    if(Traits::absorbs_neutrons() && x_val==CodomainT()) 
+    if(Traits::absorbs_neutrons && x_val==CodomainT()) 
         return;
 
     iterator fst_it = this->_map.lower_bound(x_itv);
@@ -533,7 +533,7 @@ void split_interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
         CodomainT& cur_val = (*it).CONT_VALUE ;
         Combinator<CodomainT>()(cur_val, x_val);
 
-        if(Traits::absorbs_neutrons() && cur_val==CodomainT())
+        if(Traits::absorbs_neutrons && cur_val==CodomainT())
             this->_map.erase(it++); 
         else it++;
 
@@ -550,7 +550,7 @@ void split_interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
     {
         CodomainT& cur_val = (*it).CONT_VALUE ;
         Combinator<CodomainT>()(cur_val, x_val);
-        if(Traits::absorbs_neutrons() && cur_val==CodomainT())
+        if(Traits::absorbs_neutrons && cur_val==CodomainT())
             this->_map.erase(it);
     }
     else
@@ -582,7 +582,7 @@ void split_interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
         return;
 
     const CodomainT& x_val = x.CONT_VALUE;
-    if(Traits::absorbs_neutrons() && x_val==CodomainT()) 
+    if(Traits::absorbs_neutrons && x_val==CodomainT()) 
         return;
 
     std::pair<typename ImplMapT::iterator,bool> 
@@ -686,7 +686,7 @@ void split_interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
         return;
 
     const CodomainT& x_val = x.CONT_VALUE;
-    if(Traits::absorbs_neutrons() && x_val==CodomainT()) 
+    if(Traits::absorbs_neutrons && x_val==CodomainT()) 
         return;
 
     iterator fst_it = this->_map.lower_bound(x_itv);
@@ -895,9 +895,9 @@ operator *=
             <DomainT,CodomainT,
             Traits,Interval,Compare,Alloc> operand_map_type;
 
-    if(Traits::emits_neutrons())
+    if(Traits::emits_neutrons)
         return object += operand;
-    else if(Traits::absorbs_neutrons() && !type<CodomainT>::is_set())
+    else if(Traits::absorbs_neutrons && !is_set<CodomainT>::value)
         return object += operand;
     else
     {
@@ -915,13 +915,30 @@ operator *=
 //-----------------------------------------------------------------------------
 
 template <class KeyT, class DataT, class Traits>
+struct is_set<itl::split_interval_map<KeyT,DataT,Traits> >
+{ enum{value = true}; };
+
+template <class KeyT, class DataT, class Traits>
+struct is_interval_container<itl::split_interval_map<KeyT,DataT,Traits> >
+{ enum{value = true}; };
+
+template <class KeyT, class DataT, class Traits>
+struct is_interval_splitter<itl::split_interval_map<KeyT,DataT,Traits> >
+{ enum{value = true}; };
+
+template <class KeyT, class DataT, class Traits>
+struct is_neutron_absorber<itl::split_interval_map<KeyT,DataT,Traits> >
+{ enum{value = Traits::absorbs_neutrons}; };
+
+template <class KeyT, class DataT, class Traits>
+struct is_neutron_emitter<itl::split_interval_map<KeyT,DataT,Traits> >
+{ enum{value = Traits::emits_neutrons}; };
+
+template <class KeyT, class DataT, class Traits>
 struct type<itl::split_interval_map<KeyT,DataT,Traits> >
 {
-    static bool is_set() { return true; }
-    static bool is_interval_container() { return true; }
-    static bool is_interval_splitter() { return true; }
-    static bool is_neutron_absorber() { return Traits::absorbs_neutrons(); }
-    static bool is_neutron_emitter() { return Traits::emits_neutrons(); }
+    //static bool is_neutron_absorber() { return Traits::absorbs_neutrons; }
+    //static bool is_neutron_emitter() { return Traits::emits_neutrons; }
 
     static std::string to_string()
     { 

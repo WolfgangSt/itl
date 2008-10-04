@@ -193,7 +193,7 @@ public:
 
 public:
     inline static bool has_symmetric_difference() 
-    { return type<codomain_type>::is_set() || !traits::absorbs_neutrons() || traits::emits_neutrons(); }
+    { return is_set<codomain_type>::value || !traits::absorbs_neutrons || traits::emits_neutrons; }
 
 public:
 /** @name B: Constructors, destructors, assignment 
@@ -454,7 +454,7 @@ public:
     */
     void subtract(const value_type& x)
     {
-        if(Traits::emits_neutrons())
+        if(Traits::emits_neutrons)
             that()->add<inplace_minus>(x); 
         else 
             that()->subtract<inplace_minus>(x); 
@@ -610,9 +610,9 @@ public:
     /// Intersect with an interval value pair and assign
     interval_base_map& operator *= (const value_type& x)
     { 
-        if(Traits::emits_neutrons())
+        if(Traits::emits_neutrons)
             return (*this) += x;
-        else if(Traits::absorbs_neutrons() && !type<CodomainT>::is_set())
+        else if(Traits::absorbs_neutrons && !is_set<CodomainT>::value)
             return (*this) += x;
         else
         {
@@ -688,7 +688,7 @@ public:
     void absorb_neutrons()
     {
         //content_is_neutron<key_type, data_type> neutron_dropper;
-        if(!Traits::absorbs_neutrons())
+        if(!Traits::absorbs_neutrons)
             drop_if(content_is_neutron<value_type>());
     }
 
@@ -907,7 +907,7 @@ void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>
             //inner_section *= sectant.CONT_VALUE;
             //section.that()->add( value_type(common_interval, inner_section) );
             section.that()->add( value_type(common_interval, (*it).CONT_VALUE) );
-            if(type<CodomainT>::is_set())
+            if(is_set<CodomainT>::value)
                 section.that()->add<inplace_star>( value_type(common_interval, sectant.CONT_VALUE) );
             else
                 section.that()->add<inplace_plus>( value_type(common_interval, sectant.CONT_VALUE) );
@@ -1412,9 +1412,9 @@ operator *=
             <SubType,DomainT,CodomainT,
              Traits,Interval,Compare,Alloc> map_type;
 
-    if(Traits::emits_neutrons())
+    if(Traits::emits_neutrons)
         return object += operand;
-    else if(Traits::absorbs_neutrons() && !type<CodomainT>::is_set())
+    else if(Traits::absorbs_neutrons && !is_set<CodomainT>::value)
         return object += operand;
     else
     {

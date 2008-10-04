@@ -48,8 +48,8 @@ namespace itl
 
     struct neutron_absorber
     {
-        inline static bool absorbs_neutrons(){ return true; }
-        inline static bool emits_neutrons(){ return false; }
+		enum { absorbs_neutrons = true };
+		enum { emits_neutrons = false };
     };
 
     template<> 
@@ -58,8 +58,9 @@ namespace itl
 
     struct neutron_enricher
     {
-        inline static bool absorbs_neutrons(){ return false; }
-        inline static bool emits_neutrons(){ return false; }
+		enum { absorbs_neutrons = false };
+		enum { emits_neutrons = false };
+
     };
 
     template<> 
@@ -67,8 +68,8 @@ namespace itl
 
     struct neutron_emitter
     {
-        inline static bool absorbs_neutrons(){ return true; }
-        inline static bool emits_neutrons(){ return true; }
+		enum { absorbs_neutrons = true };
+		enum { emits_neutrons = true };
     };
 
     template<> 
@@ -76,8 +77,8 @@ namespace itl
 
     struct neutron_emitter_and_enricher
     {
-        inline static bool absorbs_neutrons(){ return false; }
-        inline static bool emits_neutrons(){ return true; }
+		enum { absorbs_neutrons = false };
+		enum { emits_neutrons = true };
     };
 
     template<> 
@@ -184,7 +185,7 @@ namespace itl
 
     public:
         inline static bool has_symmetric_difference() 
-        { return itl::type<codomain_type>::is_set() || !traits::absorbs_neutrons() || traits::emits_neutrons(); }
+        { return itl::is_set<codomain_type>::value || !traits::absorbs_neutrons || traits::emits_neutrons; }
 
     public:
         // --------------------------------------------------------------------
@@ -204,7 +205,7 @@ namespace itl
 
         std::pair<iterator,bool> insert(const value_type& value_pair)
         {
-            if(Traits::absorbs_neutrons() && value_pair.CONT_VALUE == DataT()) 
+            if(Traits::absorbs_neutrons && value_pair.CONT_VALUE == DataT()) 
                 return std::pair<iterator,bool>(end(),true);
             else
                 return base_type::insert(value_pair);
@@ -233,7 +234,7 @@ namespace itl
             in \c *this, subtract the contents using <tt>operator -=</tt>. */
         map& operator -= (const map& x2) 
         { 
-            if(Traits::emits_neutrons())
+            if(Traits::emits_neutrons)
                 const_FORALL(typename map, it_, x2)
                     this->add<inplace_minus>(*it_);
             else Set::subtract(*this, x2); 
@@ -254,9 +255,9 @@ namespace itl
             So \c *this becomes the intersection of \c *this and \c x2 */
         map& operator *= (const map& x2) 
         {
-            if(Traits::emits_neutrons())
+            if(Traits::emits_neutrons)
                  { Set::add(*this, x2); return *this; }
-            else if(Traits::absorbs_neutrons() && !itl::type<DataT>::is_set())
+            else if(Traits::absorbs_neutrons && !itl::is_set<DataT>::value)
                  { Set::add(*this, x2); return *this; }
             else { Map::intersect(*this, x2); return *this; }
         }
@@ -295,7 +296,7 @@ namespace itl
         void absorb_neutrons()
         {
             //content_is_neutron<key_type, data_type> neutron_dropper;
-            if(!Traits::absorbs_neutrons())
+            if(!Traits::absorbs_neutrons)
                 drop_if(content_is_neutron<value_type>());
         }
 
@@ -373,11 +374,11 @@ namespace itl
     typename map<KeyT,DataT,Traits,Compare,Alloc>::iterator
         map<KeyT,DataT,Traits,Compare,Alloc>::add(const value_type& val)
     {
-        if(Traits::absorbs_neutrons() && val.CONT_VALUE == DataT())
+        if(Traits::absorbs_neutrons && val.CONT_VALUE == DataT())
             return end();
 
         std::pair<iterator, bool> insertion;
-        if(Traits::emits_neutrons())
+        if(Traits::emits_neutrons)
         {
             DataT added_val = DataT();
             Combinator<DataT>()(added_val, val.CONT_VALUE);
@@ -393,7 +394,7 @@ namespace itl
             iterator it = insertion.ITERATOR;
             Combinator<DataT>()((*it).CONT_VALUE, val.CONT_VALUE);
 
-            if(Traits::absorbs_neutrons() && (*it).CONT_VALUE == DataT())
+            if(Traits::absorbs_neutrons && (*it).CONT_VALUE == DataT())
             {
                 erase(it);
                 return end();
@@ -408,7 +409,7 @@ namespace itl
         map<KeyT,DataT,Traits,Compare,Alloc>
         ::erase(const value_type& value_pair)
     {
-        if(Traits::absorbs_neutrons() && value_pair.CONT_VALUE == DataT())
+        if(Traits::absorbs_neutrons && value_pair.CONT_VALUE == DataT())
             return 0; // neutrons are never contained 'substantially' 
                       // only 'virually'.
 
@@ -427,7 +428,7 @@ namespace itl
     typename map<KeyT,DataT,Traits,Compare,Alloc>::iterator
         map<KeyT,DataT,Traits,Compare,Alloc>::subtract(const value_type& val)
     {
-        if(Traits::emits_neutrons())
+        if(Traits::emits_neutrons)
             return add<inplace_minus>(val);
         else
         {
@@ -436,7 +437,7 @@ namespace itl
             {
                 (*it_).CONT_VALUE -= val.CONT_VALUE;
 
-                if(Traits::absorbs_neutrons() && (*it_).CONT_VALUE == DataT())
+                if(Traits::absorbs_neutrons && (*it_).CONT_VALUE == DataT())
                 {
                     erase(it_);
                     return end();
@@ -534,13 +535,26 @@ namespace itl
 
     //-------------------------------------------------------------------------
     template <class KeyT, class DataT, class Traits>
+	struct is_interval_container<itl::map<KeyT,DataT,Traits> >
+	{ enum{value = true}; };
+
+    template <class KeyT, class DataT, class Traits>
+	struct is_interval_splitter<itl::map<KeyT,DataT,Traits> >
+	{ enum{value = false}; };
+
+    template <class KeyT, class DataT, class Traits>
+	struct is_neutron_absorber<itl::map<KeyT,DataT,Traits> >
+	{ enum{value = Traits::absorbs_neutrons}; };
+
+    template <class KeyT, class DataT, class Traits>
+	struct is_neutron_emitter<itl::map<KeyT,DataT,Traits> >
+	{ enum{value = Traits::emits_neutrons}; };
+
+	template <class KeyT, class DataT, class Traits>
     struct type<itl::map<KeyT,DataT,Traits> >
     {
-        static bool is_set() { return true; }
-        static bool is_interval_container() { return false; }
-        static bool is_interval_splitter() { return false; }
-        static bool is_neutron_absorber() { return Traits::absorbs_neutrons(); }
-        static bool is_neutron_emitter() { return Traits::emits_neutrons(); }
+        //static bool is_neutron_absorber() { return Traits::absorbs_neutrons; }
+        //static bool is_neutron_emitter() { return Traits::emits_neutrons; }
 
         static std::string to_string()
         {

@@ -75,7 +75,7 @@ namespace itl
                 if(i2 != x2.end())
                 {
                     tmp += *i1; 
-                    if(type<typename MapType::codomain_type>::is_set())
+                    if(is_set<typename MapType::codomain_type>::value)
                         tmp *= *i2;
                     else
                         tmp += *i2;
@@ -104,7 +104,7 @@ namespace itl
                 if(x2_ != x2.end())
                 {
                     result.insert(*x1_);
-                    if(type<typename MapType::data_type>::is_set())
+                    if(is_set<typename MapType::data_type>::value)
                         result.template add<inplace_star>(*x2_); //MEMO template cast for gcc
                     else
                         result.template add<inplace_plus>(*x2_);

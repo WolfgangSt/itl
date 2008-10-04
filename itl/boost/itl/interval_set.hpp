@@ -486,13 +486,31 @@ erase
 
 
 template <class Type>
+struct is_set<itl::interval_set<Type> >
+{ enum{value = true}; };
+
+template <class Type>
+struct is_interval_container<itl::interval_set<Type> >
+{ enum{value = true}; };
+
+template <class Type>
+struct is_interval_splitter<itl::interval_set<Type> >
+{ enum{value = false}; };
+
+template <class Type>
+struct is_neutron_absorber<itl::interval_set<Type> >
+{ enum{value = false}; };
+
+template <class Type>
+struct is_neutron_emitter<itl::interval_set<Type> >
+{ enum{value = false}; };
+
+template <class Type>
 struct type<itl::interval_set<Type> >
 {
-    static bool is_set() { return true; }
-    static bool is_interval_container() { return true; }
-    static bool is_interval_splitter() { return false; }
-    static bool is_neutron_absorber() { return false; }
-    static bool is_neutron_emitter() { return false; }
+    //static bool is_interval_splitter() { return false; }
+    //static bool is_neutron_absorber() { return false; }
+    //static bool is_neutron_emitter() { return false; }
 
     static std::string to_string()
     { return "interval_set<"+ type<Type>::to_string() +">"; }

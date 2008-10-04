@@ -9,6 +9,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 +----------------------------------------------------------------------------*/
 #pragma once
 
+#include <itl/type_traits/is_continuous.hpp>
 #include <itl/functors.hpp>
 #include <itl/interval_morphism.hpp>
 #include <validate/laws/set_laws.h>
@@ -288,16 +289,16 @@ namespace itl
             case partialStdOrder:            return _lessEqualValidater.chooseValidater();
             case containedInOrder:           return _containedInValidater.chooseValidater();
             case inplacePlusAssociativity:   
-                if(   itl::type<Type>::is_interval_container() && type<Type>::is_interval_splitter()
-                   && type<Type>::is_neutron_absorber() && type<Type>::is_neutron_emitter())
+                if(   itl::is_interval_container<Type>::value && itl::is_interval_splitter<Type>::value
+					&& is_neutron_absorber<Type>::value && is_neutron_emitter<Type>::value)
                     return new LawValidater<InplaceAssociativity<Type, inplace_plus, element_equal>, RandomGentor>;
                 else
                     return new LawValidater<InplaceAssociativity<Type>, RandomGentor>;
             case inplacePlusNeutrality:      return new LawValidater<InplaceNeutrality<Type>, RandomGentor>;
             case inplacePlusCommutativity:   return new LawValidater<InplaceCommutativity<Type>, RandomGentor>;
             case inplaceStarAssociativity:
-                if(   type<Type>::is_interval_container() && type<Type>::is_interval_splitter()
-                   && type<Type>::is_neutron_absorber() && type<Type>::is_neutron_emitter())
+				if(   is_interval_container<Type>::value && is_interval_splitter<Type>::value
+					&& is_neutron_absorber<Type>::value && is_neutron_emitter<Type>::value)
                     return new LawValidater<InplaceAssociativity<Type, inplace_star, element_equal>, RandomGentor>;
                 else
                     return new LawValidater<InplaceAssociativity<Type, inplace_star>, RandomGentor>;
@@ -625,7 +626,7 @@ namespace itl
         {
             _lawChoice.setSize(Laws_size);
             _lawChoice.setMaxWeights(100);
-            const bool morphism_exists   = !type<typename Type::domain_type>::is_continuous();
+			const bool morphism_exists   = !is_continuous<typename Type::domain_type>::value;
             const int  morphism_share    = 15;
             _lawChoice[inplaceSetLaws]   = morphism_exists ? 100 - morphism_share : 100;
             _lawChoice[homomorphismLaws] = 100 - _lawChoice[inplaceSetLaws];
@@ -690,7 +691,7 @@ namespace itl
         {
             _lawChoice.setSize(Laws_size);
             _lawChoice.setMaxWeights(100);
-            const bool morphism_exists    = !type<typename Type::domain_type>::is_continuous();
+			const bool morphism_exists    = !is_continuous<typename Type::domain_type>::value;
             const int  morphism_share     = 30;
             _lawChoice[inplaceMapLaws]= morphism_exists ? 100 - morphism_share : 100;
             _lawChoice[homomorphismLaws]  = 100 - _lawChoice[inplaceMapLaws];
