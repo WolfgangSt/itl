@@ -39,7 +39,7 @@ class itl::list
 #include <list>
 #include <algorithm>
 #include <itl/j_assert.hpp>
-#include <itl/itl_value.hpp>
+#include <itl/type_traits/to_string.hpp>
 #include <itl/set_algo.hpp>
 #include <itl/predicates.hpp>
 

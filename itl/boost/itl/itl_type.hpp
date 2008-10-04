@@ -83,13 +83,13 @@ namespace itl
             }
             \endcode
         */
-        static Type unon();
+        //CL static Type unon();
 
         /** Is this type atomic (built in)? <tt>(bool, char, int, etc.)</tt>
 
             E.g.: <tt>if(type<T>::is_atomic()) -- T is atomic</tt>
         */
-        static bool is_atomic();
+        //Cl static bool is_atomic();
 
         /** Is this type continuous ? <tt>(float, double, etc.)</tt> 
 
@@ -121,35 +121,35 @@ namespace itl
 	//JODO THINK: 1.0 can always be expressed via ++T(), can't it?
     //template<> inline float  type<float>::unon()  { return 1.0; }
     //template<> inline double type<double>::unon() { return 1.0; }
-    template<> inline std::string type<std::string>::unon() { return std::string(" "); }
+    //template<> inline std::string type<std::string>::unon() { return std::string(" "); }
 
 
-    template <class Type>
-    inline Type type<Type>::unon() 
-    { 
-        return succ(type<Type>::neutron()); 
-    }
+    //CL template <class Type>
+    //inline Type type<Type>::unon() 
+    //{ 
+    //    return succ(type<Type>::neutron()); 
+    //}
 
 
-    template<> inline bool type<bool>::is_atomic() { return true; }
-    template<> inline bool type<char>::is_atomic() { return true; }
+    //template<> inline bool type<bool>::is_atomic() { return true; }
+    //template<> inline bool type<char>::is_atomic() { return true; }
 
-    template<> inline bool type<short>::is_atomic() { return true; }
-    template<> inline bool type<int>::is_atomic() { return true; }
-    template<> inline bool type<long>::is_atomic() { return true; }
+    //template<> inline bool type<short>::is_atomic() { return true; }
+    //template<> inline bool type<int>::is_atomic() { return true; }
+    //template<> inline bool type<long>::is_atomic() { return true; }
 
-    template<> inline bool type<unsigned char>::is_atomic() { return true; }
-    template<> inline bool type<unsigned short>::is_atomic() { return true; }
-    template<> inline bool type<unsigned int>::is_atomic() { return true; }
-    template<> inline bool type<unsigned long>::is_atomic() { return true; }
+    //template<> inline bool type<unsigned char>::is_atomic() { return true; }
+    //template<> inline bool type<unsigned short>::is_atomic() { return true; }
+    //template<> inline bool type<unsigned int>::is_atomic() { return true; }
+    //template<> inline bool type<unsigned long>::is_atomic() { return true; }
 
-    template<> inline bool type<float>::is_atomic() { return true; }
-    template<> inline bool type<double>::is_atomic() { return true; }
+    //template<> inline bool type<float>::is_atomic() { return true; }
+    //template<> inline bool type<double>::is_atomic() { return true; }
 
-    template<> inline bool type<char*>::is_atomic() { return true; }
+    //template<> inline bool type<char*>::is_atomic() { return true; }
 
-    template <class Type>
-    inline bool type<Type>::is_atomic() { return false; }
+    //template <class Type>
+    //inline bool type<Type>::is_atomic() { return false; }
 
 
     template<> inline bool type<float>::is_continuous() { return true; }

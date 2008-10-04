@@ -1055,14 +1055,9 @@ const std::string interval<DataT>::as_string()const
     std::string lwbRep, ubpRep;
 
     itvRep += leftbound_open() ? "(" : "[" ;
-    // if(type<DataT>::is_atomic()) 
-    {
-        itvRep += itl::to_string<DataT>::apply(_lwb);
-        itvRep += ",";
-        itvRep += itl::to_string<DataT>::apply(_upb);
-
-    }
-
+    itvRep += itl::to_string<DataT>::apply(_lwb);
+    itvRep += ",";
+    itvRep += itl::to_string<DataT>::apply(_upb);
     itvRep += rightbound_open() ? ")" : "]" ;
 
     return itvRep;

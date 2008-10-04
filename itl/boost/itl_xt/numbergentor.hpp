@@ -36,6 +36,7 @@ class NumberGentorT
 #include <stdlib.h>
 #include <vector>
 #include <itl/itl_type.hpp>
+#include <itl/type_traits/unon.hpp>
 #include <itl_xt/gentorit.hpp>
 
 #define RND_1_TO(y)      (1+(int)((double)(y)*rand()/(RAND_MAX+1.0)))
@@ -83,7 +84,7 @@ class NumberGentorT : public RandomGentorAT<NumTV>
 {
 public:
     NumberGentorT(): 
-      m_valueRange( NumTV(), type<NumTV>::unon(), interval<NumTV>::RIGHT_OPEN ) {}
+      m_valueRange( NumTV(), unon<NumTV>::value(), interval<NumTV>::RIGHT_OPEN ) {}
 
     NumTV operator() (NumTV upb) { return rnd_0_to_excl<NumTV>(upb); }
     NumTV operator() (NumTV lwb, NumTV upb)  { return rnd_within_exUpb<NumTV>(lwb,upb); }

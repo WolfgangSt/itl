@@ -9,7 +9,6 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 #define __itl_type_traits_neutron_JOFA_080912_H__
 
 #include <itl/itl_type.hpp>
-#include <itl/itl_value.hpp>
 
 // I DO NOT #include boost/itl/itl_<date_time_adapter>.hpp here, because it
 // HAS TO be included by client code prior to this location.
