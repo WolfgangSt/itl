@@ -1054,7 +1054,7 @@ std::string interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,
         std::string cur("("); 
         cur += (*it).KEY_VALUE.as_string();
         cur += ",";
-        cur += itl::value<CodomainT>::to_string((*it).CONT_VALUE);
+        cur += itl::to_string<CodomainT>::apply((*it).CONT_VALUE);
         cur += ")";
         res += cur;
     }

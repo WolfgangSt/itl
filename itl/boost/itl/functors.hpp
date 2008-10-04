@@ -28,7 +28,6 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __itl_functors_H_JOFA_080315__
 #define __itl_functors_H_JOFA_080315__
 
-#include <itl/itl_value.hpp>
 #include <itl/type_traits/neutron.hpp>
 
 namespace itl

@@ -35,7 +35,7 @@ class itl::map
 
 #include <string>
 #include <itl/notate.hpp>
-#include <itl/itl_value.hpp>
+#include <itl/type_traits/to_string.hpp>
 #include <itl/functors.hpp>
 #include <itl/predicates.hpp>
 #include <itl/itl_set.hpp>
@@ -455,9 +455,9 @@ namespace itl
         std::string repr;
         const_FORALL_THIS(it) {
             std::string elem("(");
-            elem += value<KeyT>::to_string((*it).KEY_VALUE);
+            elem += to_string<KeyT>::apply((*it).KEY_VALUE);
             elem += "->";
-            elem += value<DataT>::to_string((*it).CONT_VALUE);
+            elem += to_string<DataT>::apply((*it).CONT_VALUE);
             elem += ")";
 
             repr += elem;

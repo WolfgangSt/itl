@@ -34,8 +34,8 @@ Function-templates for discrete Datatypes like int, unsigned or
     any class that provides a ++ operator c.f. iterators
 -----------------------------------------------------------------------------*/
 
-#ifndef __itl_VALUE_JOFA_000712_H__
-#define __itl_VALUE_JOFA_000712_H__
+#ifndef __itl_TO_STRING_JOFA_000712_H__
+#define __itl_TO_STRING_JOFA_000712_H__
 
 #include <stdio.h>
 #include <string>
@@ -63,13 +63,13 @@ namespace itl
     @author  Joachim Faulhaber
 */
 template <class Type>
-struct value
+struct to_string
 {
     /** String converter for all types <tt>Type</tt>
 
-        E.g.: <tt>int i=5; string s = value<int>::to_string(i);</tt>
+        E.g.: <tt>int i=5; string s = to_string<int>::apply(i);</tt>
     */
-    static const std::string to_string(const Type&);
+    static const std::string apply(const Type&);
 };
 
 
@@ -87,22 +87,22 @@ typedef char * CharPT;
     return stringRepr;
 */
 
-template<> inline const std::string value<bool>::to_string(const bool& x){ return x ? "true" : "false"; }
-template<> inline const std::string value<char>::to_string(const char& x){ RETURN_AS_STRING("%c", x); }
-template<> inline const std::string value<short>::to_string(const short& x) { RETURN_AS_STRING("%d", x); }
-template<> inline const std::string value<int>::to_string(const int& x) { RETURN_AS_STRING("%d", x);   }
-template<> inline const std::string value<long>::to_string(const long& x) { RETURN_AS_STRING("%ld", x);   }
-template<> inline const std::string value<unsigned char>::to_string(const unsigned char& x) { RETURN_AS_STRING("%uc", x);   }
-template<> inline const std::string value<unsigned short>::to_string(const unsigned short& x) { RETURN_AS_STRING("%hu", x);   }
-template<> inline const std::string value<unsigned int>::to_string(const unsigned int& x) { RETURN_AS_STRING("%u", x);   }
-template<> inline const std::string value<unsigned long>::to_string(const unsigned long& x) { RETURN_AS_STRING("%lu", x);   }
-template<> inline const std::string value<float>::to_string(const float& x) { RETURN_AS_STRING("%f", x);   }
-template<> inline const std::string value<double>::to_string(const double& x) { RETURN_AS_STRING("%lf", x);   }
-template<> inline const std::string value<CharPT>::to_string(const CharPT & x) { RETURN_AS_STRING("%s", x);   }
-template<> inline const std::string value<std::string>::to_string(const std::string& x) { return x; }
+template<> inline const std::string to_string<bool>::apply(const bool& x){ return x ? "true" : "false"; }
+template<> inline const std::string to_string<char>::apply(const char& x){ RETURN_AS_STRING("%c", x); }
+template<> inline const std::string to_string<short>::apply(const short& x) { RETURN_AS_STRING("%d", x); }
+template<> inline const std::string to_string<int>::apply(const int& x) { RETURN_AS_STRING("%d", x);   }
+template<> inline const std::string to_string<long>::apply(const long& x) { RETURN_AS_STRING("%ld", x);   }
+template<> inline const std::string to_string<unsigned char>::apply(const unsigned char& x) { RETURN_AS_STRING("%uc", x);   }
+template<> inline const std::string to_string<unsigned short>::apply(const unsigned short& x) { RETURN_AS_STRING("%hu", x);   }
+template<> inline const std::string to_string<unsigned int>::apply(const unsigned int& x) { RETURN_AS_STRING("%u", x);   }
+template<> inline const std::string to_string<unsigned long>::apply(const unsigned long& x) { RETURN_AS_STRING("%lu", x);   }
+template<> inline const std::string to_string<float>::apply(const float& x) { RETURN_AS_STRING("%f", x);   }
+template<> inline const std::string to_string<double>::apply(const double& x) { RETURN_AS_STRING("%lf", x);   }
+template<> inline const std::string to_string<CharPT>::apply(const CharPT & x) { RETURN_AS_STRING("%s", x);   }
+template<> inline const std::string to_string<std::string>::apply(const std::string& x) { return x; }
 
 template <class Type>
-inline const std::string value<Type>::to_string(const Type& x) { return x.as_string(); }
+inline const std::string to_string<Type>::apply(const Type& x) { return x.as_string(); }
 
 } // namespace itl
 

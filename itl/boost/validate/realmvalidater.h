@@ -21,7 +21,7 @@ namespace itl
     std::string location(const std::string& file, int line, const std::string& message)
     {
         std::string result = file;
-        result += "(" + value<int>::to_string(line) + "): ";
+        result += "(" + to_string<int>::apply(line) + "): ";
         result += message;
         return result;
     }

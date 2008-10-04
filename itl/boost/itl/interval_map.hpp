@@ -208,7 +208,7 @@ private:
 //            std::cout << info << "it==end()\n";
 //        else
 //            std::cout << info << "*it=(" << (it->KEY_VALUE).as_string() 
-//                      << "->" << value<CodomainT>::to_string(it->CONT_VALUE)
+//                      << "->" << to_string<CodomainT>::apply(it->CONT_VALUE)
 //                      << ") map: " << this->as_string() << std::endl;
 //#endif
     }
@@ -221,9 +221,9 @@ private:
 //        else
 //            std::cout << info 
 //                      << "ins=[" << (insertee.KEY_VALUE).as_string() 
-//                      << "->" << value<CodomainT>::to_string(insertee.CONT_VALUE) << "]"
+//                      << "->" << to_string<CodomainT>::apply(insertee.CONT_VALUE) << "]"
 //                      << "*it=(" << (it->KEY_VALUE).as_string() 
-//                      << "->" << value<CodomainT>::to_string(it->CONT_VALUE)
+//                      << "->" << to_string<CodomainT>::apply(it->CONT_VALUE)
 //                      << ") map: " << this->as_string() << std::endl;
 //#endif
     }

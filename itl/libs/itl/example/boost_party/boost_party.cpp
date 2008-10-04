@@ -10,7 +10,7 @@ Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
 +----------------------------------------------------------------------------*/
 #include <stdio.h>
 #include <iostream>
-#include <itl/itl_value.hpp>
+#include <itl/type_traits/to_string.hpp>
 #include <itl/interval_map.hpp>
 
 // The next line includes <boost/date_time/posix_time/posix_time.hpp>

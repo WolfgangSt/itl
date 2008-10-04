@@ -15,7 +15,7 @@ Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
 // and a few lines of adapter code.
 #include <itl/itl_gregorian_date.hpp> 
 
-#include <itl/itl_value.hpp>
+#include <itl/type_traits/to_string.hpp>
 #include <itl/interval_map.hpp>
 
 using namespace std;

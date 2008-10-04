@@ -45,7 +45,7 @@ DEALINGS IN THE SOFTWARE.
 #include <itl/type_traits/difference.hpp>
 #include <itl/type_traits/size.hpp>
 #include <itl/itl_type.hpp>
-#include <itl/itl_value.hpp>
+#include <itl/type_traits/to_string.hpp>
 #include <itl/type_traits/instance_check.hpp>
 
 #undef min
@@ -1057,9 +1057,9 @@ const std::string interval<DataT>::as_string()const
     itvRep += leftbound_open() ? "(" : "[" ;
     // if(type<DataT>::is_atomic()) 
     {
-        itvRep += itl::value<DataT>::to_string(_lwb);
+        itvRep += itl::to_string<DataT>::apply(_lwb);
         itvRep += ",";
-        itvRep += itl::value<DataT>::to_string(_upb);
+        itvRep += itl::to_string<DataT>::apply(_upb);
 
     }
 

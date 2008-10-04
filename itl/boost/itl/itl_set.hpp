@@ -37,7 +37,7 @@ for concepts InplaceAddable and InplaceSubtractable
 
 #include <string>
 #include <set>
-#include <itl/itl_value.hpp>
+#include <itl/type_traits/to_string.hpp>
 #include <itl/set_algo.hpp>
 #include <itl/predicates.hpp>
 
@@ -289,8 +289,8 @@ namespace itl
         if(it_ == end()) return std::string();
         else
         {
-            std::string y = value<KeyT>::to_string(*it_++);
-            while(it_ != end()) { y += sep; y += value<KeyT>::to_string(*it_++); }
+            std::string y = to_string<KeyT>::apply(*it_++);
+            while(it_ != end()) { y += sep; y += to_string<KeyT>::apply(*it_++); }
             return y;
         }
     }

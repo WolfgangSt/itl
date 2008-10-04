@@ -241,11 +241,11 @@ std::string WeightedNumberGentor<WeightsT>::asString()const
     std::string result;
     for(int idx=0; idx < size(); idx++)
     {
-        result += value<int>::to_string(idx);
+        result += to_string<int>::apply(idx);
         result += ":";
         result += _typeNames[idx];
         result += "(";
-        result += value<int>::to_string(_weights[idx]);
+        result += to_string<int>::apply(_weights[idx]);
         result += ")\n";
     }
     return result;
@@ -258,9 +258,9 @@ std::string WeightedNumberGentor<WeightsT>::inconsitencyMessage(const std::strin
     message += "Inconsistent typechoice in ";
     message += location + ":\n";
     message += "The sum of weights must be ";
-    message += value<int>::to_string(maxWeights());
+    message += to_string<int>::apply(maxWeights());
     message += " but is ";
-    message += value<int>::to_string(sumOfWeights());
+    message += to_string<int>::apply(sumOfWeights());
     message += "\n";
     message += "The weights defined are:\n";
     message += asString();

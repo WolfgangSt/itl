@@ -11,7 +11,7 @@ Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
 #include <iostream>
 #include <string>
 #include <math.h>
-#include <itl/itl_value.hpp>
+#include <itl/type_traits/to_string.hpp>
 #include <itl/itl_interval.hpp>
 #include "../toytime.h"
 
