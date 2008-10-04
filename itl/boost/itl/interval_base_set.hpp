@@ -168,6 +168,10 @@ public:
     typedef typename ImplSetT::iterator iterator;
     /// const_iterator for iteration over intervals
     typedef typename ImplSetT::const_iterator const_iterator;
+    /// iterator for reverse iteration over intervals
+    typedef typename ImplSetT::reverse_iterator reverse_iterator;
+    /// const_iterator for iteration over intervals
+    typedef typename ImplSetT::const_reverse_iterator const_reverse_iterator;
 
 
     // B: Constructors, destructors, assignment
@@ -223,11 +227,6 @@ public:
     DomainT upper()const 
 	{ BOOST_ASSERT(!empty()); return (*(_set.rbegin())).upper(); }
 
-	/// enclosing Interval
-    interval_type enclosure()const 
-	{ BOOST_ASSERT(!empty()); return first_interval().span(last_interval()); }
-
-
 	iterator lower_bound(const value_type& interval)
 	{ return _set.lower_bound(interval); }
 
@@ -239,13 +238,6 @@ public:
 
 	const_iterator upper_bound(const value_type& interval)const
 	{ return _set.upper_bound(interval); }
-
-    /// first interval in the set
-    interval_type first_interval()const 
-	{ BOOST_ASSERT(!empty()); return (*(_set.begin())); }
-    /// last interval in the set
-    interval_type last_interval()const 
-	{ BOOST_ASSERT(!empty()); return (*(_set.rbegin())); }
 
     /// number of intervals
 	std::size_t interval_count()const { return _set.size(); }
@@ -387,6 +379,14 @@ public:
     const_iterator begin()const { return _set.begin(); }
     ///
     const_iterator end()const   { return _set.end(); }
+    ///
+    reverse_iterator rbegin() { return _set.rbegin(); }
+    ///
+    reverse_iterator rend()   { return _set.rend(); }
+    ///
+    const_reverse_iterator rbegin()const { return _set.rbegin(); }
+    ///
+    const_reverse_iterator rend()const   { return _set.rend(); }
 //@}
 
 
@@ -578,46 +578,6 @@ bool interval_base_set<SubType,DomainT,Interval,Compare,Alloc>
 }
 
 
-/*CL
-template<class SubType,
-         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-bool interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::disjoint_to(const interval_type& x)const
-{
-    interval_base_set<SubType,DomainT,Interval,Compare,Alloc> section;
-    intersect(section, x);
-    return section.empty();
-}
-
-template<class SubType,
-         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-bool interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::disjoint_to(const interval_base_set& x)const
-{
-    interval_base_set<SubType,DomainT,Interval,Compare,Alloc> section;
-    intersect(section, x);
-    return section.empty();
-}
-*/
-
-/*CL
-template<class SubType,
-         class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::intersect(interval_base_set& section, const value_type& x)const
-{
-    section.clear();
-    // any intersection with the empty intervall is empty
-    if(x.empty()) return;
-
-    typename ImplSetT::const_iterator fst_it = _set.lower_bound(x);
-    typename ImplSetT::const_iterator end_it = _set.upper_bound(x);
-
-    for(typename ImplSetT::const_iterator it=fst_it; it != end_it; it++) {
-        interval_type isec; 
-		(*it).intersect(isec, x);
-        section.insert(isec);
-    }
-}
-*/
-
 template<class SubType,
          class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 void interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::add_intersection(interval_base_set& section, const value_type& x)const
@@ -721,82 +681,6 @@ inline bool operator <= (const interval_base_set<SubType,DomainT,Interval,Compar
     return lhs < rhs || lhs == rhs;
 }
 
-/*CL
-template 
-<
-    class SubType, class DomainT, template<class>class Interval, 
-    template<class>class Compare, template<class>class Alloc
->
-interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
-insert(interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
-       const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
-       insertee)
-{
-    return object += insertee; 
-}
-*/
-
-template 
-<
-	class SubType, class DomainT, template<class>class Interval, 
-	template<class>class Compare, template<class>class Alloc,
-	template
-	<	
-		class, template<class>class, 
-		template<class>class, template<class>class
-	>
-	class IntervalSet
->
-interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
-insert
-(
-	      interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
-    const IntervalSet              <DomainT,Interval,Compare,Alloc>& operand
-)
-{
-    return object += operand; 
-}
-    
-
-template 
-<
-    class SubType, class DomainT, template<class>class Interval, 
-    template<class>class Compare, template<class>class Alloc
->
-interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
-erase(interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
-      const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
-      erasee)
-{
-    return object -= erasee;
-}
-
-
-
-
-//-----------------------------------------------------------------------------
-// addition (set union) += and subtraction (set difference) -=
-//-----------------------------------------------------------------------------
-/*CL
-template 
-<
-    class SubType, class DomainT, template<class>class Interval, 
-    template<class>class Compare, template<class>class Alloc
->
-interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
-operator +=
-(
-          interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
-    const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& operand
-)
-{
-    typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> set_type;
-    const_FORALL(typename set_type, elem_, operand) 
-        object.add(*elem_); 
-
-    return object; 
-}
-*/
 
 template<class CharType, class CharTraits, 
     class SubType, class DomainT, template<class>class Interval, 

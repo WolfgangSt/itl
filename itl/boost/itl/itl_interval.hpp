@@ -471,8 +471,10 @@ public:
     */
     interval span(const interval& rhs)const
 	{
-		BOOST_ASSERT(!empty() && !rhs.empty());
-		return empty() ? interval(_lwb, rhs._upb, span(boundtypes(), rhs.boundtypes()));    
+		if(empty())          return rhs;
+		else if(rhs.empty()) return *this;
+		else return 
+				interval(_lwb, rhs._upb, span(boundtypes(), rhs.boundtypes()));
 	}
 
     interval& left_subtract(const interval& x2);
@@ -1030,7 +1032,7 @@ void interval<DataT>::left_surplus(interval<DataT>& lsur, const interval<DataT>&
 {
     if(lwb_less(x2)) {
         lsur.set_lwb( BoundT(_lwb,boundtypes()) ); 
-        lsur.set_upb( upb_leftOf(x2) );   // (toUpb(pred(x2.first()))); 
+        lsur.set_upb( upb_leftOf(x2) );
     }
     else lsur.clear();
 }

@@ -38,6 +38,7 @@ class interval_base_map
 #include <itl/notate.hpp>
 #include <itl/itl_map.hpp>
 #include <itl/interval_base_set.hpp>
+#include <itl/interval_sets.hpp>
 //CL devirt #include <itl/maps.hpp>
 #include <itl/itl_interval.hpp>
 
@@ -262,9 +263,21 @@ public:
     interval_type enclosure()const { return first_interval().span(last_interval()); }
 
     /// Gives the domain of the map as interval set
-    template<class SetSubType>
-    void domain(interval_base_set<SetSubType,DomainT,Interval,Compare,Alloc>& dom)const 
-    { dom.clear(); const_FOR_IMPLMAP(it) dom += (*it).KEY_VALUE; } 
+	template 
+	<
+		template
+		<	
+			class DomainT, template<class>class Interval, 
+			template<class>class Compare, template<class>class Alloc
+		>
+		class IntervalSet
+	>
+    void domain(IntervalSet<DomainT,Interval,Compare,Alloc>& dom)const 
+    { 
+		dom.clear(); 
+		const_FOR_IMPLMAP(it) 
+			dom += (*it).KEY_VALUE; 
+	} 
 //@}
     
 

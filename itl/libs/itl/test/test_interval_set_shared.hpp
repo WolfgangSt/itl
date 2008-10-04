@@ -54,6 +54,7 @@ void interval_set_fundamentals_4_ordered_types()
 	BOOST_CHECK_EQUAL(mt_set, IntervalSet<T>());
 	(mt_set += mt_interval) += mt_interval;
 	BOOST_CHECK_EQUAL(mt_set, IntervalSet<T>());
+	BOOST_CHECK_EQUAL(enclosure(mt_set), neutron<interval<T> >::value());
 
 	//subtracting emptieness
 	mt_set.subtract(mt_interval).subtract(mt_interval);
@@ -100,6 +101,9 @@ void interval_set_fundamentals_4_ordered_types()
 
 	BOOST_CHECK_EQUAL(single_I0_0I_from_element, single_I0_0I_from_interval);
 	BOOST_CHECK_EQUAL(single_I0_0I_from_element, single_I0_0I);
+	BOOST_CHECK_EQUAL(enclosure(single_I0_0I), I0_0I);
+	BOOST_CHECK_EQUAL(single_I0_0I.lower(), I0_0I.lower());
+	BOOST_CHECK_EQUAL(single_I0_0I.upper(), I0_0I.upper());
 
 	IntervalSet<T> single_I1_1I_from_element(v1);
 	IntervalSet<T> single_I1_1I_from_interval(I1_1I);
@@ -112,6 +116,9 @@ void interval_set_fundamentals_4_ordered_types()
 	IntervalSet<T> single_I0_1I(single_I0_1I_from_interval);
 
 	BOOST_CHECK_EQUAL(single_I0_1I_from_interval, single_I0_1I);
+	BOOST_CHECK_EQUAL(enclosure(single_I0_1I), I0_1I);
+	BOOST_CHECK_EQUAL(single_I0_1I.lower(), I0_1I.lower());
+	BOOST_CHECK_EQUAL(single_I0_1I.upper(), I0_1I.upper());
 
 	//contains predicate
 	BOOST_CHECK_EQUAL(single_I0_0I.contains(v0), true);
@@ -198,6 +205,7 @@ void interval_set_add_sub_4_bicremental_types()
 	T v9 = make<T>(9);
 	interval<T> I5_6I(v5,v6);
 	interval<T> I5_9I(v5,v9);
+	interval<T> I0_9I = closed_interval(v0, v9);
 
 	BOOST_CHECK_EQUAL( IntervalSet<T>(I5_6I).add(v0).add(v9), 
 		               IntervalSet<T>().insert(v9).insert(I5_6I).insert(v0) );
@@ -205,6 +213,11 @@ void interval_set_add_sub_4_bicremental_types()
 	IntervalSet<T> set_A = IntervalSet<T>(I5_6I).add(v0).add(v9);
 	IntervalSet<T> set_B = IntervalSet<T>().insert(v9).insert(I5_6I).insert(v0);
 	BOOST_CHECK_EQUAL( set_A, set_B );
+	BOOST_CHECK_EQUAL( enclosure(set_A), I0_9I );
+	BOOST_CHECK_EQUAL( set_A.lower(), I0_9I.lower() );
+	BOOST_CHECK_EQUAL( set_A.upper(), I0_9I.upper() );
+	//JODO: LAW !a.empty() => enclosure(a).lower() == a.lower()
+	//JODO: LAW !a.empty() => enclosure(a).upper() == a.upper()
 
 	IntervalSet<T> set_A1 = set_A, set_B1 = set_B,
 	               set_A2 = set_A, set_B2 = set_B;

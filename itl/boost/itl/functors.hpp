@@ -61,7 +61,6 @@ namespace itl
         { 
             if(object == operand)
                 object = Type();
-                //object -= operand;
         }
     };
 
