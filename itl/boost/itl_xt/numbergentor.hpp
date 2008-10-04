@@ -35,7 +35,6 @@ class NumberGentorT
 
 #include <stdlib.h>
 #include <vector>
-#include <itl/itl_type.hpp>
 #include <itl/type_traits/unon.hpp>
 #include <itl_xt/gentorit.hpp>
 

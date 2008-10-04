@@ -34,7 +34,7 @@ namespace itl
 
         std::string typeString()const
         {
-            return "Neutrality<"+type<Type>::to_string()+",+,0>";
+            return "Neutrality<"+type_to_string<Type>::apply()+",+,0>";
         }
 
     public:
@@ -74,7 +74,7 @@ namespace itl
 
         std::string typeString()const
         {
-            return "Commutativity<"+type<Type>::to_string()+",+>";
+            return "Commutativity<"+type_to_string<Type>::apply()+",+>";
         }
 
     public:
@@ -121,8 +121,8 @@ namespace itl
 
         std::string typeString()const
         {
-            return "Commutativity<"+type<TypeA>::to_string()+","
-                                   +type<TypeB>::to_string()+",+>";
+            return "Commutativity<"+type_to_string<TypeA>::apply()+","
+                                   +type_to_string<TypeB>::apply()+",+>";
         }
 
     public:
@@ -177,9 +177,9 @@ namespace itl
 
         std::string typeString()const
         {
-            return "Neutrality<"+type<Type>::to_string()+","
-                                +unary_template<Accumulator>::to_string()+","
-                                +unary_template<NeutronT>::to_string()+">";
+            return "Neutrality<"+type_to_string<Type>::apply()+","
+                                +unary_template_to_string<Accumulator>::apply()+","
+                                +unary_template_to_string<NeutronT>::apply()+">";
         }
 
     public:
@@ -226,8 +226,8 @@ namespace itl
 
         std::string typeString()const
         {
-            return "Associativity<"+type<Type>::to_string()+","
-                                   +unary_template<Accumulator>::to_string()+">";
+            return "Associativity<"+type_to_string<Type>::apply()+","
+                                   +unary_template_to_string<Accumulator>::apply()+">";
         }
 
     public:
@@ -316,8 +316,8 @@ namespace itl
 
         std::string typeString()const
         {
-            return "Commutativity<"+type<Type>::to_string()+","
-                                   +unary_template<Accumulator>::to_string()+">";
+            return "Commutativity<"+type_to_string<Type>::apply()+","
+                                   +unary_template_to_string<Accumulator>::apply()+">";
         }
 
     public:

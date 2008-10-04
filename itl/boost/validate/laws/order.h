@@ -30,8 +30,8 @@ namespace itl
 
         std::string typeString()const
         {
-            return "Reflexivity<"+type<Type>::to_string()+","
-                                 +unary_template<Relation>::to_string()+">";
+            return "Reflexivity<"+type_to_string<Type>::apply()+","
+                                 +unary_template_to_string<Relation>::apply()+">";
         }
 
     public:
@@ -48,11 +48,11 @@ namespace itl
     };
 
     template<> 
-    std::string unary_template<std::less_equal>::to_string()  { return "<="; }
+    std::string unary_template_to_string<std::less_equal>::apply()  { return "<="; }
     template<> 
-    std::string unary_template<std::less>::to_string()        { return "<"; }
+    std::string unary_template_to_string<std::less>::apply()        { return "<"; }
     template<> 
-    std::string unary_template<itl::contained_in>::to_string(){ return "C="; }
+    std::string unary_template_to_string<itl::contained_in>::apply(){ return "C="; }
 
     // ---------------------------------------------------------------------------
     template <typename Type, template<class>class Relation>
@@ -66,8 +66,8 @@ namespace itl
 
         std::string typeString()const
         {
-            return "Irreflexivity<"+type<Type>::to_string()+","
-                                   +unary_template<Relation>::to_string()+">";
+            return "Irreflexivity<"+type_to_string<Type>::apply()+","
+                                   +unary_template_to_string<Relation>::apply()+">";
         }
 
     public:
@@ -99,8 +99,8 @@ namespace itl
 
         std::string typeString()const
         {
-            return "Antisymmetry<"+type<Type>::to_string()+"," 
-                                  +unary_template<Relation>::to_string()+">";
+            return "Antisymmetry<"+type_to_string<Type>::apply()+"," 
+                                  +unary_template_to_string<Relation>::apply()+">";
         }
 
     public:
@@ -138,8 +138,8 @@ namespace itl
 
         std::string typeString()const
         {
-            return "Antisymmetry2<"+type<Type>::to_string()+","
-                                   +unary_template<Relation>::to_string()+">";
+            return "Antisymmetry2<"+type_to_string<Type>::apply()+","
+                                   +unary_template_to_string<Relation>::apply()+">";
         }
 
     public:
@@ -178,8 +178,8 @@ namespace itl
 
         std::string typeString()const
         {
-            return "Transitivity<"+type<Type>::to_string()+","
-                                  +unary_template<Relation>::to_string()+">";
+            return "Transitivity<"+type_to_string<Type>::apply()+","
+                                  +unary_template_to_string<Relation>::apply()+">";
         }
 
     public:

@@ -42,10 +42,10 @@ namespace itl
         std::string typeString()const
         {
             return
-                "Pushout<"+type<SourceT>::to_string()+","
-                          +type<TargetT>::to_string()+","
-                          +binary_template<FunctionT>::to_string()+","
-                          +unary_template<OperatorT>::to_string()+">";
+                "Pushout<"+type_to_string<SourceT>::apply()+","
+                          +type_to_string<TargetT>::apply()+","
+                          +binary_template_to_string<FunctionT>::apply()+","
+                          +unary_template_to_string<OperatorT>::apply()+">";
         }
 
     public:

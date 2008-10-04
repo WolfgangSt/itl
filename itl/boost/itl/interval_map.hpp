@@ -1170,16 +1170,13 @@ struct is_neutron_emitter<itl::interval_map<KeyT,DataT,Traits> >
 { enum{value = Traits::emits_neutrons}; };
 
 template <class KeyT, class DataT, class Traits>
-struct type<itl::interval_map<KeyT,DataT,Traits> >
+struct type_to_string<itl::interval_map<KeyT,DataT,Traits> >
 {
-    //static bool is_neutron_absorber() { return Traits::absorbs_neutrons; }
-    //static bool is_neutron_emitter() { return Traits::emits_neutrons; }
-
-    static std::string to_string()
+    static std::string apply()
     { 
-        return "itv_map<"+ type<KeyT>::to_string()  + ","
-                         + type<DataT>::to_string() + ","
-                         + type<Traits>::to_string() +">"; 
+        return "itv_map<"+ type_to_string<KeyT>::apply()  + ","
+                         + type_to_string<DataT>::apply() + ","
+                         + type_to_string<Traits>::apply() +">"; 
     }
 };
 

@@ -35,6 +35,7 @@ Predicates
 #define __itl_predicates_H_JOFA_990224__
 
 #include <functional>
+#include <itl/type_traits/type_to_string.hpp>
 
 namespace itl
 {
@@ -103,8 +104,9 @@ namespace itl
         }
     };
 
-    template<>
-    inline std::string unary_template<itl::std_equal>::to_string()  { return "=="; }
+    template<>         
+    inline std::string unary_template_to_string<itl::std_equal>::apply()
+	{ return "=="; }
 
     template <class Type> 
     struct element_equal : public relation<Type, Type>
@@ -116,7 +118,7 @@ namespace itl
     };
 
     template<>
-    inline std::string unary_template<itl::element_equal>::to_string()  
+    inline std::string unary_template_to_string<itl::element_equal>::apply()  
     { return "="; }
 
     template <class Type> 
@@ -129,7 +131,7 @@ namespace itl
     };
 
     template<>
-    inline std::string unary_template<itl::protonic_equal>::to_string()  
+    inline std::string unary_template_to_string<itl::protonic_equal>::apply()  
     { return "==/0"; }
 
 

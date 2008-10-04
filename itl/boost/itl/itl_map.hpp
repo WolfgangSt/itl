@@ -53,7 +53,7 @@ namespace itl
     };
 
     template<> 
-    inline std::string type<neutron_absorber>::to_string() { return "@0"; }
+    inline std::string type_to_string<neutron_absorber>::apply() { return "@0"; }
 
 
     struct neutron_enricher
@@ -64,7 +64,7 @@ namespace itl
     };
 
     template<> 
-    inline std::string type<neutron_enricher>::to_string() { return "e0"; }
+    inline std::string type_to_string<neutron_enricher>::apply() { return "e0"; }
 
     struct neutron_emitter
     {
@@ -73,7 +73,7 @@ namespace itl
     };
 
     template<> 
-    inline std::string type<neutron_emitter>::to_string() { return "^0"; }
+    inline std::string type_to_string<neutron_emitter>::apply() { return "^0"; }
 
     struct neutron_emitter_and_enricher
     {
@@ -82,7 +82,7 @@ namespace itl
     };
 
     template<> 
-    inline std::string type<neutron_emitter_and_enricher>::to_string() { return "e^0"; }
+    inline std::string type_to_string<neutron_emitter_and_enricher>::apply() { return "e^0"; }
 
 
     /*JODO move this comment to concept InplaceAddable, InplaceSubtractable, InplaceCombinable
@@ -551,16 +551,13 @@ namespace itl
 	{ enum{value = Traits::emits_neutrons}; };
 
 	template <class KeyT, class DataT, class Traits>
-    struct type<itl::map<KeyT,DataT,Traits> >
+    struct type_to_string<itl::map<KeyT,DataT,Traits> >
     {
-        //static bool is_neutron_absorber() { return Traits::absorbs_neutrons; }
-        //static bool is_neutron_emitter() { return Traits::emits_neutrons; }
-
-        static std::string to_string()
+        static std::string apply()
         {
-            return "map<"+ type<KeyT>::to_string()  + ","
-                         + type<DataT>::to_string() + ","
-                         + type<Traits>::to_string() +">"; 
+            return "map<"+ type_to_string<KeyT>::apply()  + ","
+                         + type_to_string<DataT>::apply() + ","
+                         + type_to_string<Traits>::apply() +">"; 
         }
     };
 

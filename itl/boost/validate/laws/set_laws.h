@@ -34,8 +34,8 @@ namespace itl
 
         std::string typeString()const
         {
-            return "UnionInvertability<"+type<Type>::to_string()+","
-                                        +unary_template<Equality>::to_string()+">";
+            return "UnionInvertability<"+type_to_string<Type>::apply()+","
+                                        +unary_template_to_string<Equality>::apply()+">";
         }
 
     public:
@@ -77,10 +77,10 @@ namespace itl
 
         std::string typeString()const
         {
-            return "Distributivity<"+type<Type>::to_string()+","
-                                    +unary_template<Operator1>::to_string()+","
-                                    +unary_template<Operator2>::to_string()+","
-                                    +unary_template<Equality>::to_string()+">";
+            return "Distributivity<"+type_to_string<Type>::apply()+","
+                                    +unary_template_to_string<Operator1>::apply()+","
+                                    +unary_template_to_string<Operator2>::apply()+","
+                                    +unary_template_to_string<Equality>::apply()+">";
         }
 
     public:
@@ -176,10 +176,10 @@ namespace itl
 
         std::string typeString()const
         {
-            return "DeMorgan<"+type<Type>::to_string()+","
-                              +unary_template<Operator1>::to_string()+","
-                              +unary_template<Operator2>::to_string()+","
-                              +unary_template<Equality>::to_string()+">";
+            return "DeMorgan<"+type_to_string<Type>::apply()+","
+                              +unary_template_to_string<Operator1>::apply()+","
+                              +unary_template_to_string<Operator2>::apply()+","
+                              +unary_template_to_string<Equality>::apply()+">";
         }
 
     public:
@@ -242,9 +242,9 @@ namespace itl
 
         std::string typeString()const
         {
-            return "RightDistributivity<"+type<Type>::to_string()+","
-                                         +unary_template<Operator1>::to_string()+","
-                                         +unary_template<Operator2>::to_string()+">";
+            return "RightDistributivity<"+type_to_string<Type>::apply()+","
+                                         +unary_template_to_string<Operator1>::apply()+","
+                                         +unary_template_to_string<Operator2>::apply()+">";
         }
 
     public:
@@ -335,8 +335,8 @@ namespace itl
 
         std::string typeString()const
         {
-            return "SymmetricDifference<"+type<Type>::to_string()+","
-                                         +unary_template<Equality>::to_string()+">";
+            return "SymmetricDifference<"+type_to_string<Type>::apply()+","
+                                         +unary_template_to_string<Equality>::apply()+">";
         }
 
     public:
@@ -431,8 +431,8 @@ namespace itl
 
         std::string typeString()const
         {
-            return "SectionAbsorbtion<"+type<MapT>::to_string()+","
-                                       +unary_template<Equality>::to_string()+">";
+            return "SectionAbsorbtion<"+type_to_string<MapT>::apply()+","
+                                       +unary_template_to_string<Equality>::apply()+">";
         }
 
     public:

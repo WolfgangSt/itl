@@ -45,9 +45,6 @@ DEALINGS IN THE SOFTWARE.
 #include "validate/loki/EmptyType.h"
 #include "validate/loki_xt/TypelistGentor.h"
 
-#include "itl/itl_type.hpp" 
-
-
 
 namespace Loki
 {

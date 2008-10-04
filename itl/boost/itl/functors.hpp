@@ -41,7 +41,7 @@ namespace itl
     //};
 
     //template<>
-    //inline std::string unary_template<neutron>::to_string() { return "0"; }
+    //inline std::string unary_template_to_string<neutron>::apply() { return "0"; }
 
     // ------------------------------------------------------------------------
     template <typename Type> struct inplace_identity
@@ -50,7 +50,7 @@ namespace itl
     };
 
     template<>
-    inline std::string unary_template<inplace_identity>::to_string() 
+    inline std::string unary_template_to_string<inplace_identity>::apply() 
     { return "i="; }
 
     // ------------------------------------------------------------------------
@@ -64,7 +64,7 @@ namespace itl
     };
 
     template<>
-    inline std::string unary_template<inplace_erasure>::to_string() 
+    inline std::string unary_template_to_string<inplace_erasure>::apply() 
     { return "0="; }
 
     // ------------------------------------------------------------------------
@@ -80,7 +80,7 @@ namespace itl
     };
 
     template<>
-    inline std::string unary_template<inplace_plus>::to_string() { return "+="; }
+    inline std::string unary_template_to_string<inplace_plus>::apply() { return "+="; }
 
     // ------------------------------------------------------------------------
     template <typename Type> struct inplace_minus
@@ -94,7 +94,7 @@ namespace itl
     };
 
     template<>
-    inline std::string unary_template<inplace_minus>::to_string() { return "-="; }
+    inline std::string unary_template_to_string<inplace_minus>::apply() { return "-="; }
 
     // ------------------------------------------------------------------------
     template <typename Type> struct inserter
@@ -104,7 +104,7 @@ namespace itl
     };
 
     template<>
-    inline std::string unary_template<inserter>::to_string() { return "ins="; }
+    inline std::string unary_template_to_string<inserter>::apply() { return "ins="; }
 
     // ------------------------------------------------------------------------
     template <typename Type> struct eraser
@@ -114,7 +114,7 @@ namespace itl
     };
 
     template<>
-    inline std::string unary_template<eraser>::to_string() { return "ers="; }
+    inline std::string unary_template_to_string<eraser>::apply() { return "ers="; }
 
     // ------------------------------------------------------------------------
     template <typename Type> struct inplace_star
@@ -124,7 +124,7 @@ namespace itl
     };
 
     template<>
-    inline std::string unary_template<inplace_star>::to_string() { return "*="; }
+    inline std::string unary_template_to_string<inplace_star>::apply() { return "*="; }
 
     // ------------------------------------------------------------------------
     template <typename Type> struct inplace_max
@@ -137,7 +137,7 @@ namespace itl
     };
 
     template<>
-    inline std::string unary_template<inplace_max>::to_string() { return "max="; }
+    inline std::string unary_template_to_string<inplace_max>::apply() { return "max="; }
 
     // ------------------------------------------------------------------------
     template <typename Type> struct inplace_min
@@ -150,7 +150,7 @@ namespace itl
     };
 
     template<>
-    inline std::string unary_template<inplace_min>::to_string() { return "min="; }
+    inline std::string unary_template_to_string<inplace_min>::apply() { return "min="; }
 
 
     // ------------------------------------------------------------------------

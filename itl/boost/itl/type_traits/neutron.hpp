@@ -8,7 +8,7 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 #ifndef __itl_type_traits_neutron_JOFA_080912_H__
 #define __itl_type_traits_neutron_JOFA_080912_H__
 
-#include <itl/itl_type.hpp>
+#include <itl/type_traits/type_to_string.hpp>
 
 // I DO NOT #include boost/itl/itl_<date_time_adapter>.hpp here, because it
 // HAS TO be included by client code prior to this location.
@@ -56,7 +56,7 @@ namespace itl
 	}
 
     template<>
-    inline std::string unary_template<neutron>::to_string() { return "0"; }
+    inline std::string unary_template_to_string<neutron>::apply() { return "0"; }
 
 } // namespace itl
 

@@ -44,9 +44,7 @@ DEALINGS IN THE SOFTWARE.
 #include <itl/type_traits/is_continuous.hpp>
 #include <itl/type_traits/difference.hpp>
 #include <itl/type_traits/size.hpp>
-#include <itl/itl_type.hpp>
 #include <itl/type_traits/to_string.hpp>
-#include <itl/type_traits/instance_check.hpp>
 
 #undef min
 #undef max

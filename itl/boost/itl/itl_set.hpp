@@ -378,14 +378,10 @@ namespace itl
 	{ enum{value = false}; };
 
 	template <class Type>
-    struct type<itl::set<Type> >
+    struct type_to_string<itl::set<Type> >
     {
-        //static bool is_neutron_absorber() { return false; }
-        //static bool is_neutron_emitter() { return false; }
-
-
-        static std::string to_string()
-        { return "set<"+ type<Type>::to_string() +">"; }
+        static std::string apply()
+        { return "set<"+ type_to_string<Type>::apply() +">"; }
     };
 
 

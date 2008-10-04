@@ -105,13 +105,13 @@ namespace itl
 
 
     template<> 
-    inline std::string binary_template<Interval::Atomize>::to_string() { return "@"; }
+    inline std::string binary_template_to_string<Interval::Atomize>::apply() { return "@"; }
     template<> 
-    inline std::string binary_template<Interval::Cluster>::to_string() { return "&"; }
+    inline std::string binary_template_to_string<Interval::Cluster>::apply() { return "&"; }
     template<> 
-    inline std::string binary_template<Interval::Join>::to_string() { return "j"; }
+    inline std::string binary_template_to_string<Interval::Join>::apply() { return "j"; }
     template<> 
-    inline std::string binary_template<Interval::AbsorbNeutrons>::to_string() { return "a0"; }
+    inline std::string binary_template_to_string<Interval::AbsorbNeutrons>::apply() { return "a0"; }
 
 } // namespace itl
 

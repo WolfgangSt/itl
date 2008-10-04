@@ -25,15 +25,8 @@ FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
-
-
-/*-----------------------------------------------------------------------------
-Function-templates for discrete Datatypes like int, unsigned or
-    any class that provides a ++ operator c.f. iterators
------------------------------------------------------------------------------*/
-
-#ifndef __itl_TYPE_JOFA_080416_H__
-#define __itl_TYPE_JOFA_080416_H__
+#ifndef __itl_TYPE_TO_STRING_JOFA_080416_H__
+#define __itl_TYPE_TO_STRING_JOFA_080416_H__
 
 #include <stdio.h>
 #include <string>
@@ -45,73 +38,55 @@ Function-templates for discrete Datatypes like int, unsigned or
 
 namespace itl
 {
-    // ------------------------------------------------------------------------
+    //--------------------------------------------------------------------------
     template<class Type>
-    struct type
+    struct type_to_string
     {
-        /** Represent the type by a string which is it's typename */
-        static std::string to_string();
+        /** Convert the type to it's typestring */
+        static std::string apply();
     };
 
-    //-------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
     template<>
-    inline std::string type<int>::to_string() { return "int"; }
+    inline std::string type_to_string<int>::apply() { return "int"; }
     template<>
-    inline std::string type<double>::to_string() { return "double"; }
+    inline std::string type_to_string<double>::apply() { return "double"; }
     template<>
-    inline std::string type<std::string>::to_string() { return "string"; }
+    inline std::string type_to_string<std::string>::apply() { return "string"; }
 
     //-------------------------------------------------------------------------
     template<template<class> class Templ>
-    struct unary_template
+    struct unary_template_to_string
     {
-        static std::string to_string();
+        static std::string apply();
     };
 
     template <template<class>class Unary, class Type>
-    struct type<Unary<Type> >
+    struct type_to_string<Unary<Type> >
     {
         static std::string to_string()
         { 
-            return unary_template<Unary>::to_string()+"<"+type<Type>::to_string()+">"; 
+            return unary_template_to_string<Unary>::apply()+"<"+type_to_string<Type>::apply()+">"; 
         }
     };
 
     // ---------------------------------------------------------------------------
     template<template<class,class>class Templ>
-    struct binary_template
+    struct binary_template_to_string
     {
-        static std::string to_string();
+        static std::string apply();
     };
 
     template <template<class Type1, class Type2>class Binary, class Type1, class Type2>
-    struct type<Binary<Type1, Type2> >
+    struct type_to_string<Binary<Type1, Type2> >
     {
-        static std::string to_string()
+        static std::string apply()
         { 
-            return binary_template<Binary>::to_string()+
-                "<"+type<Type1>::to_string()+","+type<Type2>::to_string()+">"; 
+            return binary_template_to_string<Binary>::apply()+
+                "<"+type_to_string<Type1>::apply()+","+type_to_string<Type2>::apply()+">"; 
         }
     };
-
-    // ---------------------------------------------------------------------------
-    //KEEP only currently unused
-    //template<template<class,class,class>class Templ>
-    //struct ternary_template
-    //{
-    //    static std::string to_string();
-    //};
-
-    //template <template<class Type1, class Type2, class Type3>class Ternary, 
-    //          class Type1, class Type2, class Type3>
-    //struct type<Ternary<Type1, Type2, Type3> >
-    //{
-    //    static std::string to_string()
-    //    { 
-    //        return ternary_template<Ternary>::to_string()+
-    //            "<"+type<Type1>::to_string()+","+type<Type2>::to_string()+","+type<Type3>::to_string()+">"; 
-    //    }
-    //};
 
 } // namespace itl
 

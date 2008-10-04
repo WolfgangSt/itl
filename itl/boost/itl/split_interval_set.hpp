@@ -548,13 +548,10 @@ namespace itl
 	{ enum{value = false}; };
 
     template <class Type>
-    struct type<itl::split_interval_set<Type> >
+    struct type_to_string<itl::split_interval_set<Type> >
     {
-        //static bool is_neutron_absorber() { return false; }
-        //static bool is_neutron_emitter() { return false; }
-
-        static std::string to_string()
-        { return "sp_itv_set<"+ type<Type>::to_string() +">"; }
+        static std::string apply()
+        { return "sp_itv_set<"+ type_to_string<Type>::apply() +">"; }
     };
 
 } // namespace itl

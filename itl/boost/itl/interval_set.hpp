@@ -506,14 +506,10 @@ struct is_neutron_emitter<itl::interval_set<Type> >
 { enum{value = false}; };
 
 template <class Type>
-struct type<itl::interval_set<Type> >
+struct type_to_string<itl::interval_set<Type> >
 {
-    //static bool is_interval_splitter() { return false; }
-    //static bool is_neutron_absorber() { return false; }
-    //static bool is_neutron_emitter() { return false; }
-
-    static std::string to_string()
-    { return "interval_set<"+ type<Type>::to_string() +">"; }
+    static std::string apply()
+    { return "interval_set<"+ type_to_string<Type>::apply() +">"; }
 };
 
 } // namespace itl
