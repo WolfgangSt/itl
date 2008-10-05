@@ -34,9 +34,9 @@ operator +=
 	const IntervalSet              <DomainT,Interval,Compare,Alloc>& operand
 )
 {
-	typedef split_interval_set<DomainT,Interval,Compare,Alloc> set_type;
+	typedef IntervalSet<DomainT,Interval,Compare,Alloc> set_type;
 	const_FORALL(typename set_type, elem_, operand) 
-		object.subtract(*elem_); 
+		object.add(*elem_); 
 
 	return object; 
 }
@@ -361,6 +361,7 @@ erase
 //-----------------------------------------------------------------------------
 // enclosure
 //-----------------------------------------------------------------------------
+/*CL
 template 
 <
 	class DomainT, template<class>class Interval, 
@@ -381,7 +382,7 @@ enclosure(const IntervalSet<DomainT,Interval,Compare,Alloc>& object)
 		object.empty() ? itl::neutron<interval_type>::value()
                        : (*object.begin()).span(*object.rbegin());
 }
-    
+*/
 
 
 } // namespace itl

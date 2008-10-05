@@ -10,12 +10,13 @@ Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
 +----------------------------------------------------------------------------*/
 #include <stdio.h>
 #include <iostream>
-#include <itl/type_traits/to_string.hpp>
-#include <itl/interval_map.hpp>
 
 // The next line includes <boost/date_time/posix_time/posix_time.hpp>
 // and a few lines of adapter code.
 #include <itl/itl_ptime.hpp> 
+
+#include <itl/type_traits/to_string.hpp>
+#include <itl/interval_map.hpp>
 
 using namespace std;
 using namespace boost::posix_time;
@@ -86,7 +87,7 @@ void boost_party()
     BoostPartyAttendenceHistoryT party;
 
     party.add( // add and element
-      make_pair( 
+	  BoostPartyAttendenceHistoryT::value_type( 
         rightopen_interval<ptime>(
           time_from_string("2008-05-20 19:30"), 
           time_from_string("2008-05-20 23:00")), 
@@ -111,21 +112,21 @@ void boost_party()
     // adding an element can be done wrt. simple aggregate functions
     // like e.g. min, max etc. in their 'inplace' or op= incarnation
     tallest_guest.add<inplace_max>(
-      make_pair( 
+	  BoostPartyHeightHistoryT::value_type( 
         rightopen_interval<ptime>(
           time_from_string("2008-05-20 19:30"), 
           time_from_string("2008-05-20 23:00")), 
           180));
 
     tallest_guest.add<inplace_max>(
-      make_pair( 
+      BoostPartyHeightHistoryT::value_type( 
         rightopen_interval<ptime>(
           time_from_string("2008-05-20 20:10"), 
           time_from_string("2008-05-21 00:00")), 
           170));
 
     tallest_guest.add<inplace_max>(
-      make_pair( 
+      BoostPartyHeightHistoryT::value_type( 
         rightopen_interval<ptime>(
           time_from_string("2008-05-20 22:15"), 
           time_from_string("2008-05-21 00:30")), 

@@ -35,6 +35,7 @@ class interval_base_set
 #define __interval_base_set_h_JOFA_990223__
 
 #include <limits>
+#include <itl/interval_set_algo.hpp>
 #include <itl/itl_set.hpp>
 #include <itl/itl_interval.hpp>
 #include <itl/notate.hpp>
@@ -457,52 +458,6 @@ protected:
     ImplSetT _set;
 } ;
 
-//JODO locate these in itl_algo, interval_container_algo, interval_set_algo ...?
-template <class IntervalContainerT>
-typename IntervalContainerT::size_type continuous_cardinality(const IntervalContainerT& object)
-{
-	typedef typename IntervalContainerT::size_type size_type;
-
-	size_type size = neutron<size_type>::value();
-	size_type interval_size;
-    const_FORALL(IntervalContainerT, it, object)
-	{
-		interval_size = (*it).continuous_cardinality();
-		if(interval_size == std::numeric_limits<size_type>::infinity())
-			return interval_size;
-		else
-			size += interval_size;
-	}
-    return size;
-}
-
-template <class IntervalContainerT>
-typename IntervalContainerT::size_type discrete_cardinality(const IntervalContainerT& object)
-{
-	typedef typename IntervalContainerT::size_type size_type;
-
-	size_type size = neutron<size_type>::value();
-    const_FORALL(IntervalContainerT, it, object)
-			size += (*it).discrete_cardinality();
-    return size;
-}
-
-struct continuous_interval_container
-{
-	template<class IntervalContainerT> 
-	static typename IntervalContainerT::size_type 
-		cardinality(const IntervalContainerT& cont) 
-	{ return continuous_cardinality(cont); }
-};
-
-struct discrete_interval_container
-{
-	template<class IntervalContainerT> 
-	static typename IntervalContainerT::size_type 
-		cardinality(const IntervalContainerT& cont) 
-	{ return discrete_cardinality(cont); }
-};
-
 template
 <
 	class SubType, class DomainT, template<class>class Interval, 
@@ -517,7 +472,7 @@ interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::cardinality()const
 				continuous_interval_container,
 				discrete_interval_container
 			  >
-			  ::type::cardinality<type>(*this);
+			  ::type::cardinality(*this);
 
 	/*JODO BOOST: This more simple implementention fails because ptime::duration has no infinity
 	size_type size = neutron<size_type>::value();

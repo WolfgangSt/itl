@@ -71,10 +71,11 @@ void interval_container_basics()
     // A split interval map splits up inserted intervals on overlap and aggregates the
     // associated quantities via the operator +=
     split_interval_map<Time, int> overlapCounter;
-    overlapCounter.insert(make_pair(night_and_day, 1));
-    overlapCounter.insert(make_pair(day_and_night, 1)); //overlapping in 'day' [07:00, 20.00)
-    overlapCounter.insert(make_pair(next_morning, 1));    //touching
-    overlapCounter.insert(make_pair(next_evening, 1));    //disjoint
+	typedef split_interval_map<Time, int>::value_type value_pair;
+    overlapCounter.insert(value_pair(night_and_day, 1));
+    overlapCounter.insert(value_pair(day_and_night, 1)); //overlapping in 'day' [07:00, 20.00)
+    overlapCounter.insert(value_pair(next_morning, 1));    //touching
+    overlapCounter.insert(value_pair(next_evening, 1));    //disjoint
 
     cout << "Split times overlap counted:\n" << overlapCounter.as_string() << endl;
 }

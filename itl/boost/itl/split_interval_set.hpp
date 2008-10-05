@@ -468,65 +468,6 @@ namespace itl
             Compare<Interval<DomainT> >());
     }
 
-
-	//-----------------------------------------------------------------------------
-	// addition (set union) += and subtraction (set difference) -=
-	//-----------------------------------------------------------------------------
-	template 
-	<
-		class SubType, class DomainT, template<class>class Interval, 
-		template<class>class Compare, template<class>class Alloc
-	>
-	interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
-	operator +=
-	(
-			  interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
-		const split_interval_set       <DomainT,Interval,Compare,Alloc>& operand
-	)
-	{
-		typedef split_interval_set<DomainT,Interval,Compare,Alloc> set_type;
-		const_FORALL(typename set_type, elem_, operand) 
-			object.add(*elem_); 
-
-		return object; 
-	}
-
-
-	//template 
-	//<
-	//	class SubType, class DomainT, template<class>class Interval, 
-	//	template<class>class Compare, template<class>class Alloc
-	//>
-	//interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
-	//operator -=
-	//(
-	//		  interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
-	//	const split_interval_set       <DomainT,Interval,Compare,Alloc>& operand
-	//)
-	//{
-	//	typedef split_interval_set<DomainT,Interval,Compare,Alloc> set_type;
-	//	const_FORALL(typename set_type, elem_, operand) 
-	//		object.subtract(*elem_); 
-
-	//	return object; 
-	//}
-
-
-	template 
-	<
-		class SubType, class DomainT, template<class>class Interval, 
-		template<class>class Compare, template<class>class Alloc
-	>
-	interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& 
-	erase
-	(
-			  interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
-		const split_interval_set       <DomainT,Interval,Compare,Alloc>& operand
-	)
-	{
-		return object -= operand;
-	}
-
 	template <class Type>
 	struct is_set<itl::split_interval_set<Type> >
 	{ enum{value = true}; };

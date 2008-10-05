@@ -141,24 +141,24 @@ public:
 
 
     template<template<class>class Combinator>
-    void add(const value_type&);
+    void add_(const value_type&);
 
-    void add(const value_type& value)
-    { add<inplace_plus>(value); }
+    void add_(const value_type& value)
+    { add_<inplace_plus>(value); }
 
     template<template<class>class Combinator>
-    void subtract(const value_type&);
+    void subtract_(const value_type&);
 
-    void subtract(const value_type& value)
+    void subtract_(const value_type& value)
     {
         if(Traits::emits_neutrons)
-            add<inplace_minus>(value); 
+            add_<inplace_minus>(value); 
         else
-            subtract<inplace_minus>(value); 
+            subtract_<inplace_minus>(value); 
     }
 
-    void insert(const value_type& value);
-    void erase(const value_type& value);
+    void insert_(const value_type& value);
+    void erase_(const value_type& value);
 
     //TESTCODE
     void getResiduals(const interval_type& x_itv, interval_type& leftResid, interval_type& rightResid);
@@ -478,7 +478,7 @@ interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
 template <typename DomainT, typename CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
     template<template<class>class Combinator>
 void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
-    ::add(const value_type& x)
+    ::add_(const value_type& x)
 {
     const interval_type& x_itv = x.KEY_VALUE;
     if(x_itv.empty()) 
@@ -652,7 +652,7 @@ void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
 template <typename DomainT, typename CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
     template<template<class>class Combinator>
 void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
-    ::subtract(const value_type& x)
+    ::subtract_(const value_type& x)
 {
     const interval_type& x_itv = x.KEY_VALUE;
     if(x_itv.empty()) 
@@ -791,7 +791,7 @@ void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
 template <typename DomainT, typename CodomainT, class Traits, template<class>class Interval, 
           template<class>class Compare, template<class>class Alloc>
 void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
-    ::insert(const value_type& x)
+    ::insert_(const value_type& x)
 {
     const interval_type& x_itv = x.KEY_VALUE;
     if(x_itv.empty()) 
@@ -917,7 +917,7 @@ void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
 //-----------------------------------------------------------------------------
 template <typename DomainT, typename CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
-    ::erase(const value_type& x)
+    ::erase_(const value_type& x)
 {
     const interval_type& x_itv = x.KEY_VALUE;
     if(x_itv.empty()) 
@@ -954,9 +954,9 @@ void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
         if(!interSec.empty() && fst_val == x_val)
         {
             this->_map.erase(fst_it);
-            insert(value_type(leftResid,  fst_val));
+            insert_(value_type(leftResid,  fst_val));
             // erased: insert(value_type(interSec,  cmb_val));
-            insert(value_type(rightResid, fst_val));
+            insert_(value_type(rightResid, fst_val));
         }
     }
     else
@@ -965,7 +965,7 @@ void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
         if(!interSec.empty() && fst_val == x_val)
         {
             this->_map.erase(fst_it);
-            insert(value_type(leftResid, fst_val));
+            insert_(value_type(leftResid, fst_val));
             // erased: insert(value_type(interSec,  cmb_val));
         }
 
@@ -1013,7 +1013,7 @@ void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
         {
             this->_map.erase(it);
             //erased: insert(value_type(interSec, cmb_val));
-            insert(value_type(rightResid, cur_val));
+            insert_(value_type(rightResid, cur_val));
         }
     }
 }
