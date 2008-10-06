@@ -82,6 +82,7 @@ void interval_map_fundamentals_4_ordered_types()
 	BOOST_CHECK_EQUAL(mt_map, IntervalMapT());
 
 	//subtracting intervals form emptieness
+	IntervalMapT::value_type I0_0I_u1 = make_pair(I0_0I,u1);
 	IntervalMapT::value_type I0_1I_u1 = make_pair(I0_1I,u1);
 	IntervalMapT::value_type I1_1I_u1 = make_pair(I1_1I,u1);
 	mt_map.subtract(I0_1I_u1).subtract(I1_1I_u1);
@@ -91,45 +92,53 @@ void interval_map_fundamentals_4_ordered_types()
 	(mt_map -= I0_1I_u1) -= I1_1I_u1;
 	BOOST_CHECK_EQUAL(mt_map, IntervalMapT());
 
-	/*
+	mt_map.erase(I0_1I).erase(I1_1I);
+	BOOST_CHECK_EQUAL(mt_map, IntervalMapT());
+
 	//insecting emptieness
+	(mt_map *= mt_u1) *= mt_u1;
+	BOOST_CHECK_EQUAL(mt_map, IntervalMapT());
 	(mt_map *= mt_interval) *= mt_interval;
 	BOOST_CHECK_EQUAL(mt_map, IntervalMapT());
+
+	/*JODO URG
 	//insecting emptieness with elements
-	(mt_map *= v1) *= v0;
+	(mt_map *= v1_u1) *= v0_u1;
 	BOOST_CHECK_EQUAL(mt_map, IntervalMapT());
 	//insecting emptieness with intervals
 	(mt_map *= I1_1I) *= I0_1I;
 	BOOST_CHECK_EQUAL(mt_map, IntervalMapT());
+	*/
 
 	//-------------------------------------------------------------------------
 	//unary set
 	//-------------------------------------------------------------------------
-	IntervalMapT single_I0_0I_from_element(v0);
-	IntervalMapT single_I0_0I_from_interval(I0_0I);
-	IntervalMapT single_I0_0I(single_I0_0I_from_interval);
+	IntervalMapT single_I0_0I_u1_from_element(v0_u1);
+	IntervalMapT single_I0_0I_u1_from_interval(I0_0I_u1);
+	IntervalMapT single_I0_0I_u1(single_I0_0I_u1_from_interval);
 
-	BOOST_CHECK_EQUAL(single_I0_0I_from_element, single_I0_0I_from_interval);
-	BOOST_CHECK_EQUAL(single_I0_0I_from_element, single_I0_0I);
-	BOOST_CHECK_EQUAL(enclosure(single_I0_0I), I0_0I);
-	BOOST_CHECK_EQUAL(single_I0_0I.lower(), I0_0I.lower());
-	BOOST_CHECK_EQUAL(single_I0_0I.upper(), I0_0I.upper());
+	BOOST_CHECK_EQUAL(single_I0_0I_u1_from_element, single_I0_0I_u1_from_interval);
+	BOOST_CHECK_EQUAL(single_I0_0I_u1_from_element, single_I0_0I_u1);
+	BOOST_CHECK_EQUAL(enclosure(single_I0_0I_u1), I0_0I);
+	BOOST_CHECK_EQUAL(single_I0_0I_u1.lower(), I0_0I.lower());
+	BOOST_CHECK_EQUAL(single_I0_0I_u1.upper(), I0_0I.upper());
 
-	IntervalMapT single_I1_1I_from_element(v1);
-	IntervalMapT single_I1_1I_from_interval(I1_1I);
-	IntervalMapT single_I1_1I(single_I1_1I_from_interval);
+	IntervalMapT single_I1_1I_u1_from_element(v1_u1);
+	IntervalMapT single_I1_1I_u1_from_interval(I1_1I_u1);
+	IntervalMapT single_I1_1I_u1(single_I1_1I_u1_from_interval);
 
-	BOOST_CHECK_EQUAL(single_I1_1I_from_element, single_I1_1I_from_interval);
-	BOOST_CHECK_EQUAL(single_I1_1I_from_element, single_I1_1I);
+	BOOST_CHECK_EQUAL(single_I1_1I_u1_from_element, single_I1_1I_u1_from_interval);
+	BOOST_CHECK_EQUAL(single_I1_1I_u1_from_element, single_I1_1I_u1);
 
-	IntervalMapT single_I0_1I_from_interval(I0_1I);
-	IntervalMapT single_I0_1I(single_I0_1I_from_interval);
+	IntervalMapT single_I0_1I_u1_from_interval(I0_1I_u1);
+	IntervalMapT single_I0_1I_u1(single_I0_1I_u1_from_interval);
 
-	BOOST_CHECK_EQUAL(single_I0_1I_from_interval, single_I0_1I);
-	BOOST_CHECK_EQUAL(enclosure(single_I0_1I), I0_1I);
-	BOOST_CHECK_EQUAL(single_I0_1I.lower(), I0_1I.lower());
-	BOOST_CHECK_EQUAL(single_I0_1I.upper(), I0_1I.upper());
+	BOOST_CHECK_EQUAL(single_I0_1I_u1_from_interval, single_I0_1I_u1);
+	BOOST_CHECK_EQUAL(enclosure(single_I0_1I_u1), I0_1I);
+	BOOST_CHECK_EQUAL(single_I0_1I_u1.lower(), I0_1I.lower());
+	BOOST_CHECK_EQUAL(single_I0_1I_u1.upper(), I0_1I.upper());
 
+	/*
 	//contains predicate
 	BOOST_CHECK_EQUAL(single_I0_0I.contains(v0), true);
 	BOOST_CHECK_EQUAL(single_I0_0I.contains(I0_0I), true);

@@ -178,8 +178,8 @@ public:
 	{ assign(src); }
 
     /// Constructor for a single element
-	explicit interval_set(const domain_type& itv): base_type() 
-	{ add(interval_type(itv)); }
+	explicit interval_set(const domain_type& value): base_type() 
+	{ add(interval_type(value)); }
     /// Constructor for a single interval
 	explicit interval_set(const interval_type& itv): base_type() 
 	{ add(itv); }

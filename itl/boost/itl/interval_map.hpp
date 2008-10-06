@@ -137,6 +137,25 @@ public:
     /// Copy constructor
     interval_map(const interval_map& src): base_type(src) {}
 
+	explicit interval_map(base_value_type& base_pair): base_type()
+	{ add(base_pair); }
+
+	explicit interval_map(const value_type& value_pair): base_type()
+	{ add(value_pair); }
+
+	/// Assignment from a base interval_map.
+	template<class SubType>
+	void assign(const interval_base_map<SubType,DomainT,CodomainT,
+		                                Traits,Interval,Compare,Alloc>& src)
+	{
+		typedef interval_base_set<SubType,DomainT,CodomainT,
+			                      Traits,Interval,Compare,Alloc> base_map_type;
+		this->clear();
+		// Can be implemented via _map.insert: Interval joining not necessary.
+		const_FORALL(base_map_type, it, src) 
+			this->add(*it); 
+	}
+
     bool contains(const value_type& x)const;
 
 

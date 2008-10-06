@@ -217,6 +217,7 @@ public:
 //@{ 
     /// Default constructor for the empty map 
     interval_base_map(){}
+
     /// Copy constructor
     interval_base_map(const interval_base_map& src): _map(src._map) {}
 
