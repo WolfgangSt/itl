@@ -148,7 +148,7 @@ public:
 	void assign(const interval_base_map<SubType,DomainT,CodomainT,
 		                                Traits,Interval,Compare,Alloc>& src)
 	{
-		typedef interval_base_set<SubType,DomainT,CodomainT,
+		typedef interval_base_map<SubType,DomainT,CodomainT,
 			                      Traits,Interval,Compare,Alloc> base_map_type;
 		this->clear();
 		// Can be implemented via _map.insert: Interval joining not necessary.
@@ -156,7 +156,7 @@ public:
 			this->add(*it); 
 	}
 
-    bool contains(const value_type& x)const;
+    bool contains_(const value_type& x)const;
 
 
     template<template<class>class Combinator>
@@ -266,7 +266,7 @@ void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
 
 template <typename DomainT, typename CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 bool interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
-    ::contains(const value_type& x_y)const
+    ::contains_(const value_type& x_y)const
 {
     interval_type x = x_y.KEY_VALUE;
     if(x.empty()) return true;

@@ -221,12 +221,16 @@ public:
     /// Copy constructor
     interval_base_map(const interval_base_map& src): _map(src._map) {}
 
-    /// Assignment operator
+	/// Assignment operator
     interval_base_map& operator = (const interval_base_map& src) 
-    {
-        _map.ImplMapT::operator=(src._map);
-        return *this;  
-    }
+	{ 
+		if(this==&src) 
+			return *this;
+
+		that()->assign(src);
+		return *this; 
+	}
+
 //@}
 
 /** @name C: Basic container functions
@@ -247,10 +251,14 @@ public:
 
     /// Does the map contain the element pair <tt>x = (key_element,value)</tt>?
     bool contains(const base_value_type& x)const
-    {
-        typename ImplMapT::const_iterator it = _map.find(interval_type(x.KEY_VALUE));
-        return (it!=_map.end() && (*it).CONT_VALUE==x.CONT_VALUE);  //CodomainT::OP == 
-    }
+	{ return that()->contains_(value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE));	}
+
+	bool contains(const value_type& x)const
+	{ return that()->contains_(x); }
+
+	/** Does <tt>*this</tt> container contain <tt>sub</tt>? */
+	bool contains(const interval_base_map& sub)const 
+	{ return sub.contained_in(*this); }
 
     /// swap the content of containers
     void swap(interval_base_map& x) { _map.swap(x._map); }
@@ -567,7 +575,7 @@ public:
         Any value \c y that is stored for key \c k will be erased.
     */
     SubType& erase(const DomainT& x) 
-	{ erase_(interval_type(x)); return *that(); }
+	{ erase(interval_type(x)); return *that(); }
 
     /// Erase all associated values for an interval
     /** Erase all associated values within the range of the interval <tt>x</tt>
@@ -937,7 +945,7 @@ bool interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>:
 {
     // x2 should be larger than *this; so every element in this should be in x2
     const_FOR_IMPLMAP(it) 
-        if(!super.that()->contains(*it)) 
+        if(!super.that()->contains_(*it)) 
             return false;
     return true;
 }

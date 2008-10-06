@@ -138,122 +138,147 @@ void interval_map_fundamentals_4_ordered_types()
 	BOOST_CHECK_EQUAL(single_I0_1I_u1.lower(), I0_1I.lower());
 	BOOST_CHECK_EQUAL(single_I0_1I_u1.upper(), I0_1I.upper());
 
-	/*
 	//contains predicate
-	BOOST_CHECK_EQUAL(single_I0_0I.contains(v0), true);
-	BOOST_CHECK_EQUAL(single_I0_0I.contains(I0_0I), true);
-	BOOST_CHECK_EQUAL(single_I1_1I.contains(v1), true);
-	BOOST_CHECK_EQUAL(single_I1_1I.contains(I1_1I), true);
+	BOOST_CHECK_EQUAL(single_I0_0I_u1.contains(v0), true);
+	BOOST_CHECK_EQUAL(single_I0_0I_u1.contains(v0_u1), true);
+	BOOST_CHECK_EQUAL(single_I0_0I_u1.contains(I0_0I_u1), true);
 
-	BOOST_CHECK_EQUAL(single_I0_1I.contains(v0), true);
-	BOOST_CHECK_EQUAL(single_I0_1I.contains(I0_1I), true);
-	BOOST_CHECK_EQUAL(single_I0_1I.contains(v1), true);
-	BOOST_CHECK_EQUAL(single_I0_1I.contains(I1_1I), true);
-	BOOST_CHECK_EQUAL(single_I0_1I.contains(single_I0_0I), true);
-	BOOST_CHECK_EQUAL(single_I0_1I.contains(single_I1_1I), true);
-	BOOST_CHECK_EQUAL(single_I0_1I.contains(single_I0_1I), true);
+	BOOST_CHECK_EQUAL(single_I1_1I_u1.contains(v1), true);
+	BOOST_CHECK_EQUAL(single_I1_1I_u1.contains(v1_u1), true);
+	BOOST_CHECK_EQUAL(single_I1_1I_u1.contains(I1_1I_u1), true);
 
-	BOOST_CHECK_EQUAL(single_I0_0I.cardinality(), itl::unon<size_T>::value());
-	BOOST_CHECK_EQUAL(single_I0_0I.size(), itl::unon<size_T>::value());
-	BOOST_CHECK_EQUAL(single_I0_0I.interval_count(), 1);
-	BOOST_CHECK_EQUAL(single_I0_0I.iterative_size(), 1);
-	*/
+	BOOST_CHECK_EQUAL(single_I0_1I_u1.contains(v0), true);
+	BOOST_CHECK_EQUAL(single_I0_1I_u1.contains(I0_1I_u1), true);
+	BOOST_CHECK_EQUAL(single_I0_1I_u1.contains(v1), true);
+	BOOST_CHECK_EQUAL(single_I0_1I_u1.contains(I1_1I_u1), true);
+
+	BOOST_CHECK_EQUAL(single_I0_1I_u1.contains(single_I0_0I_u1), true);
+	BOOST_CHECK_EQUAL(single_I0_1I_u1.contains(single_I1_1I_u1), true);
+	BOOST_CHECK_EQUAL(single_I0_1I_u1.contains(single_I0_1I_u1), true);
+
+	BOOST_CHECK_EQUAL(single_I0_0I_u1.cardinality(), itl::unon<size_T>::value());
+	BOOST_CHECK_EQUAL(single_I0_0I_u1.size(), itl::unon<size_T>::value());
+	BOOST_CHECK_EQUAL(single_I0_0I_u1.interval_count(), 1);
+	BOOST_CHECK_EQUAL(single_I0_0I_u1.iterative_size(), 1);
 }
 
-/*CL
-template <template<class T, template<class>class = itl::interval,
-                            template<class>class = std::less,
-							template<class>class = std::allocator
-                  >class IntervalSet, 
-          class T>
-void interval_set_ctor_4_bicremental_types()
+template <template<class T, class U,
+                   class Traits = itl::neutron_absorber,
+                   template<class>class = itl::interval,
+                   template<class>class = std::less,
+				   template<class>class = std::allocator
+                  >class IntervalMap, 
+          class T, class U>
+void interval_map_ctor_4_bicremental_types()
 {
+	typedef IntervalMap<T,U> IntervalMapT;
+
 	T v4 = make<T>(4);
+	U u2 = make<U>(2);
+	U u4 = make<U>(4);
 	itl::interval<T> I4_4I(v4);
+	IntervalMapT::base_value_type v4_u2(v4,u2);
+	IntervalMapT::value_type I4_4I_u2(I4_4I,u2);
 
-	IntervalSet<T> _I4_4I;
-	BOOST_CHECK_EQUAL( _I4_4I.empty(), true );
-	IntervalSet<T> _I4_4I_1;
-	IntervalSet<T> _I4_4I_2;
-	IntervalSet<T> _I4_4I_3;
-	_I4_4I   += v4;
-	_I4_4I_1 += I4_4I;
-	BOOST_CHECK_EQUAL( _I4_4I,                    _I4_4I_1 );
-	_I4_4I_2.add(v4);
-	BOOST_CHECK_EQUAL( _I4_4I,                    _I4_4I_2 );
-	_I4_4I_3.add(I4_4I);
-	BOOST_CHECK_EQUAL( _I4_4I,                    _I4_4I_3 );
-	_I4_4I_1.add(v4).add(I4_4I);
-	BOOST_CHECK_EQUAL( _I4_4I,                    _I4_4I_1 );
-	_I4_4I_1.insert(v4).insert(I4_4I);
-	BOOST_CHECK_EQUAL( _I4_4I,                    _I4_4I_1 );
-	(_I4_4I_1 += v4) += I4_4I;
-	BOOST_CHECK_EQUAL( _I4_4I,                    _I4_4I_1 );
-	
-	BOOST_CHECK_EQUAL( _I4_4I.cardinality(),      unon<IntervalSet<T>::size_type>::value()  );
-	BOOST_CHECK_EQUAL( _I4_4I.size(),             unon<IntervalSet<T>::size_type>::value()  );
-	BOOST_CHECK_EQUAL( _I4_4I.interval_count(),   1  );
-	BOOST_CHECK_EQUAL( _I4_4I.iterative_size(),   1  );
-	BOOST_CHECK_EQUAL( _I4_4I.lower(),            v4 );
-	BOOST_CHECK_EQUAL( _I4_4I.upper(),            v4 );
+	IntervalMapT _I4_4I_u2;
+	BOOST_CHECK_EQUAL( _I4_4I_u2.empty(), true );
+	IntervalMapT _I4_4I_u2_1;
+	IntervalMapT _I4_4I_u2_2;
+	IntervalMapT _I4_4I_u2_3;
+	_I4_4I_u2   += v4_u2;
+	_I4_4I_u2_1 += I4_4I_u2;
+	BOOST_CHECK_EQUAL( _I4_4I_u2, _I4_4I_u2_1 );
+	_I4_4I_u2_2.add(v4_u2);
+	BOOST_CHECK_EQUAL( _I4_4I_u2, _I4_4I_u2_2 );
+	_I4_4I_u2_3.add(I4_4I_u2);
+	BOOST_CHECK_EQUAL( _I4_4I_u2, _I4_4I_u2_3 );
 
-	IntervalSet<T> _I4_4I_copy(_I4_4I);
-	IntervalSet<T> _I4_4I_assigned;
-	_I4_4I_assigned = _I4_4I;
-	BOOST_CHECK_EQUAL( _I4_4I, _I4_4I_copy );
-	BOOST_CHECK_EQUAL( _I4_4I, _I4_4I_assigned );
-	_I4_4I_assigned.clear();
-	BOOST_CHECK_EQUAL( true,   _I4_4I_assigned.empty() );
+	_I4_4I_u2.clear();
+	_I4_4I_u2.add(I4_4I_u2).add(I4_4I_u2);
+	IntervalMapT _I4_4I_u4(make_pair(I4_4I, make<U>(4)));
+	BOOST_CHECK_EQUAL( _I4_4I_u2, _I4_4I_u4 );
 
-	_I4_4I_assigned.swap(_I4_4I_copy);
-	BOOST_CHECK_EQUAL( true,   _I4_4I_copy.empty() );
-	BOOST_CHECK_EQUAL( _I4_4I, _I4_4I_assigned );
+	_I4_4I_u2.clear();
+	_I4_4I_u2.insert(I4_4I_u2).insert(I4_4I_u2);
+	BOOST_CHECK_EQUAL( _I4_4I_u2, _I4_4I_u2_1 );
 
+	BOOST_CHECK_EQUAL( _I4_4I_u2.cardinality(),      unon<IntervalMapT::size_type>::value()  );
+	BOOST_CHECK_EQUAL( _I4_4I_u2.size(),             unon<IntervalMapT::size_type>::value()  );
+	BOOST_CHECK_EQUAL( _I4_4I_u2.interval_count(),   1  );
+	BOOST_CHECK_EQUAL( _I4_4I_u2.iterative_size(),   1  );
+	BOOST_CHECK_EQUAL( _I4_4I_u2.lower(),            v4 );
+	BOOST_CHECK_EQUAL( _I4_4I_u2.upper(),            v4 );
+
+	IntervalMapT _I4_4I_u2_copy(_I4_4I_u2);
+	IntervalMapT _I4_4I_u2_assigned;
+	_I4_4I_u2_assigned = _I4_4I_u2;
+	BOOST_CHECK_EQUAL( _I4_4I_u2, _I4_4I_u2_copy );
+	BOOST_CHECK_EQUAL( _I4_4I_u2, _I4_4I_u2_assigned );
+
+	_I4_4I_u2_assigned.clear();
+	BOOST_CHECK_EQUAL( true,   _I4_4I_u2_assigned.empty() );
+
+	_I4_4I_u2_assigned.swap(_I4_4I_u2_copy);
+	BOOST_CHECK_EQUAL( true,   _I4_4I_u2_copy.empty() );
+	BOOST_CHECK_EQUAL( _I4_4I_u2, _I4_4I_u2_assigned );
 }
 
 
-template <template<class T, template<class>class = itl::interval,
-                            template<class>class = std::less,
-							template<class>class = std::allocator
-                  >class IntervalSet, 
-          class T>
-void interval_set_add_sub_4_bicremental_types()
+template <template<class T, class U,
+                   class Traits = itl::neutron_absorber,
+                   template<class>class = itl::interval,
+                   template<class>class = std::less,
+				   template<class>class = std::allocator
+                  >class IntervalMap, 
+          class T, class U>
+void interval_map_add_sub_4_bicremental_types()
 {
+	typedef IntervalMap<T,U> IntervalMapT;
+
 	T v0 = make<T>(0);
 	T v5 = make<T>(5);
 	T v6 = make<T>(6);
 	T v9 = make<T>(9);
+	U u1 = make<U>(1);
 	interval<T> I5_6I(v5,v6);
 	interval<T> I5_9I(v5,v9);
 	interval<T> I0_9I = closed_interval(v0, v9);
+	IntervalMapT::base_value_type v0_u1 = make_pair(v0, u1);
+	IntervalMapT::base_value_type v9_u1 = make_pair(v9, u1);
+	IntervalMapT::value_type I5_6I_u1 = make_pair(I5_6I, u1);
+	IntervalMapT::value_type I5_9I_u1 = make_pair(I5_9I, u1);
+	IntervalMapT::value_type I0_9I_u1 = make_pair(closed_interval(v0, v9), u1);
 
-	BOOST_CHECK_EQUAL( IntervalSet<T>(I5_6I).add(v0).add(v9), 
-		               IntervalSet<T>().insert(v9).insert(I5_6I).insert(v0) );
+	BOOST_CHECK_EQUAL( IntervalMapT(I5_6I_u1).add(v0_u1).add(v9_u1), 
+		               IntervalMapT().add(v9_u1).add(I5_6I_u1).add(v0_u1) );
 
-	IntervalSet<T> set_A = IntervalSet<T>(I5_6I).add(v0).add(v9);
-	IntervalSet<T> set_B = IntervalSet<T>().insert(v9).insert(I5_6I).insert(v0);
-	BOOST_CHECK_EQUAL( set_A, set_B );
-	BOOST_CHECK_EQUAL( enclosure(set_A), I0_9I );
-	BOOST_CHECK_EQUAL( set_A.lower(), I0_9I.lower() );
-	BOOST_CHECK_EQUAL( set_A.upper(), I0_9I.upper() );
+	IntervalMapT map_A = IntervalMapT(I5_6I_u1).add(v0_u1).add(v9_u1);
+	IntervalMapT map_B = IntervalMapT().insert(v9_u1).insert(I5_6I_u1).insert(v0_u1);
+	BOOST_CHECK_EQUAL( map_A, map_B );
+	BOOST_CHECK_EQUAL( enclosure(map_A), I0_9I );
+	BOOST_CHECK_EQUAL( map_A.lower(), I0_9I.lower() );
+	BOOST_CHECK_EQUAL( map_A.upper(), I0_9I.upper() );
 	//JODO: LAW !a.empty() => enclosure(a).lower() == a.lower()
 	//JODO: LAW !a.empty() => enclosure(a).upper() == a.upper()
 
-	IntervalSet<T> set_A1 = set_A, set_B1 = set_B,
-	               set_A2 = set_A, set_B2 = set_B;
+	IntervalMapT map_A1 = map_A, map_B1 = map_B,
+	             map_A2 = map_A, map_B2 = map_B;
 
-	set_A1.subtract(I5_6I).subtract(v9);
-	set_B1.erase(v9).erase(I5_6I);
-	BOOST_CHECK_EQUAL( set_A1, set_B1 );
+	map_A1.subtract(I5_6I_u1).subtract(v9_u1);
+	map_B1.erase(v9_u1).erase(I5_6I_u1);
+	BOOST_CHECK_EQUAL( map_A1, map_B1 );
 
-	set_A2.subtract(I5_9I);
-	set_B2.erase(I5_9I);
-	BOOST_CHECK_EQUAL( set_A1, set_B1 );
-	BOOST_CHECK_EQUAL( set_A1, set_A2 );
-	BOOST_CHECK_EQUAL( set_B1, set_B2 );
+	map_B1 = map_B;
+	map_B2.erase(v9).erase(I5_6I);
+	BOOST_CHECK_EQUAL( map_A1, map_B2 );
+
+	map_A2.subtract(I5_9I_u1);
+	map_B2.erase(I5_9I);
+	BOOST_CHECK_EQUAL( map_A2, map_B2 );
 }
 
 
+/*
 template <template<class T, template<class>class = itl::interval,
                             template<class>class = std::less,
 							template<class>class = std::allocator
