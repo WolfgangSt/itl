@@ -8,6 +8,7 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 #ifndef __test_itl_interval_map_shared_h_JOFA_081005__
 #define __test_itl_interval_map_shared_h_JOFA_081005__
 
+#include <boost/type_traits/is_same.hpp>
 
 template <template<class T, class U,
                    class Traits = itl::neutron_absorber,
@@ -278,25 +279,31 @@ void interval_map_add_sub_4_bicremental_types()
 }
 
 
-/*
-template <template<class T, template<class>class = itl::interval,
-                            template<class>class = std::less,
-							template<class>class = std::allocator
-                  >class IntervalSet, 
-          class T>
-void interval_set_distinct_4_bicremental_types()
+template <template<class T, class U,
+                   class Traits = itl::neutron_absorber,
+                   template<class>class = itl::interval,
+                   template<class>class = std::less,
+				   template<class>class = std::allocator
+                  >class IntervalMap, 
+          class T, class U>
+void interval_map_distinct_4_bicremental_types()
 {
-	typedef typename IntervalSet<T>::size_type       size_T;
-	typedef typename IntervalSet<T>::difference_type diff_T;
+	typedef IntervalMap<T,U> IntervalMapT;
+	typedef typename IntervalMap<T,U>::size_type       size_T;
+	typedef typename IntervalMap<T,U>::difference_type diff_T;
 	T v1 = make<T>(1);
 	T v3 = make<T>(3);
 	T v5 = make<T>(5);
+	U u1 = make<U>(1);
+	IntervalMapT::base_value_type v1_u1(v1,u1);
+	IntervalMapT::base_value_type v3_u1(v3,u1);
+	IntervalMapT::base_value_type v5_u1(v5,u1);
 
 	size_T s3 = make<size_T>(3);
 	diff_T d0 = make<diff_T>(0);
 
-	IntervalSet<T> is_1_3_5;
-	is_1_3_5.add(v1).add(v3).add(v5);
+	IntervalMapT is_1_3_5;
+	is_1_3_5.add(v1_u1).add(v3_u1).add(v5_u1);
 
 	BOOST_CHECK_EQUAL( is_1_3_5.cardinality(),      s3 );
 	BOOST_CHECK_EQUAL( is_1_3_5.size(),             s3 );
@@ -304,28 +311,34 @@ void interval_set_distinct_4_bicremental_types()
 	BOOST_CHECK_EQUAL( is_1_3_5.iterative_size(),   3 );
 }
 
-
-template <template<class T, template<class>class = itl::interval,
-                            template<class>class = std::less,
-							template<class>class = std::allocator
-                  >class IntervalSet, 
-          class T>
-void interval_set_distinct_4_bicremental_continuous_types()
+template <template<class T, class U,
+                   class Traits = itl::neutron_absorber,
+                   template<class>class = itl::interval,
+                   template<class>class = std::less,
+				   template<class>class = std::allocator
+                  >class IntervalMap, 
+          class T, class U>
+void interval_map_distinct_4_bicremental_continuous_types()
 {
-	typedef typename IntervalSet<T>::size_type       size_T;
-	typedef typename IntervalSet<T>::difference_type diff_T;
+	typedef IntervalMap<T,U> IntervalMapT;
+	typedef typename IntervalMapT::size_type       size_T;
+	typedef typename IntervalMapT::difference_type diff_T;
 	T v1 = make<T>(1);
 	T v2 = make<T>(2);
 	T v3 = make<T>(3);
 	T v5 = make<T>(5);
+	U u1 = make<U>(1);
+	IntervalMapT::base_value_type v1_u1(v1,u1);
+	IntervalMapT::base_value_type v3_u1(v3,u1);
+	IntervalMapT::base_value_type v5_u1(v5,u1);
 
 	size_T s3 = make<size_T>(3);
 	diff_T d0 = make<diff_T>(0);
 	diff_T d2 = make<diff_T>(2);
 	diff_T d3 = make<diff_T>(3);
 
-	IntervalSet<T> is_1_3_5;
-	is_1_3_5.add(v1).add(v3).add(v5);
+	IntervalMapT is_1_3_5;
+	is_1_3_5.add(v1_u1).add(v3_u1).add(v5_u1);
 
 	BOOST_CHECK_EQUAL( is_1_3_5.cardinality(),      s3 );
 	BOOST_CHECK_EQUAL( is_1_3_5.size(),             s3 );
@@ -336,9 +349,9 @@ void interval_set_distinct_4_bicremental_continuous_types()
 	size_T s4 = make<size_T>(4);
 	diff_T d4 = make<diff_T>(4);
 
-	IntervalSet<T> is_123_5;
+	IntervalMapT is_123_5;
 	is_123_5 = is_1_3_5;
-	is_123_5 += open_interval<T>(v1,v3);
+	is_123_5 += make_pair(open_interval<T>(v1,v3),u1);
 
 	BOOST_CHECK_EQUAL( is_123_5.cardinality(),      std::numeric_limits<size_T>::infinity() );
 	BOOST_CHECK_EQUAL( is_123_5.size(),             std::numeric_limits<size_T>::infinity() );
@@ -346,59 +359,69 @@ void interval_set_distinct_4_bicremental_continuous_types()
 }
 
 
-template <template<class T, template<class>class = itl::interval,
-                            template<class>class = std::less,
-							template<class>class = std::allocator
-                  >class IntervalSet, 
-          class T>
-void interval_set_isolate_4_bicremental_continuous_types()
+template <template<class T, class U,
+                   class Traits = itl::neutron_absorber,
+                   template<class>class = itl::interval,
+                   template<class>class = std::less,
+				   template<class>class = std::allocator
+                  >class IntervalMap, 
+          class T, class U>
+void interval_map_isolate_4_bicremental_continuous_types()
 {
-	typedef typename IntervalSet<T>::size_type       size_T;
-	typedef typename IntervalSet<T>::difference_type diff_T;
+	typedef IntervalMap<T,U> IntervalMapT;
+	typedef typename IntervalMapT::size_type       size_T;
+	typedef typename IntervalMapT::difference_type diff_T;
 
 	T v0 = make<T>(0);
 	T v2 = make<T>(2);
 	T v4 = make<T>(4);
+	U u1 = make<U>(1);
 	interval<T> I0_4I = closed_interval(v0,v4);
 	interval<T> C0_2D = open_interval(v0,v2);
 	interval<T> C2_4D = open_interval(v2,v4);
+	IntervalMapT::value_type I0_4I_u1(I0_4I,u1);
+	IntervalMapT::value_type C0_2D_u1(C0_2D,u1);
+	IntervalMapT::value_type C2_4D_u1(C2_4D,u1);
 	//   {[0               4]}
 	// - {   (0,2)   (2,4)   }
 	// = {[0]     [2]     [4]}
-	IntervalSet<T> iso_set = IntervalSet<T>(I0_4I);
-	IntervalSet<T> gap_set;
-	gap_set.add(C0_2D).add(C2_4D);
-	iso_set -= gap_set;
+	IntervalMapT iso_map = IntervalMapT(I0_4I_u1);
+	IntervalMapT gap_set;
+	gap_set.add(C0_2D_u1).add(C2_4D_u1);
+	iso_map -= gap_set;
 	
-	BOOST_CHECK_EQUAL( iso_set.cardinality(), static_cast<size_T>(3) );
-	BOOST_CHECK_EQUAL( iso_set.iterative_size(), static_cast<std::size_t>(3) );
+	BOOST_CHECK_EQUAL( iso_map.cardinality(), static_cast<size_T>(3) );
+	BOOST_CHECK_EQUAL( iso_map.iterative_size(), static_cast<std::size_t>(3) );
 
-	IntervalSet<T> iso_set2;
-	iso_set2.add(I0_4I);
-	iso_set2.subtract(C0_2D).subtract(C2_4D);
+	IntervalMapT iso_map2;
+	iso_map2.add(I0_4I_u1);
+	iso_map2.subtract(C0_2D_u1).subtract(C2_4D_u1);
 	
-	IntervalSet<T> iso_set3(I0_4I);
-	(iso_set3 -= C0_2D) -= C2_4D;
+	IntervalMapT iso_map3(I0_4I_u1);
+	(iso_map3 -= C0_2D_u1) -= C2_4D_u1;
 
-	IntervalSet<T> iso_set4;
-	iso_set4.insert(I0_4I);
-	iso_set4.erase(C0_2D).erase(C2_4D);
+	IntervalMapT iso_map4;
+	iso_map4.insert(I0_4I_u1);
+	iso_map4.erase(C0_2D_u1).erase(C2_4D_u1);
 	
-	BOOST_CHECK_EQUAL( iso_set, iso_set2 );
-	BOOST_CHECK_EQUAL( iso_set, iso_set3 );
-	BOOST_CHECK_EQUAL( iso_set, iso_set4 );
+	BOOST_CHECK_EQUAL( iso_map, iso_map2 );
+	BOOST_CHECK_EQUAL( iso_map, iso_map3 );
+	BOOST_CHECK_EQUAL( iso_map, iso_map4 );
 }
 
 
-template <template<class T, template<class>class = itl::interval,
-                            template<class>class = std::less,
-							template<class>class = std::allocator
-                  >class IntervalSet, 
-          class T>
-void interval_set_contains_4_bicremental_types()
+template <template<class T, class U,
+                   class Traits = itl::neutron_absorber,
+                   template<class>class = itl::interval,
+                   template<class>class = std::less,
+				   template<class>class = std::allocator
+                  >class IntervalMap, 
+          class T, class U>
+void interval_map_contains_4_bicremental_types()
 {
-	//LAW: x.add(e).contains(e);
-	//LAW: z = x + y => z.contains(x) && z.contains(y);
+	typedef IntervalMap<T,U> IntervalMapT;
+	//LAW: x.add(e).contains(e); //false! 
+	//LAW: x.insert(e).contains(e); //??
 	T v1 = make<T>(1);
 	T v3 = make<T>(3);
 	T v5 = make<T>(5);
@@ -406,46 +429,67 @@ void interval_set_contains_4_bicremental_types()
 	T v8 = make<T>(8);
 	T v9 = make<T>(9);
 	T v11 = make<T>(11);
-	IntervalSet<T> is(v1);	
-	BOOST_CHECK_EQUAL( is.contains(v1), true );
+	U u1 = make<U>(1);
+	
+	IntervalMapT::base_value_type v3_u1(v3,u1);
+	IntervalMapT::base_value_type v9_u1(v9,u1);
+	IntervalMapT::base_value_type v11_u1(v11,u1);
 
-	BOOST_CHECK_EQUAL( IntervalSet<T>().add(make<T>(2)).contains(make<T>(2)), true );
-	BOOST_CHECK_EQUAL( IntervalSet<T>().insert(make<T>(2)).contains(make<T>(2)), true );
-	BOOST_CHECK_EQUAL( (is += interval<T>(v3,v7)).contains(interval<T>(v3,v7)), true );
+	IntervalMapT::value_type I3_7I_u1(interval<T>(v3,v7),u1);
+	IntervalMapT im(v3_u1);	
+	BOOST_CHECK_EQUAL( im.contains(v3_u1), true );
 
-	IntervalSet<T> is0 = is;	
+	BOOST_CHECK_EQUAL( IntervalMapT().add(v3_u1).contains(v3_u1), true );
+	BOOST_CHECK_EQUAL( IntervalMapT().insert(v3_u1).contains(v3_u1), true );
+	im.clear();
+	BOOST_CHECK_EQUAL( (im += I3_7I_u1).contains(I3_7I_u1), true );
 
-	IntervalSet<T> is2(closed_interval(v5,v8));
-	is2.add(v9).add(v11);
-	is += is2;
-	BOOST_CHECK_EQUAL( is.contains(is2), true );	
+	IntervalMapT im0 = im;	
 
-	is = is0;
-	IntervalSet<T> is3(closed_interval(v5,v8));
-	is3.insert(v9).insert(v11);
-	is += is3;
-	BOOST_CHECK_EQUAL( is.contains(is3), true );	
+	im.clear();
+	IntervalMapT im2(IntervalMapT::value_type(closed_interval(v5,v8),u1));
+	im2.add(v9_u1).add(v11_u1);
+	im += im2;
+	BOOST_CHECK_EQUAL( im.contains(im2), true );	
 }
 
-
-template <template<class T, template<class>class = itl::interval,
-                            template<class>class = std::less,
-							template<class>class = std::allocator
-                  >class IntervalSet, 
-          class T>
-void interval_set_operators_4_bicremental_types()
+template <template<class T, class U,
+                   class Traits = itl::neutron_absorber,
+                   template<class>class = itl::interval,
+                   template<class>class = std::less,
+				   template<class>class = std::allocator
+                  >class IntervalMap, 
+          class T, class U>
+void interval_map_operators_4_bicremental_types()
 {
+	typedef IntervalMap<T,U> IntervalMapT;
 	T v0 = make<T>(0);
 	T v1 = make<T>(1);
 	T v3 = make<T>(3);
 	T v5 = make<T>(5);
 	T v7 = make<T>(7);
 	T v8 = make<T>(8);
-	IntervalSet<T> left, left2, right, all, all2, section, complement, naught;
-	left.add(closed_interval(v0,v1)).add(closed_interval(v3,v5));
-	(right += closed_interval(v3,v5)) += closed_interval(v7,v8);
-
+	U u1 = make<U>(1);
+	IntervalMapT::value_type I0_1I_u1(closed_interval(v0,v1),u1);
+	IntervalMapT::value_type I3_5I_u1(closed_interval(v3,v5),u1);
+	IntervalMapT::value_type I7_8I_u1(closed_interval(v7,v8),u1);
+	
+	IntervalMapT left, left2, right, all, all2, section, complement, naught;
+	left.add(I0_1I_u1).add(I3_5I_u1);
+	(right += I3_5I_u1) += I7_8I_u1;
+	is_disjoint(left, right);
 	BOOST_CHECK_EQUAL( is_disjoint(left, right), false );
+
+	(all += left) += right;
+	(section += left) *= right;
+	(complement += all) -= section;
+	(all2 += section) += complement; 
+
+	BOOST_CHECK_EQUAL( is_disjoint(section, complement), true );
+	BOOST_CHECK_EQUAL( all, all2 );
+	
+}
+/*
 
 	(all += left) += right;
 	(section += left) *= right;

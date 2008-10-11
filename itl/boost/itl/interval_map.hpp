@@ -15,6 +15,7 @@ class interval_map
 #include <itl/interval_set.hpp>
 //CL #include <itl/interval_map.hpp>
 #include <itl/interval_base_map.hpp>
+#include <itl/interval_maps.hpp>
 //CL? #include <itl/split_interval_set.hpp>
 
 namespace itl
@@ -1156,7 +1157,7 @@ operator *=
     else
     {
         object_map_type section;
-        object.map_intersect(section, operand);
+        object.add_intersection(section, operand);
         object.swap(section);
         return object;
     }

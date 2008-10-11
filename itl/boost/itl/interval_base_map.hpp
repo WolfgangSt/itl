@@ -272,7 +272,19 @@ public:
     interval_type first_interval()const { return (*(_map.begin())).KEY_VALUE; }
     interval_type last_interval()const { return (*(_map.rbegin())).KEY_VALUE; }
 
-    
+    iterator lower_bound(const key_type& interval)
+	{ return _map.lower_bound(interval); }
+
+	iterator upper_bound(const key_type& interval)
+	{ return _map.upper_bound(interval); }
+
+	const_iterator lower_bound(const key_type& interval)const
+	{ return _map.lower_bound(interval); }
+
+	const_iterator upper_bound(const key_type& interval)const
+	{ return _map.upper_bound(interval); }
+
+
     // Functions that are common with interval_base_set --------------------------------
 
 /** @name E: Bounds and other selectors
@@ -652,23 +664,25 @@ public:
         the intersection of associated values is stored in the resulting map
         \c section.
     */
-    void map_intersect(interval_base_map& section, const value_type& x)const;
+    void add_intersection(interval_base_map& section, const value_type& x)const;
 
     /// Intersect with an interval value pair and assign
     interval_base_map& operator *= (const value_type& x)
     { 
         if(Traits::emits_neutrons)
             return (*this) += x;
-        else if(Traits::absorbs_neutrons && !is_set<CodomainT>::value)
-            return (*this) += x;
+		//JODO klären
+        //else if(Traits::absorbs_neutrons && !is_set<CodomainT>::value)
+        //    return (*this) += x;
         else
         {
             interval_base_map section; 
-            map_intersect(section, x); 
+            add_intersection(section, x); 
             swap(section); 
             return *this; 
         }
     }
+
 
     /// Intersection with an interval set
     /** Compute the intersection of <tt>*this</tt> and the interval set <tt>x</tt>;
@@ -710,7 +724,7 @@ public:
     /** Compute the intersection of <tt>*this</tt> and the interval map <tt>x</tt>;
         assign result to the interval map <tt>section</tt>.    */
     template<class SubMapType>
-    void map_intersect(interval_base_map& section, 
+    void add_intersection(interval_base_map& section, 
                        const interval_base_map<SubMapType,DomainT,CodomainT,
                                                Traits,Interval,Compare,Alloc>& x)const;
 
@@ -928,8 +942,8 @@ interval_base_map<SubType,DomainT,CodomainT,Traits,
                   Interval,Compare,Alloc>::length()const
 {
 	difference_type length = neutron<difference_type>::value();
-    const_FOR_IMPL(it)
-		length += (*it).length();
+    const_FOR_IMPLMAP(it)
+		length += (*it).KEY_VALUE.length();
 	return length;
 }
 
@@ -982,11 +996,10 @@ template
     class DomainT, class CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc
 >
 void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>
-    ::map_intersect(interval_base_map& section, 
+    ::add_intersection(interval_base_map& section, 
                     const typename interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>
                     ::value_type& sectant)const
 {
-    section.clear();
     interval_type sectant_interval = sectant.KEY_VALUE;
     if(sectant_interval.empty()) return;
 
@@ -1000,9 +1013,6 @@ void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>
 
         if(!common_interval.empty())
         {
-            //CodomainT inner_section = (*it).CONT_VALUE;
-            //inner_section *= sectant.CONT_VALUE;
-            //section.that()->add( value_type(common_interval, inner_section) );
             section.that()->add( value_type(common_interval, (*it).CONT_VALUE) );
             if(is_set<CodomainT>::value)
                 section.that()->add<inplace_star>( value_type(common_interval, sectant.CONT_VALUE) );
@@ -1021,7 +1031,7 @@ template
 >
     template<class SubType2>
 void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>::
-    map_intersect(interval_base_map& interSection, 
+    add_intersection(interval_base_map& interSection, 
                   const interval_base_map<SubType2,DomainT,CodomainT,Traits,Interval,Compare,Alloc>& sectant)const
 {
     interSection.clear();
@@ -1035,7 +1045,7 @@ void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>:
     while(it != sectant.end())
     {
         aux.clear();
-        map_intersect(aux, *it++);
+        add_intersection(aux, *it++);
         interSection += aux;
     }
 }
@@ -1518,12 +1528,13 @@ operator *=
 
     if(Traits::emits_neutrons)
         return object += operand;
-    else if(Traits::absorbs_neutrons && !is_set<CodomainT>::value)
-        return object += operand;
+	//JODO klären
+    //else if(Traits::absorbs_neutrons && !is_set<CodomainT>::value)
+    //    return object += operand;
     else
     {
         map_type section;
-        object.map_intersect(section, operand);
+        object.add_intersection(section, operand);
         object.swap(section);
         return object;
     }
