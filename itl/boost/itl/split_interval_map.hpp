@@ -151,6 +151,7 @@ namespace itl
         typedef Interval<DomainT> interval_type;
         typedef typename base_type::iterator iterator;
         typedef typename base_type::value_type value_type;
+        typedef typename base_type::base_value_type base_value_type;
         typedef typename base_type::ImplMapT ImplMapT;
 
         typedef interval_set<DomainT,Interval,Compare,Alloc> interval_set_type;
@@ -803,6 +804,7 @@ void split_interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
 //-----------------------------------------------------------------------------
 // addition += and subtraction -=
 //-----------------------------------------------------------------------------
+/*CL refa
 template 
 <
     class SubType,
@@ -852,7 +854,7 @@ operator -=
 
     return object; 
 }
-
+*/
 
 //-----------------------------------------------------------------------------
 // erasure via keysets: map -= key_set
@@ -922,7 +924,7 @@ operator *=
     else
     {
         object_map_type section;
-        object.add_intersection(section, operand);
+        object.map_intersection(section, operand);
         object.swap(section);
         return object;
     }

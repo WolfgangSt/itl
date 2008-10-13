@@ -38,8 +38,11 @@ BOOST_AUTO_TEST_CASE_TEMPLATE
 (test_itl_interval_map_operators_4_bicremental_types, T, bicremental_types)
 {         interval_map_operators_4_bicremental_types<interval_map, T, int>();}
 
-/*
 BOOST_AUTO_TEST_CASE_TEMPLATE
-(test_itl_interval_set_base_intersect_4_bicremental_types, T, bicremental_types)
-{         interval_set_base_intersect_4_bicremental_types<interval_set, T>();}
-*/
+(test_itl_interval_map_base_intersect_4_bicremental_types, T, bicremental_types)
+{         interval_map_base_intersect_4_bicremental_types<interval_map, T, int>();}
+
+BOOST_AUTO_TEST_CASE_TEMPLATE
+(test_itl_interval_map_base_erase_4_bicremental_types, T, bicremental_types)
+{         interval_map_base_erase_4_bicremental_types<interval_map, T, int>();}
+

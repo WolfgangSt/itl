@@ -28,7 +28,7 @@ using namespace itl;
     set style operation like union (+=), difference (-=) and intersection
     (*=).
 
-    In this example <em>man_power</em> a number of those operations are
+    In this example 'man_power' a number of those operations are
     demonstrated in the process of calculation the available working 
     times (man-power) of a company's employees accounting for weekends,
     holidays, sickness times and vacations.
@@ -37,7 +37,7 @@ using namespace itl;
 */
 
 
-// Function weekends return the interval_set of weekends that are contained in
+// Function weekends returns the interval_set of weekends that are contained in
 // the date interval 'scope'
 interval_set<date> weekends(const interval<date>& scope)
 {
@@ -50,7 +50,7 @@ interval_set<date> weekends(const interval<date>& scope)
     week_iterator week_iter(cur_weekend_sat);
 
     for(; week_iter <= scope.last(); ++week_iter)
-        weekends.insert(rightopen_interval(*week_iter, *week_iter + days(2)));
+        weekends += rightopen_interval(*week_iter, *week_iter + days(2));
 
     weekends *= scope; // cut off the surplus
 

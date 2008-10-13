@@ -52,8 +52,8 @@ void interval_container_basics()
     separate_interval_set<Time> separateTimes;
     separateTimes.insert(night_and_day);
     separateTimes.insert(day_and_night); //overlapping in 'day' [07:00, 20.00)
-    separateTimes.insert(next_morning);     //touching
-    separateTimes.insert(next_evening);     //disjoint
+    separateTimes.insert(next_morning);  //touching
+    separateTimes.insert(next_evening);  //disjoint
 
     cout << "Separate times:" << separateTimes.as_string() << endl;
 
@@ -61,21 +61,20 @@ void interval_container_basics()
     // borders. On insertion of overlapping intervals the intervals in the
     // set are split up at the interval boreders of the inserted interval.
     split_interval_set<Time> splitTimes;
-    splitTimes.insert(night_and_day);
-    splitTimes.insert(day_and_night); //overlapping in 'day' [07:00, 20.00)
-    splitTimes.insert(next_morning);  //touching
-    splitTimes.insert(next_evening);  //disjoint
+    splitTimes += night_and_day;
+    splitTimes += day_and_night; //overlapping in 'day' [07:00, 20:00)
+    splitTimes += next_morning;  //touching
+    splitTimes += next_evening;  //disjoint
 
     cout << "Split times   :\n" << splitTimes.as_string() << endl;
 
     // A split interval map splits up inserted intervals on overlap and aggregates the
     // associated quantities via the operator +=
     split_interval_map<Time, int> overlapCounter;
-	typedef split_interval_map<Time, int>::value_type value_pair;
-    overlapCounter.insert(value_pair(night_and_day, 1));
-    overlapCounter.insert(value_pair(day_and_night, 1)); //overlapping in 'day' [07:00, 20.00)
-    overlapCounter.insert(value_pair(next_morning, 1));    //touching
-    overlapCounter.insert(value_pair(next_evening, 1));    //disjoint
+    overlapCounter += make_pair(night_and_day,1);
+    overlapCounter += make_pair(day_and_night,1); //overlapping in 'day' [07:00, 20.00)
+    overlapCounter += make_pair(next_morning, 1); //touching
+    overlapCounter += make_pair(next_evening, 1); //disjoint
 
     cout << "Split times overlap counted:\n" << overlapCounter.as_string() << endl;
 }

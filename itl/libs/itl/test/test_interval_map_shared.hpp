@@ -351,11 +351,17 @@ void interval_map_distinct_4_bicremental_continuous_types()
 
 	IntervalMapT is_123_5;
 	is_123_5 = is_1_3_5;
-	is_123_5 += make_pair(open_interval<T>(v1,v3),u1);
+	//OPROM: open problem: Ambiguity resolving value_type and base_value_type for overloaded o= operators.
+	//is_123_5 += make_pair(open_interval<T>(v1,v3),u1);                 //error C2593: 'operator +=' is ambiguous
+	//is_123_5 += make_pair<interval<T>, U>(open_interval<T>(v1,v3),u1); //error C2593: 'operator +=' is ambiguous
+	//USASO: unsatisfctory solution 1: explicit IntervalMapT::value_type instead of make_pair
+	is_123_5 += IntervalMapT::value_type(open_interval<T>(v1,v3),u1);
+	//USASO: unsatisfctory solution 2: not implementing base_value_type version of o=
 
 	BOOST_CHECK_EQUAL( is_123_5.cardinality(),      std::numeric_limits<size_T>::infinity() );
 	BOOST_CHECK_EQUAL( is_123_5.size(),             std::numeric_limits<size_T>::infinity() );
 	BOOST_CHECK_EQUAL( is_123_5.length(),           d2 );
+
 }
 
 
@@ -487,39 +493,44 @@ void interval_map_operators_4_bicremental_types()
 
 	BOOST_CHECK_EQUAL( is_disjoint(section, complement), true );
 	BOOST_CHECK_EQUAL( all, all2 );
-	
+
+	//JODO: There seems to be no intersection on maps of non set codomain type
+	// that can be implemented via *= propagation. Intersectin on those types
+	// could be dome elementic defining it via intersection on the set of pairs.
+	//if(boost::is_same<T,int>::value)
+	//{
+	//	cout << "left:    " << left << endl;
+	//	cout << "right:   " << right << endl;
+	//	cout << "section: " << section << endl;
+	//	cout << "complem: " << complement << endl;
+	//	cout << "all:     " << all << endl;
+	//	cout << "all2:    " << all2 << endl;
+	//}
+
+	//BOOST_CHECK_EQUAL( all.contains(left), true );
+	//BOOST_CHECK_EQUAL( all.contains(right), true );
+	//BOOST_CHECK_EQUAL( all.contains(complement), true );
+
+	//BOOST_CHECK_EQUAL( left.contained_in(all), true );
+	//BOOST_CHECK_EQUAL( right.contained_in(all), true );
+	//BOOST_CHECK_EQUAL( complement.contained_in(all), true );
+	//BOOST_CHECK_EQUAL( section.contained_in(left), true );
+	//BOOST_CHECK_EQUAL( section.contained_in(right), true );
 }
-/*
 
-	(all += left) += right;
-	(section += left) *= right;
-	(complement += all) -= section;
-	(all2 += section) += complement; 
 
-	BOOST_CHECK_EQUAL( is_disjoint(section, complement), true );
-	BOOST_CHECK_EQUAL( all, all2 );
-
-	BOOST_CHECK_EQUAL( all.contains(left), true );
-	BOOST_CHECK_EQUAL( all.contains(right), true );
-	BOOST_CHECK_EQUAL( all.contains(complement), true );
-	BOOST_CHECK_EQUAL( left.contains(section), true );
-	BOOST_CHECK_EQUAL( right.contains(section), true );
-
-	BOOST_CHECK_EQUAL( left.contained_in(all), true );
-	BOOST_CHECK_EQUAL( right.contained_in(all), true );
-	BOOST_CHECK_EQUAL( complement.contained_in(all), true );
-	BOOST_CHECK_EQUAL( section.contained_in(left), true );
-	BOOST_CHECK_EQUAL( section.contained_in(right), true );
-}
-
-// Test for nontrivial intersection of interval sets with intervals and values
-template <template<class T, template<class>class = itl::interval,
-                            template<class>class = std::less,
-							template<class>class = std::allocator
-                  >class IntervalSet, 
-          class T>
-void interval_set_base_intersect_4_bicremental_types()
+// Test for nontrivial intersection of interval maps with intervals and values
+template <template<class T, class U,
+                   class Traits = itl::neutron_absorber,
+                   template<class>class = itl::interval,
+                   template<class>class = std::less,
+				   template<class>class = std::allocator
+                  >class IntervalMap, 
+          class T, class U>
+void interval_map_base_intersect_4_bicremental_types()
 {
+	typedef IntervalMap<T,U> IntervalMapT;
+
 	T v0 = make<T>(0);
 	T v1 = make<T>(1);
 	T v2 = make<T>(2);
@@ -531,61 +542,233 @@ void interval_set_base_intersect_4_bicremental_types()
 	T v8 = make<T>(8);
 	T v9 = make<T>(9);
 
+	U u1 = make<U>(1);
+
 	interval<T> I0_3D = rightopen_interval(v0,v3);
 	interval<T> I1_3D = rightopen_interval(v1,v3);
+	interval<T> I1_4D = rightopen_interval(v1,v4);
 	interval<T> I1_8D = rightopen_interval(v1,v8);
 	interval<T> I2_7D = rightopen_interval(v2,v7);
 	interval<T> I2_3D = rightopen_interval(v2,v3);
+	interval<T> I5_8D = rightopen_interval(v5,v8);
 	interval<T> I6_7D = rightopen_interval(v6,v7);
 	interval<T> I6_8D = rightopen_interval(v6,v8);
 	interval<T> I6_9D = rightopen_interval(v6,v9);
 
+	IntervalMapT::value_type I0_3D_1(I0_3D, u1);
+	IntervalMapT::value_type I6_9D_1(I6_9D, u1);
+	IntervalMapT::value_type I1_3D_1(I1_3D, u1);
+	IntervalMapT::value_type I6_8D_1(I6_8D, u1);
+	IntervalMapT::value_type I2_3D_1(I2_3D, u1);
+	IntervalMapT::value_type I6_7D_1(I6_7D, u1);
+
 	//--------------------------------------------------------------------------
-	// IntervalSet
-	//--------------------------------------------------------------------------
-	//split_A      [0       3)       [6    9)
+	//map_A        [0       3)       [6    9)
+	//                     1           1
 	//         *=      [1                8)
-	//split_AB ->      [1   3)       [6  8)
+	//map_AB   ->      [1   3)       [6  8)
+	//                     1           1
 	//         *=        [2             7)     
 	//         ->        [2 3)       [6 7)
-	IntervalSet<T>    split_A, split_B, split_AB, split_ab, split_ab2;
+	//                     1           1
+	IntervalMap<T,U> map_A, map_AB, map_ab, map_ab2;
+	interval_set<T>  set_B;
+	map_A.add(I0_3D_1).add(I6_9D_1);
+	map_AB = map_A;
+	map_AB *= I1_8D;
+	map_ab.add(I1_3D_1).add(I6_8D_1);
 
-	split_A.add(I0_3D).add(I6_9D);
-	split_AB = split_A;
-	split_AB *= I1_8D;
-	split_ab.add(I1_3D).add(I6_8D);
+	BOOST_CHECK_EQUAL( map_AB, map_ab );
 
-	BOOST_CHECK_EQUAL( split_AB, split_ab );
+	map_AB = map_A;
+	(map_AB *= I1_8D) *= I2_7D;
+	map_ab2.add(I2_3D_1).add(I6_7D_1);
 
-	split_AB = split_A;
-	(split_AB *= I1_8D) *= I2_7D;
-	split_ab2.add(I2_3D).add(I6_7D);
-
-	BOOST_CHECK_EQUAL( split_AB, split_ab2 );
-
+	BOOST_CHECK_EQUAL( map_AB, map_ab2 );
 
 	//--------------------------------------------------------------------------
-	//split_A      [0       3)       [6    9)
+	//map_A        [0       3)       [6    9)
+	//                     1           1
+	//         *=      [1     4)  [5     8)
+	//map_AB   ->      [1   3)       [6  8)
+	//                     1           1
+	//         *=        [2   4)  [5    7)     
+	//         ->        [2 3)       [6 7)
+	//                     1           1
+	map_A.clear(); 
+	map_A.add(I0_3D_1).add(I6_9D_1);
+	set_B.add(I1_4D).add(I5_8D);
+	map_AB = map_A;
+
+	map_AB *= set_B;
+	map_ab.clear();
+	map_ab.add(I1_3D_1).add(I6_8D_1);
+	BOOST_CHECK_EQUAL( map_AB, map_ab );
+
+	//--------------------------------------------------------------------------
+	//map_A      [0       3)       [6       9)
+	//                1                1
+	//         *=     1
+	//map_AB ->      [1]
+	//                1
+
+	//JODO intersection with key-element not yet working
+	//map_A.clear();
+	//map_A.add(I0_3D_1).add(I6_9D_1);
+	//map_AB = map_A;
+	//map_AB *= v1;
+	//map_ab.clear();
+	//map_ab.add(v1);
+
+	//BOOST_CHECK_EQUAL( map_AB, map_ab );
+
+	//if(boost::is_same<T,int>::value)
+	//{
+	//	cout << "map_A : " << map_A << endl;
+	//	cout << "map_AB: " << map_AB << endl;
+	//}
+}
+
+/*
+	//--------------------------------------------------------------------------
+	//map_A      [0       3)       [6    9)
 	//         *=       1
-	//split_AB ->      [1]
+	//map_AB ->      [1]
 	//         +=         (1             7)     
 	//         ->      [1](1             7)
-	split_A.add(I0_3D).add(I6_9D);
-	split_AB = split_A;
-	split_AB *= v1;
-	split_ab.clear();
-	split_ab.add(v1);
+	map_A.add(I0_3D).add(I6_9D);
+	map_AB = map_A;
+	map_AB *= v1;
+	map_ab.clear();
+	map_ab.add(v1);
 
-	BOOST_CHECK_EQUAL( split_AB, split_ab );
+	BOOST_CHECK_EQUAL( map_AB, map_ab );
 
-	split_AB = split_A;
-	(split_AB *= v1) += open_interval<T>(v1,v7);
-	split_ab2.clear();
-	split_ab2 += rightopen_interval<T>(v1,v7);
+	map_AB = map_A;
+	(map_AB *= v1) += open_interval<T>(v1,v7);
+	map_ab2.clear();
+	map_ab2 += rightopen_interval<T>(v1,v7);
 
-	BOOST_CHECK_EQUAL( is_element_equal(split_AB, split_ab2), true );
+	BOOST_CHECK_EQUAL( is_element_equal(map_AB, map_ab2), true );
 }
 */
+
+
+// Test for nontrivial erasure of interval maps with intervals and interval sets
+template <template<class T, class U,
+                   class Traits = itl::neutron_absorber,
+                   template<class>class = itl::interval,
+                   template<class>class = std::less,
+				   template<class>class = std::allocator
+                  >class IntervalMap, 
+          class T, class U>
+void interval_map_base_erase_4_bicremental_types()
+{
+	typedef IntervalMap<T,U> IntervalMapT;
+
+	T v0 = make<T>(0);
+	T v1 = make<T>(1);
+	T v2 = make<T>(2);
+	T v3 = make<T>(3);
+	T v4 = make<T>(4);
+	T v5 = make<T>(5);
+	T v6 = make<T>(6);
+	T v7 = make<T>(7);
+	T v8 = make<T>(8);
+	T v9 = make<T>(9);
+
+	U u1 = make<U>(1);
+
+	interval<T> I0_1D = rightopen_interval(v0,v1);
+	interval<T> I0_2D = rightopen_interval(v0,v2);
+	interval<T> I0_3D = rightopen_interval(v0,v3);
+	interval<T> I1_3D = rightopen_interval(v1,v3);
+	interval<T> I1_4D = rightopen_interval(v1,v4);
+	interval<T> I1_8D = rightopen_interval(v1,v8);
+	interval<T> I2_4D = rightopen_interval(v2,v4);
+	interval<T> I2_7D = rightopen_interval(v2,v7);
+	interval<T> I2_3D = rightopen_interval(v2,v3);
+	interval<T> I5_7D = rightopen_interval(v5,v7);
+	interval<T> I5_8D = rightopen_interval(v5,v8);
+	interval<T> I6_7D = rightopen_interval(v6,v7);
+	interval<T> I6_8D = rightopen_interval(v6,v8);
+	interval<T> I6_9D = rightopen_interval(v6,v9);
+	interval<T> I7_9D = rightopen_interval(v7,v9);
+	interval<T> I8_9D = rightopen_interval(v8,v9);
+
+	IntervalMapT::value_type I0_1D_1(I0_1D, u1);
+	IntervalMapT::value_type I0_3D_1(I0_3D, u1);
+	IntervalMapT::value_type I0_2D_1(I0_2D, u1);
+	IntervalMapT::value_type I6_9D_1(I6_9D, u1);
+	IntervalMapT::value_type I1_3D_1(I1_3D, u1);
+	IntervalMapT::value_type I6_8D_1(I6_8D, u1);
+	IntervalMapT::value_type I2_3D_1(I2_3D, u1);
+	IntervalMapT::value_type I6_7D_1(I6_7D, u1);
+	IntervalMapT::value_type I7_9D_1(I7_9D, u1);
+	IntervalMapT::value_type I8_9D_1(I8_9D, u1);
+
+	//--------------------------------------------------------------------------
+	//map_A        [0        3)       [6       9)
+	//                  1                  1
+	//      erase        [2              7)
+	//map_A2   ->  [0   2)                [7   9)
+	//                 1                    1
+	//      erase      [1                   8)     
+	//         ->  [0 1)                    [8 9)
+	//               1                       1
+	IntervalMap<T,U> map_A, map_A2, map_A3, map_check2, map_check3;
+	interval_set<T>  set_B;
+	map_A.add(I0_3D_1).add(I6_9D_1);
+	map_A2 = map_A;
+	map_A2.erase(I2_7D);
+	map_check2.add(I0_2D_1).add(I7_9D_1);
+	BOOST_CHECK_EQUAL( map_A2, map_check2 );
+
+	map_A3 = map_A2;
+	map_A3.erase(I1_8D);
+	map_check3.add(I0_1D_1).add(I8_9D_1);
+	BOOST_CHECK_EQUAL( map_A3, map_check3 );
+
+		  
+	//--------------------------------------------------------------------------
+	//map_A        [0        3)       [6       9)
+	//                  1                  1
+	//      erase        [2              7)
+	//         ->  [0   2)                [7   9)
+	//                 1                    1
+	//      erase      [1                   8)     
+	//         ->  [0 1)                    [8 9)
+	//               1                       1
+	map_A3 = map_A;
+	map_A3.erase(I2_7D).erase(I1_8D);
+	BOOST_CHECK_EQUAL( map_A3, map_check3 );
+
+	//--------------------------------------------------------------------------
+	//map_A        [0        3)       [6       9)
+	//                  1                  1
+	//         -=        [2              7)
+	//         ->  [0   2)                [7   9)
+	//                 1                    1
+	//         -=      [1                   8)     
+	//         ->  [0 1)                    [8 9)
+	//               1                       1
+	map_A3 = map_A;
+	(map_A3 -= I2_7D) -= I1_8D;
+	BOOST_CHECK_EQUAL( map_A3, map_check3 );
+
+	//--------------------------------------------------------------------------
+	//map_A        [0        3)       [6       9)
+	//                  1                  1
+	//      erase        [2    4)   [5   7)
+	//         ->  [0   2)                [7   9)
+	//                 1                    1
+	map_A3 = map_A;
+	set_B.add(I2_4D).add(I5_7D);
+	map_A3 -= set_B;
+	BOOST_CHECK_EQUAL( map_A3, map_check2 );
+
+}
+
 
 #endif // __test_itl_interval_map_shared_h_JOFA_080920__
 

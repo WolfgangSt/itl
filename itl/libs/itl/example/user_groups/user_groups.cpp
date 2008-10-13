@@ -76,7 +76,7 @@ void user_groups()
     MembershipT med_users;
 
     med_users.add( // add and element
-      MembershipT::value_type( 
+      make_pair( 
         closed_interval<date>(
           from_string("2008-01-01"), from_string("2008-12-31")), mary_harry));
 

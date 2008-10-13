@@ -349,12 +349,14 @@ public:
         If Combinator implements addition (+=) associated values will contain sums.
         If Combinator implements max, associated values will contain maximal values and so on.
     */
+	/*JODO OPROM
     template<template<class>class Combinator>
 	SubType& add(const base_value_type& x) 
     { 
 		that()->add_<Combinator>( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); 
 		return *that();
 	}
+	*/
 
     /// Addition of a value pair using a Combinator operation.
     /** Addition of a value pair <tt>x := pair(I,y)</tt> where <tt>base_value_type:=pair<DomainT,CodomainT></tt>
@@ -386,8 +388,10 @@ public:
         Addition and subtraction are reversible as follows:
         <tt>m0=m; m.add(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
     */
+	/*JODO OPROM
     SubType& add(const base_value_type& x) 
     { return add( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
+	*/
 
     /// Addition of a base value pair.
     /** Addition of an value pair <tt>x=(I,y)</tt>
@@ -425,8 +429,9 @@ public:
         Insertion and subtraction are reversible as follows:
         <tt>m0=m; m += x; m -= x;</tt> implies <tt>m==m0 </tt>         
     */
-    interval_base_map& operator += (const value_type& x) 
-    { that()->add_(x); return *this; }
+	//CL refa
+    //interval_base_map& operator += (const value_type& x) 
+    //{ that()->add_(x); return *this; }
 //@}
 
 
@@ -445,10 +450,11 @@ public:
         A Combinator for subtract is usually an inverse function of
         the corresponding add<Combinator>. 
     */
+	/*JODO OPROM
     template<template<class>class Combinator>
     void subtract(const base_value_type& x)
     { that()->subtract_<Combinator>( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
-
+	*/
 
     /// Subtraction of an interval value pair using a Combinator operation
     /** Subtraction of an interval value pair  <tt>x=(I,y)</tt> 
@@ -477,12 +483,13 @@ public:
         Insertion and subtraction are reversible as follows:
         <tt>m0=m; m.add(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
     */
+	/*JODO OPROM
     SubType& subtract(const base_value_type& x)
     { 
 		that()->subtract_( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); 
 		return *that();
 	}
-
+	*/
 
     /// Subtraction of an interval value pair
     /** Subtraction of an interval value pair  <tt>x=(I,y)</tt> 
@@ -519,8 +526,9 @@ public:
         also be removed from the map, if the Traits include the property 
         neutron_absorber. 
     */
-    SubType& operator -= (const value_type& x) 
-	{ that()->subtract_(x); return *that(); }
+	//CL refa
+    //SubType& operator -= (const value_type& x) 
+	//{ that()->subtract_(x); return *that(); }
 
 //@}
 
@@ -537,11 +545,13 @@ public:
 
         This is the insertion semantics known from std::map::insert.
     */
+	/*JODO OPROM
     SubType& insert(const base_value_type& x) 
     { 
 		that()->insert_( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); 
 		return *that();
 	}
+	*/
 
     /// Insertion of an interval value pair
     /** Insertion of an interval value pair <tt>x=(I,y)</tt>
@@ -562,11 +572,13 @@ public:
         This does erase a base value pair <tt>x=(k,y)</tt> form the map, if
         a value \c y is stored for key \c k.
     */
+	/*JODO OPROM
     SubType& erase(const base_value_type& x) 
     { 
 		that()->erase_(value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE));
 		return *that();
 	}
+	*/
 
     /// Erase a interval value pair from the map
     /** Erase a interval value pair <tt>x=(I,y)</tt>.
@@ -666,14 +678,15 @@ public:
     */
     void add_intersection(interval_base_map& section, const value_type& x)const;
 
+    void add_intersection(interval_base_map& section, const interval_type& x)const;
+
     /// Intersect with an interval value pair and assign
     interval_base_map& operator *= (const value_type& x)
     { 
         if(Traits::emits_neutrons)
-            return (*this) += x;
-		//JODO klären
-        //else if(Traits::absorbs_neutrons && !is_set<CodomainT>::value)
-        //    return (*this) += x;
+            return add(x);
+        else if(Traits::absorbs_neutrons && !is_set<CodomainT>::value)
+            return add(x);
         else
         {
             interval_base_map section; 
@@ -690,19 +703,14 @@ public:
     template<class SetSubType>
     void intersect(interval_base_map& section, const interval_base_set<SetSubType,DomainT,Interval,Compare,Alloc>& sectant)const
     {
+		typedef interval_base_set<SetSubType,DomainT,Interval,Compare,Alloc> set_type;
         section.clear();
         if(sectant.empty()) return;
 
-        interval_base_map aux;
         // THINK JODO optimize using the ordering: if intervalls are beyond borders we can terminate
-
-        typename interval_base_set<SetSubType,DomainT,Interval,Compare,Alloc>::const_iterator it = sectant.begin();
+        typename set_type::const_iterator it = sectant.begin();
         while(it != sectant.end())
-        {
-            aux.clear();
-            intersect(aux, *it++);
-            section += aux;
-        }
+            add_intersection(section, *it++);
     }
 
     /// Intersect with an interval set and assign
@@ -724,7 +732,7 @@ public:
     /** Compute the intersection of <tt>*this</tt> and the interval map <tt>x</tt>;
         assign result to the interval map <tt>section</tt>.    */
     template<class SubMapType>
-    void add_intersection(interval_base_map& section, 
+    void map_intersection(interval_base_map& section, 
                        const interval_base_map<SubMapType,DomainT,CodomainT,
                                                Traits,Interval,Compare,Alloc>& x)const;
 
@@ -1023,6 +1031,32 @@ void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>
 }
 
 
+template 
+<
+    class SubType,
+    class DomainT, class CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+>
+void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>
+    ::add_intersection(interval_base_map& section, 
+                    const typename interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>
+                    ::interval_type& sectant_interval)const
+{
+    if(sectant_interval.empty()) return;
+
+    typename ImplMapT::const_iterator fst_it = _map.lower_bound(sectant_interval);
+    typename ImplMapT::const_iterator end_it = _map.upper_bound(sectant_interval);
+
+    for(typename ImplMapT::const_iterator it=fst_it; it != end_it; it++) 
+    {
+        interval_type common_interval; 
+        (*it).KEY_VALUE.intersect(common_interval, sectant_interval);
+
+        if(!common_interval.empty())
+            section.that()->add( value_type(common_interval, (*it).CONT_VALUE) );
+    }
+}
+
+
 //JODO Section algorithms for map and set arguments are virually the same
 template 
 <
@@ -1031,23 +1065,19 @@ template
 >
     template<class SubType2>
 void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>::
-    add_intersection(interval_base_map& interSection, 
+    map_intersection(interval_base_map& intersection, 
                   const interval_base_map<SubType2,DomainT,CodomainT,Traits,Interval,Compare,Alloc>& sectant)const
 {
-    interSection.clear();
+	typedef interval_base_map<SubType2,DomainT,CodomainT,
+		                      Traits,Interval,Compare,Alloc> sectant_type;
+    intersection.clear();
     if(sectant.empty()) return;
 
-    interval_base_map aux;
     // THINK JODO optimize using the ordering: if intervalls are beyond borders we can terminate
+    typename sectant_type::const_iterator it = sectant.begin();
 
-    typename interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>::const_iterator 
-        it = sectant.begin();
     while(it != sectant.end())
-    {
-        aux.clear();
-        add_intersection(aux, *it++);
-        interSection += aux;
-    }
+        add_intersection(intersection, *it++);
 }
 
 
@@ -1423,7 +1453,7 @@ erase
 //-----------------------------------------------------------------------------
 // addition (set union) += and subtraction (set difference) -=
 //-----------------------------------------------------------------------------
-
+/*CL refa
 template 
 <
     class SubType,
@@ -1448,7 +1478,9 @@ operator +=
 
     return object; 
 }
+*/
 
+/*CL refa
 template 
 <
     class SubType,
@@ -1473,7 +1505,7 @@ operator -=
 
     return object; 
 }
-
+*/
 
 //-----------------------------------------------------------------------------
 // erasure via keysets: map -= key_set
@@ -1529,12 +1561,12 @@ operator *=
     if(Traits::emits_neutrons)
         return object += operand;
 	//JODO klären
-    //else if(Traits::absorbs_neutrons && !is_set<CodomainT>::value)
-    //    return object += operand;
+    else if(Traits::absorbs_neutrons && !is_set<CodomainT>::value)
+        return object += operand;
     else
     {
         map_type section;
-        object.add_intersection(section, operand);
+        object.map_intersection(section, operand);
         object.swap(section);
         return object;
     }
