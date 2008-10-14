@@ -1041,93 +1041,9 @@ void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
 
 
 //-----------------------------------------------------------------------------
-// addition += and subtraction -=
-//-----------------------------------------------------------------------------
-/*CL refa
-template 
-<
-    class SubType,
-    class DomainT, class CodomainT, 
-    class Traits, template<class>class Interval, 
-    template<class>class Compare, template<class>class Alloc
->
-interval_base_map<SubType,DomainT,CodomainT,
-                  Traits,Interval,Compare,Alloc>& 
-operator +=
-(
-     interval_base_map<SubType,DomainT,CodomainT,
-                       Traits,Interval,Compare,Alloc>& object,
-    const interval_map<DomainT,CodomainT,
-                       Traits,Interval,Compare,Alloc>& operand
-)
-{
-    typedef interval_base_map<SubType,DomainT,CodomainT,Traits,
-                              Interval,Compare,Alloc>    map_type;
-    const_FORALL(typename map_type, elem_, operand) 
-        object.add(*elem_); 
-
-    return object; 
-}
-
-template 
-<
-    class SubType,
-    class DomainT, class CodomainT, 
-    class Traits, template<class>class Interval, 
-    template<class>class Compare, template<class>class Alloc
->
-interval_base_map<SubType,DomainT,CodomainT,
-                  Traits,Interval,Compare,Alloc>& 
-operator -=
-(
-     interval_base_map<SubType,DomainT,CodomainT,
-                       Traits,Interval,Compare,Alloc>& object,
-    const interval_map<DomainT,CodomainT,
-                       Traits,Interval,Compare,Alloc>& operand
-)
-{
-    typedef interval_base_map<SubType,DomainT,CodomainT,Traits,
-                              Interval,Compare,Alloc>    map_type;
-    const_FORALL(typename map_type, elem_, operand) 
-        object.subtract(*elem_); 
-
-    return object; 
-}
-*/
-
-/*CL??
-template 
-<
-    class SetSubType,
-    class DomainT, class CodomainT, 
-    class Traits, template<class>class Interval, 
-    template<class>class Compare, template<class>class Alloc
->
-interval_map<DomainT,CodomainT,
-             Traits,Interval,Compare,Alloc>& 
-operator -=
-(
-          interval_map<DomainT,CodomainT,
-                       Traits,Interval,Compare,Alloc>& object,
-    const interval_base_set<SetSubType,DomainT,
-                            Interval,Compare,Alloc>& erasure
-)
-{
-    typedef interval_base_set<SetSubType,DomainT,
-                              Interval,Compare,Alloc> set_type;
-    typedef typename interval_map<DomainT,CodomainT,
-        Traits,Interval,Compare,Alloc>::base_type map_base;
-    const_FORALL(typename set_type, key_, erasure) 
-        static_cast<map_base>(object).erase(*key_); 
-
-    return object; 
-}
-*/
-
-
-//-----------------------------------------------------------------------------
 // intersection *=
 //-----------------------------------------------------------------------------
+/*CL
 template 
 <
     class SubType,
@@ -1165,7 +1081,7 @@ operator *=
         return object;
     }
 }
-
+*/
 
 
 //-----------------------------------------------------------------------------

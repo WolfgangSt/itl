@@ -358,33 +358,6 @@ erase
     return object -= operand; 
 }
 
-//-----------------------------------------------------------------------------
-// enclosure
-//-----------------------------------------------------------------------------
-/*CL
-template 
-<
-	class DomainT, template<class>class Interval, 
-	template<class>class Compare, template<class>class Alloc,
-	template
-	<	
-		class, template<class>class, 
-		template<class>class, template<class>class
-	>
-	class IntervalSet
->
-typename IntervalSet<DomainT,Interval,Compare,Alloc>::interval_type 
-enclosure(const IntervalSet<DomainT,Interval,Compare,Alloc>& object)
-{
-	typedef typename 
-	IntervalSet<DomainT,Interval,Compare,Alloc>::interval_type interval_type;
-    return 
-		object.empty() ? itl::neutron<interval_type>::value()
-                       : (*object.begin()).span(*object.rbegin());
-}
-*/
-
-
 } // namespace itl
 
 #endif
