@@ -231,6 +231,8 @@ public:
 		return *this; 
 	}
 
+    /// swap the content of containers
+    void swap(interval_base_map& x) { _map.swap(x._map); }
 //@}
 
 /** @name C: Basic container functions
@@ -260,17 +262,11 @@ public:
 	bool contains(const interval_base_map& sub)const 
 	{ return sub.contained_in(*this); }
 
-    /// swap the content of containers
-    void swap(interval_base_map& x) { _map.swap(x._map); }
 //@}
 
 
     DomainT lower()const { return (*(_map.begin())).KEY_VALUE.lower(); }
     DomainT upper()const { return (*(_map.rbegin())).KEY_VALUE.upper(); }
-    // DomainT first()const { return (*(_map.begin())).KEY_VALUE.first(); } // JODO NONCONT
-    // DomainT last()const { return (*(_map.rbegin())).KEY_VALUE.last(); }// JODO NONCONT
-    interval_type first_interval()const { return (*(_map.begin())).KEY_VALUE; }
-    interval_type last_interval()const { return (*(_map.rbegin())).KEY_VALUE; }
 
     iterator lower_bound(const key_type& interval)
 	{ return _map.lower_bound(interval); }
@@ -295,9 +291,6 @@ public:
     size_t interval_count()const { return _map.size(); }
     /// Size of the iteration over this container
     size_t iterative_size()const { return _map.size(); }
-
-    /// enclosing Interval
-    interval_type enclosure()const { return first_interval().span(last_interval()); }
 
     /// Gives the domain of the map as interval set
 	template 
@@ -659,8 +652,14 @@ public:
         No find function is implemented, because all find operations can be expressed
         as intersections.
     */
-    void intersect(interval_base_map& section, const interval_type& x)const;
+    //CL void intersect(interval_base_map& section, const interval_type& x)const;
 
+	template<class SectantT>
+	void intersect(interval_base_map& section, const SectantT& sectant)const
+	{
+		section.clear();
+		add_intersection(section, sectant);
+	}
 
     /// Intersection with an interval value pair
     /** Compute an intersection with the value pair \c x=(I,y). The intersection
@@ -1050,10 +1049,16 @@ void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>
 {
 	typedef IntervalMap<DomainT,CodomainT,
 		                Traits,Interval,Compare,Alloc> sectant_type;
-	if(sectant.empty()) 
-		return;
+
+	if(Traits::emits_neutrons || (Traits::absorbs_neutrons && !is_set<CodomainT>::value))
+	{
+		intersection =  *this;
+        intersection += sectant;
+	}
 	else
 	{
+		if(sectant.empty()) 
+			return;
 		typename sectant_type::const_iterator common_lwb;
 		typename sectant_type::const_iterator common_upb;
 		if(!Set::common_range(common_lwb, common_upb, sectant, *this))
@@ -1065,7 +1070,7 @@ void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>
 }
 
 
-
+/*
 template 
 <
     class SubType,
@@ -1092,7 +1097,7 @@ void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>
             section.add( value_type(isec, (*it).CONT_VALUE) );
     }
 }
-
+*/
 
 template 
 <

@@ -337,6 +337,9 @@ public:
     /// Default constructor; yields an empty interval <tt>[1,0]</tt>
     interval() : _lwb(unon<DataT>::value()), _upb(neutron<DataT>::value()), 
                  _boundtypes(CLOSED) {}
+
+	// Use compiler generated copy contructor
+
     /// Constructor for a closed singleton interval <tt>[val,val]</tt>
     explicit interval(const DataT& val) : 
         _lwb(val), _upb(val), _boundtypes(CLOSED) {}
@@ -347,6 +350,7 @@ public:
     interval(const DataT& lw, const DataT& up, bound_types bt) : 
         _lwb(lw), _upb(up), _boundtypes(bt) {}
 
+	// Use compiler generated assignment operator =
 
 /** @name E: Selectors
 */

@@ -475,7 +475,7 @@ bool ItvMapTesterT<ItvMapTV>::hasErasureAsIntersectionComputability(ItvMapTV& x,
 
     ItvMapTV xxSect;
     //xx.intersect(xxSect, erasureComplement);
-    intersect(xxSect, xx, erasureComplement);
+    xx.intersect(xxSect, erasureComplement);
 
     if(! xxResid.equal(xxSect) ) {
         x = xx; y = erasureDomain; xDom_minus_y = erasureComplement; 

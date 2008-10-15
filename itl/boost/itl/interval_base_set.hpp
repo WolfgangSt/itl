@@ -192,6 +192,8 @@ public:
 		return *this; 
 	}
 
+    void swap(interval_base_set& x) { _set.swap(x._set); }
+
     // ------------------------------------------------------------------------
     // Basic set concept
     // C:
@@ -200,8 +202,6 @@ public:
     void clear() { _set.clear(); }
     /// is the container empty
     bool empty()const { return _set.empty(); }
-
-    void swap(interval_base_set& x) { _set.swap(x._set); }
 
     /// Does the container contain the element \c x
     bool contains(const DomainT& x)const

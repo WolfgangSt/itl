@@ -216,125 +216,6 @@ operator -=
 }
 
 
-
-//-----------------------------------------------------------------------------
-// intersect: non destructive on arguments  
-//-----------------------------------------------------------------------------
-template 
-<
-	class SubType, class DomainT, class CodomainT,
-	class Traits, template<class>class Interval, 
-	template<class>class Compare, template<class>class Alloc,
-	template
-	<	
-		class, class, class, template<class>class, 
-		template<class>class, template<class>class
-	>
-	class IntervalMap
->
-void intersect
-(
-		  interval_base_map<SubType,DomainT,CodomainT,
-		                    Traits,Interval,Compare,Alloc>& intersection,
-	const interval_base_map<SubType,DomainT,CodomainT,
-		                    Traits,Interval,Compare,Alloc>& object,
-	const IntervalMap<DomainT,CodomainT,
-	                  Traits,Interval,Compare,Alloc>& operand
-)
-{
-	intersection.clear();
-
-    if(Traits::emits_neutrons || (Traits::absorbs_neutrons && !is_set<CodomainT>::value))
-	{
-		intersection = object;
-        intersection += operand;
-	}
-    else
-		object.add_intersection(intersection,operand);
-}
-
-//--- interval_set ------------------------------------------------------------
-template 
-<
-	class SubType, class DomainT, class CodomainT,
-	class Traits, template<class>class Interval, 
-	template<class>class Compare, template<class>class Alloc,
-	template
-	<	
-		class, template<class>class, 
-		template<class>class, template<class>class
-	>
-	class IntervalSet
->
-void intersect
-(
-		  interval_base_map<SubType,DomainT,CodomainT,
-		                    Traits,Interval,Compare,Alloc>& intersection,
-	const interval_base_map<SubType,DomainT,CodomainT,
-		                    Traits,Interval,Compare,Alloc>& object,
-	const IntervalSet<DomainT,Interval,Compare,Alloc>& operand
-)
-{
-	intersection.clear();
-    object.add_intersection(intersection,operand);
-}
-
-//--- value_type --------------------------------------------------------------
-template 
-<
-	class DomainT, class CodomainT,
-	class Traits, template<class>class Interval, 
-	template<class>class Compare, template<class>class Alloc,
-	template
-	<	
-		class, class, class, template<class>class, 
-		template<class>class, template<class>class
-	>
-	class IntervalMap
->
-void intersect
-(
-		  IntervalMap<DomainT,CodomainT,
-		              Traits,Interval,Compare,Alloc>& intersection,
-	const IntervalMap<DomainT,CodomainT,
-		              Traits,Interval,Compare,Alloc>& object,
-	const typename 
-	      IntervalMap<DomainT,CodomainT,
-	                  Traits,Interval,Compare,Alloc>::value_type& operand
-)
-{
-	intersection.clear();
-    object.add_intersection(intersection,operand);
-}
-
-//--- interval_type -----------------------------------------------------------
-template 
-<
-	class DomainT, class CodomainT,
-	class Traits, template<class>class Interval, 
-	template<class>class Compare, template<class>class Alloc,
-	template
-	<	
-		class, class, class, template<class>class, 
-		template<class>class, template<class>class
-	>
-	class IntervalMap
->
-void intersect
-(
-		  IntervalMap<DomainT,CodomainT,
-		              Traits,Interval,Compare,Alloc>& intersection,
-	const IntervalMap<DomainT,CodomainT,
-		              Traits,Interval,Compare,Alloc>& object,
-	const typename 
-	      IntervalMap<DomainT,CodomainT,
-	                  Traits,Interval,Compare,Alloc>::interval_type& operand
-)
-{
-	intersection.clear();
-    object.add_intersection(intersection,operand);
-}
-
 //-----------------------------------------------------------------------------
 // intersection *=  
 //-----------------------------------------------------------------------------
@@ -343,117 +224,20 @@ template
 	class SubType, class DomainT, class CodomainT,
 	class Traits, template<class>class Interval, 
 	template<class>class Compare, template<class>class Alloc,
-	template
-	<	
-		class, class, class, template<class>class, 
-		template<class>class, template<class>class
-	>
-	class IntervalMap
+	class SectanT
 >
 interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>& 
 operator *=
 (
 		  interval_base_map<SubType,DomainT,CodomainT,
 		                    Traits,Interval,Compare,Alloc>& object,
-	const IntervalMap<DomainT,CodomainT,
-	                  Traits,Interval,Compare,Alloc>& operand
+	const SectanT& operand
 )
 {
 	typedef interval_base_map<SubType,DomainT,CodomainT,
 		                      Traits,Interval,Compare,Alloc> object_type;
 	object_type intersection;
-	intersect(intersection,object,operand);
-	object.swap(intersection);
-	return object;
-}
-
-//--- interval_set ------------------------------------------------------------
-template 
-<
-	class SubType, class DomainT, class CodomainT,
-	class Traits, template<class>class Interval, 
-	template<class>class Compare, template<class>class Alloc,
-	template
-	<	
-		class, template<class>class, 
-		template<class>class, template<class>class
-	>
-	class IntervalSet
->
-interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>& 
-operator *=
-(
-		  interval_base_map<SubType,DomainT,CodomainT,
-		                    Traits,Interval,Compare,Alloc>& object,
-	const IntervalSet<DomainT,Interval,Compare,Alloc>& operand
-)
-{
-	typedef interval_base_map<SubType,DomainT,CodomainT,
-		                      Traits,Interval,Compare,Alloc> object_type;
-    object_type intersection;
-    object.add_intersection(intersection,operand);
-    object.swap(intersection);
-    return object;
-}
-
-//--- value_type --------------------------------------------------------------
-template 
-<
-	class DomainT, class CodomainT,
-	class Traits, template<class>class Interval, 
-	template<class>class Compare, template<class>class Alloc,
-	template
-	<	
-		class, class, class, template<class>class, 
-		template<class>class, template<class>class
-	>
-	class IntervalMap
->
-IntervalMap<DomainT,CodomainT,Traits,Interval,Compare,Alloc>& 
-operator *=
-(
-		  IntervalMap<DomainT,CodomainT,
-		              Traits,Interval,Compare,Alloc>& object,
-	const typename 
-	      IntervalMap<DomainT,CodomainT,
-	                  Traits,Interval,Compare,Alloc>::value_type& operand
-)
-{
-	typedef IntervalMap<DomainT,CodomainT,
-		                Traits,Interval,Compare,Alloc> object_type;
-	object_type intersection;
-    object.add_intersection(intersection,operand);
-	object.swap(intersection);
-	return object;
-}
-
-//--- interval_type -----------------------------------------------------------
-template 
-<
-	class DomainT, class CodomainT,
-	class Traits, template<class>class Interval, 
-	template<class>class Compare, template<class>class Alloc,
-	template
-	<	
-		class, class, class, template<class>class, 
-		template<class>class, template<class>class
-	>
-	class IntervalMap
->
-IntervalMap<DomainT,CodomainT,Traits,Interval,Compare,Alloc>& 
-operator *=
-(
-		  IntervalMap<DomainT,CodomainT,
-		              Traits,Interval,Compare,Alloc>& object,
-	const typename 
-	      IntervalMap<DomainT,CodomainT,
-	                  Traits,Interval,Compare,Alloc>::interval_type& operand
-)
-{
-	typedef IntervalMap<DomainT,CodomainT,
-		                Traits,Interval,Compare,Alloc> object_type;
-	object_type intersection;
-    object.add_intersection(intersection,operand);
+	object.add_intersection(intersection,operand);
 	object.swap(intersection);
 	return object;
 }

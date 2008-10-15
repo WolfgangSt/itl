@@ -221,34 +221,6 @@ private:
     void erase_rest(const interval_type& x_itv, const CodomainT& x_val, iterator& it, iterator& end_it);
 
     void matchMap(interval_map& matchMap, const value_type& x)const;
-
-    void check_it(const std::string& info, iterator& it)const
-    {
-//#ifdef _DEBUG
-//        if(it == _map.end())
-//            std::cout << info << "it==end()\n";
-//        else
-//            std::cout << info << "*it=(" << (it->KEY_VALUE).as_string() 
-//                      << "->" << to_string<CodomainT>::apply(it->CONT_VALUE)
-//                      << ") map: " << this->as_string() << std::endl;
-//#endif
-    }
-
-    void check_in(const std::string& info, const value_type& insertee, iterator& it)const
-    {
-//#ifdef _DEBUG
-//        if(it == _map.end())
-//            std::cout << info << "it==end()\n";
-//        else
-//            std::cout << info 
-//                      << "ins=[" << (insertee.KEY_VALUE).as_string() 
-//                      << "->" << to_string<CodomainT>::apply(insertee.CONT_VALUE) << "]"
-//                      << "*it=(" << (it->KEY_VALUE).as_string() 
-//                      << "->" << to_string<CodomainT>::apply(it->CONT_VALUE)
-//                      << ") map: " << this->as_string() << std::endl;
-//#endif
-    }
-
 } ;
 
 
