@@ -661,16 +661,6 @@ public:
     */
     void intersect(interval_base_map& section, const interval_type& x)const;
 
-    /// Intersect with an interval and assign
-	/*CL
-    interval_base_map& operator *= (const interval_type& x)
-    { 
-        interval_base_map section; 
-        intersect(section, x); 
-        swap(section); 
-        return *this; 
-    }
-	*/
 
     /// Intersection with an interval value pair
     /** Compute an intersection with the value pair \c x=(I,y). The intersection
@@ -683,7 +673,11 @@ public:
     void add_intersection(interval_base_map& section, const interval_type& x)const;
 
 	template<class SetSubType>
-	void add_intersection(interval_base_map& section, const interval_base_set<SetSubType,DomainT,Interval,Compare,Alloc>& sectant)const
+	void add_intersection
+	(
+			  interval_base_map& section, 
+		const interval_base_set<SetSubType,DomainT,Interval,Compare,Alloc>& sectant
+	)const
 	{
 		typedef interval_base_set<SetSubType,DomainT,Interval,Compare,Alloc> set_type;
 		if(sectant.empty()) return;
@@ -694,6 +688,7 @@ public:
 			add_intersection(section, *it++);
 	}
 
+	/*CL
 	template<class SetSubType>
 	void intersect(interval_base_map& section, const interval_base_set<SetSubType,DomainT,Interval,Compare,Alloc>& sectant)const
 	{
@@ -701,6 +696,7 @@ public:
 		section.clear();
 		add_intersection(section, sectant);
 	}
+	*/
 
     /// Intersect with an interval value pair and assign
 	/*CL
@@ -756,13 +752,40 @@ public:
     /// Intersection with an interval map
     /** Compute the intersection of <tt>*this</tt> and the interval map <tt>x</tt>;
         assign result to the interval map <tt>section</tt>.    */
-    template<class SubMapType>
+    template
+	<
+		template
+		<	
+			class DomainT, class CodommainT, 
+			class Traits, template<class>class Interval, 
+			template<class>class Compare, template<class>class Alloc
+		>
+		class IntervalMap
+	>
     void add_intersection
 	(
-		interval_base_map& intersection, 
-        const interval_base_map<SubMapType,DomainT,CodomainT,
-                                Traits,Interval,Compare,Alloc>& sectant
+		interval_base_map& intersection,
+		const IntervalMap<DomainT,CodomainT,Traits,Interval,Compare,Alloc>& sectant
 	)const;
+
+	/*CL
+	{
+		typedef IntervalMap<DomainT,CodomainT,
+			                Traits,Interval,Compare,Alloc> sectant_type;
+		if(sectant.empty()) 
+			return;
+		
+		if(Traits::emits_neutrons || (Traits::absorbs_neutrons && !is_set<CodomainT>::value))
+			intersection += sectant;
+		else
+		{
+			// THINK JODO optimize using the ordering: if intervalls are beyond borders we can terminate
+			typename sectant_type::const_iterator it = sectant.begin();
+			while(it != sectant.end())
+				add_intersection(intersection, *it++);
+		}
+	}
+	*/
 
 
     /*  Compute the intersection of <tt>*this</tt> and the interval map <tt>x</tt>;
@@ -1004,13 +1027,58 @@ bool interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>:
 template 
 <
     class SubType,
-    class DomainT, class CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc
+    class DomainT, class CodomainT, 
+	class Traits, template<class>class Interval, 
+	template<class>class Compare, template<class>class Alloc
+>
+	template
+	<
+		template
+		<	
+			class DomainT, class CodommainT, 
+			class Traits, template<class>class Interval, 
+			template<class>class Compare, template<class>class Alloc
+		>
+		class IntervalMap
+	>
+void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>
+	::add_intersection
+(
+	interval_base_map& intersection,
+	const IntervalMap<DomainT,CodomainT,Traits,Interval,Compare,Alloc>& sectant
+)const
+{
+	typedef IntervalMap<DomainT,CodomainT,
+		                Traits,Interval,Compare,Alloc> sectant_type;
+	if(sectant.empty()) 
+		return;
+	else
+	{
+		typename sectant_type::const_iterator common_lwb;
+		typename sectant_type::const_iterator common_upb;
+		if(!Set::common_range(common_lwb, common_upb, sectant, *this))
+			return;
+		typename sectant_type::const_iterator it = common_lwb;
+		while(it != common_upb)
+			add_intersection(intersection, *it++);
+	}
+}
+
+
+
+template 
+<
+    class SubType,
+    class DomainT, class CodomainT,	
+	class Traits, template<class>class Interval, 
+	template<class>class Compare, template<class>class Alloc
 >
 void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>
     ::intersect(interval_base_map& section, const interval_type& x)const
 {
     section.clear();
-    if(x.empty()) return;
+    if(x.empty()) 
+		return;
 
     typename ImplMapT::const_iterator fst_it = _map.lower_bound(x);
     typename ImplMapT::const_iterator end_it = _map.upper_bound(x);
@@ -1084,7 +1152,7 @@ void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>
     }
 }
 
-
+/*CL
 //JODO Section algorithms for map and set arguments are virually the same
 template 
 <
@@ -1093,26 +1161,32 @@ template
 >
     template<class SubType2>
 void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>::
-    add_intersection(interval_base_map& intersection, 
-                  const interval_base_map<SubType2,DomainT,CodomainT,Traits,Interval,Compare,Alloc>& sectant)const
+add_intersection
+(
+	interval_base_map& intersection,
+	const SubType2& sectant
+    //const interval_base_map<SubType2,DomainT,CodomainT,Traits,Interval,Compare,Alloc>& sectant
+)const
 {
-	typedef interval_base_map<SubType2,DomainT,CodomainT,
-		                      Traits,Interval,Compare,Alloc> sectant_type;
+	//typedef interval_base_map<SubType2,DomainT,CodomainT,
+	//	                      Traits,Interval,Compare,Alloc> sectant_type;
+
+	typedef SubType2 sectant_type;
     //CL intersection.clear();
     if(sectant.empty()) return;
 
-	/*JODO URG
+	
     if(Traits::emits_neutrons || (Traits::absorbs_neutrons && !is_set<CodomainT>::value))
 	{
-		typename sectant_type::const_iterator it = sectant.begin();
-		while(it != sectant.end())
-			intersection.add(*it++);
+		//typename sectant_type::const_iterator it = sectant.begin();
+		//while(it != sectant.end())
+		//	intersection.add(*it++);
+		intersection += sectant;
 	}
     //    return intersection += sectant;
     //else if(Traits::absorbs_neutrons && !is_set<CodomainT>::value)
     //    return intersection += sectant;
     else
-	*/
     {
 		// THINK JODO optimize using the ordering: if intervalls are beyond borders we can terminate
 		typename sectant_type::const_iterator it = sectant.begin();
@@ -1120,7 +1194,7 @@ void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>:
 			add_intersection(intersection, *it++);
 	}
 }
-
+*/
 
 
 template 
