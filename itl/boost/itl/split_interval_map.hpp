@@ -162,7 +162,7 @@ namespace itl
         /// Copy constructor
         split_interval_map(const split_interval_map& src): base_type(src) {}
 
-		explicit split_interval_map(base_value_type& base_pair): base_type()
+		explicit split_interval_map(base_pair_type& base_pair): base_type()
 		{ add(base_pair); }
 
 		explicit split_interval_map(const value_type& value_pair): base_type()

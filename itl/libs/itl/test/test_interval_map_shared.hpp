@@ -73,8 +73,9 @@ void interval_map_fundamentals_4_ordered_types()
 	BOOST_CHECK_EQUAL(mt_map, IntervalMapT());
 
 	//subtracting elements form emptieness
-	IntervalMapT::base_value_type v0_u1 = make_pair(v0,u1);
-	IntervalMapT::base_value_type v1_u1 = make_pair(v1,u1);
+	IntervalMapT::base_pair_type v0_u1 = make_pair(v0,u1);
+	IntervalMapT::base_pair_type v1_u1 = make_pair(v1,u1);
+	//mt_map.subtract(make_pair(v0,u1)).subtract(make_pair(v1,u1));
 	mt_map.subtract(v0_u1).subtract(v1_u1);
 	BOOST_CHECK_EQUAL(mt_map, IntervalMapT());
 	mt_map.erase(v0_u1).erase(v1_u1);
@@ -178,7 +179,7 @@ void interval_map_ctor_4_bicremental_types()
 	U u2 = make<U>(2);
 	U u4 = make<U>(4);
 	itl::interval<T> I4_4I(v4);
-	IntervalMapT::base_value_type v4_u2(v4,u2);
+	IntervalMapT::base_pair_type v4_u2(v4,u2);
 	IntervalMapT::value_type I4_4I_u2(I4_4I,u2);
 
 	IntervalMapT _I4_4I_u2;
@@ -244,8 +245,8 @@ void interval_map_add_sub_4_bicremental_types()
 	interval<T> I5_6I(v5,v6);
 	interval<T> I5_9I(v5,v9);
 	interval<T> I0_9I = closed_interval(v0, v9);
-	IntervalMapT::base_value_type v0_u1 = make_pair(v0, u1);
-	IntervalMapT::base_value_type v9_u1 = make_pair(v9, u1);
+	IntervalMapT::base_pair_type v0_u1 = make_pair(v0, u1);
+	IntervalMapT::base_pair_type v9_u1 = make_pair(v9, u1);
 	IntervalMapT::value_type I5_6I_u1 = make_pair(I5_6I, u1);
 	IntervalMapT::value_type I5_9I_u1 = make_pair(I5_9I, u1);
 	IntervalMapT::value_type I0_9I_u1 = make_pair(closed_interval(v0, v9), u1);
@@ -295,9 +296,9 @@ void interval_map_distinct_4_bicremental_types()
 	T v3 = make<T>(3);
 	T v5 = make<T>(5);
 	U u1 = make<U>(1);
-	IntervalMapT::base_value_type v1_u1(v1,u1);
-	IntervalMapT::base_value_type v3_u1(v3,u1);
-	IntervalMapT::base_value_type v5_u1(v5,u1);
+	IntervalMapT::base_pair_type v1_u1(v1,u1);
+	IntervalMapT::base_pair_type v3_u1(v3,u1);
+	IntervalMapT::base_pair_type v5_u1(v5,u1);
 
 	size_T s3 = make<size_T>(3);
 	diff_T d0 = make<diff_T>(0);
@@ -328,9 +329,9 @@ void interval_map_distinct_4_bicremental_continuous_types()
 	T v3 = make<T>(3);
 	T v5 = make<T>(5);
 	U u1 = make<U>(1);
-	IntervalMapT::base_value_type v1_u1(v1,u1);
-	IntervalMapT::base_value_type v3_u1(v3,u1);
-	IntervalMapT::base_value_type v5_u1(v5,u1);
+	IntervalMapT::base_pair_type v1_u1(v1,u1);
+	IntervalMapT::base_pair_type v3_u1(v3,u1);
+	IntervalMapT::base_pair_type v5_u1(v5,u1);
 
 	size_T s3 = make<size_T>(3);
 	diff_T d0 = make<diff_T>(0);
@@ -437,9 +438,9 @@ void interval_map_contains_4_bicremental_types()
 	T v11 = make<T>(11);
 	U u1 = make<U>(1);
 	
-	IntervalMapT::base_value_type v3_u1(v3,u1);
-	IntervalMapT::base_value_type v9_u1(v9,u1);
-	IntervalMapT::base_value_type v11_u1(v11,u1);
+	IntervalMapT::base_pair_type v3_u1(v3,u1);
+	IntervalMapT::base_pair_type v9_u1(v9,u1);
+	IntervalMapT::base_pair_type v11_u1(v11,u1);
 
 	IntervalMapT::value_type I3_7I_u1(interval<T>(v3,v7),u1);
 	IntervalMapT im(v3_u1);	

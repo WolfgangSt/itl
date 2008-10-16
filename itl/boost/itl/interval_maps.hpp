@@ -72,7 +72,6 @@ operator +=
 }
 
 //--- base_value_type ---------------------------------------------------------
-/*JODO OPROM
 template 
 <
 	class DomainT, class CodomainT,
@@ -92,12 +91,11 @@ operator +=
 		              Traits,Interval,Compare,Alloc>& object,
 	const typename 
 	      IntervalMap<DomainT,CodomainT,
-	                  Traits,Interval,Compare,Alloc>::base_value_type& operand
+	                  Traits,Interval,Compare,Alloc>::base_pair_type& operand
 )
 {
     return object.add(operand); 
 }
-*/
 
 
 //-----------------------------------------------------------------------------
@@ -153,6 +151,32 @@ operator -=
 	const typename 
 	      IntervalMap<DomainT,CodomainT,
 	                  Traits,Interval,Compare,Alloc>::value_type& operand
+)
+{
+    return object.subtract(operand); 
+}
+
+//--- base_value_type ---------------------------------------------------------
+template 
+<
+	class DomainT, class CodomainT,
+	class Traits, template<class>class Interval, 
+	template<class>class Compare, template<class>class Alloc,
+	template
+	<	
+		class, class, class, template<class>class, 
+		template<class>class, template<class>class
+	>
+	class IntervalMap
+>
+IntervalMap<DomainT,CodomainT,Traits,Interval,Compare,Alloc>& 
+operator -=
+(
+		  IntervalMap<DomainT,CodomainT,
+		              Traits,Interval,Compare,Alloc>& object,
+	const typename 
+	      IntervalMap<DomainT,CodomainT,
+	                  Traits,Interval,Compare,Alloc>::base_pair_type& operand
 )
 {
     return object.subtract(operand); 

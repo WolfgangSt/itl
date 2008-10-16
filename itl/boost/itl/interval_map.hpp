@@ -139,7 +139,7 @@ public:
     /// Copy constructor
     interval_map(const interval_map& src): base_type(src) {}
 
-	explicit interval_map(base_value_type& base_pair): base_type()
+	explicit interval_map(base_pair_type& base_pair): base_type()
 	{ add(base_pair); }
 
 	explicit interval_map(const value_type& value_pair): base_type()

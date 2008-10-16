@@ -49,6 +49,21 @@ class interval_base_map
 namespace itl
 {
 
+template<class DomainT, class CodomainT>
+struct base_pair
+{
+	DomainT   key;
+	CodomainT data;
+
+	base_pair(const DomainT& key_value, const CodomainT& data_value)
+		:key(key_value), data(data_value){}
+
+	base_pair(const std::pair<DomainT,CodomainT>& std_pair)
+		:key(std_pair.first), data(std_pair.second){}
+};
+
+
+
 /// Implements a map as a map of intervals (abstract base class)
 /**    
     Abstract template-class <b>interval_base_map</b>
@@ -157,6 +172,8 @@ public:
     typedef CodomainT codomain_type;
     /// basic value type
     typedef std::pair<domain_type,codomain_type> base_value_type;
+	/// Auxiliary type to help the compiler resolve ambiguities when using std::make_pair
+    typedef base_pair<domain_type,codomain_type> base_pair_type;
     /// The interval type of the map
     typedef Interval<DomainT> interval_type;
 
@@ -252,8 +269,8 @@ public:
     }
 
     /// Does the map contain the element pair <tt>x = (key_element,value)</tt>?
-    bool contains(const base_value_type& x)const
-	{ return that()->contains_(value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE));	}
+    bool contains(const base_pair_type& x)const
+	{ return that()->contains_(value_type(interval_type(x.key), x.data));	}
 
 	bool contains(const value_type& x)const
 	{ return that()->contains_(x); }
@@ -319,8 +336,8 @@ public:
     bool contained_in(const interval_base_map& super)const;
 
     /// Equality
-    bool equal(const interval_base_map& x2)const
-    { return contained_in(x2) && x2.contained_in(*this); }
+    //CL bool equal(const interval_base_map& x2)const
+    //{ return contained_in(x2) && x2.contained_in(*this); }
 
     ///  <tt>*this</tt> and <tt>x2</tt> are disjoint; their intersection is empty.
     //JODO bool disjoint_to(const interval_base_map& x2)const
@@ -342,14 +359,12 @@ public:
         If Combinator implements addition (+=) associated values will contain sums.
         If Combinator implements max, associated values will contain maximal values and so on.
     */
-	/*JODO OPROM
     template<template<class>class Combinator>
-	SubType& add(const base_value_type& x) 
+	SubType& add(const base_pair_type& x) 
     { 
 		that()->add_<Combinator>( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); 
 		return *that();
 	}
-	*/
 
     /// Addition of a value pair using a Combinator operation.
     /** Addition of a value pair <tt>x := pair(I,y)</tt> where <tt>base_value_type:=pair<DomainT,CodomainT></tt>
@@ -381,10 +396,8 @@ public:
         Addition and subtraction are reversible as follows:
         <tt>m0=m; m.add(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
     */
-	/*JODO OPROM
-    SubType& add(const base_value_type& x) 
-    { return add( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
-	*/
+    SubType& add(const base_pair_type& x) 
+    { return add( value_type(interval_type(x.key), x.data) ); }
 
     /// Addition of a base value pair.
     /** Addition of an value pair <tt>x=(I,y)</tt>
@@ -425,6 +438,7 @@ public:
 	//CL refa
     //interval_base_map& operator += (const value_type& x) 
     //{ that()->add_(x); return *this; }
+
 //@}
 
 
@@ -443,11 +457,9 @@ public:
         A Combinator for subtract is usually an inverse function of
         the corresponding add<Combinator>. 
     */
-	/*JODO OPROM
     template<template<class>class Combinator>
-    void subtract(const base_value_type& x)
+    void subtract(const base_pair_type& x)
     { that()->subtract_<Combinator>( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
-	*/
 
     /// Subtraction of an interval value pair using a Combinator operation
     /** Subtraction of an interval value pair  <tt>x=(I,y)</tt> 
@@ -476,13 +488,12 @@ public:
         Insertion and subtraction are reversible as follows:
         <tt>m0=m; m.add(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
     */
-	/*JODO OPROM
-    SubType& subtract(const base_value_type& x)
+	SubType& subtract(const base_pair_type& x)
     { 
-		that()->subtract_( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); 
+		that()->subtract_( value_type(interval_type(x.key), x.data) ); 
 		return *that();
 	}
-	*/
+
 
     /// Subtraction of an interval value pair
     /** Subtraction of an interval value pair  <tt>x=(I,y)</tt> 
@@ -538,13 +549,11 @@ public:
 
         This is the insertion semantics known from std::map::insert.
     */
-	/*JODO OPROM
-    SubType& insert(const base_value_type& x) 
+    SubType& insert(const base_pair_type& x) 
     { 
-		that()->insert_( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); 
+		that()->insert_( value_type(interval_type(x.key), x.data) ); 
 		return *that();
 	}
-	*/
 
     /// Insertion of an interval value pair
     /** Insertion of an interval value pair <tt>x=(I,y)</tt>
@@ -565,13 +574,11 @@ public:
         This does erase a base value pair <tt>x=(k,y)</tt> form the map, if
         a value \c y is stored for key \c k.
     */
-	/*JODO OPROM
-    SubType& erase(const base_value_type& x) 
+    SubType& erase(const base_pair_type& x) 
     { 
-		that()->erase_(value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE));
+		that()->erase_(value_type(interval_type(x.key), x.data));
 		return *that();
 	}
-	*/
 
     /// Erase a interval value pair from the map
     /** Erase a interval value pair <tt>x=(I,y)</tt>.

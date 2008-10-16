@@ -358,7 +358,7 @@ bool ItvMapTesterT<ItvMapTV>::isInsertReversible2
     xx2 -= yy;
     xx2.join();
     
-    if(! xx.equal(xx2) ) {
+    if(! is_element_equal(xx, xx2) ) {
         x = xx; y = yy; y_perm = yy_perm; y_permJoin = yy_permJoin;
         x_plus_y_pj = xx_plus_yy_pj; x2 = xx2 ;
         return false;
@@ -477,7 +477,7 @@ bool ItvMapTesterT<ItvMapTV>::hasErasureAsIntersectionComputability(ItvMapTV& x,
     //xx.intersect(xxSect, erasureComplement);
     xx.intersect(xxSect, erasureComplement);
 
-    if(! xxResid.equal(xxSect) ) {
+    if(! is_element_equal(xxResid, xxSect) ) {
         x = xx; y = erasureDomain; xDom_minus_y = erasureComplement; 
         x_resid = xxResid; x_sect = xxSect;
         return false;
