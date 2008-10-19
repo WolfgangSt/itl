@@ -168,6 +168,13 @@ namespace itl
 		explicit split_interval_map(const value_type& value_pair): base_type()
 		{ add(value_pair); }
 
+		/// Assignment operator
+		template<class SubType>
+		interval_base_map& operator =
+			(const interval_base_map<SubType,DomainT,CodomainT,
+			                         Traits,Interval,Compare,Alloc>& src)
+		{ assign(src); return *this; }
+
 		/// Assignment from a base interval_map.
 		template<class SubType>
 		void assign(const interval_base_map<SubType,DomainT,CodomainT,
@@ -803,50 +810,6 @@ void split_interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
 
 
 //-----------------------------------------------------------------------------
-// intersection *=
-//-----------------------------------------------------------------------------
-/*
-template 
-<
-    class SubType,
-    class DomainT, class CodomainT, 
-    class Traits, template<class>class Interval, 
-    template<class>class Compare, template<class>class Alloc
->
-interval_base_map<SubType,DomainT,CodomainT,
-                  Traits,Interval,Compare,Alloc>& 
-operator *=
-(
-           interval_base_map<SubType,DomainT,CodomainT,
-                             Traits,Interval,Compare,Alloc>& object,
-    const split_interval_map<        DomainT,CodomainT,
-                             Traits,Interval,Compare,Alloc>& operand
-)
-{
-
-    typedef interval_base_map
-            <SubType,DomainT,CodomainT,
-             Traits,Interval,Compare,Alloc> object_map_type;
-    typedef split_interval_map
-            <DomainT,CodomainT,
-            Traits,Interval,Compare,Alloc> operand_map_type;
-
-    if(Traits::emits_neutrons)
-        return object += operand;
-    else if(Traits::absorbs_neutrons && !is_set<CodomainT>::value)
-        return object += operand;
-    else
-    {
-        object_map_type section;
-        object.map_intersection(section, operand);
-        object.swap(section);
-        return object;
-    }
-}
-*/
-
-
-//-----------------------------------------------------------------------------
 // type traits
 //-----------------------------------------------------------------------------
 
@@ -880,6 +843,7 @@ struct type_to_string<itl::split_interval_map<KeyT,DataT,Traits> >
                             + type_to_string<Traits>::apply() +">"; 
     }
 };
+
 
 } // namespace itl
 

@@ -722,36 +722,6 @@ public:
 		const IntervalMap<DomainT,CodomainT,Traits,Interval,Compare,Alloc>& sectant
 	)const;
 
-
-	/*CL? first_collision, collides
-	//-------------------------------------------------------------------------
-	const_iterator first_collision(const interval_type& x)const 
-	{ return _map.find(x); }
-
-	const_iterator first_collision(const value_type& x)const 
-	{ return _map.find(x.KEY_VALUE); }
-
-	template<class IntervalContainer>
-    const_iterator first_collision(const IntervalContainer& operand)const;
-
-	//-------------------------------------------------------------------------
-	template<class IntervalObject>
-	bool collides(const IntervalObject& operand)const 
-	{ return first_collision(operand) != end();	}
-	*/
-
-	//-------------------------------------------------------------------------
-	/*CL?
-	template<class IntervalObject>
-    bool is_disjoint(const IntervalObject& operand)const
-	{
-		type intersection;
-		add_intersection(intersection, operand);
-		return intersection.empty();
-	}
-	*/
-
-
 //@}
 
 //-----------------------------------------------------------------------------
@@ -1316,6 +1286,7 @@ inline bool is_protonic_equal(const interval_base_map<SubType,DomainT,CodomainT,
 
     return Set::lexicographical_equal(lhs0, rhs0);
 }
+
 
 template 
 <

@@ -173,7 +173,7 @@ public:
 
 	/// Copy constructor for base_type
 	template<class SubType>
-    interval_set
+    explicit interval_set
 		(const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
 	{ assign(src); }
 
@@ -183,6 +183,13 @@ public:
     /// Constructor for a single interval
 	explicit interval_set(const interval_type& itv): base_type() 
 	{ add(itv); }
+
+	/// Assignment operator
+	template<class SubType>
+    interval_base_set& operator =
+		(const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
+	{ assign(src); return *this; }
+
 
     /// Assignment from a base interval_set.
 	template<class SubType>
@@ -364,7 +371,7 @@ inline bool is_element_equal(const interval_set<DomainT,Interval,Compare,Alloc>&
 {
 	return &lhs == &rhs || Set::lexicographical_equal(lhs, rhs);
 }
-
+/*CL
 template 
 <
     class SubType, class DomainT, template<class>class Interval, 
@@ -381,7 +388,7 @@ is_element_equal
 	joined_type joined_rhs(rhs);
 	return Set::lexicographical_equal(lhs, joined_rhs);
 }
-
+*/
 
 template <class Type>
 struct is_set<itl::interval_set<Type> >

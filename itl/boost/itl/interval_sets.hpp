@@ -265,6 +265,33 @@ operator *=
 	return object *= interval_type(value);
 }
 
+//-----------------------------------------------------------------------------
+// is_element_equal
+//-----------------------------------------------------------------------------
+template 
+<
+	class SubType, class DomainT, template<class>class Interval, 
+	template<class>class Compare, template<class>class Alloc,
+	template
+	<	
+		class, template<class>class, 
+		template<class>class, template<class>class
+	>
+	class IntervalSet
+>
+bool is_element_equal
+(
+		  interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
+	const IntervalSet              <DomainT,Interval,Compare,Alloc>& operand
+)
+{
+	typedef interval_set<DomainT,Interval,Compare,Alloc> joined_type;
+	//JODO OPTI: faster compare
+	joined_type object_joined(object);
+	joined_type operand_joined(operand);
+
+    return Set::lexicographical_equal(object_joined, operand_joined);
+}
 
 //-----------------------------------------------------------------------------
 // is_disjoint
@@ -302,13 +329,58 @@ bool is_disjoint
 	operand_type::const_iterator it = common_lwb;
 	while(it != common_upb)
 	{
-		object.add_intersection(intersection, *it++);
+		object.add_intersection(intersection, operand_type::key_value(it++));
 		if(!intersection.empty())
 			return false;
 	}
 
 	return true; 
 }
+
+template 
+<
+	class SubType, class DomainT, class CodomainT,
+	class Traits, template<class>class Interval, 
+	template<class>class Compare, template<class>class Alloc,
+	template
+	<	
+		class, class, class, template<class>class, 
+		template<class>class, template<class>class
+	>
+	class IntervalMap
+>
+bool is_disjoint
+(
+		  interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
+	const IntervalMap<DomainT,CodomainT,
+	                  Traits,Interval,Compare,Alloc>& operand
+)
+{
+	typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> object_type;
+	typedef IntervalMap<DomainT,CodomainT,
+		                Traits,Interval,Compare,Alloc> operand_type;
+	object_type intersection;
+
+	if(operand.empty())
+		return true;
+
+	operand_type::const_iterator common_lwb;
+	operand_type::const_iterator common_upb;
+
+	if(!Set::common_range(common_lwb, common_upb, operand, object))
+		return true;
+
+	operand_type::const_iterator it = common_lwb;
+	while(it != common_upb)
+	{
+		object.add_intersection(intersection, operand_type::key_value(it++));
+		if(!intersection.empty())
+			return false;
+	}
+
+	return true; 
+}
+
 
 //-----------------------------------------------------------------------------
 // insert

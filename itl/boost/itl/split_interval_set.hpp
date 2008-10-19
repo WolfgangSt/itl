@@ -164,6 +164,12 @@ namespace itl
         /// Constructor for a single interval
         explicit split_interval_set(const domain_type& itv): base_type() { add(itv); }
 
+		/// Assignment operator
+		template<class SubType>
+		interval_base_set& operator =
+			(const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
+		{ assign(src); return *this; }
+
 		/// Assignment from a base interval_set.
 		template<class SubType>
 		void assign(const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
@@ -417,6 +423,7 @@ namespace itl
 		return Set::lexicographical_equal(lhs, rhs);
     }
 
+	
 	template 
 	<
 		class DomainT, template<class>class Interval, 
@@ -437,7 +444,7 @@ namespace itl
 		joined_type joined_rhs(rhs);
 		return Set::lexicographical_equal(joined_lhs, joined_rhs);
 	}
-
+	/*CL
 	template 
 	<
 		class SubType, class DomainT, template<class>class Interval, 
@@ -455,6 +462,7 @@ namespace itl
 		joined_type joined_rhs(rhs);
 		return Set::lexicographical_equal(joined_lhs, joined_rhs);
 	}
+	*/
 
     template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
     inline bool operator < (const split_interval_set<DomainT,Interval,Compare,Alloc>& lhs,

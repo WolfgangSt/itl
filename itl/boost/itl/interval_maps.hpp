@@ -267,20 +267,8 @@ operator *=
 }
 
 //-----------------------------------------------------------------------------
-// is_disjoint
+// is_element_equal
 //-----------------------------------------------------------------------------
-/*CL
-template<class IntervalContainer, class IntervalObject>
-bool is_disjoint(const IntervalContainer& container, 
-				 const IntervalObject& operand)
-{
-	IntervalContainer intersection;
-	container.add_intersection(intersection, operand);
-	return intersection.empty();
-}
-*/
-
-
 template 
 <
 	class SubType, class DomainT, class CodomainT,
@@ -293,6 +281,41 @@ template
 	>
 	class IntervalMap
 >
+bool is_element_equal
+(
+		  interval_base_map<SubType,DomainT,CodomainT,
+		                    Traits,Interval,Compare,Alloc>& object,
+	const IntervalMap<DomainT,CodomainT,
+	                  Traits,Interval,Compare,Alloc>& operand
+)
+{
+	typedef interval_map<DomainT,CodomainT,
+		                 Traits,Interval,Compare,Alloc> joined_type;
+	//JODO OPTI: faster compare
+	joined_type object_joined(object);
+	joined_type operand_joined(operand);
+
+    return Set::lexicographical_equal(object_joined, operand_joined);
+}
+
+//-----------------------------------------------------------------------------
+// is_disjoint
+//-----------------------------------------------------------------------------
+
+//--- IntervalMap -------------------------------------------------------------
+template 
+<
+	class SubType, class DomainT, class CodomainT,
+	class Traits, template<class>class Interval, 
+	template<class>class Compare, template<class>class Alloc,
+	template
+	<	
+		class, class, class, template<class>class, 
+		template<class>class, template<class>class
+	>
+	class IntervalMap
+>
+//JODO boost::enable_if
 bool is_disjoint
 (
 		  interval_base_map<SubType,DomainT,CodomainT,
@@ -319,7 +342,7 @@ bool is_disjoint
 	operand_type::const_iterator it = common_lwb;
 	while(it != common_upb)
 	{
-		object.add_intersection(intersection, *it++);
+		object.add_intersection(intersection, operand_type::key_value(it++));
 		if(!intersection.empty())
 			return false;
 	}
@@ -327,41 +350,51 @@ bool is_disjoint
 	return true; 
 }
 
-/*
+//--- IntervalSet -------------------------------------------------------------
 template 
 <
 	class SubType, class DomainT, class CodomainT,
 	class Traits, template<class>class Interval, 
 	template<class>class Compare, template<class>class Alloc,
-	class OperandT
+	template
+	<	
+		class, template<class>class, 
+		template<class>class, template<class>class
+	>
+	class IntervalSet
 >
+//JODO boost::enable_if
 bool is_disjoint
 (
 		  interval_base_map<SubType,DomainT,CodomainT,
 		                    Traits,Interval,Compare,Alloc>& object,
-	const OperandT& operand
+	const IntervalSet<DomainT,Interval,Compare,Alloc>& operand
 )
 {
-	return object.is_disjoint(operand);
-}
+	typedef interval_base_map<SubType,DomainT,CodomainT,
+		                      Traits,Interval,Compare,Alloc> object_type;
+	typedef IntervalSet<DomainT,Interval,Compare,Alloc> operand_type;
+	object_type intersection;
 
-template 
-<
-	class SubType, class DomainT, class CodomainT,
-	class Traits, template<class>class Interval, 
-	template<class>class Compare, template<class>class Alloc,
-	class OperandT
->
-bool is_disjoint
-(
-	const OperandT& operand
-		  interval_base_map<SubType,DomainT,CodomainT,
-		                    Traits,Interval,Compare,Alloc>& object,
-)
-{
-	return object.is_disjoint(operand);
+	if(operand.empty())
+		return true;
+
+	operand_type::const_iterator common_lwb;
+	operand_type::const_iterator common_upb;
+
+	if(!Set::common_range(common_lwb, common_upb, operand, object))
+		return true;
+
+	operand_type::const_iterator it = common_lwb;
+	while(it != common_upb)
+	{
+		object.add_intersection(intersection, operand_type::key_value(it++));
+		if(!intersection.empty())
+			return false;
+	}
+
+	return true; 
 }
-*/
 
 
 } // namespace itl

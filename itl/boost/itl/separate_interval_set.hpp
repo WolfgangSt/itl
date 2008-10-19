@@ -146,6 +146,11 @@ public:
     /// Constructor for a single interval
     explicit separate_interval_set(const interval_type& itv): base_type() { add(itv); }
 
+	/// Assignment operator
+	template<class SubType>
+	interval_base_set& operator =
+		(const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
+	{ assign(src); return *this; }
 
     /// Does the set contain the interval  <tt>x</tt>?
     bool contains_(const interval_type& x)const;
@@ -272,6 +277,7 @@ is_element_equal
 	return Set::lexicographical_equal(joined_lhs, joined_rhs);
 }
 
+/*CL
 template 
 <
     class SubType, class DomainT, template<class>class Interval, 
@@ -289,7 +295,7 @@ is_element_equal
 	joined_type joined_rhs(rhs);
 	return Set::lexicographical_equal(joined_lhs, joined_rhs);
 }
-
+*/
 
 
 template <class Type>

@@ -41,6 +41,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vc9_test_interval_map", "..
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vc9_test_split_interval_map", "..\..\test\test_split_interval_map\vc9_test_split_interval_map.vcproj", "{EE61B7EF-EC45-4165-8B49-FD5B7D2A9F9E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vc9_test_interval_map_mixed", "..\..\test\test_interval_map_mixed\vc9_test_interval_map_mixed.vcproj", "{EE61B7EF-EC45-4165-8B49-FD5B8D3A9F9F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -127,6 +129,10 @@ Global
 		{EE61B7EF-EC45-4165-8B49-FD5B7D2A9F9E}.Debug|Win32.Build.0 = Debug|Win32
 		{EE61B7EF-EC45-4165-8B49-FD5B7D2A9F9E}.Release|Win32.ActiveCfg = Release|Win32
 		{EE61B7EF-EC45-4165-8B49-FD5B7D2A9F9E}.Release|Win32.Build.0 = Release|Win32
+		{EE61B7EF-EC45-4165-8B49-FD5B8D3A9F9F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EE61B7EF-EC45-4165-8B49-FD5B8D3A9F9F}.Debug|Win32.Build.0 = Debug|Win32
+		{EE61B7EF-EC45-4165-8B49-FD5B8D3A9F9F}.Release|Win32.ActiveCfg = Release|Win32
+		{EE61B7EF-EC45-4165-8B49-FD5B8D3A9F9F}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
