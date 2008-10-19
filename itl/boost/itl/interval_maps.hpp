@@ -269,6 +269,18 @@ operator *=
 //-----------------------------------------------------------------------------
 // is_disjoint
 //-----------------------------------------------------------------------------
+/*CL
+template<class IntervalContainer, class IntervalObject>
+bool is_disjoint(const IntervalContainer& container, 
+				 const IntervalObject& operand)
+{
+	IntervalContainer intersection;
+	container.add_intersection(intersection, operand);
+	return intersection.empty();
+}
+*/
+
+
 template 
 <
 	class SubType, class DomainT, class CodomainT,
@@ -314,6 +326,42 @@ bool is_disjoint
 
 	return true; 
 }
+
+/*
+template 
+<
+	class SubType, class DomainT, class CodomainT,
+	class Traits, template<class>class Interval, 
+	template<class>class Compare, template<class>class Alloc,
+	class OperandT
+>
+bool is_disjoint
+(
+		  interval_base_map<SubType,DomainT,CodomainT,
+		                    Traits,Interval,Compare,Alloc>& object,
+	const OperandT& operand
+)
+{
+	return object.is_disjoint(operand);
+}
+
+template 
+<
+	class SubType, class DomainT, class CodomainT,
+	class Traits, template<class>class Interval, 
+	template<class>class Compare, template<class>class Alloc,
+	class OperandT
+>
+bool is_disjoint
+(
+	const OperandT& operand
+		  interval_base_map<SubType,DomainT,CodomainT,
+		                    Traits,Interval,Compare,Alloc>& object,
+)
+{
+	return object.is_disjoint(operand);
+}
+*/
 
 
 } // namespace itl

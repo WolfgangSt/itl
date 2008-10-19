@@ -255,11 +255,15 @@ namespace itl
             So \c *this becomes the intersection of \c *this and \c x2 */
         map& operator *= (const map& x2) 
         {
-            if(Traits::emits_neutrons)
-                 { Set::add(*this, x2); return *this; }
-            else if(Traits::absorbs_neutrons && !itl::is_set<DataT>::value)
-                 { Set::add(*this, x2); return *this; }
-            else { Map::intersect(*this, x2); return *this; }
+			//CL?
+            //if(Traits::emits_neutrons)
+            //     { Set::add(*this, x2); return *this; }
+            //else if(Traits::absorbs_neutrons && !itl::is_set<DataT>::value)
+            //     { Set::add(*this, x2); return *this; }
+            //else 
+			{ 
+				Map::intersect(*this, x2); return *this; 
+			}
         }
 
         /** Intersect set \c x2 and \c *this.

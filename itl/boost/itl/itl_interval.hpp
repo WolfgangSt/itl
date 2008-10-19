@@ -318,7 +318,7 @@ public:
     typedef unsigned char bound_types;
 
     /// Constants for intervalbounds
-    enum BoundTypesT {
+    enum BoundTypes {
         /// Both open: <tt>(x,y)</tt>
         OPEN                     = 0x0, 
         /// Left open right closed: <tt>(x,y]</tt>
@@ -409,7 +409,7 @@ public:
 	//{ return contained_in(x2) && x2.contained_in(*this); }
 
     ///  <tt>*this</tt> and <tt>x2</tt> are disjoint; their intersection is empty
-    bool disjoint_to(const interval& x2)const
+    bool is_disjoint(const interval& x2)const
     { return exclusive_less(x2) || x2.exclusive_less(*this); }
     /// There is no gap between <tt>*this</tt> and <tt>x2</tt> but they have no element in common
     bool touches(const interval& x2)const;

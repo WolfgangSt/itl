@@ -108,7 +108,7 @@ public:
     /// The type of the set of elements that is equivalent to the set of intervals
     typedef typename itl::set<DomainT,Compare,Alloc> element_set;
 
-    /// The corresponding atomized type representing this ineterval container of elements
+    /// The corresponding atomized type representing this interval container of elements
     typedef typename itl::set<DomainT,Compare,Alloc> atomized_type;
 
     /// Container type for the implementation 

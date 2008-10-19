@@ -241,7 +241,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_intersect_4_bicremental_types, T
 	interval<T> I0_3D = rightopen_interval<T>(v0,v3);
 	section = I3_7D; section *= I0_3D;
 	BOOST_CHECK_EQUAL( I0_3D.exclusive_less(I3_7D), true );
-	BOOST_CHECK_EQUAL( I0_3D.disjoint_to(I3_7D), true );
+	BOOST_CHECK_EQUAL( I0_3D.is_disjoint(I3_7D), true );
 	BOOST_CHECK_EQUAL( section.empty(), true );
 	BOOST_CHECK_EQUAL( section, interval<T>() );
 
@@ -268,6 +268,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_intersect_4_bicremental_types, T
 	interval<T> I7_9I = closed_interval<T>(v7,v9);
 	section = I3_7D; section *= I7_9I;
 	BOOST_CHECK_EQUAL( I3_7D.exclusive_less(I7_9I), true );
-	BOOST_CHECK_EQUAL( I3_7D.disjoint_to(I7_9I), true );
+	BOOST_CHECK_EQUAL( I3_7D.is_disjoint(I7_9I), true );
 	BOOST_CHECK_EQUAL( section.empty(), true );
 }

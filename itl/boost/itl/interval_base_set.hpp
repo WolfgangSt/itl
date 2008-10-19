@@ -152,7 +152,7 @@ public:
     /// The type of the set of elements that is equivalent to the set of intervals
     typedef typename itl::set<DomainT,Compare,Alloc> element_set;
 
-    /// The corresponding atomized type representing this ineterval container of elements
+    /// The corresponding atomized type representing this interval container of elements
     typedef typename itl::set<DomainT,Compare,Alloc> atomized_type;
 
     /// Container type for the implementation 
@@ -254,10 +254,10 @@ public:
     //{ return contained_in(x2) && x2.contained_in(*this); }
 
     ///  <tt>*this</tt> and <tt>x2</tt> are disjoint; their intersection is empty.
-    //CL bool disjoint_to(const interval_base_set& x2)const;
+    //CL bool is_disjoint(const interval_base_set& x2)const;
 
     ///  <tt>*this</tt> and <tt>x2</tt> are disjoint; their intersection is empty.
-    //CL bool disjoint_to(const interval_type& x2)const;
+    //CL bool is_disjoint(const interval_type& x2)const;
 //@}
 
 

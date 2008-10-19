@@ -108,6 +108,7 @@ namespace itl
                         result.template add<inplace_star>(*x2_); //MEMO template cast for gcc
                     else
                         result.template add<inplace_plus>(*x2_);
+                        //result.template add<inplace_identity>(*x2_);
                 }
                 x1_++;
             }
