@@ -492,7 +492,7 @@ void interval_map_operators_4_bicremental_types()
 	(section += left) *= right;
 	all -= section;
 	complement += all;
-	complement.erase(I3_5I);
+	//complement.erase(I3_5I);
 	complement.erase(section); //JODO URG BUG erase is buggy
 	BOOST_CHECK_EQUAL( is_disjoint(section, complement), true );
 

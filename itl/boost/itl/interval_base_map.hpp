@@ -668,6 +668,12 @@ public:
 		add_intersection(section, sectant);
 	}
 
+    void add_intersection(interval_base_map& section, const domain_type& x)const
+	{ add_intersection(section, interval_type(x)); }
+
+    void add_intersection(interval_base_map& section, const base_pair_type& x)const
+	{ add_intersection(section, value_type(interval_type(x.key), x.data)); }
+
     /// Intersection with an interval value pair
     /** Compute an intersection with the value pair \c x=(I,y). The intersection
         operation is progagated to the associated values: For common intervals
