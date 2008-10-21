@@ -241,6 +241,29 @@ operator -=
 
 
 //-----------------------------------------------------------------------------
+// insert  
+//-----------------------------------------------------------------------------
+template 
+<
+	class SubType, class DomainT, class CodomainT,
+	class Traits, template<class>class Interval, 
+	template<class>class Compare, template<class>class Alloc,
+	class OperandT
+>
+interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>& 
+insert
+(
+		  interval_base_map<SubType,DomainT,CodomainT,
+		                    Traits,Interval,Compare,Alloc>& object,
+	const OperandT& operand
+)
+{
+    const_FORALL(typename OperandT, elem_, operand) 
+        object.insert(*elem_); 
+	return object;
+}
+
+//-----------------------------------------------------------------------------
 // erase  
 //-----------------------------------------------------------------------------
 template 

@@ -329,8 +329,6 @@ public:
         CLOSED                   = 0x3,
     } ;
 
-    // public?
-    typedef std::pair<DataT, bound_types> BoundT;
 //@}
 
 
@@ -438,17 +436,6 @@ public:
     /** Extend <tt>*this</tt> to <tt>x2</tt> yielding an interval from the minimum of lower bounds
         to the maximum of upper bounds */
     interval& extend(const interval& x2);
-
-    /** scaleUp the unit of an Interval to a finer degree. To scale up from days to minutes
-        call scaleUp(Time::minutes_per_day, Time::maxMinutes_inDays).
-        The second parameter 'max' gives the maximum value of the old scale that can be
-        represented in the new finer scale.
-    */
-    interval& scale_up(DataT factor, DataT max);
-
-    /** scaleDown the unit of an Interval to a rougher degree. To scale down from minutes to days.
-        Call scaleDown(Time::minutes_per_day). */
-    interval& scale_down(DataT factor);
 //@}
 
 
@@ -565,6 +552,8 @@ public:
     void set_upb(DataT up) { _upb=up; }
 
 private:
+    // public?
+    typedef std::pair<DataT, bound_types> BoundT;
 
     void set_lwb_type(bound_types bt) 
     { _boundtypes = (unsigned char)((LEFT_OPEN & _boundtypes) | (RIGHT_OPEN & bt)); }
@@ -963,53 +952,6 @@ interval<DataT>& interval<DataT>::extend(const interval<DataT>& x2)
         set_upb(upb_max(x2));
         return *this; 
     } 
-}
-
-template <class DataT>
-interval<DataT>& interval<DataT>::scale_up(DataT factor, DataT max)
-{
-    if(empty())
-        return *this;
-
-    if(leftbound_open())
-        if(_lwb >= max-1)
-            _lwb = max*factor - 1;
-        else
-        {
-            _lwb *= factor;
-            _lwb += factor - 1;
-        }
-    else // leftbound_closed()
-        if(_lwb >= max)
-            _lwb = max * factor;
-        else 
-            _lwb *= factor;
-
-    if(rightbound_closed())
-        if(_upb >= max-1)
-            _upb = max*factor - 1;
-        else
-        {
-            _upb *= factor;
-            _upb += factor - 1;
-        }
-    else
-        if(_upb >= max)
-            _upb = max * factor;
-        else
-            _upb *= factor;
-
-    return *this;
-}
-
-template <class DataT>
-interval<DataT>& interval<DataT>::scale_down(DataT factor)
-{
-    if(empty())
-        return *this;
-    _lwb /= factor;
-    _upb /= factor;
-    return *this;
 }
 
 

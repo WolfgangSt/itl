@@ -976,25 +976,15 @@ void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>
 {
 	typedef IntervalMap<DomainT,CodomainT,
 		                Traits,Interval,Compare,Alloc> sectant_type;
-
-	//if(    Traits::emits_neutrons
-	//	|| Traits::absorbs_neutrons && !is_set<CodomainT>::value)
-	//{
-	//	intersection =  *this;
- //       intersection += sectant;
-	//}
-	//else
-	{
-		if(sectant.empty()) 
-			return;
-		typename sectant_type::const_iterator common_lwb;
-		typename sectant_type::const_iterator common_upb;
-		if(!Set::common_range(common_lwb, common_upb, sectant, *this))
-			return;
-		typename sectant_type::const_iterator it = common_lwb;
-		while(it != common_upb)
-			add_intersection(intersection, *it++);
-	}
+	if(sectant.empty()) 
+		return;
+	typename sectant_type::const_iterator common_lwb;
+	typename sectant_type::const_iterator common_upb;
+	if(!Set::common_range(common_lwb, common_upb, sectant, *this))
+		return;
+	typename sectant_type::const_iterator it = common_lwb;
+	while(it != common_upb)
+		add_intersection(intersection, *it++);
 }
 
 template 
@@ -1056,37 +1046,6 @@ void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>
     }
 }
 
-
-/*CL? first_collision, collides
-//-------------------------------------------------------------------------
-template<class IntervalContainer>
-interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>
-	::const_iterator 
-interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>
-	::first_collision(const IntervalContainer& operand)const
-{
-	typedef IntervalContainer operand_type;
-
-	if(operand.empty())
-		return end();
-
-	operand_type::const_iterator common_lwb;
-	operand_type::const_iterator common_upb;
-
-	if(!Set::common_range(common_lwb, common_upb, operand, *this))
-		return end();
-
-	operand_type::const_iterator it = common_lwb;
-	while(it != common_upb)
-	{
-		const_iterator clash_ = first_collision(operand_type::key_value(it));
-		if(clash_ != end())
-			return clash_;
-	}
-	// no collision was found
-	return end(); 
-}
-*/
 
 
 template 
@@ -1339,64 +1298,6 @@ inline bool operator <= (const interval_base_map<SubType,DomainT,CodomainT,Trait
 {
     return lhs < rhs || lhs == rhs;
 }
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-// op= op_assign inplace_ops
-//-----------------------------------------------------------------------------
-// insertion, erasure
-//-----------------------------------------------------------------------------
-template 
-<
-    class SubType,
-    class DomainT, class CodomainT, 
-    class Traits, template<class>class Interval, 
-    template<class>class Compare, template<class>class Alloc
->
-interval_base_map<SubType,DomainT,CodomainT,
-                  Traits,Interval,Compare,Alloc>& 
-insert
-(
-          interval_base_map<SubType,DomainT,CodomainT,
-                            Traits,Interval,Compare,Alloc>& object,
-    const interval_base_map<SubType,DomainT,CodomainT,
-                            Traits,Interval,Compare,Alloc>& insertee
-)
-{
-    typedef interval_base_map<SubType,DomainT,CodomainT,Traits,
-                              Interval,Compare,Alloc>    map_type;
-    const_FORALL(typename map_type, elem_, insertee) 
-        object.insert(*elem_); 
-
-    return object; 
-}
-
-
-template 
-<
-    class SubType,
-    class DomainT, class CodomainT, 
-    class Traits, template<class>class Interval, 
-    template<class>class Compare, template<class>class Alloc
->
-interval_base_map<SubType,DomainT,CodomainT,
-                  Traits,Interval,Compare,Alloc>& 
-erase
-(
-          interval_base_map<SubType,DomainT,CodomainT,
-                            Traits,Interval,Compare,Alloc>& object,
-    const interval_base_map<SubType,DomainT,CodomainT,
-                            Traits,Interval,Compare,Alloc>& erasee
-)
-{
-    typedef interval_base_map<SubType,DomainT,CodomainT,Traits,
-                              Interval,Compare,Alloc>    map_type;
-    const_FORALL(typename map_type, elem_, erasee) 
-        object.erase(*elem_); 
-
-    return object; 
-}
-
 
 //-----------------------------------------------------------------------------
 // min, max
