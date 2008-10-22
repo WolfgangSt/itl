@@ -39,7 +39,6 @@ class interval_base_map
 #include <itl/itl_map.hpp>
 #include <itl/interval_base_set.hpp>
 #include <itl/interval_sets.hpp>
-//CL devirt #include <itl/maps.hpp>
 #include <itl/itl_interval.hpp>
 
 

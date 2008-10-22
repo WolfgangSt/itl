@@ -523,7 +523,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_map_mixed_erase2_4_bicremental_t
 }
 
 
-BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_map_mixed_insert_4_bicremental_types, T, bicremental_types)
+BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_map_mixed_insert_erase_4_bicremental_types, T, bicremental_types)
 {         
 	typedef int U;
 	typedef interval_map<T,U>		IntervalMapT;
@@ -611,6 +611,106 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_map_mixed_insert_4_bicremental_t
 	erase(join_X, split_B);
 	BOOST_CHECK_EQUAL( is_element_equal(join_X, split_A), true );
 	erase(join_X, split_A);
+	BOOST_CHECK_EQUAL( is_element_equal(join_X, IntervalMapT()), true );
+}
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_map_mixed_insert_erase2_4_bicremental_types, T, bicremental_types)
+{         
+	typedef int U;
+	typedef interval_map<T,U>       IntervalMapT;
+	typedef split_interval_map<T,U> SplitIntervalMapT;
+	typedef interval_set<T>			IntervalSetT;
+	typedef split_interval_set<T>   SplitIntervalSetT;
+	U u1 = make<U>(1);
+
+	T v0 = make<T>(0);
+	T v2 = make<T>(2);
+	T v3 = make<T>(3);
+	T v4 = make<T>(4);
+	T v5 = make<T>(5);
+	T v6 = make<T>(6);
+	T v7 = make<T>(7);
+	T v8 = make<T>(8);
+	T v9 = make<T>(9);
+
+	interval<T> I0_4D = rightopen_interval(v0,v4);
+	interval<T> I2_6D = rightopen_interval(v2,v6);
+	interval<T> I3_6D = rightopen_interval(v3,v6);
+	interval<T> I5_7D = rightopen_interval(v5,v7);
+	interval<T> I7_8D = rightopen_interval(v7,v8);
+	interval<T> I8_9D = rightopen_interval(v8,v9);
+	interval<T> I8_9I =    closed_interval(v8,v9);
+
+	std::pair<interval<T>,U> I0_4D_1(I0_4D, u1);
+	std::pair<interval<T>,U> I2_6D_1(I2_6D, u1);
+	std::pair<interval<T>,U> I3_6D_1(I3_6D, u1);
+	std::pair<interval<T>,U> I5_7D_1(I5_7D, u1);
+	std::pair<interval<T>,U> I7_8D_1(I7_8D, u1);
+	std::pair<interval<T>,U> I8_9D_1(I8_9D, u1);
+	std::pair<interval<T>,U> I8_9I_1(I8_9I, u1);
+
+	SplitIntervalMapT split_A, split_B, split_all, split_X;
+	IntervalMapT      join_A,  join_B,  join_all,  join_X;
+	SplitIntervalSetT split_dA, split_dB;
+	IntervalSetT      join_dA,  join_dB;
+
+	split_all.insert(I0_4D_1).insert(I2_6D_1).insert(I5_7D_1).insert(I7_8D_1).insert(I8_9I_1);
+	split_A.insert(I0_4D_1).insert(I2_6D_1).insert(I5_7D_1);
+	split_B.insert(I7_8D_1).insert(I8_9I_1);
+
+	join_all.insert(I0_4D_1).insert(I2_6D_1).insert(I5_7D_1).insert(I7_8D_1).insert(I8_9I_1);
+	join_A.insert(I0_4D_1).insert(I2_6D_1).insert(I5_7D_1);
+	join_B.insert(I7_8D_1).insert(I8_9I_1);
+
+	split_A.domain(split_dA);
+	split_B.domain(split_dB);
+	join_A.domain(join_dA);
+	join_B.domain(join_dB);
+
+	//-------------------------------------------------------------------------
+	insert(split_X, split_A);
+	BOOST_CHECK_EQUAL( split_X, split_A );
+	insert(split_X, split_B);
+	BOOST_CHECK_EQUAL( split_X, split_all );
+
+	erase(split_X, split_dB);
+	BOOST_CHECK_EQUAL( split_X, split_A );
+	erase(split_X, split_dA);
+	BOOST_CHECK_EQUAL( split_X, SplitIntervalMapT() );
+
+	//-------------------------------------------------------------------------
+	insert(join_X, join_A);
+	BOOST_CHECK_EQUAL( join_X, join_A );
+	insert(join_X, join_B);
+	BOOST_CHECK_EQUAL( join_X, join_all );
+
+	erase(join_X, join_dB);
+	BOOST_CHECK_EQUAL( join_X, join_A );
+	erase(join_X, join_dA);
+	BOOST_CHECK_EQUAL( join_X, IntervalMapT() );
+
+	//-------------------------------------------------------------------------
+	split_X.clear();
+	insert(split_X, join_A);
+	BOOST_CHECK_EQUAL( is_element_equal(split_X, split_A), true );
+	insert(split_X, join_B);
+	BOOST_CHECK_EQUAL( is_element_equal(split_X, split_all), true );
+
+	erase(split_X, join_dB);
+	BOOST_CHECK_EQUAL( is_element_equal(split_X, split_A), true );
+	erase(split_X, join_dA);
+	BOOST_CHECK_EQUAL( is_element_equal(split_X, SplitIntervalMapT()), true );
+
+	//-------------------------------------------------------------------------
+	split_X.clear();
+	insert(join_X, split_A);
+	BOOST_CHECK_EQUAL( is_element_equal(join_X, split_A), true );
+	insert(join_X, split_B);
+	BOOST_CHECK_EQUAL( is_element_equal(join_X, join_all), true );
+
+	erase(join_X, split_dB);
+	BOOST_CHECK_EQUAL( is_element_equal(join_X, split_A), true );
+	erase(join_X, split_dA);
 	BOOST_CHECK_EQUAL( is_element_equal(join_X, IntervalMapT()), true );
 }
 
