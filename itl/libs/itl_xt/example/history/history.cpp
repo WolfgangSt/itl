@@ -121,7 +121,7 @@ public:
     // The domain type of intervals used by HospitalEpisodes is (toy)Time
     typedef Time ItvDomTD;
     // Type of the intervals used by HospitalEpisodes
-	typedef boost::itl::interval<Time> IntervalTD;
+    typedef boost::itl::interval<Time> IntervalTD;
 
 public:
     // Construct an episode from interval and value

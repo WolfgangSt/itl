@@ -12,19 +12,19 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 
 namespace boost{ namespace itl
 {
-	template <class Type> struct is_continuous;
+    template <class Type> struct is_continuous;
 
-	template<> struct is_continuous<float>       { enum {value = true}; };
-	template<> struct is_continuous<double>      { enum {value = true}; };
-	template<> struct is_continuous<std::string> { enum {value = true}; };
+    template<> struct is_continuous<float>       { enum {value = true}; };
+    template<> struct is_continuous<double>      { enum {value = true}; };
+    template<> struct is_continuous<std::string> { enum {value = true}; };
 
 #ifdef ITL_NEEDS_RATIONAL_IS_CONTINUOUS
 #define ITL_HAS_RATIONAL_IS_CONTINUOUS
-	template<class Integral> 
-	struct is_continuous<boost::rational<Integral> > { enum {value = true}; };
+    template<class Integral> 
+    struct is_continuous<boost::rational<Integral> > { enum {value = true}; };
 #endif
 
-	template <class Type> struct is_continuous{ enum {value = false}; };
+    template <class Type> struct is_continuous{ enum {value = false}; };
 
 }} // namespace boost itl
 

@@ -77,10 +77,10 @@ namespace boost{namespace itl
         return x -= boost::gregorian::date::duration_type::unit();
     }
 
-	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     boost::gregorian::date_duration operator ++(boost::gregorian::date_duration& x)
     {
-		return x += boost::gregorian::date::duration_type::unit();
+        return x += boost::gregorian::date::duration_type::unit();
     }
 
     boost::gregorian::date_duration operator --(boost::gregorian::date_duration& x)
@@ -88,20 +88,20 @@ namespace boost{namespace itl
         return x -= boost::gregorian::date::duration_type::unit();
     }
 
-	// ------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
 
-	//JODO testing of boost gregorian fails 
-	// boost::date_time::date_duration<duration_rep_traits> lacks op <<
-	//
-	//template<class CharType, class CharTraits, class duration_rep_traits>
-	//std::basic_ostream<CharType, CharTraits>& operator <<
-	//(std::basic_ostream<CharType, CharTraits> &stream, 
-	// boost::date_time::date_duration<duration_rep_traits> const& x)
-	//{
-	//	return stream << "[date_duration<duration_rep_traits>]";
-	//}
+    //JODO testing of boost gregorian fails 
+    // boost::date_time::date_duration<duration_rep_traits> lacks op <<
+    //
+    //template<class CharType, class CharTraits, class duration_rep_traits>
+    //std::basic_ostream<CharType, CharTraits>& operator <<
+    //(std::basic_ostream<CharType, CharTraits> &stream, 
+    // boost::date_time::date_duration<duration_rep_traits> const& x)
+    //{
+    //    return stream << "[date_duration<duration_rep_traits>]";
+    //}
 
-	//boost::date_time::date_duration<duration_rep_traits>
+    //boost::date_time::date_duration<duration_rep_traits>
 
 }} // namespace itl boost
 

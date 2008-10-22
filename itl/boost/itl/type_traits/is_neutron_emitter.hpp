@@ -10,9 +10,9 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 
 namespace boost{ namespace itl
 {
-	template <class Type> struct is_neutron_emitter;
+    template <class Type> struct is_neutron_emitter;
 
-	template <class Type> struct is_neutron_emitter{ enum {value = false}; };
+    template <class Type> struct is_neutron_emitter{ enum {value = false}; };
 
 }} // namespace boost itl
 

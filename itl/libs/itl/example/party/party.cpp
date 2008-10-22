@@ -20,33 +20,33 @@ using namespace boost::itl;
 /** Example party.cpp \file Party.cpp
 
     Party.cpp demonstrates the possibilities of an interval map (interval_map or
-	split_interval_map). An interval_map maps intervals to a given content. In
-	this case the content is a set of party guests represented by their name
-	strings.
+    split_interval_map). An interval_map maps intervals to a given content. In
+    this case the content is a set of party guests represented by their name
+    strings.
 
     As time goes by, groups of people join the party and leave later in the 
-	evening. So we add a time interval and a name set to the interval_map for 
-	the attendance of each group of people, that come together and leave 
-	together.
+    evening. So we add a time interval and a name set to the interval_map for 
+    the attendance of each group of people, that come together and leave 
+    together.
 
     On every overlap of intervals, the corresponding name sets are accumulated. 
-	At the points of overlap the intervals are split. The accumulation of content
-	on overlap of intervals is always done via an operator += that has to be 
-	implemented for the content parameter of the interval_map.
+    At the points of overlap the intervals are split. The accumulation of content
+    on overlap of intervals is always done via an operator += that has to be 
+    implemented for the content parameter of the interval_map.
 
     Finally the interval_map contains the history of attendance and all points
-	in time, where the group of party guests changed.
+    in time, where the group of party guests changed.
 
     Party.cpp demonstrates a principle that we call aggregate on overlap 
-	(aggovering;) On insertion a value associated to the interval is aggregated
-	(added) to those values in the interval_map that overlap with the inserted 
-	value.
+    (aggovering;) On insertion a value associated to the interval is aggregated
+    (added) to those values in the interval_map that overlap with the inserted 
+    value.
 
     There are two behavioral aspects to aggovering: a decompositional behavior
-	and a accumulative behavior.
+    and a accumulative behavior.
 
     The decompositional behavior splits up intervals on the time dimension of
-	the interval_map so that the intervals change whenever associated values
+    the interval_map so that the intervals change whenever associated values
     change.
 
     The accumulative behavior accumulates associated values on every overlap of

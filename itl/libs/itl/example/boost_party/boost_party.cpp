@@ -87,7 +87,7 @@ void boost_party()
     BoostPartyAttendenceHistoryT party;
 
     party.add( // add and element
-	  make_pair( 
+      make_pair( 
         rightopen_interval<ptime>(
           time_from_string("2008-05-20 19:30"), 
           time_from_string("2008-05-20 23:00")), 
@@ -112,7 +112,7 @@ void boost_party()
     // adding an element can be done wrt. simple aggregate functions
     // like e.g. min, max etc. in their 'inplace' or op= incarnation
     tallest_guest.add<inplace_max>(
-	  make_pair( 
+      make_pair( 
         rightopen_interval<ptime>(
           time_from_string("2008-05-20 19:30"), 
           time_from_string("2008-05-20 23:00")), 

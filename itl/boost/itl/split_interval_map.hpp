@@ -162,31 +162,31 @@ namespace boost{namespace itl
         /// Copy constructor
         split_interval_map(const split_interval_map& src): base_type(src) {}
 
-		explicit split_interval_map(base_pair_type& base_pair): base_type()
-		{ add(base_pair); }
+        explicit split_interval_map(base_pair_type& base_pair): base_type()
+        { add(base_pair); }
 
-		explicit split_interval_map(const value_type& value_pair): base_type()
-		{ add(value_pair); }
+        explicit split_interval_map(const value_type& value_pair): base_type()
+        { add(value_pair); }
 
-		/// Assignment operator
-		template<class SubType>
-		interval_base_map& operator =
-			(const interval_base_map<SubType,DomainT,CodomainT,
-			                         Traits,Interval,Compare,Alloc>& src)
-		{ assign(src); return *this; }
+        /// Assignment operator
+        template<class SubType>
+        interval_base_map& operator =
+            (const interval_base_map<SubType,DomainT,CodomainT,
+                                     Traits,Interval,Compare,Alloc>& src)
+        { assign(src); return *this; }
 
-		/// Assignment from a base interval_map.
-		template<class SubType>
-		void assign(const interval_base_map<SubType,DomainT,CodomainT,
-			                                Traits,Interval,Compare,Alloc>& src)
-		{
-			typedef interval_base_map<SubType,DomainT,CodomainT,
-				                      Traits,Interval,Compare,Alloc> base_map_type;
-			this->clear();
-			// Can be implemented via _map.insert: Interval joining not necessary.
-			const_FORALL(base_map_type, it, src) 
-				this->_map.insert(*it); 
-		}
+        /// Assignment from a base interval_map.
+        template<class SubType>
+        void assign(const interval_base_map<SubType,DomainT,CodomainT,
+                                            Traits,Interval,Compare,Alloc>& src)
+        {
+            typedef interval_base_map<SubType,DomainT,CodomainT,
+                                      Traits,Interval,Compare,Alloc> base_map_type;
+            this->clear();
+            // Can be implemented via _map.insert: Interval joining not necessary.
+            const_FORALL(base_map_type, it, src) 
+                this->_map.insert(*it); 
+        }
 
         bool contains_(const value_type& x)const;
 

@@ -14,17 +14,17 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 
 namespace boost{ namespace itl
 {
-	template <class Type> struct unon{ static Type value(); };
+    template <class Type> struct unon{ static Type value(); };
 
-	template<> inline float  unon<float>::value()  { return 1.0; }
+    template<> inline float  unon<float>::value()  { return 1.0; }
     template<> inline double unon<double>::value() { return 1.0; }
-	
-	// Smallest 'visible' string that is greater than than the empty string.
-	template <>	
-	inline std::string unon<std::string>::value(){ return std::string(" "); };
+    
+    // Smallest 'visible' string that is greater than than the empty string.
+    template <>    
+    inline std::string unon<std::string>::value(){ return std::string(" "); };
 
-	template <class Type> 
-	inline Type unon<Type>::value(){ return succ(neutron<Type>::value()); };
+    template <class Type> 
+    inline Type unon<Type>::value(){ return succ(neutron<Type>::value()); };
 
 }} // namespace boost itl
 

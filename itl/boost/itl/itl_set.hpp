@@ -358,26 +358,26 @@ namespace boost{namespace itl
 
     //-------------------------------------------------------------------------
     template <class Type>
-	struct is_set<itl::set<Type> >
-	{ enum{value = true}; };
+    struct is_set<itl::set<Type> >
+    { enum{value = true}; };
 
     template <class Type>
-	struct is_interval_container<itl::set<Type> >
-	{ enum{value = true}; };
+    struct is_interval_container<itl::set<Type> >
+    { enum{value = true}; };
 
     template <class Type>
-	struct is_interval_splitter<itl::set<Type> >
-	{ enum{value = false}; };
+    struct is_interval_splitter<itl::set<Type> >
+    { enum{value = false}; };
 
     template <class Type>
-	struct is_neutron_absorber<itl::set<Type> >
-	{ enum{value = false}; };
+    struct is_neutron_absorber<itl::set<Type> >
+    { enum{value = false}; };
 
     template <class Type>
-	struct is_neutron_emitter<itl::set<Type> >
-	{ enum{value = false}; };
+    struct is_neutron_emitter<itl::set<Type> >
+    { enum{value = false}; };
 
-	template <class Type>
+    template <class Type>
     struct type_to_string<itl::set<Type> >
     {
         static std::string apply()

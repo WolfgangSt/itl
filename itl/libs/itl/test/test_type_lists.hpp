@@ -18,45 +18,45 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 #include <boost/itl/itl_interval.hpp>
 
 typedef ::boost::mpl::list<
-	unsigned short, unsigned int, unsigned long  
-	,short, int, long
-	,float, double
-	,boost::rational<int>
-	,boost::posix_time::ptime
-//	,boost::gregorian::date
+    unsigned short, unsigned int, unsigned long  
+    ,short, int, long
+    ,float, double
+    ,boost::rational<int>
+    ,boost::posix_time::ptime
+//    ,boost::gregorian::date
 > bicremental_types;
 
 typedef ::boost::mpl::list<
-	float, double
-	,boost::rational<int>
+    float, double
+    ,boost::rational<int>
 > bicremental_continuous_types;
 
 typedef ::boost::mpl::list<
-	unsigned short, unsigned int, unsigned long  
-	,short, int, long
+    unsigned short, unsigned int, unsigned long  
+    ,short, int, long
 > integral_types;
 
 typedef ::boost::mpl::list<
-	unsigned short, unsigned int, unsigned long  
-	,short, int, long
-	,boost::posix_time::ptime
-//	,boost::gregorian::date
+    unsigned short, unsigned int, unsigned long  
+    ,short, int, long
+    ,boost::posix_time::ptime
+//    ,boost::gregorian::date
 > discrete_types;
 
 typedef ::boost::mpl::list<
-	float, double
-	,boost::rational<int>
-	,std::string
+    float, double
+    ,boost::rational<int>
+    ,std::string
 > continuous_types;
 
 typedef ::boost::mpl::list<
-	unsigned short, unsigned int, unsigned long  
-	,short, int, long
-	,float, double
-	,boost::rational<int>
-	,std::string
-	,boost::posix_time::ptime
-//	,boost::gregorian::date
+    unsigned short, unsigned int, unsigned long  
+    ,short, int, long
+    ,float, double
+    ,boost::rational<int>
+    ,std::string
+    ,boost::posix_time::ptime
+//    ,boost::gregorian::date
 > ordered_types;
 
 #endif 

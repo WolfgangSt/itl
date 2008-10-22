@@ -10,9 +10,9 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 
 namespace boost{ namespace itl
 {
-	template <class Type> struct is_interval_container;
+    template <class Type> struct is_interval_container;
 
-	template <class Type> struct is_interval_container{ enum {value = false}; };
+    template <class Type> struct is_interval_container{ enum {value = false}; };
 
 }} // namespace boost itl
 

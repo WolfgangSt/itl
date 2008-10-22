@@ -171,36 +171,36 @@ public:
     /// Copy constructor
     interval_set(const interval_set& src): base_type(src) {}
 
-	/// Copy constructor for base_type
-	template<class SubType>
+    /// Copy constructor for base_type
+    template<class SubType>
     explicit interval_set
-		(const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
-	{ assign(src); }
+        (const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
+    { assign(src); }
 
     /// Constructor for a single element
-	explicit interval_set(const domain_type& value): base_type() 
-	{ add(interval_type(value)); }
+    explicit interval_set(const domain_type& value): base_type() 
+    { add(interval_type(value)); }
     /// Constructor for a single interval
-	explicit interval_set(const interval_type& itv): base_type() 
-	{ add(itv); }
+    explicit interval_set(const interval_type& itv): base_type() 
+    { add(itv); }
 
-	/// Assignment operator
-	template<class SubType>
+    /// Assignment operator
+    template<class SubType>
     interval_base_set& operator =
-		(const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
-	{ assign(src); return *this; }
+        (const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
+    { assign(src); return *this; }
 
 
     /// Assignment from a base interval_set.
-	template<class SubType>
-	void assign(const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
-	{
-		typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> base_set_type;
-		this->clear();
-		// Has to be implemented via add. there might be touching borders to be joined
-		const_FORALL(base_set_type, it, src) 
-			this->add(*it);
-	}
+    template<class SubType>
+    void assign(const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
+    {
+        typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> base_set_type;
+        this->clear();
+        // Has to be implemented via add. there might be touching borders to be joined
+        const_FORALL(base_set_type, it, src) 
+            this->add(*it);
+    }
 
     /// Does the set contain the interval  <tt>x</tt>?
     bool contains_(const interval_type& x)const;
@@ -369,7 +369,7 @@ template <typename DomainT, template<class>class Interval,
 inline bool is_element_equal(const interval_set<DomainT,Interval,Compare,Alloc>& lhs,
                              const interval_set<DomainT,Interval,Compare,Alloc>& rhs)
 {
-	return &lhs == &rhs || Set::lexicographical_equal(lhs, rhs);
+    return &lhs == &rhs || Set::lexicographical_equal(lhs, rhs);
 }
 /*CL
 template 
@@ -384,9 +384,9 @@ is_element_equal
     const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& rhs
 )
 {
-	typedef itl::interval_set<DomainT,Interval,Compare,Alloc> joined_type;
-	joined_type joined_rhs(rhs);
-	return Set::lexicographical_equal(lhs, joined_rhs);
+    typedef itl::interval_set<DomainT,Interval,Compare,Alloc> joined_type;
+    joined_type joined_rhs(rhs);
+    return Set::lexicographical_equal(lhs, joined_rhs);
 }
 */
 

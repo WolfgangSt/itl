@@ -51,14 +51,14 @@ namespace boost{namespace itl
 template<class DomainT, class CodomainT>
 struct base_pair
 {
-	DomainT   key;
-	CodomainT data;
+    DomainT   key;
+    CodomainT data;
 
-	base_pair(const DomainT& key_value, const CodomainT& data_value)
-		:key(key_value), data(data_value){}
+    base_pair(const DomainT& key_value, const CodomainT& data_value)
+        :key(key_value), data(data_value){}
 
-	base_pair(const std::pair<DomainT,CodomainT>& std_pair)
-		:key(std_pair.first), data(std_pair.second){}
+    base_pair(const std::pair<DomainT,CodomainT>& std_pair)
+        :key(std_pair.first), data(std_pair.second){}
 };
 
 
@@ -171,16 +171,16 @@ public:
     typedef CodomainT codomain_type;
     /// basic value type
     typedef std::pair<domain_type,codomain_type> base_value_type;
-	/// Auxiliary type to help the compiler resolve ambiguities when using std::make_pair
+    /// Auxiliary type to help the compiler resolve ambiguities when using std::make_pair
     typedef base_pair<domain_type,codomain_type> base_pair_type;
     /// The interval type of the map
     typedef Interval<DomainT> interval_type;
 
-	/// The difference type of an interval which is sometimes different form the domain_type
-	typedef typename interval_type::difference_type difference_type;
+    /// The difference type of an interval which is sometimes different form the domain_type
+    typedef typename interval_type::difference_type difference_type;
 
-	/// The size type of an interval which is mostly std::size_t
-	typedef typename interval_type::size_type size_type;
+    /// The size type of an interval which is mostly std::size_t
+    typedef typename interval_type::size_type size_type;
 
     /// Comparison functor for domain values
     typedef Compare<DomainT> domain_compare;
@@ -209,7 +209,7 @@ public:
     typedef typename ImplMapT::iterator iterator;
     /// const_iterator for iteration over intervals
     typedef typename ImplMapT::const_iterator const_iterator;
-	/// iterator for reverse iteration over intervals
+    /// iterator for reverse iteration over intervals
     typedef typename ImplMapT::reverse_iterator reverse_iterator;
     /// const_iterator for iteration over intervals
     typedef typename ImplMapT::const_reverse_iterator const_reverse_iterator;
@@ -237,15 +237,15 @@ public:
     /// Copy constructor
     interval_base_map(const interval_base_map& src): _map(src._map) {}
 
-	/// Assignment operator
+    /// Assignment operator
     interval_base_map& operator = (const interval_base_map& src) 
-	{ 
-		if(this==&src) 
-			return *this;
+    { 
+        if(this==&src) 
+            return *this;
 
-		that()->assign(src);
-		return *this; 
-	}
+        that()->assign(src);
+        return *this; 
+    }
 
     /// swap the content of containers
     void swap(interval_base_map& x) { _map.swap(x._map); }
@@ -269,14 +269,14 @@ public:
 
     /// Does the map contain the element pair <tt>x = (key_element,value)</tt>?
     bool contains(const base_pair_type& x)const
-	{ return that()->contains_(value_type(interval_type(x.key), x.data));	}
+    { return that()->contains_(value_type(interval_type(x.key), x.data));    }
 
-	bool contains(const value_type& x)const
-	{ return that()->contains_(x); }
+    bool contains(const value_type& x)const
+    { return that()->contains_(x); }
 
-	/** Does <tt>*this</tt> container contain <tt>sub</tt>? */
-	bool contains(const interval_base_map& sub)const 
-	{ return sub.contained_in(*this); }
+    /** Does <tt>*this</tt> container contain <tt>sub</tt>? */
+    bool contains(const interval_base_map& sub)const 
+    { return sub.contained_in(*this); }
 
 //@}
 
@@ -285,16 +285,16 @@ public:
     DomainT upper()const { return (*(_map.rbegin())).KEY_VALUE.upper(); }
 
     iterator lower_bound(const key_type& interval)
-	{ return _map.lower_bound(interval); }
+    { return _map.lower_bound(interval); }
 
-	iterator upper_bound(const key_type& interval)
-	{ return _map.upper_bound(interval); }
+    iterator upper_bound(const key_type& interval)
+    { return _map.upper_bound(interval); }
 
-	const_iterator lower_bound(const key_type& interval)const
-	{ return _map.lower_bound(interval); }
+    const_iterator lower_bound(const key_type& interval)const
+    { return _map.lower_bound(interval); }
 
-	const_iterator upper_bound(const key_type& interval)const
-	{ return _map.upper_bound(interval); }
+    const_iterator upper_bound(const key_type& interval)const
+    { return _map.upper_bound(interval); }
 
 
     // Functions that are common with interval_base_set --------------------------------
@@ -309,21 +309,21 @@ public:
     size_t iterative_size()const { return _map.size(); }
 
     /// Gives the domain of the map as interval set
-	template 
-	<
-		template
-		<	
-			class DomainT, template<class>class Interval, 
-			template<class>class Compare, template<class>class Alloc
-		>
-		class IntervalSet
-	>
+    template 
+    <
+        template
+        <    
+            class DomainT, template<class>class Interval, 
+            template<class>class Compare, template<class>class Alloc
+        >
+        class IntervalSet
+    >
     void domain(IntervalSet<DomainT,Interval,Compare,Alloc>& dom)const 
     { 
-		dom.clear(); 
-		const_FOR_IMPLMAP(it) 
-			dom += (*it).KEY_VALUE; 
-	} 
+        dom.clear(); 
+        const_FOR_IMPLMAP(it) 
+            dom += (*it).KEY_VALUE; 
+    } 
 //@}
     
 
@@ -359,11 +359,11 @@ public:
         If Combinator implements max, associated values will contain maximal values and so on.
     */
     template<template<class>class Combinator>
-	SubType& add(const base_pair_type& x) 
+    SubType& add(const base_pair_type& x) 
     { 
-		that()->add_<Combinator>( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); 
-		return *that();
-	}
+        that()->add_<Combinator>( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); 
+        return *that();
+    }
 
     /// Addition of a value pair using a Combinator operation.
     /** Addition of a value pair <tt>x := pair(I,y)</tt> where <tt>base_value_type:=pair<DomainT,CodomainT></tt>
@@ -383,7 +383,7 @@ public:
     */
     template<template<class>class Combinator>
     SubType& add(const value_type& x) 
-	{ that()->add_<Combinator>(x); return *that(); };
+    { that()->add_<Combinator>(x); return *that(); };
 
     /// Addition of a base value pair.
     /** Addition of a base value pair <tt>x := pair(k,y)</tt> where <tt>base_value_type:=pair<DomainT,CodomainT></tt>
@@ -415,7 +415,7 @@ public:
         <tt>m0=m; m.add(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
     */
     SubType& add(const value_type& x) 
-	{ that()->add_<inplace_plus>(x); return *that(); }
+    { that()->add_<inplace_plus>(x); return *that(); }
 
     /// Addition of a base value pair.
     /** Addition of an value pair <tt>x=(I,y)</tt>
@@ -434,7 +434,7 @@ public:
         Insertion and subtraction are reversible as follows:
         <tt>m0=m; m += x; m -= x;</tt> implies <tt>m==m0 </tt>         
     */
-	//CL refa
+    //CL refa
     //interval_base_map& operator += (const value_type& x) 
     //{ that()->add_(x); return *this; }
 
@@ -487,11 +487,11 @@ public:
         Insertion and subtraction are reversible as follows:
         <tt>m0=m; m.add(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
     */
-	SubType& subtract(const base_pair_type& x)
+    SubType& subtract(const base_pair_type& x)
     { 
-		that()->subtract_( value_type(interval_type(x.key), x.data) ); 
-		return *that();
-	}
+        that()->subtract_( value_type(interval_type(x.key), x.data) ); 
+        return *that();
+    }
 
 
     /// Subtraction of an interval value pair
@@ -514,8 +514,8 @@ public:
         else 
             that()->subtract_<inplace_minus>(x); 
     
-		return *that();
-	}
+        return *that();
+    }
 
     /// Subtraction of an interval value pair
     /** Subtraction of an interval value pair  <tt>x=(I,y)</tt>.
@@ -529,9 +529,9 @@ public:
         also be removed from the map, if the Traits include the property 
         neutron_absorber. 
     */
-	//CL refa
+    //CL refa
     //SubType& operator -= (const value_type& x) 
-	//{ that()->subtract_(x); return *that(); }
+    //{ that()->subtract_(x); return *that(); }
 
 //@}
 
@@ -550,9 +550,9 @@ public:
     */
     SubType& insert(const base_pair_type& x) 
     { 
-		that()->insert_( value_type(interval_type(x.key), x.data) ); 
-		return *that();
-	}
+        that()->insert_( value_type(interval_type(x.key), x.data) ); 
+        return *that();
+    }
 
     /// Insertion of an interval value pair
     /** Insertion of an interval value pair <tt>x=(I,y)</tt>
@@ -566,7 +566,7 @@ public:
         \c insert(x) is equivalent to \c add<inplace_identity>(x)
     */
     SubType& insert(const value_type& x)
-	{ that()->insert_(x); return *that(); }
+    { that()->insert_(x); return *that(); }
 
     /// Erase a base value pair from the map
     /** Erase a base value pair <tt>x=(k,y)</tt>.
@@ -575,9 +575,9 @@ public:
     */
     SubType& erase(const base_pair_type& x) 
     { 
-		that()->erase_(value_type(interval_type(x.key), x.data));
-		return *that();
-	}
+        that()->erase_(value_type(interval_type(x.key), x.data));
+        return *that();
+    }
 
     /// Erase a interval value pair from the map
     /** Erase a interval value pair <tt>x=(I,y)</tt>.
@@ -589,7 +589,7 @@ public:
         \c erase(x) is equivalent to \c subtract<inplace_erasure>(x)
     */
     SubType& erase(const value_type& x)
-	{ that()->erase_(x); return *that(); }
+    { that()->erase_(x); return *that(); }
 
 
     /// Erase an associated value for a key
@@ -598,7 +598,7 @@ public:
         Any value \c y that is stored for key \c k will be erased.
     */
     SubType& erase(const DomainT& x) 
-	{ erase(interval_type(x)); return *that(); }
+    { erase(interval_type(x)); return *that(); }
 
     /// Erase all associated values for an interval
     /** Erase all associated values within the range of the interval <tt>x</tt>
@@ -618,8 +618,8 @@ public:
         for(typename interval_base_set_type::const_iterator x_ = x.begin(); x_ != x.end(); ++x_)
             erase(*x_);
     
-		return *that();
-	}
+        return *that();
+    }
 
     /// Erase an interval map from this interval map
     /** Erase an entire interval map <tt>x</tt> from the map.
@@ -660,18 +660,18 @@ public:
     */
     //CL void intersect(interval_base_map& section, const interval_type& x)const;
 
-	template<class SectantT>
-	void intersect(interval_base_map& section, const SectantT& sectant)const
-	{
-		section.clear();
-		add_intersection(section, sectant);
-	}
+    template<class SectantT>
+    void intersect(interval_base_map& section, const SectantT& sectant)const
+    {
+        section.clear();
+        add_intersection(section, sectant);
+    }
 
     void add_intersection(interval_base_map& section, const domain_type& x)const
-	{ add_intersection(section, interval_type(x)); }
+    { add_intersection(section, interval_type(x)); }
 
     void add_intersection(interval_base_map& section, const base_pair_type& x)const
-	{ add_intersection(section, value_type(interval_type(x.key), x.data)); }
+    { add_intersection(section, value_type(interval_type(x.key), x.data)); }
 
     /// Intersection with an interval value pair
     /** Compute an intersection with the value pair \c x=(I,y). The intersection
@@ -684,48 +684,48 @@ public:
     void add_intersection(interval_base_map& section, const interval_type& x)const;
 
     template
-	<
-		template
-		<	
-			class DomainT, template<class>class Interval, 
-			template<class>class Compare, template<class>class Alloc
-		>
-		class IntervalSet
-	>
+    <
+        template
+        <    
+            class DomainT, template<class>class Interval, 
+            template<class>class Compare, template<class>class Alloc
+        >
+        class IntervalSet
+    >
     void add_intersection
-	(
-			  interval_base_map& section, 
-		const IntervalSet<DomainT,Interval,Compare,Alloc>& sectant
-	)const
-	{
-		typedef IntervalSet<DomainT,Interval,Compare,Alloc> set_type;
-		if(sectant.empty()) return;
+    (
+              interval_base_map& section, 
+        const IntervalSet<DomainT,Interval,Compare,Alloc>& sectant
+    )const
+    {
+        typedef IntervalSet<DomainT,Interval,Compare,Alloc> set_type;
+        if(sectant.empty()) return;
 
-		// THINK JODO optimize using the ordering: if intervalls are beyond borders we can terminate
-		typename set_type::const_iterator it = sectant.begin();
-		while(it != sectant.end())
-			add_intersection(section, *it++);
-	}
+        // THINK JODO optimize using the ordering: if intervalls are beyond borders we can terminate
+        typename set_type::const_iterator it = sectant.begin();
+        while(it != sectant.end())
+            add_intersection(section, *it++);
+    }
 
 
     /// Intersection with an interval map
     /** Compute the intersection of <tt>*this</tt> and the interval map <tt>x</tt>;
         assign result to the interval map <tt>section</tt>.    */
     template
-	<
-		template
-		<	
-			class DomainT, class CodommainT, 
-			class Traits, template<class>class Interval, 
-			template<class>class Compare, template<class>class Alloc
-		>
-		class IntervalMap
-	>
+    <
+        template
+        <    
+            class DomainT, class CodommainT, 
+            class Traits, template<class>class Interval, 
+            template<class>class Compare, template<class>class Alloc
+        >
+        class IntervalMap
+    >
     void add_intersection
-	(
-		interval_base_map& intersection,
-		const IntervalMap<DomainT,CodomainT,Traits,Interval,Compare,Alloc>& sectant
-	)const;
+    (
+        interval_base_map& intersection,
+        const IntervalMap<DomainT,CodomainT,Traits,Interval,Compare,Alloc>& sectant
+    )const;
 
 //@}
 
@@ -844,10 +844,10 @@ public:
         Infinite for continuous domain datatyps    */
     size_type cardinality()const;
 
-	/// An interval set's size is it's cardinality
-	size_type size()const { return cardinality(); }
+    /// An interval set's size is it's cardinality
+    size_type size()const { return cardinality(); }
 
-	difference_type length()const;
+    difference_type length()const;
 
 
     /** Sum of associated elements of the map
@@ -897,38 +897,38 @@ protected:
 template 
 <
     class SubType, class DomainT, class CodomainT, class Traits, 
-	template<class>class Interval, template<class>class Compare, 
-	template<class>class Alloc
+    template<class>class Interval, template<class>class Compare, 
+    template<class>class Alloc
 >
 typename interval_base_map<SubType,DomainT,CodomainT,Traits,
                            Interval,Compare,Alloc>::size_type 
 interval_base_map<SubType,DomainT,CodomainT,Traits,
                   Interval,Compare,Alloc>::cardinality()const
 {
-	using namespace boost::mpl;
-	return if_<
-				bool_<is_continuous<DomainT>::value>,
-				continuous_interval_container,
-				discrete_interval_container
-			  >
-			  ::type::cardinality(*this);
+    using namespace boost::mpl;
+    return if_<
+                bool_<is_continuous<DomainT>::value>,
+                continuous_interval_container,
+                discrete_interval_container
+              >
+              ::type::cardinality(*this);
 }
 
 template 
 <
     class SubType, class DomainT, class CodomainT, class Traits, 
-	template<class>class Interval, template<class>class Compare, 
-	template<class>class Alloc
+    template<class>class Interval, template<class>class Compare, 
+    template<class>class Alloc
 >
 typename interval_base_map<SubType,DomainT,CodomainT,Traits,
                            Interval,Compare,Alloc>::difference_type 
 interval_base_map<SubType,DomainT,CodomainT,Traits,
                   Interval,Compare,Alloc>::length()const
 {
-	difference_type length = neutron<difference_type>::value();
+    difference_type length = neutron<difference_type>::value();
     const_FOR_IMPLMAP(it)
-		length += (*it).KEY_VALUE.length();
-	return length;
+        length += (*it).KEY_VALUE.length();
+    return length;
 }
 
 
@@ -953,37 +953,37 @@ template
 <
     class SubType,
     class DomainT, class CodomainT, 
-	class Traits, template<class>class Interval, 
-	template<class>class Compare, template<class>class Alloc
+    class Traits, template<class>class Interval, 
+    template<class>class Compare, template<class>class Alloc
 >
-	template
-	<
-		template
-		<	
-			class DomainT, class CodommainT, 
-			class Traits, template<class>class Interval, 
-			template<class>class Compare, template<class>class Alloc
-		>
-		class IntervalMap
-	>
+    template
+    <
+        template
+        <    
+            class DomainT, class CodommainT, 
+            class Traits, template<class>class Interval, 
+            template<class>class Compare, template<class>class Alloc
+        >
+        class IntervalMap
+    >
 void interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>
-	::add_intersection
+    ::add_intersection
 (
-	interval_base_map& intersection,
-	const IntervalMap<DomainT,CodomainT,Traits,Interval,Compare,Alloc>& sectant
+    interval_base_map& intersection,
+    const IntervalMap<DomainT,CodomainT,Traits,Interval,Compare,Alloc>& sectant
 )const
 {
-	typedef IntervalMap<DomainT,CodomainT,
-		                Traits,Interval,Compare,Alloc> sectant_type;
-	if(sectant.empty()) 
-		return;
-	typename sectant_type::const_iterator common_lwb;
-	typename sectant_type::const_iterator common_upb;
-	if(!Set::common_range(common_lwb, common_upb, sectant, *this))
-		return;
-	typename sectant_type::const_iterator it = common_lwb;
-	while(it != common_upb)
-		add_intersection(intersection, *it++);
+    typedef IntervalMap<DomainT,CodomainT,
+                        Traits,Interval,Compare,Alloc> sectant_type;
+    if(sectant.empty()) 
+        return;
+    typename sectant_type::const_iterator common_lwb;
+    typename sectant_type::const_iterator common_upb;
+    if(!Set::common_range(common_lwb, common_upb, sectant, *this))
+        return;
+    typename sectant_type::const_iterator it = common_lwb;
+    while(it != common_upb)
+        add_intersection(intersection, *it++);
 }
 
 template 
@@ -1190,7 +1190,7 @@ SubType& interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,All
     that()->add_(value_type(leftResid,  leftResid_ContVal));
     that()->add_(value_type(rightResid, rightResid_ContVal));
 
-	return *that();
+    return *that();
 }
 
 
@@ -1201,12 +1201,12 @@ template
 >
 SubType& 
 interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>
-	::erase(const interval_base_map& erasure)
+    ::erase(const interval_base_map& erasure)
 {
     const_FORALL(typename interval_base_map, value_pair_, erasure)
         that()->erase_(*value_pair_);
 
-	return *that();
+    return *that();
 }
 
 //-----------------------------------------------------------------------------
@@ -1355,20 +1355,20 @@ max_assign
 
 template<class CharType, class CharTraits, 
     class SubType, class DomainT, class CodomainT, class Traits, 
-	template<class>class Interval, template<class>class Compare, 
-	template<class>class Alloc>
+    template<class>class Interval, template<class>class Compare, 
+    template<class>class Alloc>
 std::basic_ostream<CharType, CharTraits>& operator <<
   (std::basic_ostream<CharType, CharTraits>& stream, 
    const interval_base_map<SubType,DomainT,CodomainT,Traits,
                            Interval,Compare,Alloc>& object)
 {
-	typedef interval_base_map<SubType,DomainT,CodomainT,Traits,
-		                      Interval,Compare,Alloc> IntervalMapT;
-	stream << "{";
-	const_FORALL(typename IntervalMapT, it, object)
-		stream << "(" << (*it).KEY_VALUE << "->" << (*it).CONT_VALUE << ")";
+    typedef interval_base_map<SubType,DomainT,CodomainT,Traits,
+                              Interval,Compare,Alloc> IntervalMapT;
+    stream << "{";
+    const_FORALL(typename IntervalMapT, it, object)
+        stream << "(" << (*it).KEY_VALUE << "->" << (*it).CONT_VALUE << ")";
 
-	return stream << "}";
+    return stream << "}";
 }
 
 }} // namespace itl boost

@@ -91,7 +91,7 @@ template <class TimeT, class TypeDomain>
 class episode_product : public boost::itl::map<typename TypeDomain::DomainET, episode_set<TimeT,TypeDomain> >
 {
 public:
-	typedef boost::itl::map<typename TypeDomain::DomainET, episode_set<TimeT,TypeDomain> > base_type;
+    typedef boost::itl::map<typename TypeDomain::DomainET, episode_set<TimeT,TypeDomain> > base_type;
     typedef    typename base_type::value_type value_type;
     typedef    typename base_type::data_type data_type;
     typedef    typename base_type::data_type EpisodeSetTD;

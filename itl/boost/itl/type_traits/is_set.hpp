@@ -10,9 +10,9 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 
 namespace boost{ namespace itl
 {
-	template <class Type> struct is_set;
+    template <class Type> struct is_set;
 
-	template <class Type> struct is_set{ enum {value = false}; };
+    template <class Type> struct is_set{ enum {value = false}; };
 
 }} // namespace boost itl
 

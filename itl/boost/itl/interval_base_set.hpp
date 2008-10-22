@@ -114,7 +114,7 @@ class interval_base_set
 public:
 
     //A: Type definitions for the template class 
-	typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> type;
+    typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> type;
 
     /// The designated \e derived or \e sub_type of this base class
     typedef SubType sub_type;
@@ -127,11 +127,11 @@ public:
     /// The interval type of the set
     typedef Interval<DomainT> interval_type;
 
-	/// The difference type of an interval which is sometimes different form the data_type
-	typedef typename interval_type::difference_type difference_type;
+    /// The difference type of an interval which is sometimes different form the data_type
+    typedef typename interval_type::difference_type difference_type;
 
-	/// The size type of an interval which is mostly std::size_t
-	typedef typename interval_type::size_type size_type;
+    /// The size type of an interval which is mostly std::size_t
+    typedef typename interval_type::size_type size_type;
 
 
     /// Comparison functor for domain values
@@ -179,17 +179,17 @@ public:
     interval_base_set(){}
     /// Copy constructor
     interval_base_set(const interval_base_set& src): _set() 
-	{ that()->assign(src); }
+    { that()->assign(src); }
 
     /// Assignment operator
     interval_base_set& operator = (const interval_base_set& src) 
-	{ 
-		if(this==&src) 
-			return *this;
+    { 
+        if(this==&src) 
+            return *this;
 
-		that()->assign(src);
-		return *this; 
-	}
+        that()->assign(src);
+        return *this; 
+    }
 
     void swap(interval_base_set& x) { _set.swap(x._set); }
 
@@ -204,15 +204,15 @@ public:
 
     /// Does the container contain the element \c x
     bool contains(const DomainT& x)const
-	{ return that()->contains_(interval_type(x)); }
+    { return that()->contains_(interval_type(x)); }
 
-	/// Does the container contain the interval x
-	bool contains(const interval_type& x)const
-	{ return that()->contains_(x); }
+    /// Does the container contain the interval x
+    bool contains(const interval_type& x)const
+    { return that()->contains_(x); }
 
-	/** Does <tt>*this</tt> container contain <tt>sub</tt>? */
-	bool contains(const interval_base_set& sub)const 
-	{ return sub.contained_in(*this); }
+    /** Does <tt>*this</tt> container contain <tt>sub</tt>? */
+    bool contains(const interval_base_set& sub)const 
+    { return sub.contained_in(*this); }
 
     /** Is <tt>*this</tt> contained in <tt>super</tt>? */
     bool contained_in(const interval_base_set& super)const;
@@ -222,25 +222,25 @@ public:
 //@{ 
     /// lower bound of all intervals in the set
     DomainT lower()const 
-	{ BOOST_ASSERT(!empty()); return (*(_set.begin())).lower(); }
+    { BOOST_ASSERT(!empty()); return (*(_set.begin())).lower(); }
     /// upper bound of all intervals in the set
     DomainT upper()const 
-	{ BOOST_ASSERT(!empty()); return (*(_set.rbegin())).upper(); }
+    { BOOST_ASSERT(!empty()); return (*(_set.rbegin())).upper(); }
 
-	iterator lower_bound(const value_type& interval)
-	{ return _set.lower_bound(interval); }
+    iterator lower_bound(const value_type& interval)
+    { return _set.lower_bound(interval); }
 
-	iterator upper_bound(const value_type& interval)
-	{ return _set.upper_bound(interval); }
+    iterator upper_bound(const value_type& interval)
+    { return _set.upper_bound(interval); }
 
-	const_iterator lower_bound(const value_type& interval)const
-	{ return _set.lower_bound(interval); }
+    const_iterator lower_bound(const value_type& interval)const
+    { return _set.lower_bound(interval); }
 
-	const_iterator upper_bound(const value_type& interval)const
-	{ return _set.upper_bound(interval); }
+    const_iterator upper_bound(const value_type& interval)const
+    { return _set.upper_bound(interval); }
 
     /// number of intervals
-	std::size_t interval_count()const { return _set.size(); }
+    std::size_t interval_count()const { return _set.size(); }
     std::size_t iterative_size()const { return _set.size(); }
 //@}
 
@@ -266,11 +266,11 @@ public:
 
     /// Add a single element \c x to the set
     SubType& add(const DomainT& x) 
-	{ that()->add_(interval_type(x)); return *that(); }
+    { that()->add_(interval_type(x)); return *that(); }
 
     /// Add an interval of elements \c x to the set
     SubType& add(const value_type& x) 
-	{ that()->add_(x); return *that(); }
+    { that()->add_(x); return *that(); }
 
     ///// Add an interval of elements \c x to the set
     //interval_base_set& operator += (const DomainT& x) 
@@ -309,11 +309,11 @@ public:
 //@{
     /// Insert an element \c x into the set
     SubType& insert(const DomainT& x) 
-	{ return add(interval_type(x)); }
+    { return add(interval_type(x)); }
 
     /// Insert an interval of elements \c x to the set
     SubType& insert(const value_type& x) 
-	{ return add(x); }
+    { return add(x); }
 
     /// Erase an element \c x from the set
     SubType& erase(const DomainT& x) 
@@ -343,10 +343,10 @@ public:
     */
     //CL void intersect(interval_base_set& section, const value_type& x)const;
 
-	//JODO doku; welche intersect-varianten kann ich ganz los werden.
+    //JODO doku; welche intersect-varianten kann ich ganz los werden.
     void add_intersection(interval_base_set& section, const value_type& x)const;
 
-	//JODO doku
+    //JODO doku
     /** Perform intersection of <tt>*this</tt> and <tt>x</tt>; assign result
         to <tt>section</tt>
     */
@@ -418,10 +418,10 @@ public:
         Infinite for continuous domain datatyps    */
     size_type cardinality()const;
 
-	/// An interval set's size is it's cardinality
-	size_type size()const { return cardinality(); }
+    /// An interval set's size is it's cardinality
+    size_type size()const { return cardinality(); }
 
-	difference_type length()const;
+    difference_type length()const;
 
     /**    Set interval bounds to the type <tt>bt</tt> for intervals in the set.
 
@@ -459,58 +459,58 @@ protected:
 
 template
 <
-	class SubType, class DomainT, template<class>class Interval, 
-	template<class>class Compare, template<class>class Alloc
+    class SubType, class DomainT, template<class>class Interval, 
+    template<class>class Compare, template<class>class Alloc
 >
 typename interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::size_type 
 interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::cardinality()const
 {
-	using namespace boost::mpl;
-	return if_<
-				bool_<is_continuous<DomainT>::value>,
-				continuous_interval_container,
-				discrete_interval_container
-			  >
-			  ::type::cardinality(*this);
+    using namespace boost::mpl;
+    return if_<
+                bool_<is_continuous<DomainT>::value>,
+                continuous_interval_container,
+                discrete_interval_container
+              >
+              ::type::cardinality(*this);
 
-	/*JODO BOOST: This more simple implementention fails because ptime::duration has no infinity
-	size_type size = neutron<size_type>::value();
-	size_type interval_size;
+    /*JODO BOOST: This more simple implementention fails because ptime::duration has no infinity
+    size_type size = neutron<size_type>::value();
+    size_type interval_size;
     const_FOR_IMPL(it)
-	{
-		interval_size = (*it).cardinality();
-		if(interval_size == std::numeric_limits<size_type>::infinity())
-			return interval_size;
-		else
-			size += interval_size;
-	}
+    {
+        interval_size = (*it).cardinality();
+        if(interval_size == std::numeric_limits<size_type>::infinity())
+            return interval_size;
+        else
+            size += interval_size;
+    }
     return size;
-	*/
+    */
 }
 
 template
 <
-	class SubType, class DomainT, template<class>class Interval, 
-	template<class>class Compare, template<class>class Alloc
+    class SubType, class DomainT, template<class>class Interval, 
+    template<class>class Compare, template<class>class Alloc
 >
 typename 
-	interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::difference_type 
+    interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::difference_type 
 interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::length()const
 {
-	difference_type length = neutron<difference_type>::value();
+    difference_type length = neutron<difference_type>::value();
     const_FOR_IMPL(it)
-		length += (*it).length();
-	return length;
+        length += (*it).length();
+    return length;
 }
 
 
 template
 <
-	class SubType, class DomainT, template<class>class Interval, 
-	template<class>class Compare, template<class>class Alloc
+    class SubType, class DomainT, template<class>class Interval, 
+    template<class>class Compare, template<class>class Alloc
 >
 bool interval_base_set<SubType,DomainT,Interval,Compare,Alloc>
-	::contained_in(const interval_base_set& x2)const
+    ::contained_in(const interval_base_set& x2)const
 {
     // The empty set is subset of every set
     if(empty())
@@ -538,15 +538,15 @@ void interval_base_set<SubType,DomainT,Interval,Compare,Alloc>::add_intersection
 {
     // any intersection with the empty intervall is empty
     if(x.empty()) 
-		return;
+        return;
 
     typename ImplSetT::const_iterator fst_it = _set.lower_bound(x);
     typename ImplSetT::const_iterator end_it = _set.upper_bound(x);
 
     for(typename ImplSetT::const_iterator it=fst_it; it != end_it; it++) 
-	{
+    {
         interval_type isec; 
-		(*it).intersect(isec, x);
+        (*it).intersect(isec, x);
         section.add(isec);
     }
 }
@@ -643,12 +643,12 @@ std::basic_ostream<CharType, CharTraits>& operator <<
   (std::basic_ostream<CharType, CharTraits>& stream, 
    const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object)
 {
-	typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> IntervalSetT;
-	stream << "{";
-	const_FORALL(typename IntervalSetT, it, object)
-		stream << (*it);
+    typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> IntervalSetT;
+    stream << "{";
+    const_FORALL(typename IntervalSetT, it, object)
+        stream << (*it);
 
-	return stream << "}";
+    return stream << "}";
 }
 
 }} // namespace itl boost

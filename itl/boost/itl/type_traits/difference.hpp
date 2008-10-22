@@ -13,23 +13,23 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 
 namespace boost{ namespace itl
 {
-	template <class Type> struct difference;
+    template <class Type> struct difference;
 
 #ifdef ITL_NEEDS_GREGORIAN_DATE_DIFFERENCE_TYPE
 #define ITL_HAS_GREGORIAN_DATE_DIFFERENCE_TYPE
-	template<> 
-	struct difference<boost::gregorian::date> 
-	{ typedef boost::gregorian::date_duration type; };  
+    template<> 
+    struct difference<boost::gregorian::date> 
+    { typedef boost::gregorian::date_duration type; };  
 #endif 
 
 #ifdef ITL_NEEDS_POSIX_TIME_PTIME_DIFFERENCE_TYPE
 #define ITL_HAS_POSIX_TIME_PTIME_DIFFERENCE_TYPE
-	template<> 
-	struct difference<boost::posix_time::ptime> 
-	{ typedef boost::posix_time::time_duration type; };  
+    template<> 
+    struct difference<boost::posix_time::ptime> 
+    { typedef boost::posix_time::time_duration type; };  
 #endif
 
-	template <class Type> struct difference{ typedef Type type; };
+    template <class Type> struct difference{ typedef Type type; };
 
 }} // namespace boost itl
 

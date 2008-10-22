@@ -290,15 +290,15 @@ namespace boost{namespace itl
             case containedInOrder:           return _containedInValidater.chooseValidater();
             case inplacePlusAssociativity:   
                 if(   itl::is_interval_container<Type>::value && itl::is_interval_splitter<Type>::value
-					&& is_neutron_absorber<Type>::value && is_neutron_emitter<Type>::value)
+                    && is_neutron_absorber<Type>::value && is_neutron_emitter<Type>::value)
                     return new LawValidater<InplaceAssociativity<Type, inplace_plus, element_equal>, RandomGentor>;
                 else
                     return new LawValidater<InplaceAssociativity<Type>, RandomGentor>;
             case inplacePlusNeutrality:      return new LawValidater<InplaceNeutrality<Type>, RandomGentor>;
             case inplacePlusCommutativity:   return new LawValidater<InplaceCommutativity<Type>, RandomGentor>;
             case inplaceStarAssociativity:
-				if(   is_interval_container<Type>::value && is_interval_splitter<Type>::value
-					&& is_neutron_absorber<Type>::value && is_neutron_emitter<Type>::value)
+                if(   is_interval_container<Type>::value && is_interval_splitter<Type>::value
+                    && is_neutron_absorber<Type>::value && is_neutron_emitter<Type>::value)
                     return new LawValidater<InplaceAssociativity<Type, inplace_star, element_equal>, RandomGentor>;
                 else
                     return new LawValidater<InplaceAssociativity<Type, inplace_star>, RandomGentor>;
@@ -626,7 +626,7 @@ namespace boost{namespace itl
         {
             _lawChoice.setSize(Laws_size);
             _lawChoice.setMaxWeights(100);
-			const bool morphism_exists   = !is_continuous<typename Type::domain_type>::value;
+            const bool morphism_exists   = !is_continuous<typename Type::domain_type>::value;
             const int  morphism_share    = 15;
             _lawChoice[inplaceSetLaws]   = morphism_exists ? 100 - morphism_share : 100;
             _lawChoice[homomorphismLaws] = 100 - _lawChoice[inplaceSetLaws];
@@ -691,7 +691,7 @@ namespace boost{namespace itl
         {
             _lawChoice.setSize(Laws_size);
             _lawChoice.setMaxWeights(100);
-			const bool morphism_exists    = !is_continuous<typename Type::domain_type>::value;
+            const bool morphism_exists    = !is_continuous<typename Type::domain_type>::value;
             const int  morphism_share     = 30;
             _lawChoice[inplaceMapLaws]= morphism_exists ? 100 - morphism_share : 100;
             _lawChoice[homomorphismLaws]  = 100 - _lawChoice[inplaceMapLaws];

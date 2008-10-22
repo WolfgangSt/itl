@@ -153,33 +153,33 @@ namespace boost{namespace itl
         /// Copy constructor
         split_interval_set(const split_interval_set& src): base_type(src) {}
 
-		/// Copy constructor for base_type
-		template<class SubType>
-		split_interval_set
-			(const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
-		{ assign(src); }
+        /// Copy constructor for base_type
+        template<class SubType>
+        split_interval_set
+            (const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
+        { assign(src); }
 
         /// Constructor for a single element
         explicit split_interval_set(const interval_type& elem): base_type() { add(elem); }
         /// Constructor for a single interval
         explicit split_interval_set(const domain_type& itv): base_type() { add(itv); }
 
-		/// Assignment operator
-		template<class SubType>
-		interval_base_set& operator =
-			(const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
-		{ assign(src); return *this; }
+        /// Assignment operator
+        template<class SubType>
+        interval_base_set& operator =
+            (const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
+        { assign(src); return *this; }
 
-		/// Assignment from a base interval_set.
-		template<class SubType>
-		void assign(const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
-		{
-			typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> base_set_type;
-			this->clear();
-			// Can be implemented via _set.insert: Interval joining not necessary.
-			const_FORALL(base_set_type, it, src) 
-				this->_set.insert(*it); 
-		}
+        /// Assignment from a base interval_set.
+        template<class SubType>
+        void assign(const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
+        {
+            typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> base_set_type;
+            this->clear();
+            // Can be implemented via _set.insert: Interval joining not necessary.
+            const_FORALL(base_set_type, it, src) 
+                this->_set.insert(*it); 
+        }
         
         /// Does the set contain the interval  <tt>x</tt>?
         bool contains_(const interval_type& x)const;
@@ -371,7 +371,7 @@ namespace boost{namespace itl
             add_(leftResid);
             subtract_rest(x, snd_it, end_it);
         }
-		return;
+        return;
     }
 
 
@@ -415,54 +415,54 @@ namespace boost{namespace itl
     inline bool operator == (const split_interval_set<DomainT,Interval,Compare,Alloc>& lhs,
                              const split_interval_set<DomainT,Interval,Compare,Alloc>& rhs)
     {
-		//MEMO PORT: This implemetation worked with stlport, sgi and gnu 
-		// implementations of the stl. But using MSVC-implementation
-		// results in runtime error! So I had to provide an independent
-		// safe implemetation.
-		//return std::equal(lhs.begin(), lhs.end(), rhs.begin());
-		return Set::lexicographical_equal(lhs, rhs);
+        //MEMO PORT: This implemetation worked with stlport, sgi and gnu 
+        // implementations of the stl. But using MSVC-implementation
+        // results in runtime error! So I had to provide an independent
+        // safe implemetation.
+        //return std::equal(lhs.begin(), lhs.end(), rhs.begin());
+        return Set::lexicographical_equal(lhs, rhs);
     }
 
-	
-	template 
-	<
-		class DomainT, template<class>class Interval, 
-		template<class>class Compare, template<class>class Alloc
-	>
-	inline bool 
-	is_element_equal
-	(
-		const split_interval_set<DomainT,Interval,Compare,Alloc>& lhs,
-		const split_interval_set<DomainT,Interval,Compare,Alloc>& rhs
-	)
-	{
-		typedef itl::interval_set<DomainT,Interval,Compare,Alloc> joined_type;
-		if(&lhs == &rhs)
-			return true;
-		//OTHERWISE
-		joined_type joined_lhs(lhs);
-		joined_type joined_rhs(rhs);
-		return Set::lexicographical_equal(joined_lhs, joined_rhs);
-	}
-	/*CL
-	template 
-	<
-		class SubType, class DomainT, template<class>class Interval, 
-		template<class>class Compare, template<class>class Alloc
-	>
-	inline bool 
-	is_element_equal
-	(
-		const split_interval_set    <DomainT,Interval,Compare,Alloc>& lhs,
-		const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& rhs
-	)
-	{
-		typedef itl::interval_set<DomainT,Interval,Compare,Alloc> joined_type;
-		joined_type joined_lhs(lhs);
-		joined_type joined_rhs(rhs);
-		return Set::lexicographical_equal(joined_lhs, joined_rhs);
-	}
-	*/
+    
+    template 
+    <
+        class DomainT, template<class>class Interval, 
+        template<class>class Compare, template<class>class Alloc
+    >
+    inline bool 
+    is_element_equal
+    (
+        const split_interval_set<DomainT,Interval,Compare,Alloc>& lhs,
+        const split_interval_set<DomainT,Interval,Compare,Alloc>& rhs
+    )
+    {
+        typedef itl::interval_set<DomainT,Interval,Compare,Alloc> joined_type;
+        if(&lhs == &rhs)
+            return true;
+        //OTHERWISE
+        joined_type joined_lhs(lhs);
+        joined_type joined_rhs(rhs);
+        return Set::lexicographical_equal(joined_lhs, joined_rhs);
+    }
+    /*CL
+    template 
+    <
+        class SubType, class DomainT, template<class>class Interval, 
+        template<class>class Compare, template<class>class Alloc
+    >
+    inline bool 
+    is_element_equal
+    (
+        const split_interval_set    <DomainT,Interval,Compare,Alloc>& lhs,
+        const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& rhs
+    )
+    {
+        typedef itl::interval_set<DomainT,Interval,Compare,Alloc> joined_type;
+        joined_type joined_lhs(lhs);
+        joined_type joined_rhs(rhs);
+        return Set::lexicographical_equal(joined_lhs, joined_rhs);
+    }
+    */
 
     template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
     inline bool operator < (const split_interval_set<DomainT,Interval,Compare,Alloc>& lhs,
@@ -476,25 +476,25 @@ namespace boost{namespace itl
             Compare<Interval<DomainT> >());
     }
 
-	template <class Type>
-	struct is_set<itl::split_interval_set<Type> >
-	{ enum{value = true}; };
+    template <class Type>
+    struct is_set<itl::split_interval_set<Type> >
+    { enum{value = true}; };
 
-	template <class Type>
-	struct is_interval_container<itl::split_interval_set<Type> >
-	{ enum{value = true}; };
+    template <class Type>
+    struct is_interval_container<itl::split_interval_set<Type> >
+    { enum{value = true}; };
 
-	template <class Type>
-	struct is_interval_splitter<itl::split_interval_set<Type> >
-	{ enum{value = true}; };
+    template <class Type>
+    struct is_interval_splitter<itl::split_interval_set<Type> >
+    { enum{value = true}; };
 
-	template <class Type>
-	struct is_neutron_absorber<itl::split_interval_set<Type> >
-	{ enum{value = false}; };
+    template <class Type>
+    struct is_neutron_absorber<itl::split_interval_set<Type> >
+    { enum{value = false}; };
 
-	template <class Type>
-	struct is_neutron_emitter<itl::split_interval_set<Type> >
-	{ enum{value = false}; };
+    template <class Type>
+    struct is_neutron_emitter<itl::split_interval_set<Type> >
+    { enum{value = false}; };
 
     template <class Type>
     struct type_to_string<itl::split_interval_set<Type> >

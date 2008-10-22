@@ -13,23 +13,23 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 
 namespace boost{ namespace itl
 {
-	template <class Type> struct size;
+    template <class Type> struct size;
 
 #ifdef ITL_NEEDS_GREGORIAN_DATE_SIZE_TYPE
 #define ITL_HAS_GREGORIAN_DATE_SIZE_TYPE
-	template<> 
-	struct size<boost::gregorian::date> 
-	{ typedef boost::gregorian::date_duration type; };  
+    template<> 
+    struct size<boost::gregorian::date> 
+    { typedef boost::gregorian::date_duration type; };  
 #endif 
 
 #ifdef ITL_NEEDS_POSIX_TIME_PTIME_SIZE_TYPE
 #define ITL_HAS_POSIX_TIME_PTIME_SIZE_TYPE
-	template<> 
-	struct size<boost::posix_time::ptime> 
-	{ typedef boost::posix_time::time_duration type; };  
+    template<> 
+    struct size<boost::posix_time::ptime> 
+    { typedef boost::posix_time::time_duration type; };  
 #endif
 
-	template <class Type> struct size{ typedef std::size_t type; };
+    template <class Type> struct size{ typedef std::size_t type; };
 }} // namespace boost itl
 
 #define ITL_SIZE_TYPES_PROVIDED

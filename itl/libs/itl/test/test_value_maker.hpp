@@ -11,15 +11,15 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 template <class BicrementableT>
 BicrementableT make(int n)
 {
-	BicrementableT value = neutron<BicrementableT>::value();
-	if(n>=0)
-		for(int i=0; i<n; i++)
-			++value;
-	else
-		for(int i=0; i>n; i--)
-			--value;
+    BicrementableT value = neutron<BicrementableT>::value();
+    if(n>=0)
+        for(int i=0; i<n; i++)
+            ++value;
+    else
+        for(int i=0; i>n; i--)
+            --value;
 
-	return value;
+    return value;
 }
 
 #endif 

@@ -31,25 +31,25 @@ namespace boost{namespace itl
     template <> class RandomGentor<double> : public NumberGentorT<double> {};
 
     // ----- sets ----------------------------------------------------------------
-	//template <class DomainT, template<class>class Set> 
-	//class RandomGentor<Set<DomainT> > :
-	//	public SetGentorT<Set<DomainT> > {};
+    //template <class DomainT, template<class>class Set> 
+    //class RandomGentor<Set<DomainT> > :
+    //    public SetGentorT<Set<DomainT> > {};
 
-	template <class DomainT> 
-	class RandomGentor<itl::set<DomainT> > :
-		public SetGentorT<itl::set<DomainT> > {};
+    template <class DomainT> 
+    class RandomGentor<itl::set<DomainT> > :
+        public SetGentorT<itl::set<DomainT> > {};
 
-	template <class DomainT> 
-	class RandomGentor<itl::interval_set<DomainT> > :
-		public SetGentorT<itl::interval_set<DomainT> > {};
+    template <class DomainT> 
+    class RandomGentor<itl::interval_set<DomainT> > :
+        public SetGentorT<itl::interval_set<DomainT> > {};
 
-	template <class DomainT> 
-	class RandomGentor<itl::separate_interval_set<DomainT> > :
-		public SetGentorT<itl::separate_interval_set<DomainT> > {};
+    template <class DomainT> 
+    class RandomGentor<itl::separate_interval_set<DomainT> > :
+        public SetGentorT<itl::separate_interval_set<DomainT> > {};
 
-	template <class DomainT> 
-	class RandomGentor<itl::split_interval_set<DomainT> > :
-		public SetGentorT<itl::split_interval_set<DomainT> > {};
+    template <class DomainT> 
+    class RandomGentor<itl::split_interval_set<DomainT> > :
+        public SetGentorT<itl::split_interval_set<DomainT> > {};
 
     // ----- maps -------------------------------------------------------------
     template <class DomainT, class Neutronizer> 

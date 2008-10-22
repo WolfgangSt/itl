@@ -16,46 +16,46 @@ namespace boost{namespace itl
 template <class IntervalContainerT>
 typename IntervalContainerT::size_type continuous_cardinality(const IntervalContainerT& object)
 {
-	typedef typename IntervalContainerT::size_type size_type;
+    typedef typename IntervalContainerT::size_type size_type;
 
-	size_type size = neutron<size_type>::value();
-	size_type interval_size;
+    size_type size = neutron<size_type>::value();
+    size_type interval_size;
     const_FORALL(IntervalContainerT, it, object)
-	{
-		interval_size = IntervalContainerT::key_value(it).continuous_cardinality();
-		if(interval_size == std::numeric_limits<size_type>::infinity())
-			return interval_size;
-		else
-			size += interval_size;
-	}
+    {
+        interval_size = IntervalContainerT::key_value(it).continuous_cardinality();
+        if(interval_size == std::numeric_limits<size_type>::infinity())
+            return interval_size;
+        else
+            size += interval_size;
+    }
     return size;
 }
 
 template <class IntervalContainerT>
 typename IntervalContainerT::size_type discrete_cardinality(const IntervalContainerT& object)
 {
-	typedef typename IntervalContainerT::size_type size_type;
+    typedef typename IntervalContainerT::size_type size_type;
 
-	size_type size = neutron<size_type>::value();
+    size_type size = neutron<size_type>::value();
     const_FORALL(IntervalContainerT, it, object)
-		size += IntervalContainerT::key_value(it).discrete_cardinality();
+        size += IntervalContainerT::key_value(it).discrete_cardinality();
     return size;
 }
 
 struct continuous_interval_container
 {
-	template<class IntervalContainerT> 
-	static typename IntervalContainerT::size_type 
-		cardinality(const IntervalContainerT& cont) 
-	{ return continuous_cardinality(cont); }
+    template<class IntervalContainerT> 
+    static typename IntervalContainerT::size_type 
+        cardinality(const IntervalContainerT& cont) 
+    { return continuous_cardinality(cont); }
 };
 
 struct discrete_interval_container
 {
-	template<class IntervalContainerT> 
-	static typename IntervalContainerT::size_type 
-		cardinality(const IntervalContainerT& cont) 
-	{ return discrete_cardinality(cont); }
+    template<class IntervalContainerT> 
+    static typename IntervalContainerT::size_type 
+        cardinality(const IntervalContainerT& cont) 
+    { return discrete_cardinality(cont); }
 };
 
 
@@ -63,15 +63,15 @@ template<class IntervalSetT>
 typename IntervalSetT::interval_type 
 enclosure(const IntervalSetT& object)
 {
-	typedef typename IntervalSetT::interval_type interval_type;
+    typedef typename IntervalSetT::interval_type interval_type;
     return 
-		object.empty() ? itl::neutron<interval_type>::value()
+        object.empty() ? itl::neutron<interval_type>::value()
         : IntervalSetT::key_value(object.begin())
-		  .span(IntervalSetT::key_value(object.rbegin()));
+          .span(IntervalSetT::key_value(object.rbegin()));
 }
     
 
-	
+    
 }} // namespace itl boost
 
 #endif 

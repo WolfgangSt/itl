@@ -48,8 +48,8 @@ namespace boost{namespace itl
 
     struct neutron_absorber
     {
-		enum { absorbs_neutrons = true };
-		enum { emits_neutrons = false };
+        enum { absorbs_neutrons = true };
+        enum { emits_neutrons = false };
     };
 
     template<> 
@@ -58,8 +58,8 @@ namespace boost{namespace itl
 
     struct neutron_enricher
     {
-		enum { absorbs_neutrons = false };
-		enum { emits_neutrons = false };
+        enum { absorbs_neutrons = false };
+        enum { emits_neutrons = false };
 
     };
 
@@ -68,8 +68,8 @@ namespace boost{namespace itl
 
     struct neutron_emitter
     {
-		enum { absorbs_neutrons = true };
-		enum { emits_neutrons = true };
+        enum { absorbs_neutrons = true };
+        enum { emits_neutrons = true };
     };
 
     template<> 
@@ -77,8 +77,8 @@ namespace boost{namespace itl
 
     struct neutron_emitter_and_enricher
     {
-		enum { absorbs_neutrons = false };
-		enum { emits_neutrons = true };
+        enum { absorbs_neutrons = false };
+        enum { emits_neutrons = true };
     };
 
     template<> 
@@ -255,15 +255,15 @@ namespace boost{namespace itl
             So \c *this becomes the intersection of \c *this and \c x2 */
         map& operator *= (const map& x2) 
         {
-			//CL?
+            //CL?
             //if(Traits::emits_neutrons)
             //     { Set::add(*this, x2); return *this; }
             //else if(Traits::absorbs_neutrons && !itl::is_set<DataT>::value)
             //     { Set::add(*this, x2); return *this; }
             //else 
-			{ 
-				Map::intersect(*this, x2); return *this; 
-			}
+            { 
+                Map::intersect(*this, x2); return *this; 
+            }
         }
 
         /** Intersect set \c x2 and \c *this.
@@ -539,22 +539,22 @@ namespace boost{namespace itl
 
     //-------------------------------------------------------------------------
     template <class KeyT, class DataT, class Traits>
-	struct is_interval_container<itl::map<KeyT,DataT,Traits> >
-	{ enum{value = true}; };
+    struct is_interval_container<itl::map<KeyT,DataT,Traits> >
+    { enum{value = true}; };
 
     template <class KeyT, class DataT, class Traits>
-	struct is_interval_splitter<itl::map<KeyT,DataT,Traits> >
-	{ enum{value = false}; };
+    struct is_interval_splitter<itl::map<KeyT,DataT,Traits> >
+    { enum{value = false}; };
 
     template <class KeyT, class DataT, class Traits>
-	struct is_neutron_absorber<itl::map<KeyT,DataT,Traits> >
-	{ enum{value = Traits::absorbs_neutrons}; };
+    struct is_neutron_absorber<itl::map<KeyT,DataT,Traits> >
+    { enum{value = Traits::absorbs_neutrons}; };
 
     template <class KeyT, class DataT, class Traits>
-	struct is_neutron_emitter<itl::map<KeyT,DataT,Traits> >
-	{ enum{value = Traits::emits_neutrons}; };
+    struct is_neutron_emitter<itl::map<KeyT,DataT,Traits> >
+    { enum{value = Traits::emits_neutrons}; };
 
-	template <class KeyT, class DataT, class Traits>
+    template <class KeyT, class DataT, class Traits>
     struct type_to_string<itl::map<KeyT,DataT,Traits> >
     {
         static std::string apply()

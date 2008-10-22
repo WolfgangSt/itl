@@ -15,29 +15,29 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 
 namespace boost{ namespace itl
 {
-	template <class Type> struct neutron
-	{ 
-		static Type value(); 
+    template <class Type> struct neutron
+    { 
+        static Type value(); 
         inline Type operator()()const { return value(); } //JODO everything static??
-	};
+    };
 
 #ifdef ITL_NEEDS_GREGORIAN_DATE_NEUTRON_VALUE
 #define ITL_HAS_GREGORIAN_DATE_NEUTRON_VALUE
-	template<> 
+    template<> 
     inline boost::gregorian::date neutron<boost::gregorian::date>::value()
     { 
         return boost::gregorian::date(boost::gregorian::min_date_time); 
     }
 
     template<> 
-	struct neutron<boost::gregorian::date_duration>
-	{
-		static boost::gregorian::date_duration value()
-		{ 
-			return boost::gregorian::date(boost::gregorian::min_date_time) 
-				 - boost::gregorian::date(boost::gregorian::min_date_time); 
-		}
-	};
+    struct neutron<boost::gregorian::date_duration>
+    {
+        static boost::gregorian::date_duration value()
+        { 
+            return boost::gregorian::date(boost::gregorian::min_date_time) 
+                 - boost::gregorian::date(boost::gregorian::min_date_time); 
+        }
+    };
 #endif
 
 #ifdef ITL_NEEDS_POSIX_TIME_PTIME_NEUTRON_VALUE
@@ -49,11 +49,11 @@ namespace boost{ namespace itl
     }
 #endif
 
-	template <class Type>
+    template <class Type>
     inline Type neutron<Type>::value()
-	{ 
-		return Type(); 
-	}
+    { 
+        return Type(); 
+    }
 
     template<>
     inline std::string unary_template_to_string<neutron>::apply() { return "0"; }

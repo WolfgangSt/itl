@@ -47,17 +47,17 @@ Type abs(Type val) { return val < 0 ? -val : val; }
 /// static class template for the size of a type's value
 /** This function is needed to be able to order values according
     to their size. This is used to e.g. prefer simple test
-	instances and to express this simplicity independent of the
-	type of the test case.
+    instances and to express this simplicity independent of the
+    type of the test case.
 
     @author  Joachim Faulhaber
 */
 template <class Type>
 struct value_size
 {
-	/** The size of a value is used to be able to order values according to
+    /** The size of a value is used to be able to order values according to
         their simplicity */
-	static std::size_t apply(const Type& val);
+    static std::size_t apply(const Type& val);
 };
 
 
