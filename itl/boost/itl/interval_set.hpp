@@ -37,7 +37,7 @@ class interval_set
 #include <itl/interval_sets.hpp>
 #include <itl/j_assert.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
 
 /// Implements a set as a set of intervals - merging adjoining intervals
@@ -417,7 +417,7 @@ struct type_to_string<itl::interval_set<Type> >
     { return "interval_set<"+ type_to_string<Type>::apply() +">"; }
 };
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif
 

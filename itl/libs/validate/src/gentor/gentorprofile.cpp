@@ -9,7 +9,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 +----------------------------------------------------------------------------*/
 #include <validate/gentor/gentorprofile.h>
 
-using namespace itl;
+using namespace boost::itl;
 
 GentorProfileSgl* GentorProfileSgl::s_instance = NULL;
 

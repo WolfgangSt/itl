@@ -40,12 +40,11 @@ class interval_base_set
 #include <itl/itl_interval.hpp>
 #include <itl/notate.hpp>
 
-
 #define const_FOR_IMPL(iter) for(typename ImplSetT::const_iterator iter=_set.begin(); (iter)!=_set.end(); (iter)++)
 #define FOR_IMPL(iter) for(typename ImplSetT::iterator iter=_set.begin(); (iter)!=_set.end(); (iter)++)
 
 
-namespace itl
+namespace boost{namespace itl
 {
 
 //JODO update documentation (all invterval containers; template parameters have changed)
@@ -652,7 +651,7 @@ std::basic_ostream<CharType, CharTraits>& operator <<
 	return stream << "}";
 }
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif
 

@@ -9,7 +9,7 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 #define __test_itl_interval_set_shared_h_JOFA_080920__
 
 
-template <template<class T, template<class>class = itl::interval,
+template <template<class T, template<class>class = interval,
                             template<class>class = std::less,
 							template<class>class = std::allocator
                   >class IntervalSet, 
@@ -24,10 +24,10 @@ void interval_set_fundamentals_4_ordered_types()
 	// we are able to test operations only for the most basic values
 	// neutron (0, empty, T() ...) and unon.
 
-	//T v0 = itl::neutron<T>(); //JODO check operator() variant
-	//T v1 = itl::unon<T>();
-	T v0 = itl::neutron<T>::value();
-	T v1 = itl::unon<T>::value();
+	//T v0 = neutron<T>(); //JODO check operator() variant
+	//T v1 = unon<T>();
+	T v0 = neutron<T>::value();
+	T v1 = unon<T>::value();
 	interval<T> I0_0I(v0);
 	interval<T> I1_1I(v1);
 	interval<T> I0_1I(v0,v1);
@@ -36,8 +36,8 @@ void interval_set_fundamentals_4_ordered_types()
 	//empty set
 	//-------------------------------------------------------------------------
 	BOOST_CHECK_EQUAL(IntervalSet<T>().empty(), true);
-	BOOST_CHECK_EQUAL(IntervalSet<T>().cardinality(), itl::neutron<size_T>::value());
-	BOOST_CHECK_EQUAL(IntervalSet<T>().size(), itl::neutron<size_T>::value());
+	BOOST_CHECK_EQUAL(IntervalSet<T>().cardinality(), neutron<size_T>::value());
+	BOOST_CHECK_EQUAL(IntervalSet<T>().size(), neutron<size_T>::value());
 	BOOST_CHECK_EQUAL(IntervalSet<T>().interval_count(), 0);
 	BOOST_CHECK_EQUAL(IntervalSet<T>().iterative_size(), 0);
 	BOOST_CHECK_EQUAL(IntervalSet<T>(), IntervalSet<T>());
@@ -134,14 +134,14 @@ void interval_set_fundamentals_4_ordered_types()
 	BOOST_CHECK_EQUAL(single_I0_1I.contains(single_I1_1I), true);
 	BOOST_CHECK_EQUAL(single_I0_1I.contains(single_I0_1I), true);
 
-	BOOST_CHECK_EQUAL(single_I0_0I.cardinality(), itl::unon<size_T>::value());
-	BOOST_CHECK_EQUAL(single_I0_0I.size(), itl::unon<size_T>::value());
+	BOOST_CHECK_EQUAL(single_I0_0I.cardinality(), unon<size_T>::value());
+	BOOST_CHECK_EQUAL(single_I0_0I.size(), unon<size_T>::value());
 	BOOST_CHECK_EQUAL(single_I0_0I.interval_count(), 1);
 	BOOST_CHECK_EQUAL(single_I0_0I.iterative_size(), 1);
 }
 
 
-template <template<class T, template<class>class = itl::interval,
+template <template<class T, template<class>class = interval,
                             template<class>class = std::less,
 							template<class>class = std::allocator
                   >class IntervalSet, 
@@ -149,7 +149,7 @@ template <template<class T, template<class>class = itl::interval,
 void interval_set_ctor_4_bicremental_types()
 {
 	T v4 = make<T>(4);
-	itl::interval<T> I4_4I(v4);
+	interval<T> I4_4I(v4);
 
 	IntervalSet<T> _I4_4I;
 	BOOST_CHECK_EQUAL( _I4_4I.empty(), true );
@@ -192,7 +192,7 @@ void interval_set_ctor_4_bicremental_types()
 }
 
 
-template <template<class T, template<class>class = itl::interval,
+template <template<class T, template<class>class = interval,
                             template<class>class = std::less,
 							template<class>class = std::allocator
                   >class IntervalSet, 
@@ -234,7 +234,7 @@ void interval_set_add_sub_4_bicremental_types()
 }
 
 
-template <template<class T, template<class>class = itl::interval,
+template <template<class T, template<class>class = interval,
                             template<class>class = std::less,
 							template<class>class = std::allocator
                   >class IntervalSet, 
@@ -260,7 +260,7 @@ void interval_set_distinct_4_bicremental_types()
 }
 
 
-template <template<class T, template<class>class = itl::interval,
+template <template<class T, template<class>class = interval,
                             template<class>class = std::less,
 							template<class>class = std::allocator
                   >class IntervalSet, 
@@ -301,7 +301,7 @@ void interval_set_distinct_4_bicremental_continuous_types()
 }
 
 
-template <template<class T, template<class>class = itl::interval,
+template <template<class T, template<class>class = interval,
                             template<class>class = std::less,
 							template<class>class = std::allocator
                   >class IntervalSet, 
@@ -345,7 +345,7 @@ void interval_set_isolate_4_bicremental_continuous_types()
 }
 
 
-template <template<class T, template<class>class = itl::interval,
+template <template<class T, template<class>class = interval,
                             template<class>class = std::less,
 							template<class>class = std::allocator
                   >class IntervalSet, 
@@ -383,7 +383,7 @@ void interval_set_contains_4_bicremental_types()
 }
 
 
-template <template<class T, template<class>class = itl::interval,
+template <template<class T, template<class>class = interval,
                             template<class>class = std::less,
 							template<class>class = std::allocator
                   >class IntervalSet, 
@@ -424,7 +424,7 @@ void interval_set_operators_4_bicremental_types()
 }
 
 // Test for nontrivial intersection of interval sets with intervals and values
-template <template<class T, template<class>class = itl::interval,
+template <template<class T, template<class>class = interval,
                             template<class>class = std::less,
 							template<class>class = std::allocator
                   >class IntervalSet, 

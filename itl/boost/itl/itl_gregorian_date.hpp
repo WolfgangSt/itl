@@ -64,7 +64,7 @@ Function-templates for discrete Datatypes like int, unsigned or
 #define ITL_NEEDS_GREGORIAN_DATE_DIFFERENCE_TYPE
 #define ITL_NEEDS_GREGORIAN_DATE_SIZE_TYPE
 
-namespace itl
+namespace boost{namespace itl
 {
 
     boost::gregorian::date operator ++(boost::gregorian::date& x)
@@ -103,7 +103,7 @@ namespace itl
 
 	//boost::date_time::date_duration<duration_rep_traits>
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif
 

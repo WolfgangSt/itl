@@ -19,7 +19,7 @@ Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
 #include <sstream>
 
 using namespace std;
-using namespace itl;
+using namespace boost::itl;
 
 /** Example amount_cube.cpp \file amount_cube.cpp
 

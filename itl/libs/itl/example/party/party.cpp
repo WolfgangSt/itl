@@ -15,7 +15,7 @@ Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
 #include "../toytime.h"
 
 using namespace std;
-using namespace itl;
+using namespace boost::itl;
 
 /** Example party.cpp \file Party.cpp
 
@@ -57,7 +57,7 @@ using namespace itl;
 
 // Type itl::set<string> collects the names of party guests. Therefore it needs to
 // implement operator += that performs a set union on overlap of intervals.
-typedef itl::set<string> GuestSetT;
+typedef boost::itl::set<string> GuestSetT;
 
 // Time is the domain type the the split_interval_map. It's key values are therefore
 // time intervals: interval<Time>. The content is the set of names: GuestSetT.

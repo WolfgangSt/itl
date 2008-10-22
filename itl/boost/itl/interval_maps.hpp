@@ -10,7 +10,7 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 
 #include <itl/interval_base_map.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
 
 //-----------------------------------------------------------------------------
@@ -442,8 +442,7 @@ bool is_disjoint
 	return true; 
 }
 
-
-} // namespace itl
+}} // namespace itl boost
 
 #endif
 

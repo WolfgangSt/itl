@@ -12,7 +12,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 #include <itl/interval_set.hpp>
 #include <itl/j_assert.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
 
 /// Implements a set as a set of intervals - leaving adjoining intervals separate
@@ -325,7 +325,7 @@ struct type_to_string<itl::separate_interval_set<Type> >
     { return "separate_interval_set<"+ type_to_string<Type>::apply() +">"; }
 };
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif
 

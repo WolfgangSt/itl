@@ -47,7 +47,7 @@ for concepts InplaceAddable and InplaceSubtractable
 #include <itl/predicates.hpp>
 
 
-namespace itl
+namespace boost{namespace itl
 {
     /// adds inplace addition, subtraction and intersection to std::set
     /** 
@@ -385,7 +385,7 @@ namespace itl
     };
 
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif // __itl_set_h_JOFA_070519__
 

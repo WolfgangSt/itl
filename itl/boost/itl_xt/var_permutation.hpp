@@ -32,7 +32,7 @@ DEALINGS IN THE SOFTWARE.
 #include <itl_xt/fixtupelconst.hpp>
 #include <itl_xt/itl_list.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
 
     template <int varCountV>
@@ -261,7 +261,7 @@ namespace itl
     }
 
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif // __var_permutation_JOFA_040621_H__
 

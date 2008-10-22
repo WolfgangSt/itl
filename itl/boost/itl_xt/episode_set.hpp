@@ -34,7 +34,7 @@ DEALINGS IN THE SOFTWARE.
 #include <itl/itl_set.hpp>
 #include <itl_xt/typed_episode.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
     template <typename EpisodePointer>
     class Less_TypedEpisodeATP
@@ -121,7 +121,7 @@ inline bool operator == (const episode_set<TimeT,TypeDomain>& lhs,
     return true;
 }
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif // __itl_episode_set_hpp_JOFA_011015_H__
 

@@ -33,7 +33,7 @@ DEALINGS IN THE SOFTWARE.
 #include <itl/var_permutation.hpp>
 #include <itl/var_tuple.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
 
 
@@ -84,7 +84,7 @@ namespace itl
         OmissionMapTD     m_Omissions;
     };
 
-}
+}} // namespace itl boost
 
 #endif // __var_tuple_inscriptor_JOFA_041006_H__
 

@@ -10,7 +10,7 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 
 #include <itl/notate.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
 
 template <class IntervalContainerT>
@@ -72,7 +72,7 @@ enclosure(const IntervalSetT& object)
     
 
 	
-} //namespace itl
+}} // namespace itl boost
 
 #endif 
 

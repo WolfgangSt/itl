@@ -31,8 +31,7 @@ DEALINGS IN THE SOFTWARE.
 
 #include <functional>
 #include <itl/random.hpp>
-
-namespace itl
+namespace boost{namespace itl
 {
 
     template <class NumTV>
@@ -52,8 +51,7 @@ namespace itl
     private:
         random _random;
     };
-
-} // namespace itl
+}} // namespace boost itl
 
 #endif
 

@@ -15,7 +15,7 @@ Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
 #include "../toytime.h"
 
 using namespace std;
-using namespace itl;
+using namespace boost::itl;
 
 /** Example history.cpp \file history.cpp
 
@@ -121,7 +121,7 @@ public:
     // The domain type of intervals used by HospitalEpisodes is (toy)Time
     typedef Time ItvDomTD;
     // Type of the intervals used by HospitalEpisodes
-    typedef itl::interval<Time> IntervalTD;
+	typedef boost::itl::interval<Time> IntervalTD;
 
 public:
     // Construct an episode from interval and value

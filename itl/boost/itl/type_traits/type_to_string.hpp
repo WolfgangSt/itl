@@ -36,7 +36,7 @@ DEALINGS IN THE SOFTWARE.
 #include <boost/type_traits/is_float.hpp>
 #include <boost/mpl/if.hpp>
 
-namespace itl
+namespace boost{ namespace itl
 {
     //--------------------------------------------------------------------------
     template<class Type>
@@ -88,7 +88,7 @@ namespace itl
         }
     };
 
-} // namespace itl
+}} // namespace boost itl
 
 #endif
 

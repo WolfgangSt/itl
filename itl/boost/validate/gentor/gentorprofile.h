@@ -11,7 +11,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 
 #include <itl/itl_interval.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
 
     class GentorProfile
@@ -115,4 +115,4 @@ namespace itl
         { return GentorProfileSgl::it()->range_double(); }
     };
 
-} // namespace itl
+}} // namespace itl boost

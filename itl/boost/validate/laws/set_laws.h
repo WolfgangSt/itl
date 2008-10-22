@@ -14,7 +14,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 #include <validate/law.h>
 #include <itl/functors.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
 
     template <typename Type, template<class>class Equality = itl::std_equal>
@@ -468,7 +468,7 @@ namespace itl
         }
     };
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif // __itl_set_laws_h_JOFA_071124__
 

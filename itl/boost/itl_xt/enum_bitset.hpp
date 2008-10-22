@@ -32,8 +32,7 @@ DEALINGS IN THE SOFTWARE.
 
 #include <bitset>
 #include <itl/notate.hpp>
-
-namespace itl
+namespace boost{namespace itl
 {
 
     
@@ -55,7 +54,8 @@ namespace itl
         enum_bitset& add(int bit){this->set(bit); return *this;}
     };
 
-}
+}} // namespace itl boost
+
 
 #endif // __itl_enum_bitset_JOFA_021204_H__
 

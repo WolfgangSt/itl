@@ -40,7 +40,7 @@ class MapGentorT
 #include <itl_xt/itl_list.hpp>
 #include <itl_xt/gentorit.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
 
 template <class MapTV> 
@@ -153,7 +153,7 @@ void MapGentorT<MapTV>::lastSample_permuted(SampleTypeTD& sam)
 }
 */
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif
 

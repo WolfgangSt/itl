@@ -34,7 +34,7 @@ DEALINGS IN THE SOFTWARE.
 #include <itl/j_assert.hpp>
 #include <itl/itl_interval.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
 
 class random
@@ -65,7 +65,7 @@ private:
     //JODO subtractive_rng m_random;
 };
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif
 

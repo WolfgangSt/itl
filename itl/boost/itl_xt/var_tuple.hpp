@@ -36,7 +36,7 @@ DEALINGS IN THE SOFTWARE.
 #include <string>
 #include <sstream>
 
-namespace itl
+namespace boost{namespace itl
 {
     /// tuple of independent variables 
     /** class var_tuple: Die Tupel unabhängiger Variablen. Beschreiben
@@ -152,7 +152,7 @@ namespace itl
     }
 
 
-} // namespace itl
+}} // namespace itl boost
 
 
 

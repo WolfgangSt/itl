@@ -30,7 +30,7 @@ DEALINGS IN THE SOFTWARE.
 
 #include <itl/type_traits/neutron.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
 
 	//CL JODO
@@ -163,7 +163,7 @@ namespace itl
         }
     };
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif
 

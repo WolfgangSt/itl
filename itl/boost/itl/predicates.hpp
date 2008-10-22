@@ -37,7 +37,7 @@ Predicates
 #include <functional>
 #include <itl/type_traits/type_to_string.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
     // naming convention
     // predicate: n-ary predicate
@@ -162,8 +162,7 @@ namespace itl
         }
     };
 
-} // namespace itl
-
+}} // namespace itl boost
 
 #endif
 

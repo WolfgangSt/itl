@@ -40,7 +40,7 @@ SetAlgo is a collection of algorithms that work with sets but may also
 used with other set-implementations like e.g. hash_set.
 */
 
-namespace itl
+namespace boost{namespace itl
 {
 
     namespace Set
@@ -256,7 +256,7 @@ namespace itl
 
     } // namespace Set
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif
 

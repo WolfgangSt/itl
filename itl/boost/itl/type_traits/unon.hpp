@@ -12,7 +12,7 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 #include <itl/type_traits/neutron.hpp>
 #include <itl/type_traits/succ_pred.hpp>
 
-namespace itl
+namespace boost{ namespace itl
 {
 	template <class Type> struct unon{ static Type value(); };
 
@@ -26,7 +26,7 @@ namespace itl
 	template <class Type> 
 	inline Type unon<Type>::value(){ return succ(neutron<Type>::value()); };
 
-} // namespace itl
+}} // namespace boost itl
 
 #endif
 

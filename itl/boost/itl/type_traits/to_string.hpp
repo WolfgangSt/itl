@@ -42,7 +42,7 @@ Function-templates for discrete Datatypes like int, unsigned or
 #include <sstream>
 #pragma warning(disable: 4996) //warns against usage of printf other format-functions
 
-namespace itl
+namespace boost{ namespace itl
 {    
 
 /// static class template for the string representation of values
@@ -104,7 +104,7 @@ template<> inline const std::string to_string<std::string>::apply(const std::str
 template <class Type>
 inline const std::string to_string<Type>::apply(const Type& x) { return x.as_string(); }
 
-} // namespace itl
+}} // namespace boost itl
 
 #endif
 

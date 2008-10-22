@@ -44,7 +44,7 @@ class itl::list
 #include <itl/predicates.hpp>
 
 
-namespace itl
+namespace boost{namespace itl
 {
     //JODO 1_0_1 documentation
     /// an stl based list implementing inplace addition operators += 
@@ -434,7 +434,7 @@ namespace itl
     }
 
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif // __itl_list_h_JOFA_070519__
 

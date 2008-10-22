@@ -22,7 +22,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 #include <validate/gentor/gentorprofile.h>
 
 
-namespace itl
+namespace boost{namespace itl
 {
 
     // ----------------------------------------------------------
@@ -418,4 +418,4 @@ namespace itl
     };
     // ---------------------------------------------------------------------------
 
-} //namespace itl
+}} // namespace itl boost

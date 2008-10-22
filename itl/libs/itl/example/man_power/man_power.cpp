@@ -20,7 +20,7 @@ Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
 
 using namespace std;
 using namespace boost::gregorian;
-using namespace itl;
+using namespace boost::itl;
 
 /** Example man_power.cpp \file man_power.cpp
 

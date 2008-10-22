@@ -41,7 +41,7 @@ class split_interval_map
 #include <itl/interval_maps.hpp>
 #include <itl/split_interval_set.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
 
     /// implements a map as a map of intervals - on insertion overlapping intervals are split and associated values are combined.
@@ -845,7 +845,7 @@ struct type_to_string<itl::split_interval_map<KeyT,DataT,Traits> >
 };
 
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif
 

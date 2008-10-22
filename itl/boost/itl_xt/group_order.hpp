@@ -35,7 +35,7 @@ DEALINGS IN THE SOFTWARE.
 #include <itl_xt/fixtupelconst.hpp>
 #include <itl/itl_map.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
     template <int VarCount> class var_tuple;
 
@@ -85,7 +85,7 @@ namespace itl
         }
     };
 
-}
+}} // namespace itl boost
 
 #endif // __group_order_JOFA_040621_H__
 

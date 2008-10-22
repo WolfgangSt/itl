@@ -24,7 +24,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 
 using namespace std;
 using namespace Loki;
-using namespace itl;
+using namespace boost::itl;
 
 
 void test_Validater()
@@ -49,7 +49,8 @@ void test_Validater()
     //map_cluster_star_pushout.run();
 }
 
-interval_map<int, itl::interval_set<int> > itv_map_of_intsets()
+/*CL
+interval_map<int, interval_set<int> > itv_map_of_intsets()
 {
     itl::interval_set<int> soi_AB; 
     soi_AB.insert(1);
@@ -99,7 +100,7 @@ void test_intersect()
     im *= spitv_map_of_intsets();
     cout << im.as_string() << endl;
 }
-
+*/
 
 void test_realmvalidater()
 {

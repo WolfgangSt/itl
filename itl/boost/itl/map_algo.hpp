@@ -31,7 +31,7 @@ DEALINGS IN THE SOFTWARE.
 #include <itl/notate.hpp>
 #include <itl/set_algo.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
     namespace Map 
     {
@@ -157,8 +157,7 @@ namespace itl
         }
 
     } // namespace Map
-
-} // namespace itl
+}} // namespace boost itl
 
 #endif
 

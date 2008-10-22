@@ -44,7 +44,7 @@ w.r.t. addition (neutron()).
 #define ITL_NEEDS_POSIX_TIME_PTIME_DIFFERENCE_TYPE
 #define ITL_NEEDS_POSIX_TIME_PTIME_SIZE_TYPE
 
-namespace itl
+namespace boost{namespace itl
 {
 
     // ------------------------------------------------------------------------
@@ -68,7 +68,7 @@ namespace itl
     {
         return x -= boost::posix_time::ptime::time_duration_type::unit();
     }
-} // namespace itl
+}} // namespace itl boost
 
 #endif
 

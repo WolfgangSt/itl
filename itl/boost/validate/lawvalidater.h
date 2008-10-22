@@ -19,7 +19,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 #include <validate/laws/monoid.h>
 #include <validate/lawviolations.h>
 
-namespace itl
+namespace boost{namespace itl
 {
     typedef itl::map<std::string, int> ValidationCounterT;
     typedef itl::map<std::string, int> ViolationCounterT;
@@ -176,7 +176,7 @@ namespace itl
         std::cout << "Law successfully validated for " << _trialsCount << " cases" << std::endl;
     }
 
-} //namespace itl
+}} // namespace itl boost
 
 // ----------------------------------------------------------------------------
 

@@ -36,7 +36,7 @@ class SetGentorT
 #include <itl_xt/numbergentor.hpp>
 #include <itl_xt/itl_list.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
 
 template <class SetTV> 
@@ -144,7 +144,7 @@ void SetGentorT<SetTV>::lastSample_permuted(SampleTypeTD& sam)
 }
 */
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif
 

@@ -11,7 +11,7 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 // I DO NOT #include boost/itl/itl_<date_time_adapter>.hpp here, because it
 // HAS TO be included by client code prior to this location.
 
-namespace itl
+namespace boost{ namespace itl
 {
 	template <class Type> struct size;
 
@@ -30,7 +30,7 @@ namespace itl
 #endif
 
 	template <class Type> struct size{ typedef std::size_t type; };
-} // namespace itl
+}} // namespace boost itl
 
 #define ITL_SIZE_TYPES_PROVIDED
 

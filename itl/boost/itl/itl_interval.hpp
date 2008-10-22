@@ -54,7 +54,7 @@ DEALINGS IN THE SOFTWARE.
 
 typedef unsigned char ITV_BOUNDTYPES;
 
-namespace itl
+namespace boost{namespace itl
 {
 
 /**
@@ -1170,7 +1170,7 @@ std::basic_ostream<CharType, CharTraits> &operator<<
 
 
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif
 

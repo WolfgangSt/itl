@@ -45,7 +45,7 @@ class interval_base_map
 #define const_FOR_IMPLMAP(iter) for(typename ImplMapT::const_iterator iter=_map.begin(); (iter)!=_map.end(); (iter)++)
 #define FOR_IMPLMAP(iter) for(typename ImplMapT::iterator iter=_map.begin(); (iter)!=_map.end(); (iter)++)
 
-namespace itl
+namespace boost{namespace itl
 {
 
 template<class DomainT, class CodomainT>
@@ -1371,7 +1371,7 @@ std::basic_ostream<CharType, CharTraits>& operator <<
 	return stream << "}";
 }
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif
 

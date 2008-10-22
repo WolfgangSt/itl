@@ -34,7 +34,7 @@ DEALINGS IN THE SOFTWARE.
 #include <itl_xt/var_tuple_order.hpp>
 #include <itl/split_interval_map.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
 
     template <int VarCount>
@@ -497,7 +497,7 @@ namespace itl
         
     }
 
-}
+}} // namespace itl boost
 
 #endif // __tuple_computer_JOFA_040614_H__
 

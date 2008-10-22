@@ -33,7 +33,7 @@ DEALINGS IN THE SOFTWARE.
 #include <itl/interval_base_set.hpp>
 #include <itl/interval_set.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
 
     /// implements a set as a set of intervals - on insertion overlapping intervals are split
@@ -503,7 +503,7 @@ namespace itl
         { return "sp_itv_set<"+ type_to_string<Type>::apply() +">"; }
     };
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif
 

@@ -17,7 +17,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 #include <validate/laws/pushouts.h>
 #include <validate/lawvalidater.h>
 
-namespace itl
+namespace boost{namespace itl
 {
     typedef WeightedNumberGentor<int> ChoiceT;
 
@@ -742,5 +742,5 @@ namespace itl
     };
 
 
-} //namespace itl
+}} // namespace itl boost
 

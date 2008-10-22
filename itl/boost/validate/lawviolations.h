@@ -14,7 +14,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 #include <itl/itl_set.hpp>
 #include <validate/loki_xt/Tuple.h>
 
-namespace itl
+namespace boost{namespace itl
 {
 
     class LawViolationsI
@@ -170,7 +170,7 @@ namespace itl
         size_t       _violationsCount;
     };
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif //__itl_LawViolations_h_JOFA_070411__
 

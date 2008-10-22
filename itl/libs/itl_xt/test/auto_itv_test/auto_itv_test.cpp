@@ -43,10 +43,10 @@ information on the erroneous testcases if there are any.
 #include <itl/split_interval_set.hpp>
 #include <itl/split_interval_map.hpp>
 #include "../itvmaptester.h"
-#include "../test/itvsettester.h"
+#include "../itvsettester.h"
 
 using namespace std;
-using namespace itl;
+using namespace boost::itl;
 
 // -------------------------------------------------
 void autoPropertyTest_ItvSet_int()

@@ -8,13 +8,13 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 #ifndef __itl_type_traits_is_neutron_emitter_JOFA_081004_H__
 #define __itl_type_traits_is_neutron_emitter_JOFA_081004_H__
 
-namespace itl
+namespace boost{ namespace itl
 {
 	template <class Type> struct is_neutron_emitter;
 
 	template <class Type> struct is_neutron_emitter{ enum {value = false}; };
 
-} // namespace itl
+}} // namespace boost itl
 
 #endif
 

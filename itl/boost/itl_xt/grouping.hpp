@@ -34,7 +34,7 @@ DEALINGS IN THE SOFTWARE.
 #include <itl_xt/group_order.hpp>
 #include <itl/itl_map.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
     template <int varCountV>
     class grouping
@@ -80,7 +80,7 @@ namespace itl
     }
 
 
-}
+}} // namespace itl boost
 
 #endif // __grouping_JOFA_040621_H__
 

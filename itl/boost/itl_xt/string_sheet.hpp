@@ -33,8 +33,7 @@ DEALINGS IN THE SOFTWARE.
 #include <itl/string_list.hpp>
 #include <itl/notate.hpp>
 
-
-namespace itl
+namespace boost{namespace itl
 {
 
     const int MAX_INPUT_ROW_SIZE = 10000;
@@ -83,7 +82,7 @@ namespace itl
         void fprint(FILE* file, const char* sep = "\t")const;
         void fscan(std::ifstream& ifstr, const char* sep = "\t");
     };
-}
+}} // namespace itl boost
 
 #endif // __itl_string_sheet_JOFA_050209_H__
 

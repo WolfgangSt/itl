@@ -14,7 +14,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 #include <set>
 #include <validate/loki_xt/Tuple.h>
 
-namespace itl
+namespace boost{namespace itl
 {
 
     /** abstract template class Law:
@@ -96,7 +96,7 @@ namespace itl
     enum InputVarIndex  { operand_a, operand_b, operand_c, operand_d, operand_e };
     enum OutputVarIndex { lhs_result, rhs_result };
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif //__itl_Law_h_JOFA_070411__
 

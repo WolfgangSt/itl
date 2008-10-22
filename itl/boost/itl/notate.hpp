@@ -63,10 +63,10 @@ DEALINGS IN THE SOFTWARE.
 #define CONT_VALUE        second
 
 // universal and maths
-namespace itl 
+namespace boost{namespace itl
 {
     const int UNDEFINED_INDEX = -1;
-}
+}} // namespace itl boost
 
 
 #endif // __itl_NOTATE_H_JOFA_990119__

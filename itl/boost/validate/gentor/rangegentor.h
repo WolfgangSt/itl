@@ -34,7 +34,7 @@ class IntevalGentor
 #include <itl/itl_interval.hpp>
 #include <itl_xt/gentorit.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
     //JODO: RangeGentor is similat to ItvGentorT. RangeGentor might be replaced by ItvGentorT
     // with some modifications applied to ItvGentorT.
@@ -78,7 +78,7 @@ namespace itl
         return _last;
     }
 
-} // namespace itl
+}} // namespace itl boost
 
 
 

@@ -35,7 +35,7 @@ set of strings
 #include <string.h>
 #include <itl/itl_set.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
     typedef std::string StringTD;
     typedef StringTD (StringTD::* StringSelectorFPD)()const; 
@@ -113,8 +113,7 @@ namespace itl
         const_FORALL_THIS(it)
             selectees.insert(((*it).*selector)());
     }
-
-} // namespace itl
+}} // namespace boost itl
 
 
 #endif

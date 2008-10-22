@@ -18,7 +18,7 @@ Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
 #include "../toytime.h"
 
 using namespace std;
-using namespace itl;
+using namespace boost::itl;
 
 /** Example interval_container.cpp \file interval_container.cpp
 

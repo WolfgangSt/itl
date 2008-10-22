@@ -20,7 +20,7 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 using namespace std;
 using namespace boost;
 using namespace unit_test;
-using namespace itl;
+using namespace boost::itl;
 
 // -----------------------------------------------------------------------------
 // test_interval_set_shared are tests that should give identical results for all

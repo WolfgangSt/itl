@@ -10,7 +10,7 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 
 #include <string>
 
-namespace itl
+namespace boost{ namespace itl
 {
 	template <class Type> struct is_continuous;
 
@@ -26,7 +26,7 @@ namespace itl
 
 	template <class Type> struct is_continuous{ enum {value = false}; };
 
-} // namespace itl
+}} // namespace boost itl
 
 #endif
 

@@ -33,7 +33,7 @@ DEALINGS IN THE SOFTWARE.
 #include <itl/itl_map.hpp>
 #include <itl_xt/episode_set.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
 
 /// A collection (product) of episodes of different types that do not change for a period of time
@@ -88,10 +88,10 @@ namespace itl
 */
 
 template <class TimeT, class TypeDomain>
-class episode_product : public itl::map<typename TypeDomain::DomainET, episode_set<TimeT,TypeDomain> >
+class episode_product : public boost::itl::map<typename TypeDomain::DomainET, episode_set<TimeT,TypeDomain> >
 {
 public:
-    typedef itl::map<typename TypeDomain::DomainET, episode_set<TimeT,TypeDomain> > base_type;
+	typedef boost::itl::map<typename TypeDomain::DomainET, episode_set<TimeT,TypeDomain> > base_type;
     typedef    typename base_type::value_type value_type;
     typedef    typename base_type::data_type data_type;
     typedef    typename base_type::data_type EpisodeSetTD;
@@ -290,7 +290,7 @@ inline bool operator == (const episode_product<TimeT,TypeDomain>& lhs,
 }
 */
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif // __itl_episode_product_hpp_JOFA_011005_H__
 

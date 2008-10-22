@@ -38,6 +38,8 @@ class NumberGentorT
 #include <itl/type_traits/unon.hpp>
 #include <itl_xt/gentorit.hpp>
 
+using namespace boost::itl;
+
 #define RND_1_TO(y)      (1+(int)((double)(y)*rand()/(RAND_MAX+1.0)))
 #define RND_0_TO(y)      ((int)((double)((y)+1)*rand()/(RAND_MAX+1.0)))
 #define RND_WITHIN(x,y) ((x)+(int)((double)((y)-(x)+1)*rand()/(RAND_MAX+1.0)))
@@ -48,7 +50,7 @@ class NumberGentorT
 
 #define RND_WITHIN_EXUPB(x,y) ((x)+((double)((y)-(x))*rand()/(RAND_MAX+1.0)))
 
-namespace itl
+namespace boost{namespace itl
 {
 
 template <class NumTV>
@@ -267,7 +269,7 @@ std::string WeightedNumberGentor<WeightsT>::inconsitencyMessage(const std::strin
     return message;
 }
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif // __NUMBERGENTORT_H_JOFA_000725__
 

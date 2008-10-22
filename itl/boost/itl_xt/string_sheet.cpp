@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 #include "string_sheet.h"
 #include <itl/itl_value.hpp>
 
-using namespace itl;
+using namespace boost::itl;
 
 
 string diff_desc::afxReport(const string& file)const

@@ -10,7 +10,7 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 
 #include <itl/interval_base_set.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
 
 //-----------------------------------------------------------------------------
@@ -430,7 +430,7 @@ erase
     return object -= operand; 
 }
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif
 

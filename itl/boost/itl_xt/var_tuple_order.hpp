@@ -37,7 +37,7 @@ DEALINGS IN THE SOFTWARE.
 #include <itl_xt/var_permutation.hpp>
 #include <itl_xt/grouping.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
 
     // template <typename VarTupleT> class var_permutation {};
@@ -48,7 +48,7 @@ namespace itl
     public:
         enum { varCountV = VarTupleT::var_count };
         typedef var_permutation<varCountV>    var_permutationT;
-        typedef grouping<varCountV>            groupingT;
+        typedef grouping<varCountV>           groupingT;
         typedef group_order<varCountV>        group_orderT;
 
         var_tuple_order();
@@ -154,7 +154,7 @@ namespace itl
         return UNDEFINED_INDEX;
     }
 
-}
+}} // namespace itl boost
 
 #endif // __var_tuple_order_JOFA_040620_H__
 

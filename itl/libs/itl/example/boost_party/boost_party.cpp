@@ -20,7 +20,7 @@ Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
 
 using namespace std;
 using namespace boost::posix_time;
-using namespace itl;
+using namespace boost::itl;
 
 /** Example boost_party.cpp \file boost_party.cpp
 
@@ -61,7 +61,7 @@ using namespace itl;
 
 // Type itl::set<string> collects the names of party guests. Therefore it needs to
 // implement operator += that performs a set union on overlap of intervals.
-typedef itl::set<string> GuestSetT;
+typedef boost::itl::set<string> GuestSetT;
 
 // boost::posix_time::ptime is the domain type the the interval_map. 
 // It's key values are therefore time intervals: interval<ptime>. The content

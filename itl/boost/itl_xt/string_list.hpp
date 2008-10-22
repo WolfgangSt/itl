@@ -41,7 +41,7 @@ class itl::string_list
 #include <itl/notate.hpp>
 #include <itl/itl_list.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {    
     
 /// providing split, join and basic text processing
@@ -111,8 +111,7 @@ public:
     string_list& trimEach(const char* toTrimFor = " ");
 } ;
 
-
-} // namespace itl
+}} // namespace boost itl
 
 #endif
 

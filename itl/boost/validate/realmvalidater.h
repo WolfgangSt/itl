@@ -16,7 +16,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 
 #define ITL_LOCATION(message) location(__FILE__,__LINE__,message)
 
-namespace itl
+namespace boost{namespace itl
 {
     std::string location(const std::string& file, int line, const std::string& message)
     {
@@ -338,5 +338,5 @@ namespace itl
     };
 
 
-} //namespace itl
+}} // namespace itl boost
 

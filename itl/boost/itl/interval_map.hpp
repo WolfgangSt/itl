@@ -13,12 +13,10 @@ class interval_map
 #define __interval_map_h_JOFA_080705__
 
 #include <itl/interval_set.hpp>
-//CL #include <itl/interval_map.hpp>
 #include <itl/interval_base_map.hpp>
 #include <itl/interval_maps.hpp>
-//CL? #include <itl/split_interval_set.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
 
 /// implements a map as a map of intervals - on insertion overlapping intervals are split and associated values are combined.
@@ -1106,7 +1104,7 @@ struct type_to_string<itl::interval_map<KeyT,DataT,Traits> >
     }
 };
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif
 

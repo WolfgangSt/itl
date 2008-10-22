@@ -32,7 +32,7 @@ DEALINGS IN THE SOFTWARE.
 #include <itl/itl_map.hpp>
 #include <string>
 
-namespace itl
+namespace boost{namespace itl
 {    
     template <class CodomTV, class CompTV=less<std::string> >
         class string_map : public MapT<std::string, CodomTV, CompTV>
@@ -53,8 +53,7 @@ namespace itl
         class ICstring_map : public itl::string_map<CodomTV, string_ICLess>
     {
     };
-
-} // namespace itl
+}} // namespace boost itl
 
 #endif // __itl_string_map_JOFA_021215_H__
 

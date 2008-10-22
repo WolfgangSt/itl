@@ -11,7 +11,7 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 template <class BicrementableT>
 BicrementableT make(int n)
 {
-	BicrementableT value = itl::neutron<BicrementableT>::value();
+	BicrementableT value = neutron<BicrementableT>::value();
 	if(n>=0)
 		for(int i=0; i<n; i++)
 			++value;

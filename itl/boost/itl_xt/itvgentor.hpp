@@ -36,7 +36,7 @@ class ItvGentorT
 #include <itl_xt/numbergentor.hpp>
 #include <itl_xt/seqgentor.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
 
 template <class ItvDomTV, class ItvTV=interval<ItvDomTV> > 
@@ -85,7 +85,7 @@ void ItvGentorT<ItvDomTV,ItvTV>::some(ItvTV& x)
     }
 };
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif
 

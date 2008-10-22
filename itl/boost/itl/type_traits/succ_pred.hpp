@@ -8,7 +8,7 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 #ifndef __itl_type_traits_succ_pred_JOFA_080913_H__
 #define __itl_type_traits_succ_pred_JOFA_080913_H__
 
-namespace itl
+namespace boost{ namespace itl
 {
     template <class IncrementableT>
     inline static IncrementableT succ(IncrementableT x) { return ++x; }
@@ -16,7 +16,7 @@ namespace itl
     template <class DecrementableT>
     inline static DecrementableT pred(DecrementableT x) { return --x; }
 
-} // namespace itl
+}} // namespace boost itl
 
 #endif
 

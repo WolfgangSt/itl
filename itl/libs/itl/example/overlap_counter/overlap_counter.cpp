@@ -14,7 +14,7 @@ Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
 #include <itl/split_interval_map.hpp>
 
 using namespace std;
-using namespace itl;
+using namespace boost::itl;
 
 
 /** Example overlap_counter.cpp \file overlap_counter.cpp
@@ -36,7 +36,7 @@ using namespace itl;
 /*  A interval_map<int, int> is a map<Interval<int>, int> that maps intervals
     to int values. On overlap of intervals it sums up the associated int 
     values.    */
-typedef itl::interval_map<int, int> OverlapCounterTD;
+typedef interval_map<int, int> OverlapCounterTD;
 
 void print_overlaps(const OverlapCounterTD& counter)
 {

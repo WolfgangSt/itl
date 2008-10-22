@@ -43,7 +43,7 @@ class itl::map
 #include <map>
 
 
-namespace itl
+namespace boost{namespace itl
 {
 
     struct neutron_absorber
@@ -566,7 +566,7 @@ namespace itl
     };
 
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif // __itl_map_h_JOFA_070519__
 

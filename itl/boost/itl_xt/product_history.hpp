@@ -31,7 +31,7 @@ DEALINGS IN THE SOFTWARE.
 
 #include <itl/split_interval_map.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
 
 /// composes many episodes of different types into a single history of episode_product s
@@ -105,7 +105,7 @@ protected:
     }
 };
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif // __product_history_h_JOFA_011005_H__
 

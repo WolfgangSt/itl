@@ -33,7 +33,7 @@ DEALINGS IN THE SOFTWARE.
 #include <itl/itl_interval.hpp>
 #include <itl_xt/ordered_type.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
 
 /// Serves as a base class for the decomposition of histories in episodes
@@ -71,7 +71,7 @@ class typed_episode : public ordered_type_base<TypeDomain>, public episode_inter
 {
 };
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif // __itl_typed_episode_hpp_JOFA_011015_H__
 

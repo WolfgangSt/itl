@@ -33,8 +33,7 @@ DEALINGS IN THE SOFTWARE.
 #include <itl/notate.hpp>
 #include <itl/string_set.hpp>
 
-
-namespace itl
+namespace boost{namespace itl
 {
 
     template <typename StringT>
@@ -109,7 +108,7 @@ namespace itl
         return compareResult == -1; 
     }
 
-}
+}} // namespace itl boost
 
 #endif // __itl_prefix_set_JOFA_040902_H__
 

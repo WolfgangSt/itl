@@ -24,7 +24,7 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 using namespace std;
 using namespace boost;
 using namespace unit_test;
-using namespace itl;
+using namespace boost::itl;
 
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_map_mixed_ctor_4_ordered_types, T, ordered_types)

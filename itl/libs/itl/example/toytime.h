@@ -26,7 +26,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
 
-namespace itl
+namespace boost{namespace itl
 {
 
 /** Time is a toy-class to demonstrate a class that conforms the requirements of
@@ -71,5 +71,5 @@ bool operator < (const Time& x1, const Time& x2) { return x1.asInt() < x2.asInt(
 bool operator == (const Time& x1, const Time& x2) { return x1.asInt() == x2.asInt(); } 
 bool operator <= (const Time& x1, const Time& x2) { return x1.asInt() <= x2.asInt(); } 
 
-} // namespace itl
+}} // namespace itl boost
 

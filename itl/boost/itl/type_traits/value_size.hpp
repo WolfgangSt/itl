@@ -37,7 +37,7 @@ Function-templates for discrete Datatypes like int, unsigned or
 #ifndef __itl_VALUE_SIZE_JOFA_081004_H__
 #define __itl_VALUE_SIZE_JOFA_081004_H__
 
-namespace itl
+namespace boost{ namespace itl
 {    
 
 template <typename Type>
@@ -73,7 +73,7 @@ inline std::size_t value_size<Type>::apply(const Type& value)
 
 
 
-} // namespace itl
+}} // namespace boost itl
 
 #endif
 

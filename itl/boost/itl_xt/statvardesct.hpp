@@ -29,8 +29,7 @@ DEALINGS IN THE SOFTWARE.
 #define __StatVarDescT_JOFA_040614_H__
 
 #include <itl_xt/enum_bitset.hpp>
-
-namespace itl
+namespace boost{namespace itl
 {
 
     /// Skalenniveau der Skala
@@ -77,7 +76,7 @@ namespace itl
     };
 
 
-}
+}} // namespace itl boost
 
 #endif // __StatVarDescT_JOFA_040614_H__
 

@@ -32,7 +32,7 @@ DEALINGS IN THE SOFTWARE.
 
 #include <string>
 
-namespace itl
+namespace boost{namespace itl
 {
 
 /// an enumeration ordered class type
@@ -140,7 +140,7 @@ protected:
     //virtual bool isValueLess(const ordered_type<TypeDomain>* x2)const=0;
 };
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif // __ordered_type_h_JOFA_011005_H__
 

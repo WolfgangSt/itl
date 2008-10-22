@@ -35,7 +35,7 @@ class SeqGentorT
 #include <itl_xt/gentorit.hpp>
 #include <itl_xt/itl_list.hpp>
 
-namespace itl
+namespace boost{namespace itl
 {
 
 template <class SeqTV> 
@@ -139,8 +139,7 @@ void SeqGentorT<SeqTV>::lastSample_permuted(SampleTypeTD& sam)
     }
 }
 */
-
-} // namespace itl
+}} // namespace boost itl
 
 #endif
 

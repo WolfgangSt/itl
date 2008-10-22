@@ -29,8 +29,7 @@ DEALINGS IN THE SOFTWARE.
 #define __itl_interval_morphism_H_JOFA_080315__
 
 #include <itl/notate.hpp>
-
-namespace itl
+namespace boost{namespace itl
 {
     namespace Interval
     {
@@ -112,8 +111,7 @@ namespace itl
     inline std::string binary_template_to_string<Interval::Join>::apply() { return "j"; }
     template<> 
     inline std::string binary_template_to_string<Interval::AbsorbNeutrons>::apply() { return "a0"; }
-
-} // namespace itl
+}} // namespace boost itl
 
 #endif
 

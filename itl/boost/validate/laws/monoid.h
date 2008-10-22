@@ -14,7 +14,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 #include <itl/functors.hpp>
 #include <validate/law.h>
 
-namespace itl
+namespace boost{namespace itl
 {
 
     /*  Monoid: (M,+,0) with .+.: M x M -> M   has these axioms
@@ -375,7 +375,7 @@ namespace itl
 
     };
 
-} // namespace itl
+}} // namespace itl boost
 
 #endif // __itl_monoid_h_JOFA_070411__
 

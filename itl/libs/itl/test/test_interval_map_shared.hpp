@@ -11,8 +11,8 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 #include <boost/type_traits/is_same.hpp>
 
 template <template<class T, class U,
-                   class Traits = itl::neutron_absorber,
-                   template<class>class = itl::interval,
+                   class Traits = neutron_absorber,
+				   template<class>class = interval,
                    template<class>class = std::less,
 				   template<class>class = std::allocator
                   >class IntervalMap, 
@@ -28,22 +28,22 @@ void interval_map_fundamentals_4_ordered_types()
 	// we are able to test operations only for the most basic values
 	// neutron (0, empty, T() ...) and unon.
 
-	//T v0 = itl::neutron<T>(); //JODO check operator() variant
-	//T v1 = itl::unon<T>();
-	T v0 = itl::neutron<T>::value();
-	T v1 = itl::unon<T>::value();
+	//T v0 = neutron<T>(); //JODO check operator() variant
+	//T v1 = unon<T>();
+	T v0 = neutron<T>::value();
+	T v1 = unon<T>::value();
 	interval<T> I0_0I(v0);
 	interval<T> I1_1I(v1);
 	interval<T> I0_1I(v0,v1);
-	U u0 = itl::neutron<U>::value();
-	U u1 = itl::unon<U>::value();
+	U u0 = neutron<U>::value();
+	U u1 = unon<U>::value();
 
 	//-------------------------------------------------------------------------
 	//empty set
 	//-------------------------------------------------------------------------
 	BOOST_CHECK_EQUAL(IntervalMapT().empty(), true);
-	BOOST_CHECK_EQUAL(IntervalMapT().cardinality(), itl::neutron<size_T>::value());
-	BOOST_CHECK_EQUAL(IntervalMapT().size(), itl::neutron<size_T>::value());
+	BOOST_CHECK_EQUAL(IntervalMapT().cardinality(), neutron<size_T>::value());
+	BOOST_CHECK_EQUAL(IntervalMapT().size(), neutron<size_T>::value());
 	BOOST_CHECK_EQUAL(IntervalMapT().interval_count(), 0);
 	BOOST_CHECK_EQUAL(IntervalMapT().iterative_size(), 0);
 	BOOST_CHECK_EQUAL(IntervalMapT(), IntervalMapT());
@@ -158,15 +158,15 @@ void interval_map_fundamentals_4_ordered_types()
 	BOOST_CHECK_EQUAL(single_I0_1I_u1.contains(single_I1_1I_u1), true);
 	BOOST_CHECK_EQUAL(single_I0_1I_u1.contains(single_I0_1I_u1), true);
 
-	BOOST_CHECK_EQUAL(single_I0_0I_u1.cardinality(), itl::unon<size_T>::value());
-	BOOST_CHECK_EQUAL(single_I0_0I_u1.size(), itl::unon<size_T>::value());
+	BOOST_CHECK_EQUAL(single_I0_0I_u1.cardinality(), unon<size_T>::value());
+	BOOST_CHECK_EQUAL(single_I0_0I_u1.size(), unon<size_T>::value());
 	BOOST_CHECK_EQUAL(single_I0_0I_u1.interval_count(), 1);
 	BOOST_CHECK_EQUAL(single_I0_0I_u1.iterative_size(), 1);
 }
 
 template <template<class T, class U,
-                   class Traits = itl::neutron_absorber,
-                   template<class>class = itl::interval,
+                   class Traits = neutron_absorber,
+                   template<class>class = interval,
                    template<class>class = std::less,
 				   template<class>class = std::allocator
                   >class IntervalMap, 
@@ -178,7 +178,7 @@ void interval_map_ctor_4_bicremental_types()
 	T v4 = make<T>(4);
 	U u2 = make<U>(2);
 	U u4 = make<U>(4);
-	itl::interval<T> I4_4I(v4);
+	interval<T> I4_4I(v4);
 	IntervalMapT::base_pair_type v4_u2(v4,u2);
 	IntervalMapT::value_type I4_4I_u2(I4_4I,u2);
 
@@ -227,8 +227,8 @@ void interval_map_ctor_4_bicremental_types()
 
 
 template <template<class T, class U,
-                   class Traits = itl::neutron_absorber,
-                   template<class>class = itl::interval,
+                   class Traits = neutron_absorber,
+                   template<class>class = interval,
                    template<class>class = std::less,
 				   template<class>class = std::allocator
                   >class IntervalMap, 
@@ -281,8 +281,8 @@ void interval_map_add_sub_4_bicremental_types()
 
 
 template <template<class T, class U,
-                   class Traits = itl::neutron_absorber,
-                   template<class>class = itl::interval,
+                   class Traits = neutron_absorber,
+                   template<class>class = interval,
                    template<class>class = std::less,
 				   template<class>class = std::allocator
                   >class IntervalMap, 
@@ -313,8 +313,8 @@ void interval_map_distinct_4_bicremental_types()
 }
 
 template <template<class T, class U,
-                   class Traits = itl::neutron_absorber,
-                   template<class>class = itl::interval,
+                   class Traits = neutron_absorber,
+                   template<class>class = interval,
                    template<class>class = std::less,
 				   template<class>class = std::allocator
                   >class IntervalMap, 
@@ -367,8 +367,8 @@ void interval_map_distinct_4_bicremental_continuous_types()
 
 
 template <template<class T, class U,
-                   class Traits = itl::neutron_absorber,
-                   template<class>class = itl::interval,
+                   class Traits = neutron_absorber,
+                   template<class>class = interval,
                    template<class>class = std::less,
 				   template<class>class = std::allocator
                   >class IntervalMap, 
@@ -418,8 +418,8 @@ void interval_map_isolate_4_bicremental_continuous_types()
 
 
 template <template<class T, class U,
-                   class Traits = itl::neutron_absorber,
-                   template<class>class = itl::interval,
+                   class Traits = neutron_absorber,
+                   template<class>class = interval,
                    template<class>class = std::less,
 				   template<class>class = std::allocator
                   >class IntervalMap, 
@@ -461,8 +461,8 @@ void interval_map_contains_4_bicremental_types()
 }
 
 template <template<class T, class U,
-                   class Traits = itl::neutron_absorber,
-                   template<class>class = itl::interval,
+                   class Traits = neutron_absorber,
+                   template<class>class = interval,
                    template<class>class = std::less,
 				   template<class>class = std::allocator
                   >class IntervalMap, 
@@ -523,8 +523,8 @@ void interval_map_operators_4_bicremental_types()
 
 // Test for nontrivial intersection of interval maps with intervals and values
 template <template<class T, class U,
-                   class Traits = itl::neutron_absorber,
-                   template<class>class = itl::interval,
+                   class Traits = neutron_absorber,
+                   template<class>class = interval,
                    template<class>class = std::less,
 				   template<class>class = std::allocator
                   >class IntervalMap, 
@@ -658,8 +658,8 @@ void interval_map_base_intersect_4_bicremental_types()
 
 // Test for nontrivial erasure of interval maps with intervals and interval sets
 template <template<class T, class U,
-                   class Traits = itl::neutron_absorber,
-                   template<class>class = itl::interval,
+                   class Traits = neutron_absorber,
+                   template<class>class = interval,
                    template<class>class = std::less,
 				   template<class>class = std::allocator
                   >class IntervalMap, 
@@ -773,8 +773,8 @@ void interval_map_base_erase_4_bicremental_types()
 
 // Test first_collision
 template <template<class T, class U,
-                   class Traits = itl::neutron_absorber,
-                   template<class>class = itl::interval,
+                   class Traits = neutron_absorber,
+                   template<class>class = interval,
                    template<class>class = std::less,
 				   template<class>class = std::allocator
                   >class IntervalMap, 
