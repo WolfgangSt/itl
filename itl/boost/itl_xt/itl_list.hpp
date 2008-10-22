@@ -421,12 +421,12 @@ namespace boost{namespace itl
         if(it == end()) return std::string("");
         else
         {
-            std::string y = value<DataT>::to_string(*it);
+            std::string y = to_string<DataT>::apply(*it);
             it++;
             while(it != end()) 
             { 
                 y+=sep; 
-                y += value<DataT>::to_string(*it); 
+                y += to_string<DataT>::value(*it); 
                 it++; 
             }
             return y;

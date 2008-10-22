@@ -313,8 +313,8 @@ public:
     <
         template
         <    
-            class DomainT, template<class>class Interval, 
-            template<class>class Compare, template<class>class Alloc
+            class DomT, template<class>class Interv, 
+            template<class>class Comp, template<class>class Allc
         >
         class IntervalSet
     >
@@ -361,7 +361,7 @@ public:
     template<template<class>class Combinator>
     SubType& add(const base_pair_type& x) 
     { 
-        that()->add_<Combinator>( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); 
+        that()->template add_<Combinator>( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); 
         return *that();
     }
 
@@ -383,7 +383,7 @@ public:
     */
     template<template<class>class Combinator>
     SubType& add(const value_type& x) 
-    { that()->add_<Combinator>(x); return *that(); };
+    { that()->template add_<Combinator>(x); return *that(); };
 
     /// Addition of a base value pair.
     /** Addition of a base value pair <tt>x := pair(k,y)</tt> where <tt>base_value_type:=pair<DomainT,CodomainT></tt>
@@ -415,7 +415,7 @@ public:
         <tt>m0=m; m.add(x); m.subtract(x);</tt> implies <tt>m==m0 </tt>         
     */
     SubType& add(const value_type& x) 
-    { that()->add_<inplace_plus>(x); return *that(); }
+    { that()->template add_<inplace_plus>(x); return *that(); }
 
     /// Addition of a base value pair.
     /** Addition of an value pair <tt>x=(I,y)</tt>
@@ -458,7 +458,7 @@ public:
     */
     template<template<class>class Combinator>
     void subtract(const base_pair_type& x)
-    { that()->subtract_<Combinator>( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
+    { that()->template subtract_<Combinator>( value_type(interval_type(x.KEY_VALUE), x.CONT_VALUE) ); }
 
     /// Subtraction of an interval value pair using a Combinator operation
     /** Subtraction of an interval value pair  <tt>x=(I,y)</tt> 
@@ -471,7 +471,7 @@ public:
         that is passed a template parameter.
     */
     template<template<class>class Combinator>
-    void subtract(const value_type& x){ that()->subtract_<Combinator>(x); }
+    void subtract(const value_type& x){ that()->template subtract_<Combinator>(x); }
 
 
     /// Subtraction of a base value pair.
@@ -489,7 +489,7 @@ public:
     */
     SubType& subtract(const base_pair_type& x)
     { 
-        that()->subtract_( value_type(interval_type(x.key), x.data) ); 
+        that()->template subtract_( value_type(interval_type(x.key), x.data) ); 
         return *that();
     }
 
@@ -510,9 +510,9 @@ public:
     SubType& subtract(const value_type& x)
     {
         if(Traits::emits_neutrons)
-            that()->add_<inplace_minus>(x); 
+            that()->template add_<inplace_minus>(x); 
         else 
-            that()->subtract_<inplace_minus>(x); 
+            that()->template subtract_<inplace_minus>(x); 
     
         return *that();
     }
@@ -687,8 +687,8 @@ public:
     <
         template
         <    
-            class DomainT, template<class>class Interval, 
-            template<class>class Compare, template<class>class Alloc
+            class DomT, template<class>class Interv, 
+            template<class>class Comp, template<class>class Allc
         >
         class IntervalSet
     >
@@ -715,9 +715,9 @@ public:
     <
         template
         <    
-            class DomainT, class CodommainT, 
-            class Traits, template<class>class Interval, 
-            template<class>class Compare, template<class>class Alloc
+            class DomT, class CodomT, 
+            class Trts, template<class>class Interv, 
+            template<class>class Comp, template<class>class Allc
         >
         class IntervalMap
     >
@@ -960,9 +960,9 @@ template
     <
         template
         <    
-            class DomainT, class CodommainT, 
-            class Traits, template<class>class Interval, 
-            template<class>class Compare, template<class>class Alloc
+            class DomT, class CodomT, 
+            class Trts, template<class>class Interv, 
+            template<class>class Comp, template<class>class Allc
         >
         class IntervalMap
     >

@@ -166,7 +166,7 @@ namespace boost{namespace itl
 
         /// Assignment operator
         template<class SubType>
-        interval_base_set& operator =
+        split_interval_set& operator =
             (const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
         { assign(src); return *this; }
 
@@ -177,7 +177,7 @@ namespace boost{namespace itl
             typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> base_set_type;
             this->clear();
             // Can be implemented via _set.insert: Interval joining not necessary.
-            const_FORALL(base_set_type, it, src) 
+            const_FORALL(typename base_set_type, it, src) 
                 this->_set.insert(*it); 
         }
         
@@ -196,12 +196,7 @@ namespace boost{namespace itl
     private:
         void insert_rest(const interval_type& x_itv, iterator& it, iterator& end_it);
         void subtract_rest(const interval_type& x_itv, iterator& it, iterator& end_it);
-
-
     } ;
-
-
-
 
 
     template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>

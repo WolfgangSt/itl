@@ -208,10 +208,10 @@ namespace boost{namespace itl
         std::string repr = "[";
         int idx = 0;
         if(m_Size>0)
-            repr += value<VarEnumTD>::to_string(m_Permutation[idx++]);
+            repr += to_string<VarEnumTD>::apply(m_Permutation[idx++]);
 
         while(idx<m_Size)
-            repr += value<VarEnumTD>::to_string(m_Permutation[idx++]);
+            repr += to_string<VarEnumTD>::apply(m_Permutation[idx++]);
 
         repr += "]";
 

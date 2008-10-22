@@ -30,8 +30,8 @@ DEALINGS IN THE SOFTWARE.
 /* ------------------------------------------------------------------
 class interval_set
 --------------------------------------------------------------------*/
-#ifndef __itl_interval_set_h_JOFA_990223__
-#define __itl_interval_set_h_JOFA_990223__
+#ifndef __itl_interval_set_hpp_JOFA_990223__
+#define __itl_interval_set_hpp_JOFA_990223__
 
 #include <boost/itl/interval_base_set.hpp>
 #include <boost/itl/interval_sets.hpp>
@@ -186,7 +186,7 @@ public:
 
     /// Assignment operator
     template<class SubType>
-    interval_base_set& operator =
+    interval_set& operator =
         (const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
     { assign(src); return *this; }
 
@@ -198,7 +198,7 @@ public:
         typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> base_set_type;
         this->clear();
         // Has to be implemented via add. there might be touching borders to be joined
-        const_FORALL(base_set_type, it, src) 
+        const_FORALL(typename base_set_type, it, src) 
             this->add(*it);
     }
 

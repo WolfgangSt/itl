@@ -152,6 +152,7 @@ namespace boost{namespace itl
         typedef typename base_type::iterator iterator;
         typedef typename base_type::value_type value_type;
         typedef typename base_type::base_value_type base_value_type;
+        typedef typename base_type::base_pair_type  base_pair_type;
         typedef typename base_type::ImplMapT ImplMapT;
 
         typedef interval_set<DomainT,Interval,Compare,Alloc> interval_set_type;
@@ -170,7 +171,7 @@ namespace boost{namespace itl
 
         /// Assignment operator
         template<class SubType>
-        interval_base_map& operator =
+        split_interval_map& operator =
             (const interval_base_map<SubType,DomainT,CodomainT,
                                      Traits,Interval,Compare,Alloc>& src)
         { assign(src); return *this; }
@@ -184,7 +185,7 @@ namespace boost{namespace itl
                                       Traits,Interval,Compare,Alloc> base_map_type;
             this->clear();
             // Can be implemented via _map.insert: Interval joining not necessary.
-            const_FORALL(base_map_type, it, src) 
+            const_FORALL(typename base_map_type, it, src) 
                 this->_map.insert(*it); 
         }
 

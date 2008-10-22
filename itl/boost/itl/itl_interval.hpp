@@ -622,6 +622,24 @@ typename interval<DataT>::bound_types interval<DataT>::succession_bounds()const
 }
 
 
+template<class DataT> 
+struct continuous_type
+{
+    typedef typename boost::call_traits<DataT>::param_type DataP;
+
+    static bool open_bound_less_equal(DataP x, DataP y) { return x <= y; }
+    static bool open_bound_less      (DataP x, DataP y) { return x <  y; }
+};
+
+template<class DataT> 
+struct discrete_type
+{
+    typedef typename boost::call_traits<DataT>::param_type DataP;
+
+    static bool open_bound_less_equal(DataP x, DataP y) { return      x  <= succ(y); }
+    static bool open_bound_less      (DataP x, DataP y) { return succ(x) <       y ; }
+};
+
 template <class DataT>
 bool interval<DataT>::empty()const
 {
@@ -640,24 +658,6 @@ bool interval<DataT>::empty()const
            >
            ::type::open_bound_less_equal(_upb, _lwb);
 }
-
-template<class DataT> 
-struct continuous_type
-{
-    typedef typename boost::call_traits<DataT>::param_type DataP;
-
-    static bool open_bound_less_equal(DataP x, DataP y) { return x <= y; }
-    static bool open_bound_less      (DataP x, DataP y) { return x <  y; }
-};
-
-template<class DataT> 
-struct discrete_type
-{
-    typedef typename boost::call_traits<DataT>::param_type DataP;
-
-    static bool open_bound_less_equal(DataP x, DataP y) { return      x  <= succ(y); }
-    static bool open_bound_less      (DataP x, DataP y) { return succ(x) <       y ; }
-};
 
 template<class DataT> 
 struct continuous_interval
@@ -1173,5 +1173,4 @@ std::basic_ostream<CharType, CharTraits> &operator<<
 }} // namespace itl boost
 
 #endif
-
 

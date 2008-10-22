@@ -5,13 +5,17 @@ Copyright (c) 2008-2008: Joachim Faulhaber
       (See accompanying file LICENCE.txt or copy at
            http://www.boost.org/LICENSE_1_0.txt)
 +----------------------------------------------------------------------------*/
-#ifndef __itl_interval_sets_h_JOFA_080930__
-#define __itl_interval_sets_h_JOFA_080930__
+#ifndef __itl_interval_sets_hpp_JOFA_080930__
+#define __itl_interval_sets_hpp_JOFA_080930__
 
 #include <boost/itl/interval_base_set.hpp>
 
 namespace boost{namespace itl
 {
+
+template<typename, template<class>class,
+         template<class>class, template<class>class> 
+class interval_set;
 
 //-----------------------------------------------------------------------------
 // addition +=
@@ -190,8 +194,8 @@ operator *=
         return object;
     }
 
-    operand_type::const_iterator common_lwb;
-    operand_type::const_iterator common_upb;
+    typename operand_type::const_iterator common_lwb;
+    typename operand_type::const_iterator common_upb;
 
     if(!Set::common_range(common_lwb, common_upb, operand, object))
     {
@@ -199,7 +203,7 @@ operator *=
         return object;
     }
 
-    operand_type::const_iterator it = common_lwb;
+    typename operand_type::const_iterator it = common_lwb;
     while(it != common_upb)
         object.add_intersection(intersection, *it++);
 
@@ -285,7 +289,7 @@ bool is_element_equal
     const IntervalSet              <DomainT,Interval,Compare,Alloc>& operand
 )
 {
-    typedef interval_set<DomainT,Interval,Compare,Alloc> joined_type;
+	typedef interval_set<DomainT,Interval,Compare,Alloc> joined_type;
     //JODO OPTI: faster compare
     joined_type object_joined(object);
     joined_type operand_joined(operand);
@@ -320,13 +324,13 @@ bool is_disjoint
     if(operand.empty())
         return true;
 
-    operand_type::const_iterator common_lwb;
-    operand_type::const_iterator common_upb;
+    typename operand_type::const_iterator common_lwb;
+    typename operand_type::const_iterator common_upb;
 
     if(!Set::common_range(common_lwb, common_upb, operand, object))
         return true;
 
-    operand_type::const_iterator it = common_lwb;
+    typename operand_type::const_iterator it = common_lwb;
     while(it != common_upb)
     {
         object.add_intersection(intersection, operand_type::key_value(it++));
@@ -364,13 +368,13 @@ bool is_disjoint
     if(operand.empty())
         return true;
 
-    operand_type::const_iterator common_lwb;
-    operand_type::const_iterator common_upb;
+    typename operand_type::const_iterator common_lwb;
+    typename operand_type::const_iterator common_upb;
 
     if(!Set::common_range(common_lwb, common_upb, operand, object))
         return true;
 
-    operand_type::const_iterator it = common_lwb;
+    typename operand_type::const_iterator it = common_lwb;
     while(it != common_upb)
     {
         object.add_intersection(intersection, operand_type::key_value(it++));

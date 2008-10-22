@@ -13,6 +13,14 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 namespace boost{namespace itl
 {
 
+template
+<    
+    class, class, class, template<class>class, 
+    template<class>class, template<class>class
+>
+class interval_map;
+
+
 //-----------------------------------------------------------------------------
 // addition +=
 //-----------------------------------------------------------------------------
@@ -379,13 +387,13 @@ bool is_disjoint
     if(operand.empty())
         return true;
 
-    operand_type::const_iterator common_lwb;
-    operand_type::const_iterator common_upb;
+    typename operand_type::const_iterator common_lwb;
+    typename operand_type::const_iterator common_upb;
 
     if(!Set::common_range(common_lwb, common_upb, operand, object))
         return true;
 
-    operand_type::const_iterator it = common_lwb;
+    typename operand_type::const_iterator it = common_lwb;
     while(it != common_upb)
     {
         object.add_intersection(intersection, operand_type::key_value(it++));
@@ -425,13 +433,13 @@ bool is_disjoint
     if(operand.empty())
         return true;
 
-    operand_type::const_iterator common_lwb;
-    operand_type::const_iterator common_upb;
+    typename operand_type::const_iterator common_lwb;
+    typename operand_type::const_iterator common_upb;
 
     if(!Set::common_range(common_lwb, common_upb, operand, object))
         return true;
 
-    operand_type::const_iterator it = common_lwb;
+    typename operand_type::const_iterator it = common_lwb;
     while(it != common_upb)
     {
         object.add_intersection(intersection, operand_type::key_value(it++));

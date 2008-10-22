@@ -148,7 +148,7 @@ public:
 
     /// Assignment operator
     template<class SubType>
-    interval_base_set& operator =
+    separate_interval_set& operator =
         (const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& src)
     { assign(src); return *this; }
 
@@ -162,7 +162,7 @@ public:
         typedef interval_base_set<SubType,DomainT,Interval,Compare,Alloc> base_set_type;
         this->clear();
         // Can be implemented via _set.insert: Interval joining not necessary.
-        const_FORALL(base_set_type, it, src) 
+        const_FORALL(typename base_set_type, it, src) 
             this->_set.insert(*it); 
     }
 
