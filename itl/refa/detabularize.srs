@@ -1,0 +1,6 @@
+[Script for Search and Replace]
+[Search /x]\t[Replace]    
+[Path]E:\cygwin\home\jofa\dev\sf\itl\trunk\itl\src\*.h;*.hpp;*.cpp
+[Path]E:\cygwin\home\jofa\dev\sf\itl\trunk\itl\example\*.h;*.hpp;*.cpp
+[Path]E:\cygwin\home\jofa\dev\sf\itl\trunk\itl\test\*.h;*.hpp;*.cpp
+[End of Search and Replace Script]
