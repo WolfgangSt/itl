@@ -15,7 +15,7 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 #include "../test_type_lists.hpp"
 #include "../test_value_maker.hpp"
 
-#include <itl/itl_interval.hpp>
+#include <boost/itl/itl_interval.hpp>
 
 using namespace std;
 using namespace boost;

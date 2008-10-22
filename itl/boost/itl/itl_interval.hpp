@@ -39,12 +39,12 @@ DEALINGS IN THE SOFTWARE.
 #include <boost/call_traits.hpp> 
 #include <boost/mpl/bool.hpp> 
 #include <boost/mpl/if.hpp> 
-#include <itl/type_traits/neutron.hpp>
-#include <itl/type_traits/unon.hpp>
-#include <itl/type_traits/is_continuous.hpp>
-#include <itl/type_traits/difference.hpp>
-#include <itl/type_traits/size.hpp>
-#include <itl/type_traits/to_string.hpp>
+#include <boost/itl/type_traits/neutron.hpp>
+#include <boost/itl/type_traits/unon.hpp>
+#include <boost/itl/type_traits/is_continuous.hpp>
+#include <boost/itl/type_traits/difference.hpp>
+#include <boost/itl/type_traits/size.hpp>
+#include <boost/itl/type_traits/to_string.hpp>
 
 #undef min
 #undef max

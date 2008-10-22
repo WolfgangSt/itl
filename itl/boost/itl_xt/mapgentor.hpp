@@ -37,8 +37,8 @@ class MapGentorT
 #ifndef __MAPGENTOR_H_JOFA_000724__
 #define __MAPGENTOR_H_JOFA_000724__
 
-#include <itl_xt/itl_list.hpp>
-#include <itl_xt/gentorit.hpp>
+#include <boost/itl_xt/itl_list.hpp>
+#include <boost/itl_xt/gentorit.hpp>
 
 namespace boost{namespace itl
 {

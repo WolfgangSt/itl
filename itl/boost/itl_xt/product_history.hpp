@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 #define __product_history_h_JOFA_011005_H__
 
 
-#include <itl/split_interval_map.hpp>
+#include <boost/itl/split_interval_map.hpp>
 
 namespace boost{namespace itl
 {

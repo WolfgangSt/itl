@@ -34,12 +34,12 @@ class split_interval_map
 #ifndef __split_interval_map_h_JOFA_000706__
 #define __split_interval_map_h_JOFA_000706__
 
-#include <itl/interval_set.hpp>
-#include <itl/interval_map.hpp>
-//CL #include <itl/split_interval_map.hpp>
-#include <itl/interval_base_map.hpp>
-#include <itl/interval_maps.hpp>
-#include <itl/split_interval_set.hpp>
+#include <boost/itl/interval_set.hpp>
+#include <boost/itl/interval_map.hpp>
+//CL #include <boost/itl/split_interval_map.hpp>
+#include <boost/itl/interval_base_map.hpp>
+#include <boost/itl/interval_maps.hpp>
+#include <boost/itl/split_interval_set.hpp>
 
 namespace boost{namespace itl
 {

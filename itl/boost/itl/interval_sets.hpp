@@ -8,7 +8,7 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 #ifndef __itl_interval_sets_h_JOFA_080930__
 #define __itl_interval_sets_h_JOFA_080930__
 
-#include <itl/interval_base_set.hpp>
+#include <boost/itl/interval_base_set.hpp>
 
 namespace boost{namespace itl
 {

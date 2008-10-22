@@ -28,7 +28,7 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __StatVarDescT_JOFA_040614_H__
 #define __StatVarDescT_JOFA_040614_H__
 
-#include <itl_xt/enum_bitset.hpp>
+#include <boost/itl_xt/enum_bitset.hpp>
 namespace boost{namespace itl
 {
 

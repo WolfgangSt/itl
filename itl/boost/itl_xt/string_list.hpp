@@ -38,8 +38,8 @@ class itl::string_list
 
 #include <string>    
 #include <list>    
-#include <itl/notate.hpp>
-#include <itl/itl_list.hpp>
+#include <boost/itl/notate.hpp>
+#include <boost/itl/itl_list.hpp>
 
 namespace boost{namespace itl
 {    

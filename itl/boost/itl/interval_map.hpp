@@ -12,9 +12,9 @@ class interval_map
 #ifndef __interval_map_h_JOFA_080705__
 #define __interval_map_h_JOFA_080705__
 
-#include <itl/interval_set.hpp>
-#include <itl/interval_base_map.hpp>
-#include <itl/interval_maps.hpp>
+#include <boost/itl/interval_set.hpp>
+#include <boost/itl/interval_base_map.hpp>
+#include <boost/itl/interval_maps.hpp>
 
 namespace boost{namespace itl
 {

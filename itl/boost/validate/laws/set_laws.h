@@ -10,9 +10,9 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 #ifndef __itl_set_laws_h_JOFA_071124__
 #define __itl_set_laws_h_JOFA_071124__
 
-#include <itl/type_traits/value_size.hpp>
-#include <validate/law.h>
-#include <itl/functors.hpp>
+#include <boost/itl/type_traits/value_size.hpp>
+#include <boost/validate/law.h>
+#include <boost/itl/functors.hpp>
 
 namespace boost{namespace itl
 {

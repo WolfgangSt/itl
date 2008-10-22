@@ -35,7 +35,7 @@ Predicates
 #define __itl_predicates_H_JOFA_990224__
 
 #include <functional>
-#include <itl/type_traits/type_to_string.hpp>
+#include <boost/itl/type_traits/type_to_string.hpp>
 
 namespace boost{namespace itl
 {

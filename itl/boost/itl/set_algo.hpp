@@ -30,9 +30,9 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __itl_set_algo_H_JOFA_990225__
 #define __itl_set_algo_H_JOFA_990225__
 
-#include <itl/notate.hpp>
-#include <itl/predicates.hpp>
-#include <itl/functors.hpp>
+#include <boost/itl/notate.hpp>
+#include <boost/itl/predicates.hpp>
+#include <boost/itl/functors.hpp>
 
 /*
 <b>SetAlgo </b>

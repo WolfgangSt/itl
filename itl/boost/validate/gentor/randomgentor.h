@@ -10,16 +10,16 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 #pragma once
 
 
-#include <itl_xt/numbergentor.hpp>
-#include <itl_xt/setgentor.hpp>
-#include <itl_xt/mapgentor.hpp>
-#include <itl_xt/itvgentor.hpp>
-#include <itl/interval_set.hpp>
-#include <itl/separate_interval_set.hpp>
-#include <itl/split_interval_set.hpp>
-#include <itl/interval_map.hpp>
-#include <itl/split_interval_map.hpp>
-#include <validate/gentor/gentorprofile.h>
+#include <boost/itl_xt/numbergentor.hpp>
+#include <boost/itl_xt/setgentor.hpp>
+#include <boost/itl_xt/mapgentor.hpp>
+#include <boost/itl_xt/itvgentor.hpp>
+#include <boost/itl/interval_set.hpp>
+#include <boost/itl/separate_interval_set.hpp>
+#include <boost/itl/split_interval_set.hpp>
+#include <boost/itl/interval_map.hpp>
+#include <boost/itl/split_interval_map.hpp>
+#include <boost/validate/gentor/gentorprofile.h>
 
 
 namespace boost{namespace itl

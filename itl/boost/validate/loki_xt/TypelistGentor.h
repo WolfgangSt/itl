@@ -43,9 +43,9 @@ DEALINGS IN THE SOFTWARE.
 // $Id: HierarchyGenerators.h 751 2006-10-17 19:50:37Z syntheticpp $
 
 
-#include <validate/loki/Typelist.h>
-#include <validate/loki/TypeTraits.h>
-#include <validate/loki/EmptyType.h>
+#include <boost/validate/loki/Typelist.h>
+#include <boost/validate/loki/TypeTraits.h>
+#include <boost/validate/loki/EmptyType.h>
 
 
 namespace Loki

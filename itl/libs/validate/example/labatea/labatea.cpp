@@ -9,18 +9,18 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 +----------------------------------------------------------------------------*/
 #include <iostream>
 #include <stdio.h>
-#include <validate/loki_xt/Tuple.h>
-#include <itl/itl_set.hpp>
-#include <itl/itl_map.hpp>
-#include <validate/lawvalidater.h>
-#include <validate/laws/monoid.h>
-#include <validate/gentor/gentorprofile.h>
-#include <validate/gentor/rangegentor.h>
-#include <validate/realmvalidater.h>
-#include <itl/interval_set.hpp>
-#include <itl_xt/numbergentor.hpp>
-#include <itl_xt/setgentor.hpp>
-#include <itl/functors.hpp>
+#include <boost/validate/loki_xt/Tuple.h>
+#include <boost/itl/itl_set.hpp>
+#include <boost/itl/itl_map.hpp>
+#include <boost/validate/lawvalidater.h>
+#include <boost/validate/laws/monoid.h>
+#include <boost/validate/gentor/gentorprofile.h>
+#include <boost/validate/gentor/rangegentor.h>
+#include <boost/validate/realmvalidater.h>
+#include <boost/itl/interval_set.hpp>
+#include <boost/itl_xt/numbergentor.hpp>
+#include <boost/itl_xt/setgentor.hpp>
+#include <boost/itl/functors.hpp>
 
 using namespace std;
 using namespace Loki;

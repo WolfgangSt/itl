@@ -30,7 +30,7 @@ DEALINGS IN THE SOFTWARE.
 
 
 #include <functional>
-#include <itl/random.hpp>
+#include <boost/itl/random.hpp>
 namespace boost{namespace itl
 {
 

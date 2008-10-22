@@ -31,8 +31,8 @@ class IntevalGentor
 --------------------------------------------------------------------*/
 #pragma once
 
-#include <itl/itl_interval.hpp>
-#include <itl_xt/gentorit.hpp>
+#include <boost/itl/itl_interval.hpp>
+#include <boost/itl_xt/gentorit.hpp>
 
 namespace boost{namespace itl
 {

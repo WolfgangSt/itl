@@ -40,10 +40,10 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __Loki_tuple_h_JOFA_070604__
 #define __Loki_tuple_h_JOFA_070604__
 
-#include "validate/loki/Typelist.h"
-#include "validate/loki/TypeTraits.h"
-#include "validate/loki/EmptyType.h"
-#include "validate/loki_xt/TypelistGentor.h"
+#include <boost/validate/loki/Typelist.h>
+#include <boost/validate/loki/TypeTraits.h>
+#include <boost/validate/loki/EmptyType.h>
+#include <boost/validate/loki_xt/TypelistGentor.h>
 
 
 namespace Loki

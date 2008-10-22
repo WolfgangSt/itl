@@ -37,14 +37,14 @@ for concepts InplaceAddable and InplaceSubtractable
 
 #include <string>
 #include <set>
-#include <itl/type_traits/to_string.hpp>
-#include <itl/type_traits/is_set.hpp>
-#include <itl/type_traits/is_interval_container.hpp>
-#include <itl/type_traits/is_interval_splitter.hpp>
-#include <itl/type_traits/is_neutron_absorber.hpp>
-#include <itl/type_traits/is_neutron_emitter.hpp>
-#include <itl/set_algo.hpp>
-#include <itl/predicates.hpp>
+#include <boost/itl/type_traits/to_string.hpp>
+#include <boost/itl/type_traits/is_set.hpp>
+#include <boost/itl/type_traits/is_interval_container.hpp>
+#include <boost/itl/type_traits/is_interval_splitter.hpp>
+#include <boost/itl/type_traits/is_neutron_absorber.hpp>
+#include <boost/itl/type_traits/is_neutron_emitter.hpp>
+#include <boost/itl/set_algo.hpp>
+#include <boost/itl/predicates.hpp>
 
 
 namespace boost{namespace itl

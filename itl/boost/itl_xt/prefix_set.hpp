@@ -30,8 +30,8 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __itl_prefix_set_JOFA_040902_H__
 #define __itl_prefix_set_JOFA_040902_H__
 
-#include <itl/notate.hpp>
-#include <itl/string_set.hpp>
+#include <boost/itl/notate.hpp>
+#include <boost/itl/string_set.hpp>
 
 namespace boost{namespace itl
 {

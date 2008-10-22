@@ -32,9 +32,9 @@ class SetGentorT
 #ifndef __SETGENTOR_H_JOFA_000724__
 #define __SETGENTOR_H_JOFA_000724__
 
-#include <itl_xt/gentorit.hpp>
-#include <itl_xt/numbergentor.hpp>
-#include <itl_xt/itl_list.hpp>
+#include <boost/itl_xt/gentorit.hpp>
+#include <boost/itl_xt/numbergentor.hpp>
+#include <boost/itl_xt/itl_list.hpp>
 
 namespace boost{namespace itl
 {

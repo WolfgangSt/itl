@@ -31,8 +31,8 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __var_tuple_JOFA_040614_H__
 #define __var_tuple_JOFA_040614_H__
 
-#include <itl/notate.hpp>
-#include <itl_xt/fixtupelconst.hpp>
+#include <boost/itl/notate.hpp>
+#include <boost/itl_xt/fixtupelconst.hpp>
 #include <string>
 #include <sstream>
 

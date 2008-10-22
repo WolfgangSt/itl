@@ -12,9 +12,9 @@ Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
 #include <iostream>
 
 #include <limits>
-#include <itl_xt/statvardesct.hpp>
-#include <itl_xt/var_tuple_order.hpp>
-#include <itl_xt/tuple_computer.hpp>
+#include <boost/itl_xt/statvardesct.hpp>
+#include <boost/itl_xt/var_tuple_order.hpp>
+#include <boost/itl_xt/tuple_computer.hpp>
 
 #include <sstream>
 

@@ -28,10 +28,10 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __var_tuple_inscriptor_JOFA_041006_H__
 #define __var_tuple_inscriptor_JOFA_041006_H__
 
-#include <itl/string_list.hpp>
-#include <itl/itl_map.hpp>
-#include <itl/var_permutation.hpp>
-#include <itl/var_tuple.hpp>
+#include <boost/itl/string_list.hpp>
+#include <boost/itl/itl_map.hpp>
+#include <boost/itl/var_permutation.hpp>
+#include <boost/itl/var_tuple.hpp>
 
 namespace boost{namespace itl
 {

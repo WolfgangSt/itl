@@ -9,13 +9,13 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 +----------------------------------------------------------------------------*/
 #pragma once
 
-#include <itl/type_traits/is_continuous.hpp>
-#include <itl/functors.hpp>
-#include <itl/interval_morphism.hpp>
-#include <validate/laws/set_laws.h>
-#include <validate/laws/order.h>
-#include <validate/laws/pushouts.h>
-#include <validate/lawvalidater.h>
+#include <boost/itl/type_traits/is_continuous.hpp>
+#include <boost/itl/functors.hpp>
+#include <boost/itl/interval_morphism.hpp>
+#include <boost/validate/laws/set_laws.h>
+#include <boost/validate/laws/order.h>
+#include <boost/validate/laws/pushouts.h>
+#include <boost/validate/lawvalidater.h>
 
 namespace boost{namespace itl
 {

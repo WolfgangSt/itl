@@ -7,7 +7,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
       (See accompanying file LICENCE.txt or copy at
            http://www.boost.org/LICENSE_1_0.txt)
 +----------------------------------------------------------------------------*/
-#include <validate/gentor/gentorprofile.h>
+#include <boost/validate/gentor/gentorprofile.h>
 
 using namespace boost::itl;
 

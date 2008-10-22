@@ -40,8 +40,8 @@ information on the erroneous testcases if there are any.
 +----------------------------------------------------------------------------*/
 #include <iostream>
 
-#include <itl/split_interval_set.hpp>
-#include <itl/split_interval_map.hpp>
+#include <boost/itl/split_interval_set.hpp>
+#include <boost/itl/split_interval_map.hpp>
 #include "../itvmaptester.h"
 #include "../itvsettester.h"
 

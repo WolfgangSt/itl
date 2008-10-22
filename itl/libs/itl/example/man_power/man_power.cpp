@@ -13,10 +13,10 @@ Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
 
 // The next line includes <boost/gregorian/date.hpp>
 // and a few lines of adapter code.
-#include <itl/itl_gregorian_date.hpp> 
+#include <boost/itl/itl_gregorian_date.hpp> 
 
-#include <itl/type_traits/to_string.hpp>
-#include <itl/interval_map.hpp>
+#include <boost/itl/type_traits/to_string.hpp>
+#include <boost/itl/interval_map.hpp>
 
 using namespace std;
 using namespace boost::gregorian;

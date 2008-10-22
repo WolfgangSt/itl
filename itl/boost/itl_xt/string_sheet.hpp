@@ -30,8 +30,8 @@ DEALINGS IN THE SOFTWARE.
 
 #include <iostream>
 #include <fstream>
-#include <itl/string_list.hpp>
-#include <itl/notate.hpp>
+#include <boost/itl/string_list.hpp>
+#include <boost/itl/notate.hpp>
 
 namespace boost{namespace itl
 {

@@ -31,8 +31,8 @@ DEALINGS IN THE SOFTWARE.
 
 #include <functional>
 #include <stdlib.h>
-#include <itl/j_assert.hpp>
-#include <itl/itl_interval.hpp>
+#include <boost/itl/j_assert.hpp>
+#include <boost/itl/itl_interval.hpp>
 
 namespace boost{namespace itl
 {

@@ -32,9 +32,9 @@ class ItvGentorT
 #define __ITVGENTOR_H_JOFA_000714__
 
 
-#include <itl_xt/gentorit.hpp>
-#include <itl_xt/numbergentor.hpp>
-#include <itl_xt/seqgentor.hpp>
+#include <boost/itl_xt/gentorit.hpp>
+#include <boost/itl_xt/numbergentor.hpp>
+#include <boost/itl_xt/seqgentor.hpp>
 
 namespace boost{namespace itl
 {

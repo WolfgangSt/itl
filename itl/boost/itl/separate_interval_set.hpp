@@ -8,9 +8,9 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 #ifndef __itl_separate_interval_set_h_JOFA_080608__
 #define __itl_separate_interval_set_h_JOFA_080608__
 
-#include <itl/interval_base_set.hpp>
-#include <itl/interval_set.hpp>
-#include <itl/j_assert.hpp>
+#include <boost/itl/interval_base_set.hpp>
+#include <boost/itl/interval_set.hpp>
+#include <boost/itl/j_assert.hpp>
 
 namespace boost{namespace itl
 {

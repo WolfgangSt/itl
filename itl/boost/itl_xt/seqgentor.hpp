@@ -32,8 +32,8 @@ class SeqGentorT
 #ifndef __SeqGentorT_H_JOFA_000724__
 #define __SeqGentorT_H_JOFA_000724__
 
-#include <itl_xt/gentorit.hpp>
-#include <itl_xt/itl_list.hpp>
+#include <boost/itl_xt/gentorit.hpp>
+#include <boost/itl_xt/itl_list.hpp>
 
 namespace boost{namespace itl
 {

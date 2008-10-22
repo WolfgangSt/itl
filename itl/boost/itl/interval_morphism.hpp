@@ -28,7 +28,7 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __itl_interval_morphism_H_JOFA_080315__
 #define __itl_interval_morphism_H_JOFA_080315__
 
-#include <itl/notate.hpp>
+#include <boost/itl/notate.hpp>
 namespace boost{namespace itl
 {
     namespace Interval

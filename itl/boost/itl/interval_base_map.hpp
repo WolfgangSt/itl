@@ -35,11 +35,11 @@ class interval_base_map
 #define __interval_base_map_h_JOFA_990223__
 
 #include <limits>
-#include <itl/notate.hpp>
-#include <itl/itl_map.hpp>
-#include <itl/interval_base_set.hpp>
-#include <itl/interval_sets.hpp>
-#include <itl/itl_interval.hpp>
+#include <boost/itl/notate.hpp>
+#include <boost/itl/itl_map.hpp>
+#include <boost/itl/interval_base_set.hpp>
+#include <boost/itl/interval_sets.hpp>
+#include <boost/itl/itl_interval.hpp>
 
 
 #define const_FOR_IMPLMAP(iter) for(typename ImplMapT::const_iterator iter=_map.begin(); (iter)!=_map.end(); (iter)++)

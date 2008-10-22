@@ -11,8 +11,8 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 #define __itl_LawViolations_h_JOFA_070411__
 
 #include <string>
-#include <itl/itl_set.hpp>
-#include <validate/loki_xt/Tuple.h>
+#include <boost/itl/itl_set.hpp>
+#include <boost/validate/loki_xt/Tuple.h>
 
 namespace boost{namespace itl
 {

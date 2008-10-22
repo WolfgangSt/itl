@@ -34,12 +34,12 @@ class itl::map
 #define __itl_map_h_JOFA_070519__
 
 #include <string>
-#include <itl/notate.hpp>
-#include <itl/type_traits/to_string.hpp>
-#include <itl/functors.hpp>
-#include <itl/predicates.hpp>
-#include <itl/itl_set.hpp>
-#include <itl/map_algo.hpp>
+#include <boost/itl/notate.hpp>
+#include <boost/itl/type_traits/to_string.hpp>
+#include <boost/itl/functors.hpp>
+#include <boost/itl/predicates.hpp>
+#include <boost/itl/itl_set.hpp>
+#include <boost/itl/map_algo.hpp>
 #include <map>
 
 

@@ -8,7 +8,7 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 #ifndef __itl_interval_maps_h_JOFA_081008__
 #define __itl_interval_maps_h_JOFA_081008__
 
-#include <itl/interval_base_map.hpp>
+#include <boost/itl/interval_base_map.hpp>
 
 namespace boost{namespace itl
 {

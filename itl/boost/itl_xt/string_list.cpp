@@ -32,7 +32,7 @@ A general list of strings
 ---------------------------------------------------------------------------------*/
 #include "stdafx.h" //JODO URG stdafx
 //#include "d:\opensrc\itl\devel\devel\stdafx.h"
-#include <itl/string_list.hpp>
+#include <boost/itl/string_list.hpp>
 
 using namespace std;
 using namespace boost::itl;

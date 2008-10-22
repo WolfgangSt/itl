@@ -11,10 +11,10 @@ Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
 #include <stdio.h>
 #include <iostream>
 
-#include <itl/interval_set.hpp>
-#include <itl/separate_interval_set.hpp>
-#include <itl/split_interval_set.hpp>
-#include <itl/split_interval_map.hpp>
+#include <boost/itl/interval_set.hpp>
+#include <boost/itl/separate_interval_set.hpp>
+#include <boost/itl/split_interval_set.hpp>
+#include <boost/itl/split_interval_map.hpp>
 #include "../toytime.h"
 
 using namespace std;

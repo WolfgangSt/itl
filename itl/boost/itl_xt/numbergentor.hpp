@@ -35,8 +35,8 @@ class NumberGentorT
 
 #include <stdlib.h>
 #include <vector>
-#include <itl/type_traits/unon.hpp>
-#include <itl_xt/gentorit.hpp>
+#include <boost/itl/type_traits/unon.hpp>
+#include <boost/itl_xt/gentorit.hpp>
 
 using namespace boost::itl;
 

@@ -10,8 +10,8 @@ Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
 +----------------------------------------------------------------------------*/
 #include <stdio.h>
 #include <iostream>
-#include <itl/type_traits/to_string.hpp>
-#include <itl/interval_map.hpp>
+#include <boost/itl/type_traits/to_string.hpp>
+#include <boost/itl/interval_map.hpp>
 #include "../toytime.h"
 
 using namespace std;

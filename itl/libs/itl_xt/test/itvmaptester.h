@@ -4,8 +4,8 @@ class ItvMapTesterT
 #ifndef __ITVMAPTESTER_H_JOFA_990226__
 #define __ITVMAPTESTER_H_JOFA_990226__
 
-#include <itl_xt/itvgentor.hpp>
-#include <itl_xt/mapgentor.hpp>
+#include <boost/itl_xt/itvgentor.hpp>
+#include <boost/itl_xt/mapgentor.hpp>
 
 namespace boost{namespace itl
 {

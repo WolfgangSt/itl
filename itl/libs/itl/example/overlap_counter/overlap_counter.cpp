@@ -10,8 +10,8 @@ Copyright (c) 1999-2006: Cortex Software GmbH, Kantstrasse 57, Berlin
 +----------------------------------------------------------------------------*/
 #include <stdio.h>
 #include <iostream>
-#include <itl/type_traits/to_string.hpp>
-#include <itl/split_interval_map.hpp>
+#include <boost/itl/type_traits/to_string.hpp>
+#include <boost/itl/split_interval_map.hpp>
 
 using namespace std;
 using namespace boost::itl;

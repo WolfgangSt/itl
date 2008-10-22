@@ -9,8 +9,8 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 #define __itl_type_traits_unon_JOFA_080912_H__
 
 #include <string>
-#include <itl/type_traits/neutron.hpp>
-#include <itl/type_traits/succ_pred.hpp>
+#include <boost/itl/type_traits/neutron.hpp>
+#include <boost/itl/type_traits/succ_pred.hpp>
 
 namespace boost{ namespace itl
 {

@@ -30,8 +30,8 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __itl_episode_product_hpp_JOFA_011005_H__
 #define __itl_episode_product_hpp_JOFA_011005_H__
 
-#include <itl/itl_map.hpp>
-#include <itl_xt/episode_set.hpp>
+#include <boost/itl/itl_map.hpp>
+#include <boost/itl_xt/episode_set.hpp>
 
 namespace boost{namespace itl
 {

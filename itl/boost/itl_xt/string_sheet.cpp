@@ -27,7 +27,7 @@ DEALINGS IN THE SOFTWARE.
 +----------------------------------------------------------------------------*/
 #include <stdafx.h>
 #include "string_sheet.h"
-#include <itl/itl_value.hpp>
+#include <boost/itl/itl_value.hpp>
 
 using namespace boost::itl;
 

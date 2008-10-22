@@ -12,7 +12,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 
 #include <string>
 #include <set>
-#include <validate/loki_xt/Tuple.h>
+#include <boost/validate/loki_xt/Tuple.h>
 
 namespace boost{namespace itl
 {

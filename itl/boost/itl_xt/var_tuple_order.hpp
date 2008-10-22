@@ -31,11 +31,11 @@ DEALINGS IN THE SOFTWARE.
 #define __var_tuple_order_JOFA_040620_H__
 
 #include <functional>
-#include <itl/notate.hpp>
-#include <itl_xt/fixtupelconst.hpp>
-#include <itl_xt/var_tuple.hpp>
-#include <itl_xt/var_permutation.hpp>
-#include <itl_xt/grouping.hpp>
+#include <boost/itl/notate.hpp>
+#include <boost/itl_xt/fixtupelconst.hpp>
+#include <boost/itl_xt/var_tuple.hpp>
+#include <boost/itl_xt/var_permutation.hpp>
+#include <boost/itl_xt/grouping.hpp>
 
 namespace boost{namespace itl
 {

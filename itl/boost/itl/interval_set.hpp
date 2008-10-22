@@ -33,9 +33,9 @@ class interval_set
 #ifndef __itl_interval_set_h_JOFA_990223__
 #define __itl_interval_set_h_JOFA_990223__
 
-#include <itl/interval_base_set.hpp>
-#include <itl/interval_sets.hpp>
-#include <itl/j_assert.hpp>
+#include <boost/itl/interval_base_set.hpp>
+#include <boost/itl/interval_sets.hpp>
+#include <boost/itl/j_assert.hpp>
 
 namespace boost{namespace itl
 {

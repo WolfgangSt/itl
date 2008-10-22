@@ -30,8 +30,8 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __split_interval_set_JOFA_990223__
 #define __split_interval_set_JOFA_990223__
 
-#include <itl/interval_base_set.hpp>
-#include <itl/interval_set.hpp>
+#include <boost/itl/interval_base_set.hpp>
+#include <boost/itl/interval_set.hpp>
 
 namespace boost{namespace itl
 {

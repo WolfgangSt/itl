@@ -29,8 +29,8 @@ DEALINGS IN THE SOFTWARE.
 #define __var_permutation_JOFA_040621_H__
 
 #include <string.h>
-#include <itl_xt/fixtupelconst.hpp>
-#include <itl_xt/itl_list.hpp>
+#include <boost/itl_xt/fixtupelconst.hpp>
+#include <boost/itl_xt/itl_list.hpp>
 
 namespace boost{namespace itl
 {

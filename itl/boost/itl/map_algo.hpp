@@ -28,8 +28,8 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __itl_MAPALGO_H_JOFA_080225__
 #define __itl_MAPALGO_H_JOFA_080225__
 
-#include <itl/notate.hpp>
-#include <itl/set_algo.hpp>
+#include <boost/itl/notate.hpp>
+#include <boost/itl/set_algo.hpp>
 
 namespace boost{namespace itl
 {

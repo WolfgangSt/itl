@@ -15,7 +15,7 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 #include "../test_type_lists.hpp"
 #include "../test_value_maker.hpp"
 
-#include <itl/separate_interval_set.hpp>
+#include <boost/itl/separate_interval_set.hpp>
 
 using namespace std;
 using namespace boost;

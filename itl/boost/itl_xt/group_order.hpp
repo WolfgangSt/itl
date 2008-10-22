@@ -32,8 +32,8 @@ DEALINGS IN THE SOFTWARE.
 #define __group_order_JOFA_040621_H__
 
 #include <functional>
-#include <itl_xt/fixtupelconst.hpp>
-#include <itl/itl_map.hpp>
+#include <boost/itl_xt/fixtupelconst.hpp>
+#include <boost/itl/itl_map.hpp>
 
 namespace boost{namespace itl
 {

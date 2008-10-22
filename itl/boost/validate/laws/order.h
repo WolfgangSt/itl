@@ -10,8 +10,8 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 #ifndef __itl_order_h_JOFA_071129__
 #define __itl_order_h_JOFA_071129__
 
-#include <itl/type_traits/value_size.hpp>
-#include <validate/law.h>
+#include <boost/itl/type_traits/value_size.hpp>
+#include <boost/validate/law.h>
 
 namespace boost{namespace itl
 {

@@ -35,10 +35,10 @@ class interval_base_set
 #define __interval_base_set_h_JOFA_990223__
 
 #include <limits>
-#include <itl/interval_set_algo.hpp>
-#include <itl/itl_set.hpp>
-#include <itl/itl_interval.hpp>
-#include <itl/notate.hpp>
+#include <boost/itl/interval_set_algo.hpp>
+#include <boost/itl/itl_set.hpp>
+#include <boost/itl/itl_interval.hpp>
+#include <boost/itl/notate.hpp>
 
 #define const_FOR_IMPL(iter) for(typename ImplSetT::const_iterator iter=_set.begin(); (iter)!=_set.end(); (iter)++)
 #define FOR_IMPL(iter) for(typename ImplSetT::iterator iter=_set.begin(); (iter)!=_set.end(); (iter)++)

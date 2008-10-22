@@ -12,7 +12,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 #include <iostream>
 #include <stdio.h>
 #include <time.h>
-#include <validate/typevalidater.h>
+#include <boost/validate/typevalidater.h>
 
 #define ITL_LOCATION(message) location(__FILE__,__LINE__,message)
 

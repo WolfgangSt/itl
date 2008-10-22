@@ -8,7 +8,7 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 #ifndef __itl_interval_set_algo_JOFA_081005_H__
 #define __itl_interval_set_algo_JOFA_081005_H__
 
-#include <itl/notate.hpp>
+#include <boost/itl/notate.hpp>
 
 namespace boost{namespace itl
 {

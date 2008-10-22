@@ -38,10 +38,10 @@ class itl::list
 #include <string>
 #include <list>
 #include <algorithm>
-#include <itl/j_assert.hpp>
-#include <itl/type_traits/to_string.hpp>
-#include <itl/set_algo.hpp>
-#include <itl/predicates.hpp>
+#include <boost/itl/j_assert.hpp>
+#include <boost/itl/type_traits/to_string.hpp>
+#include <boost/itl/set_algo.hpp>
+#include <boost/itl/predicates.hpp>
 
 
 namespace boost{namespace itl

@@ -32,7 +32,7 @@ class GentorT
 #define __GENTORIT_H_JOFA_000714__
 
 
-#include <itl_xt/random.hpp>
+#include <boost/itl_xt/random.hpp>
 
 namespace boost{namespace itl
 {
