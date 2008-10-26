@@ -9,6 +9,7 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 #define __itl_interval_maps_h_JOFA_081008__
 
 #include <boost/itl/interval_base_map.hpp>
+#include <boost/itl/interval_map_algo.hpp>
 
 namespace boost{namespace itl
 {
@@ -343,13 +344,7 @@ bool is_element_equal
                       Traits,Interval,Compare,Alloc>& operand
 )
 {
-    typedef interval_map<DomainT,CodomainT,
-                         Traits,Interval,Compare,Alloc> joined_type;
-    //JODO OPTI: faster compare
-    joined_type object_joined(object);
-    joined_type operand_joined(operand);
-
-    return Set::lexicographical_equal(object_joined, operand_joined);
+	return Map::is_element_equal(object, operand);
 }
 
 //-----------------------------------------------------------------------------

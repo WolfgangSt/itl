@@ -70,8 +70,114 @@ enclosure(const IntervalSetT& object)
         : IntervalSetT::key_value(object.begin())
           .span(IntervalSetT::key_value(object.rbegin()));
 }
-    
 
+namespace Set
+{
+
+template<class LeftIntervalSetT, class RightIntervalSetT>
+class interval_set_sequence_tracker
+{
+public:
+	typedef typename LeftIntervalSetT::const_iterator  LeftIterT;
+	typedef typename RightIntervalSetT::const_iterator RightIterT;
+
+	interval_set_sequence_tracker(const LeftIntervalSetT& left, 
+		                      const RightIntervalSetT& right)
+		: _left(left), _right(right), _result(false)
+	{}
+
+	enum{nextboth, nextleft, nextright, leftaligned, stop};
+
+	bool result()const{ return _result; }
+
+	int proceed(LeftIterT& left, RightIterT& right)
+	{
+		if((*left).upper_equal(*right))
+		{ 
+			++left; 
+			++right;	
+			return nextboth;
+		}
+		else if((*left).upper_less(*right))
+		{
+			_prior_left = left;
+			++left;
+			return nextleft;
+		}
+		else
+		{
+			_prior_right = right;
+			++right;
+			return nextright;
+		}		
+	}
+
+	int next_both(LeftIterT& left, RightIterT& right)
+	{
+		if(left == _left.end())
+		{
+			_result = (right == _right.end()) ? true : false;
+			return stop;
+		}
+
+		// left != _left.end()
+		if(right == _right.end())
+			return stop; //_result = false;
+
+		// The starting intervals have to begin equally
+		if(!(*left).lower_equal(*right))
+			return stop; //_result = false;
+
+		return leftaligned;
+	}
+
+	int next_left(LeftIterT& left, RightIterT& right)
+	{
+		if(!(*_prior_left).touches(*left))
+			return stop; //_result = false;
+
+		return proceed(left, right);
+	}
+
+	int next_right(LeftIterT& left, RightIterT& right)
+	{
+		if(!(*_prior_right).touches(*right))
+			return stop; //_result = false;
+
+		return proceed(left, right);
+	}
+
+private:
+	const LeftIntervalSetT&  _left;
+	const RightIntervalSetT& _right;
+	LeftIterT                _prior_left;
+	RightIterT               _prior_right;
+	bool                     _result;
+};
+
+template<class LeftT, class RightT>
+bool is_element_equal(const LeftT& left, const RightT& right)
+{
+	typedef interval_set_sequence_tracker<LeftT,RightT> Step;
+	Step step(left, right);
+
+	LeftT::const_iterator  left_  = left.begin();
+	RightT::const_iterator right_ = right.begin();
+
+	int state = Step::nextboth;
+	while(state != Step::stop)
+	{
+		switch(state){
+		case Step::nextboth:    state = step.next_both(left_, right_);  break;
+		case Step::nextleft:    state = step.next_left(left_, right_);  break;
+		case Step::nextright:   state = step.next_right(left_, right_); break;
+		case Step::leftaligned: state = step.proceed(left_, right_);    break;
+		}
+	}
+	return step.result();
+}
+
+} //Set
     
 }} // namespace itl boost
 

@@ -402,7 +402,7 @@ public:
 
     /// Equality
     bool equal(const interval& x2)const
-    { return (empty() && x2.empty()) || (lwb_equal(x2) && upb_equal(x2)); }
+    { return (empty() && x2.empty()) || (lower_equal(x2) && upper_equal(x2)); }
     //Equality can also be implemented this way:
     //{ return contained_in(x2) && x2.contained_in(*this); }
 
@@ -417,7 +417,7 @@ public:
 
     /// less on intervals
     bool less(const interval& x2)const
-    { return lwb_less(x2) || ( lwb_equal(x2) && upb_less(x2) ); }
+    { return lower_less(x2) || ( lower_equal(x2) && upper_less(x2) ); }
 
 //@}
 
@@ -551,6 +551,13 @@ public:
     void set_lwb(DataT lw) { _lwb=lw; }
     void set_upb(DataT up) { _upb=up; }
 
+    bool lower_less(const interval& x2)const;
+    bool upper_less(const interval& x2)const;
+    bool lower_less_equal(const interval& x2)const;
+    bool upper_less_equal(const interval& x2)const;
+    bool lower_equal(const interval& x2)const;
+    bool upper_equal(const interval& x2)const;
+
 private:
     // public?
     typedef std::pair<DataT, bound_types> BoundT;
@@ -568,13 +575,6 @@ private:
 
     void set_lwb(const BoundT& lw) { _lwb=lw.BOUND_VAL; set_lwb_type(lw.BOUND_TYPES); }
     void set_upb(const BoundT& up) { _upb=up.BOUND_VAL; set_upb_type(up.BOUND_TYPES); }
-
-    bool lwb_less(const interval& x2)const;
-    bool upb_less(const interval& x2)const;
-    bool lwb_less_equal(const interval& x2)const;
-    bool upb_less_equal(const interval& x2)const;
-    bool lwb_equal(const interval& x2)const;
-    bool upb_equal(const interval& x2)const;
 
     BoundT lwb_min(const interval& x2)const;
     BoundT lwb_max(const interval& x2)const;
@@ -738,7 +738,7 @@ bool interval<DataT>::exclusive_less(const interval& x2)const
 
 
 template <class DataT>
-bool interval<DataT>::lwb_less(const interval& x2)const
+bool interval<DataT>::lower_less(const interval& x2)const
 {
     using namespace boost::mpl;
     if(leftbound_closed() && x2.leftbound_closed()) return _lwb <  x2._lwb;
@@ -756,7 +756,7 @@ bool interval<DataT>::lwb_less(const interval& x2)const
 }
 
 template <class DataT>
-bool interval<DataT>::upb_less(const interval& x2)const
+bool interval<DataT>::upper_less(const interval& x2)const
 {
     using namespace boost::mpl;
     if(rightbound_closed() && x2.rightbound_closed()) return _upb <  x2._upb;
@@ -775,7 +775,7 @@ bool interval<DataT>::upb_less(const interval& x2)const
 
 
 template <class DataT>
-bool interval<DataT>::lwb_less_equal(const interval& x2)const
+bool interval<DataT>::lower_less_equal(const interval& x2)const
 {
     using namespace boost::mpl;
     if(leftbound_closed() && x2.leftbound_closed()) return _lwb <= x2._lwb;
@@ -794,7 +794,7 @@ bool interval<DataT>::lwb_less_equal(const interval& x2)const
 
 
 template <class DataT>
-bool interval<DataT>::upb_less_equal(const interval& x2)const
+bool interval<DataT>::upper_less_equal(const interval& x2)const
 {
     using namespace boost::mpl;
     if(rightbound_closed() && x2.rightbound_closed()) return _upb <= x2._upb;
@@ -813,9 +813,9 @@ bool interval<DataT>::upb_less_equal(const interval& x2)const
 
 
 //NOTE THINK: This implementation is rather interesting wrt. continuous value types.
-// An alternative implementation was x.lwb_equal(y)={return x.lwb_less_equal(y) && y.lwb_less_equal(x)}
+// An alternative implementation was x.lwb_equal(y)={return x.lower_less_equal(y) && y.lower_less_equal(x)}
 template <class DataT>
-bool interval<DataT>::lwb_equal(const interval& x2)const
+bool interval<DataT>::lower_equal(const interval& x2)const
 {
     using namespace boost::mpl;
     if(leftbound_closed() && x2.leftbound_closed()) return _lwb == x2._lwb;
@@ -831,9 +831,9 @@ bool interval<DataT>::lwb_equal(const interval& x2)const
 }
 
 //NOTE THINK: This implementation is rather interesting wrt. continuous value types.
-// An alternative implementation was x.lwb_equal(y)={return x.lwb_less_equal(y) && y.lwb_less_equal(x)}
+// An alternative implementation was x.lwb_equal(y)={return x.lower_less_equal(y) && y.lower_less_equal(x)}
 template <class DataT>
-bool interval<DataT>::upb_equal(const interval& x2)const
+bool interval<DataT>::upper_equal(const interval& x2)const
 {
     using namespace boost::mpl;
     if(rightbound_closed() && x2.rightbound_closed()) return _upb == x2._upb;
@@ -853,7 +853,7 @@ bool interval<DataT>::upb_equal(const interval& x2)const
 template <class DataT>
 typename interval<DataT>::BoundT interval<DataT>::lwb_min(const interval& x2)const
 {
-    if( x2.lwb_less(*this) )
+    if( x2.lower_less(*this) )
         return BoundT(x2._lwb, x2.boundtypes());
     else
         return BoundT(_lwb, boundtypes());
@@ -862,7 +862,7 @@ typename interval<DataT>::BoundT interval<DataT>::lwb_min(const interval& x2)con
 template <class DataT>
 typename interval<DataT>::BoundT interval<DataT>::upb_max(const interval& x2)const
 {
-    if( upb_less(x2) )
+    if( upper_less(x2) )
         return BoundT(x2._upb, x2.boundtypes());
     else
         return BoundT(_upb, boundtypes());
@@ -873,7 +873,7 @@ typename interval<DataT>::BoundT interval<DataT>::upb_max(const interval& x2)con
 template <class DataT>
 typename interval<DataT>::BoundT interval<DataT>::lwb_max(const interval& x2)const
 {
-    if( lwb_less(x2) )
+    if( lower_less(x2) )
         return BoundT(x2._lwb, x2.boundtypes());
     else
         return BoundT(_lwb, boundtypes());
@@ -882,7 +882,7 @@ typename interval<DataT>::BoundT interval<DataT>::lwb_max(const interval& x2)con
 template <class DataT>
 typename interval<DataT>::BoundT interval<DataT>::upb_min(const interval& x2)const
 {
-    if( x2.upb_less(*this) )
+    if( x2.upper_less(*this) )
         return BoundT(x2._upb, x2.boundtypes());
     else
         return BoundT(_upb, boundtypes());
@@ -930,11 +930,11 @@ bool interval<DataT>::contains(const DataT& x)const
 
 template <class DataT>
 bool interval<DataT>::contained_in(const interval& super)const
-{ return super.lwb_less_equal(*this) && upb_less_equal(super); }
+{ return super.lower_less_equal(*this) && upper_less_equal(super); }
 
 template <class DataT>
 bool interval<DataT>::contains(const interval& sub)const
-{ return lwb_less_equal(sub) && sub.upb_less_equal(*this); }
+{ return lower_less_equal(sub) && sub.upper_less_equal(*this); }
 
 
 template <class DataT>
@@ -974,7 +974,7 @@ void interval<DataT>::intersect(interval<DataT>& isec, const interval<DataT>& x2
 template <class DataT>
 void interval<DataT>::left_surplus(interval<DataT>& lsur, const interval<DataT>& x2)const
 {
-    if(lwb_less(x2)) {
+    if(lower_less(x2)) {
         lsur.set_lwb( BoundT(_lwb,boundtypes()) ); 
         lsur.set_upb( upb_leftOf(x2) );
     }
@@ -984,7 +984,7 @@ void interval<DataT>::left_surplus(interval<DataT>& lsur, const interval<DataT>&
 template <class DataT>
 void interval<DataT>::right_surplus(interval<DataT>& rsur, const interval<DataT>& x2)const
 {
-    if(x2.upb_less(*this)) {
+    if(x2.upper_less(*this)) {
         rsur.set_lwb(lwb_rightOf(x2)); 
         rsur.set_upb( BoundT(_upb,boundtypes()) );
     }

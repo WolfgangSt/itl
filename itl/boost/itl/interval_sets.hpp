@@ -9,6 +9,7 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 #define __itl_interval_sets_hpp_JOFA_080930__
 
 #include <boost/itl/interval_base_set.hpp>
+#include <boost/itl/interval_set_algo.hpp>
 
 namespace boost{namespace itl
 {
@@ -285,17 +286,14 @@ template
 >
 bool is_element_equal
 (
-          interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
+    const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& object,
     const IntervalSet              <DomainT,Interval,Compare,Alloc>& operand
 )
 {
-	typedef interval_set<DomainT,Interval,Compare,Alloc> joined_type;
-    //JODO OPTI: faster compare
-    joined_type object_joined(object);
-    joined_type operand_joined(operand);
-
-    return Set::lexicographical_equal(object_joined, operand_joined);
+    return Set::is_element_equal(object, operand);
 }
+
+
 
 //-----------------------------------------------------------------------------
 // is_disjoint
