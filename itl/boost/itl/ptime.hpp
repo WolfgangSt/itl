@@ -26,18 +26,18 @@ w.r.t. addition (neutron()).
 //JODO Make it complete for all date_time classes. check portability.
 #ifdef ITL_NEUTRONS_PROVIDED
 #pragma message("error: No neutral element provided for type boost::posix_time::ptime")
-#pragma message(".. please #include <boost/itl/itl_gregorian.hpp> PRIOR TO other itl/* classes")
+#pragma message(".. please #include <boost/itl/ptime.hpp> PRIOR TO other itl/* classes")
 "JODO: Compiletime error has to be produced, but in a nicer way."
 #endif
 
 #ifdef ITL_DIFFERENCE_TYPES_PROVIDED
 #pragma message("error: No difference type provided for type boost::posix_time::ptime")
-#pragma message(".. please #include <boost/itl/itl_gregorian.hpp> PRIOR TO other itl/* classes")
+#pragma message(".. please #include <boost/itl/ptime.hpp> PRIOR TO other itl/* classes")
 #endif
 
 #ifdef ITL_SIZE_TYPES_PROVIDED
 #pragma message("error: No size type provided for type boost::posix_time::ptime")
-#pragma message(".. please #include <boost/itl/itl_gregorian.hpp> PRIOR TO other itl/* classes")
+#pragma message(".. please #include <boost/itl/ptime.hpp> PRIOR TO other itl/* classes")
 #endif
 
 #define ITL_NEEDS_POSIX_TIME_PTIME_NEUTRON_VALUE
