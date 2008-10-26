@@ -11,11 +11,11 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 #include <boost/mpl/list.hpp>
 
 // interval instance types
-#include <boost/itl/itl_gregorian_date.hpp> 
-#include <boost/itl/itl_ptime.hpp> 
+#include <boost/itl/gregorian.hpp> 
+#include <boost/itl/ptime.hpp> 
 #include <boost/itl/rational.hpp> 
 
-#include <boost/itl/itl_interval.hpp>
+#include <boost/itl/interval.hpp>
 
 typedef ::boost::mpl::list<
     unsigned short, unsigned int, unsigned long  

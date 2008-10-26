@@ -36,8 +36,8 @@ class interval_base_set
 
 #include <limits>
 #include <boost/itl/interval_set_algo.hpp>
-#include <boost/itl/itl_set.hpp>
-#include <boost/itl/itl_interval.hpp>
+#include <boost/itl/set.hpp>
+#include <boost/itl/interval.hpp>
 #include <boost/itl/notate.hpp>
 
 #define const_FOR_IMPL(iter) for(typename ImplSetT::const_iterator iter=_set.begin(); (iter)!=_set.end(); (iter)++)

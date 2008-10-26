@@ -38,7 +38,7 @@ class itl::map
 #include <boost/itl/type_traits/to_string.hpp>
 #include <boost/itl/functors.hpp>
 #include <boost/itl/predicates.hpp>
-#include <boost/itl/itl_set.hpp>
+#include <boost/itl/set.hpp>
 #include <boost/itl/map_algo.hpp>
 #include <map>
 

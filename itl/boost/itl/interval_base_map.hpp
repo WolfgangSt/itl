@@ -36,10 +36,10 @@ class interval_base_map
 
 #include <limits>
 #include <boost/itl/notate.hpp>
-#include <boost/itl/itl_map.hpp>
+#include <boost/itl/map.hpp>
 #include <boost/itl/interval_base_set.hpp>
 #include <boost/itl/interval_sets.hpp>
-#include <boost/itl/itl_interval.hpp>
+#include <boost/itl/interval.hpp>
 
 
 #define const_FOR_IMPLMAP(iter) for(typename ImplMapT::const_iterator iter=_map.begin(); (iter)!=_map.end(); (iter)++)
@@ -489,7 +489,7 @@ public:
     */
     SubType& subtract(const base_pair_type& x)
     { 
-        that()->template subtract_( value_type(interval_type(x.key), x.data) ); 
+        that()->subtract_( value_type(interval_type(x.key), x.data) ); 
         return *that();
     }
 
