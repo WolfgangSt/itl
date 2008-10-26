@@ -204,7 +204,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\..\..\boost\itl\itl_interval.hpp"
+				RelativePath="..\..\..\..\boost\itl\interval.hpp"
 				>
 			</File>
 		</Filter>
