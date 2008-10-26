@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 #define __itl_string_map_JOFA_021215_H__
 
 #include <boost/itl/notate.hpp>
-#include <boost/itl/itl_map.hpp>
+#include <boost/itl/map.hpp>
 #include <string>
 
 namespace boost{namespace itl

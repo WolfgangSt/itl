@@ -33,7 +33,7 @@ set of strings
 
 #include <string>
 #include <string.h>
-#include <boost/itl/itl_set.hpp>
+#include <boost/itl/set.hpp>
 
 namespace boost{namespace itl
 {

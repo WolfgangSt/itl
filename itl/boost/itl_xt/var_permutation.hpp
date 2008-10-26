@@ -30,7 +30,7 @@ DEALINGS IN THE SOFTWARE.
 
 #include <string.h>
 #include <boost/itl_xt/fixtupelconst.hpp>
-#include <boost/itl_xt/itl_list.hpp>
+#include <boost/itl_xt/list.hpp>
 
 namespace boost{namespace itl
 {

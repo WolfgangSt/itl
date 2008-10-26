@@ -9,7 +9,7 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 +----------------------------------------------------------------------------*/
 #pragma once
 
-#include <boost/itl/itl_interval.hpp>
+#include <boost/itl/interval.hpp>
 
 namespace boost{namespace itl
 {

@@ -10,8 +10,8 @@ Copyright (c) 2007-2008: Joachim Faulhaber
 #include <iostream>
 #include <stdio.h>
 #include <boost/validate/loki_xt/Tuple.h>
-#include <boost/itl/itl_set.hpp>
-#include <boost/itl/itl_map.hpp>
+#include <boost/itl/set.hpp>
+#include <boost/itl/map.hpp>
 #include <boost/validate/lawvalidater.h>
 #include <boost/validate/laws/monoid.h>
 #include <boost/validate/gentor/gentorprofile.h>

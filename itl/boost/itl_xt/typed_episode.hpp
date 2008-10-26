@@ -30,7 +30,7 @@ DEALINGS IN THE SOFTWARE.
 #ifndef __itl_typed_episode_hpp_JOFA_011015_H__
 #define __itl_typed_episode_hpp_JOFA_011015_H__
 
-#include <boost/itl/itl_interval.hpp>
+#include <boost/itl/interval.hpp>
 #include <boost/itl_xt/ordered_type.hpp>
 
 namespace boost{namespace itl

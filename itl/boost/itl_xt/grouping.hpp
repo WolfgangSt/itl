@@ -32,7 +32,7 @@ DEALINGS IN THE SOFTWARE.
 #include <functional>
 #include <boost/itl_xt/fixtupelconst.hpp>
 #include <boost/itl_xt/group_order.hpp>
-#include <boost/itl/itl_map.hpp>
+#include <boost/itl/map.hpp>
 
 namespace boost{namespace itl
 {

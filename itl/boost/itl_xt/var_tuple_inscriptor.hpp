@@ -29,7 +29,7 @@ DEALINGS IN THE SOFTWARE.
 #define __var_tuple_inscriptor_JOFA_041006_H__
 
 #include <boost/itl/string_list.hpp>
-#include <boost/itl/itl_map.hpp>
+#include <boost/itl/map.hpp>
 #include <boost/itl/var_permutation.hpp>
 #include <boost/itl/var_tuple.hpp>
 
