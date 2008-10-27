@@ -741,7 +741,7 @@ public:
     {
         //content_is_neutron<key_type, data_type> neutron_dropper;
         if(!Traits::absorbs_neutrons)
-            drop_if(content_is_neutron<value_type>());
+			erase_if(content_is_neutron<value_type>());
     }
 
     /// Copies this map into a neutron_absorber type.
@@ -799,11 +799,8 @@ public:
 /** @name K: Selection by predicates
     */
 //@{
-    /// Keep all elements where property <tt>p</tt> holds, remove otherwise
-    interval_base_map& keep_if(const itl::property<value_type>& p){ _map.keep_if(p); return *this; }
-
     /// Remove all elements where property <tt>p</tt> holds, keep all others
-    interval_base_map& drop_if(const itl::property<value_type>& p){ _map.drop_if(p); return *this; }
+    interval_base_map& erase_if(const itl::property<value_type>& p){ _map.erase_if(p); return *this; }
 
     /// Copy all elements if property <tt>p</tt> holds
     interval_base_map& copy_if( const itl::property<value_type>& p, const interval_base_map& src)

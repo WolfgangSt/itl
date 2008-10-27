@@ -196,13 +196,9 @@ namespace boost{namespace itl
             different from \c size(). */
         size_t iterative_size()const { return size(); }
 
-        /** Keep the elements in *this set to which property \c hasProperty applies. 
-            Erase all the rest. */
-        set& keep_if(const property<value_type>& hasProperty);
-
         /** Erase the elements in *this set to which property \c hasProperty applies. 
         Keep all the rest. */
-        set& drop_if(const property<value_type>& hasProperty);
+        set& erase_if(const property<value_type>& hasProperty);
 
         /** Copy the elements in set \c src to which property \c hasProperty applies 
             into \c *this set. */
@@ -303,21 +299,13 @@ namespace boost{namespace itl
 
     template <typename KeyT, template<class>class Compare, template<class>class Alloc>
     set<KeyT,Compare,Alloc>& set<KeyT,Compare,Alloc>
-        ::drop_if(const property<value_type>& hasProperty)
+        ::erase_if(const property<value_type>& hasProperty)
     {
-        iterator it = begin(), victim;
+		iterator it = begin();
         while(it != end())
-            if ( hasProperty(*it) ) { victim = it++; erase(victim); } else ++it;
-        return *this;
-    }
-
-    template <typename KeyT, template<class>class Compare, template<class>class Alloc>
-    set<KeyT,Compare,Alloc>& set<KeyT,Compare,Alloc>
-        ::keep_if(const property<value_type>& hasProperty)
-    {
-        iterator it = begin(), victim;
-        while(it != end())
-            if ( !hasProperty(*it) ) { victim = it++; erase(victim); } else ++it;
+            if(hasProperty(*it))
+                erase(it++); 
+            else ++it;
         return *this;
     }
 
@@ -325,8 +313,6 @@ namespace boost{namespace itl
     set<KeyT,Compare,Alloc>& set<KeyT,Compare,Alloc>
         ::copy_if(const property<value_type>& hasProperty, const set<KeyT,Compare,Alloc>& src)
     {
-        if(this == &src) return keep_if(hasProperty);
-        // otherwise
         clear();
         const_iterator it = src.begin();
         while(it != src.end()) {

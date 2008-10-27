@@ -102,9 +102,9 @@ public:
 private:
 	const LeftT&  _left;
 	const RightT& _right;
-	LeftIterT                _prior_left;
-	RightIterT               _prior_right;
-	bool                     _result;
+	LeftIterT     _prior_left;
+	RightIterT    _prior_right;
+	bool          _result;
 };
 
 template<class LeftT, class RightT>

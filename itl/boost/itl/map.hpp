@@ -301,16 +301,12 @@ namespace boost{namespace itl
         {
             //content_is_neutron<key_type, data_type> neutron_dropper;
             if(!Traits::absorbs_neutrons)
-                drop_if(content_is_neutron<value_type>());
+                erase_if(content_is_neutron<value_type>());
         }
-
-        /** Keep the elements in *this map to which property \c hasProperty applies. 
-        Erase all the rest. */
-        map& keep_if(const property<value_type>& hasProperty);
 
         /** Erase the elements in *this map to which property \c hasProperty applies. 
         Keep all the rest. */
-        map& drop_if(const property<value_type>& hasProperty);
+        map& erase_if(const property<value_type>& hasProperty);
 
         /** Copy the elements in map \c src to which property \c hasProperty applies 
         into \c *this map. */
@@ -473,9 +469,9 @@ namespace boost{namespace itl
 
     template <typename KeyT, typename DataT, class Traits, template<class>class Compare, template<class>class Alloc>
     map<KeyT,DataT,Traits,Compare,Alloc>& map<KeyT,DataT,Traits,Compare,Alloc>
-        ::drop_if(const property<value_type>& hasProperty)
+        ::erase_if(const property<value_type>& hasProperty)
     {
-        iterator it = begin(), victim;
+        iterator it = begin();
         while(it != end())
             if(hasProperty(*it))
                 erase(it++); 
@@ -483,28 +479,15 @@ namespace boost{namespace itl
         return *this;
     }
 
-    template <typename KeyT, typename DataT, class Traits, template<class>class Compare, template<class>class Alloc>
-    map<KeyT,DataT,Traits,Compare,Alloc>& map<KeyT,DataT,Traits,Compare,Alloc>
-        ::keep_if(const property<value_type>& hasProperty)
-    {
-        iterator it = begin(), victim;
-        while(it != end())
-            if(!hasProperty(*it))
-                erase(it++);
-            else ++it;
-        return *this;
-    }
 
     template <typename KeyT, typename DataT, class Traits, template<class>class Compare, template<class>class Alloc>
     map<KeyT,DataT,Traits,Compare,Alloc>& map<KeyT,DataT,Traits,Compare,Alloc>
         ::copy_if(const property<value_type>& hasProperty, const map<KeyT,DataT,Traits,Compare,Alloc>& src)
     {
-        if(this == &src) return keep_if(hasProperty);
-        // otherwise
         clear();
         const_iterator it = src.begin();
         while(it != src.end()) {
-            if ( hasProperty(*it) ) insert(*it); it++;
+            if ( hasProperty(*it)) insert(*it); it++;
         }
         return *this;
     }
