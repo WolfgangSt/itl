@@ -306,11 +306,13 @@ namespace boost{namespace itl
 
         /** Erase the elements in *this map to which property \c hasProperty applies. 
         Keep all the rest. */
-        map& erase_if(const property<value_type>& hasProperty);
+		template<template<class>class Predicate>
+        map& erase_if();
 
         /** Copy the elements in map \c src to which property \c hasProperty applies 
         into \c *this map. */
-        map& copy_if(const property<value_type>& hasProperty, const map& src);
+		template<template<class>class Predicate>
+        map& assign_if(const map& src);
 
         /** Represent this map as string */
         std::string as_string()const;
@@ -466,14 +468,14 @@ namespace boost{namespace itl
         return repr;
     }
 
-
-    template <typename KeyT, typename DataT, class Traits, template<class>class Compare, template<class>class Alloc>
+	template <typename KeyT, typename DataT, class Traits, template<class>class Compare, template<class>class Alloc>
+		template<template<class>class Predicate>
     map<KeyT,DataT,Traits,Compare,Alloc>& map<KeyT,DataT,Traits,Compare,Alloc>
-        ::erase_if(const property<value_type>& hasProperty)
+        ::erase_if()
     {
         iterator it = begin();
         while(it != end())
-            if(hasProperty(*it))
+            if(Predicate<value_type>()(*it))
                 erase(it++); 
             else ++it;
         return *this;
@@ -481,13 +483,15 @@ namespace boost{namespace itl
 
 
     template <typename KeyT, typename DataT, class Traits, template<class>class Compare, template<class>class Alloc>
+		template<template<class>class Predicate>
     map<KeyT,DataT,Traits,Compare,Alloc>& map<KeyT,DataT,Traits,Compare,Alloc>
-        ::copy_if(const property<value_type>& hasProperty, const map<KeyT,DataT,Traits,Compare,Alloc>& src)
+        ::assign_if(const map<KeyT,DataT,Traits,Compare,Alloc>& src)
     {
         clear();
         const_iterator it = src.begin();
         while(it != src.end()) {
-            if ( hasProperty(*it)) insert(*it); it++;
+            if(Predicate<value_type>(*it)) 
+				add(*it++); 
         }
         return *this;
     }

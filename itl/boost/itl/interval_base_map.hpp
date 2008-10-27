@@ -800,11 +800,13 @@ public:
     */
 //@{
     /// Remove all elements where property <tt>p</tt> holds, keep all others
-    interval_base_map& erase_if(const itl::property<value_type>& p){ _map.erase_if(p); return *this; }
+	template<template<class>class Predicate>
+    interval_base_map& erase_if(){ _map.erase_if<Predicate>(); return *this; }
 
     /// Copy all elements if property <tt>p</tt> holds
-    interval_base_map& copy_if( const itl::property<value_type>& p, const interval_base_map& src)
-    { _map.copy_if(p, src._map); return *this; }
+	template<template<class>class Predicate>
+    interval_base_map& assign_if(const interval_base_map& src)
+    { _map.assign_if<Predicate>(src._map); return *this; }
 
 //@}
 

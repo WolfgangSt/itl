@@ -1122,3 +1122,59 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_map_mixed_disjoint_4_bicremental
     BOOST_CHECK_EQUAL( is_disjoint(join_A,  split_B), true );
     BOOST_CHECK_EQUAL( is_disjoint(join_A,  join_B),  true );
 }
+
+template<class Type>
+struct size_greater_1 : public itl::property<Type>
+{
+	bool operator()(const Type& value)const
+	{
+		return value.first.size() > 1 ;
+	}
+};
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_map_mixed_erase_if_4_integral_types, T, integral_types)
+{         
+    typedef int U;
+    typedef interval_map<T,U>       IntervalMapT;
+    typedef split_interval_map<T,U> SplitIntervalMapT;
+    typedef interval_set<T>         IntervalSetT;
+    typedef split_interval_set<T>   SplitIntervalSetT;
+    U u1 = make<U>(1);
+
+    T v0 = make<T>(0);
+    T v1 = make<T>(1);
+    T v2 = make<T>(2);
+    T v3 = make<T>(3);
+    T v4 = make<T>(4);
+    T v5 = make<T>(5);
+    T v6 = make<T>(6);
+    T v7 = make<T>(7);
+    T v8 = make<T>(8);
+    T v9 = make<T>(9);
+
+    interval<T> I0_3D = rightopen_interval(v0,v3);
+    interval<T> I2_3D = rightopen_interval(v2,v3);
+    interval<T> I3_4D = rightopen_interval(v3,v4);
+    interval<T> I4_4I = closed_interval(v4,v4);
+    interval<T> C4_6D = open_interval(v4,v6);
+    interval<T> I6_6I = closed_interval(v6,v6);
+
+    std::pair<interval<T>,U> I0_3D_1(I0_3D, u1);
+    std::pair<interval<T>,U> I2_3D_1(I2_3D, u1);
+    std::pair<interval<T>,U> I3_4D_1(I3_4D, u1);
+    std::pair<interval<T>,U> I4_4I_1(I4_4I, u1);
+    std::pair<interval<T>,U> C4_6D_1(C4_6D, u1);
+    std::pair<interval<T>,U> I6_6I_1(I6_6I, u1);
+
+    //--------------------------------------------------------------------------
+    //split_A: [0  2)          [4 4]      [6 6]
+    //split_B:       [2 3)[3 4)     (4  6)
+    SplitIntervalMapT split_A, split_B;
+
+    split_A.add(I0_3D_1).add(I4_4I_1).add(I6_6I_1);
+	split_B.add(I4_4I_1).add(I6_6I_1);
+
+	split_A.erase_if<size_greater_1>();
+
+    BOOST_CHECK_EQUAL( split_A, split_B );
+}

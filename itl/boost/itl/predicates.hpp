@@ -47,19 +47,14 @@ namespace boost{namespace itl
     // Unary predicates
 
     template <class Type>
-    class property : public std::unary_function<Type,bool>
-    {
-    public:
-        virtual ~property(){}
-        virtual bool operator() (const Type& x)const=0;
-    };
+    class property : public std::unary_function<Type,bool>{};
 
     template <class Type>
     class member_property : public property<Type>
     {
     public:
         member_property( bool(Type::* pred)()const ): property<Type>(), m_pred(pred){}
-        bool operator () (const Type& x)const { return (x.*m_pred)(); }
+        bool operator()(const Type& x)const { return (x.*m_pred)(); }
     private:
         bool(Type::* m_pred)()const;
     } ;
@@ -89,14 +84,9 @@ namespace boost{namespace itl
     // Binary predicates: relations
 
     template <class LeftT, class RightT>
-    class relation : public std::binary_function<LeftT,RightT,bool>
-    {
-    public:
-        virtual ~relation(){}
-        virtual bool operator() (const LeftT& a, const RightT& b)const=0;
-    } ;
+    class relation : public std::binary_function<LeftT,RightT,bool>{};
 
-    template <class Type> struct std_equal : public relation<Type, Type>
+    template <class Type> struct std_equal : public relation<Type,Type>
     {
         bool operator()(const Type& lhs, const Type& rhs)const
         {
@@ -109,7 +99,7 @@ namespace boost{namespace itl
     { return "=="; }
 
     template <class Type> 
-    struct element_equal : public relation<Type, Type>
+    struct element_equal : public relation<Type,Type>
     {
         bool operator()(const Type& lhs, const Type& rhs)const
         {
@@ -122,7 +112,7 @@ namespace boost{namespace itl
     { return "="; }
 
     template <class Type> 
-    struct protonic_equal : public relation<Type, Type>
+    struct protonic_equal : public relation<Type,Type>
     {
         bool operator()(const Type& lhs, const Type& rhs)const
         {
@@ -138,7 +128,7 @@ namespace boost{namespace itl
 
     /// Functor class template contained_in implements the subset relation.
     template<class Type> 
-    struct contained_in : public relation<Type, Type>
+    struct contained_in : public relation<Type,Type>
     {
         /// Apply the subset relation.
         /** <tt>contained_in(sub, super)</tt> is true if <tt>sub</tt> 
@@ -151,7 +141,7 @@ namespace boost{namespace itl
 
     /// Functor class template <b>containes</b> implements the superset relation. 
     template<class Type> 
-    struct containes : public relation<Type, Type>
+    struct containes : public relation<Type,Type>
     {
         /// Apply the superset relation.
         /** <tt>containes(super, sub)</tt> is true if <tt>super</tt> containes 
