@@ -222,10 +222,10 @@ public:
 //@{ 
     /// lower bound of all intervals in the set
     DomainT lower()const 
-    { BOOST_ASSERT(!empty()); return (*(_set.begin())).lower(); }
+    { return empty()? Interval<DomainT>().lower() : (*(_set.begin())).lower(); }
     /// upper bound of all intervals in the set
     DomainT upper()const 
-    { BOOST_ASSERT(!empty()); return (*(_set.rbegin())).upper(); }
+    { return empty()? Interval<DomainT>().upper() : (*(_set.rbegin())).upper(); }
 
     iterator lower_bound(const value_type& interval)
     { return _set.lower_bound(interval); }

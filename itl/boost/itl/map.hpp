@@ -301,7 +301,7 @@ namespace boost{namespace itl
         {
             //content_is_neutron<key_type, data_type> neutron_dropper;
             if(!Traits::absorbs_neutrons)
-                erase_if(content_is_neutron<value_type>());
+                erase_if<content_is_neutron>();
         }
 
         /** Erase the elements in *this map to which property \c hasProperty applies. 

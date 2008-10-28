@@ -81,6 +81,20 @@ operator +=
 }
 
 //--- base_value_type ---------------------------------------------------------
+// Addition (+=) of a base value pair.
+/* Addition of an value pair <tt>x=(I,y)</tt>
+
+    This adds (inserts) a value <tt>y</tt> for an interval <tt>I</tt> into the 
+	map, identical member function add. 
+
+    If no values are associated already within the range of <tt>I</tt>,
+    <tt>y</tt> will be associated to that interval.
+
+    If there are associated values, in the range of <tt>I</tt>, then all
+    those values within the ranges of their intervals,
+    are incremented by <tt>y</tt>. This is done via operator <tt>+=</tt>
+    which has to be implemented for CodomainT. 
+*/
 template 
 <
     class DomainT, class CodomainT,
@@ -140,6 +154,18 @@ operator -=
 }
 
 //--- value_type --------------------------------------------------------------
+// Subtraction of an interval value pair
+/* Subtraction of an interval value pair  <tt>x=(I,y)</tt>.
+    This subtracts a value <tt>y</tt> for an interval <tt>I</tt> from the map.
+
+    If there are associated values, in the range of <tt>I</tt>, all
+    those values within the ranges of their intervals,
+    are decremented by <tt>y</tt>. This is done usign operator -=.
+
+    If <tt>y</tt> becomes the neutral element CodomainT() <tt>k</tt> will
+    also be removed from the map, if the Traits include the property 
+    neutron_absorber. 
+*/
 template 
 <
     class DomainT, class CodomainT,

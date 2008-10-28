@@ -65,13 +65,13 @@ struct base_pair
 
 /// Implements a map as a map of intervals (abstract base class)
 /**    
-    Abstract template-class <b>interval_base_map</b>
+    class template <b>interval_base_map</b>
     implements a map as a map of intervals
 
     Template parameter <b>DomainT</b>: Domain type of the map. Also type of the
     map's keys.
     
-    Suitable as domain types are all datatypes that posess a partial order.
+    Suitable as domain types are all datatypes that posess a strict weak order.
     In particular all discrete atomic datatypes like <tt>int, short, long</tt> and
     atomic pseudo-continuous datatypes <tt>float, double</tt> may be instantiated.
       
@@ -251,8 +251,7 @@ public:
     void swap(interval_base_map& x) { _map.swap(x._map); }
 //@}
 
-/** @name C: Basic container functions
-*/
+/** @name C: Basic container functions */
 //@{ 
     /// clear the map
     void clear() { _map.clear(); }
@@ -271,77 +270,46 @@ public:
     bool contains(const base_pair_type& x)const
     { return that()->contains_(value_type(interval_type(x.key), x.data));    }
 
-    bool contains(const value_type& x)const
-    { return that()->contains_(x); }
+	/// Does the map contain all element value pairs represented by the interval-value pair sub?
+    bool contains(const value_type& sub)const
+    { return that()->contains_(sub); }
 
     /** Does <tt>*this</tt> container contain <tt>sub</tt>? */
     bool contains(const interval_base_map& sub)const 
     { return sub.contained_in(*this); }
 
+    /// <tt>*this</tt> is subset of <tt>super</tt>
+    bool contained_in(const interval_base_map& super)const;
 //@}
 
 
-    DomainT lower()const { return (*(_map.begin())).KEY_VALUE.lower(); }
-    DomainT upper()const { return (*(_map.rbegin())).KEY_VALUE.upper(); }
-
-    iterator lower_bound(const key_type& interval)
-    { return _map.lower_bound(interval); }
-
-    iterator upper_bound(const key_type& interval)
-    { return _map.upper_bound(interval); }
-
-    const_iterator lower_bound(const key_type& interval)const
-    { return _map.lower_bound(interval); }
-
-    const_iterator upper_bound(const key_type& interval)const
-    { return _map.upper_bound(interval); }
-
-
-    // Functions that are common with interval_base_set --------------------------------
-
-/** @name E: Bounds and other selectors
-    */
+/** @name E: Bounds and other selectors */
 //@{ 
-    // JODO: bounds of the map like interval_base_set
+	/// Lower bound of the first interval
+    DomainT lower()const 
+	{ return empty()? Interval<DomainT>().lower() : (*(_map.begin())).KEY_VALUE.lower(); }
+
+	/// Upper bound of the last interval
+    DomainT upper()const 
+	{ return empty()? Interval<DomainT>().upper() : (*(_map.rbegin())).KEY_VALUE.upper(); }
+
     /// Number of intervals which is also the size of the iteration over the map
     size_t interval_count()const { return _map.size(); }
     /// Size of the iteration over this container
     size_t iterative_size()const { return _map.size(); }
 
-    /// Gives the domain of the map as interval set
-    template 
-    <
-        template
-        <    
-            class DomT, template<class>class Interv, 
-            template<class>class Comp, template<class>class Allc
-        >
-        class IntervalSet
-    >
-    void domain(IntervalSet<DomainT,Interval,Compare,Alloc>& dom)const 
-    { 
-        dom.clear(); 
-        const_FOR_IMPLMAP(it) 
-            dom += (*it).KEY_VALUE; 
-    } 
+    /// Number of elements in the map (cardinality). 
+    size_type cardinality()const;
+
+    /// An interval map's size is it's cardinality
+    size_type size()const { return cardinality(); }
+
+	/// The length of the interval map which is the sum of interval lenghts
+    difference_type length()const;
+
 //@}
     
 
-
-/** @name F: Tester
-*/
-//@{
-    /// <tt>*this</tt> is subset of <tt>super</tt>
-    bool contained_in(const interval_base_map& super)const;
-
-    /// Equality
-    //CL bool equal(const interval_base_map& x2)const
-    //{ return contained_in(x2) && x2.contained_in(*this); }
-
-    ///  <tt>*this</tt> and <tt>x2</tt> are disjoint; their intersection is empty.
-    //JODO bool is_disjoint(const interval_base_map& x2)const
-    //wrong: { return ( empty() || x2.empty() || last_interval().exclusive_less(x2.first_interval()) ); }
-//@}
 
 //-----------------------------------------------------------------------------
 /** @name G.add: Addition */
@@ -416,28 +384,6 @@ public:
     */
     SubType& add(const value_type& x) 
     { that()->template add_<inplace_plus>(x); return *that(); }
-
-    /// Addition of a base value pair.
-    /** Addition of an value pair <tt>x=(I,y)</tt>
-
-        This adds (inserts) a value <tt>y</tt> for an interval <tt>I</tt> into the map,
-        identical member function add. 
-
-        If no values are associated already within the range of <tt>I</tt>,
-        <tt>y</tt> will be associated to that interval.
-
-        If there are associated values, in the range of <tt>I</tt>, then all
-        those values within the ranges of their intervals,
-        are incremented by <tt>y</tt>. This is done via operator <tt>+=</tt>
-        which has to be implemented for CodomainT. 
-
-        Insertion and subtraction are reversible as follows:
-        <tt>m0=m; m += x; m -= x;</tt> implies <tt>m==m0 </tt>         
-    */
-    //CL refa
-    //interval_base_map& operator += (const value_type& x) 
-    //{ that()->add_(x); return *this; }
-
 //@}
 
 
@@ -516,23 +462,6 @@ public:
     
         return *that();
     }
-
-    /// Subtraction of an interval value pair
-    /** Subtraction of an interval value pair  <tt>x=(I,y)</tt>.
-        This subtracts a value <tt>y</tt> for an interval <tt>I</tt> from the map.
-
-        If there are associated values, in the range of <tt>I</tt>, all
-        those values within the ranges of their intervals,
-        are decremented by <tt>y</tt>. This is done usign operator -=.
-
-        If <tt>y</tt> becomes the neutral element CodomainT() <tt>k</tt> will
-        also be removed from the map, if the Traits include the property 
-        neutron_absorber. 
-    */
-    //CL refa
-    //SubType& operator -= (const value_type& x) 
-    //{ that()->subtract_(x); return *that(); }
-
 //@}
 
 
@@ -729,6 +658,20 @@ public:
 
 //@}
 
+		
+    iterator lower_bound(const key_type& interval)
+    { return _map.lower_bound(interval); }
+
+    iterator upper_bound(const key_type& interval)
+    { return _map.upper_bound(interval); }
+
+    const_iterator lower_bound(const key_type& interval)const
+    { return _map.lower_bound(interval); }
+
+    const_iterator upper_bound(const key_type& interval)const
+    { return _map.upper_bound(interval); }
+
+
 //-----------------------------------------------------------------------------
 /** @name H.mor: Morphic modifiers */
 //@{
@@ -741,7 +684,7 @@ public:
     {
         //content_is_neutron<key_type, data_type> neutron_dropper;
         if(!Traits::absorbs_neutrons)
-			erase_if(content_is_neutron<value_type>());
+			erase_if<content_is_neutron>();
     }
 
     /// Copies this map into a neutron_absorber type.
@@ -756,6 +699,23 @@ public:
     /// Join bounding intervals    
     interval_base_map& join();
             
+
+    /// Gives the domain of the map as interval set
+    template 
+    <
+        template
+        <    
+            class DomT, template<class>class Interv, 
+            template<class>class Comp, template<class>class Allc
+        >
+        class IntervalSet
+    >
+    void domain(IntervalSet<DomainT,Interval,Compare,Alloc>& dom)const 
+    { 
+        dom.clear(); 
+        const_FOR_IMPLMAP(it) 
+            dom += (*it).KEY_VALUE; 
+    } 
 //@}
  
 
@@ -837,16 +797,6 @@ public:
         first() does not exist for continuous datatypes and open interval bounds.
     */
     DomainT last()const { return (*(_map.rbegin())).KEY_VALUE.last(); } // JODO NONCONT
-
-
-    /** Number of elements in the set (cardinality). 
-        Infinite for continuous domain datatyps    */
-    size_type cardinality()const;
-
-    /// An interval set's size is it's cardinality
-    size_type size()const { return cardinality(); }
-
-    difference_type length()const;
 
 
     /** Sum of associated elements of the map
