@@ -113,8 +113,8 @@ bool is_element_equal(const LeftT& left, const RightT& right)
 	typedef interval_map_sequence_tracker<LeftT,RightT> Step;
 	Step step(left, right);
 
-	LeftT::const_iterator  left_  = left.begin();
-	RightT::const_iterator right_ = right.begin();
+	typename LeftT::const_iterator  left_  = left.begin();
+	typename RightT::const_iterator right_ = right.begin();
 
 	int state = Step::nextboth;
 	while(state != Step::stop)

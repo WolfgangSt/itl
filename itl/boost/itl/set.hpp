@@ -306,7 +306,7 @@ namespace boost{namespace itl
     {
 		iterator it = begin();
         while(it != end())
-            if(Predicate(*it))
+            if(Predicate<value_type>(*it))
                 erase(it++); 
             else ++it;
         return *this;
