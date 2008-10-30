@@ -29,7 +29,7 @@ exe overlap_counter
 
 exe party
     :
-        boost_party/boost_party.cpp
+        party/party.cpp
     :
         <include>../../..
         <include>$(BOOST_ROOT)
