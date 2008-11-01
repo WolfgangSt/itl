@@ -65,7 +65,7 @@
 				UseUnicodeResponseFiles="true"
 				OutputFile="../../../../bin/debug/$(ProjectName).exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../../../lib"
+				AdditionalLibraryDirectories="../../../../lib; ../../../../stage/lib"
 				IgnoreAllDefaultLibraries="false"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
@@ -144,7 +144,7 @@
 				UseUnicodeResponseFiles="false"
 				OutputFile="../../../../bin/release/$(ProjectName).exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../../../lib"
+				AdditionalLibraryDirectories="../../../../lib; ../../../../stage/lib"
 				IgnoreAllDefaultLibraries="false"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -196,15 +196,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath="..\..\..\..\boost\itl\interval.hpp"
+				>
+			</File>
+			<File
 				RelativePath="..\..\..\..\boost\itl\interval_base_map.hpp"
 				>
 			</File>
 			<File
 				RelativePath="..\..\..\..\boost\itl\interval_map.hpp"
-				>
-			</File>
-			<File
-				RelativePath="..\..\..\..\boost\itl\interval.hpp"
 				>
 			</File>
 		</Filter>

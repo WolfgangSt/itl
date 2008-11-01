@@ -28,10 +28,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_ctor_4_ordered_types, T, ordered
 {
     // An empty interval is defined as the closed interval [1,0]
     BOOST_CHECK_EQUAL(interval<T>().empty(), true);
-    BOOST_CHECK_EQUAL(interval<T>().cardinality(), itl::neutron<itl::size<T>::type>::value());
-    BOOST_CHECK_EQUAL(interval<T>().size(), itl::neutron<itl::size<T>::type>::value());
+    BOOST_CHECK_EQUAL(interval<T>().cardinality(), itl::neutron<typename itl::size<T>::type>::value());
+    BOOST_CHECK_EQUAL(interval<T>().size(), itl::neutron<typename itl::size<T>::type>::value());
     //JODO STATIC_ASSERTS length fails with std::string
-    //BOOST_CHECK_EQUAL(interval<T>().length(), itl::neutron<itl::difference<T>::type>::value());
+    //BOOST_CHECK_EQUAL(interval<T>().length(), itl::neutron<itl::typename difference<T>::type>::value());
     BOOST_CHECK_EQUAL(interval<T>().lower(), itl::unon<T>::value());
     BOOST_CHECK_EQUAL(interval<T>().upper(), itl::neutron<T>::value());
 
@@ -46,7 +46,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_ctor_4_bicremental_types, T, bic
     BOOST_CHECK_EQUAL( T(), pred(succ(T())));
     BOOST_CHECK_EQUAL( itl::neutron<T>::value(), pred(succ(itl::neutron<T>::value()))       );
     BOOST_CHECK_EQUAL( itl::unon<T>::value(),    succ(itl::neutron<T>::value())             );
-    BOOST_CHECK_EQUAL( interval<T>().length(),   itl::neutron<difference<T>::type>::value() );
+    BOOST_CHECK_EQUAL( interval<T>().length(),   itl::neutron<typename difference<T>::type>::value() );
 
     T v4 = make<T>(4);
     itl::interval<T> I4_4I(v4);
@@ -67,9 +67,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_ctor_4_bicremental_types, T, bic
     BOOST_CHECK_EQUAL( I4_4I.contained_in(I4_4I), true  );
     BOOST_CHECK_EQUAL( I4_4I,                     I4_4I );
 
-    BOOST_CHECK_EQUAL( I4_4I.cardinality(),       unon<interval<T>::size_type>::value()          );
-    BOOST_CHECK_EQUAL( I4_4I.size(),              unon<interval<T>::size_type>::value()          );
-    //BOOST_CHECK_EQUAL( I4_4I.length(),          neutron<interval<T>::difference_type>::value() );
+    BOOST_CHECK_EQUAL( I4_4I.cardinality(),       unon<typename interval<T>::size_type>::value()          );
+    BOOST_CHECK_EQUAL( I4_4I.size(),              unon<typename interval<T>::size_type>::value()          );
+    //BOOST_CHECK_EQUAL( I4_4I.length(),          neutron<typename interval<T>::difference_type>::value() );
 
     itl::interval<T> j_4_4(I4_4I);
     BOOST_CHECK_EQUAL( I4_4I, j_4_4 );
@@ -117,9 +117,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_ctor_4_integral_types, T, integr
 {
     BOOST_CHECK_EQUAL(interval<T>().first(),  itl::unon<T>::value());
     BOOST_CHECK_EQUAL(interval<T>().last(),   itl::neutron<T>::value());
-    BOOST_CHECK_EQUAL(interval<T>().length(), 0);
+	BOOST_CHECK_EQUAL(interval<T>().length(), itl::neutron<typename interval<T>::difference_type>::value());
 
-    BOOST_CHECK_EQUAL(interval<T>(0,0).length(), 1);
+    BOOST_CHECK_EQUAL(interval<T>(0,0).length(), itl::unon<typename interval<T>::difference_type>::value());
 }
 
 BOOST_AUTO_TEST_CASE(test_itl_interval_ctor_specific)

@@ -8,6 +8,10 @@ Copyright (c) 2008-2008: Joachim Faulhaber
 #ifndef __itl_test_value_maker_JOFA_080916_H__
 #define __itl_test_value_maker_JOFA_080916_H__
 
+#include <boost/itl/type_traits/neutron.hpp>
+
+namespace boost{ namespace itl
+{
 template <class BicrementableT>
 BicrementableT make(int n)
 {
@@ -21,6 +25,8 @@ BicrementableT make(int n)
 
     return value;
 }
+
+}} // namespace boost itl
 
 #endif 
 

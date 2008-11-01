@@ -66,7 +66,7 @@
 				AdditionalDependencies="boost_date_time-vc90-mt-gd-1_35.lib"
 				OutputFile="../../../../bin/debug/$(ProjectName).exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../../../lib"
+				AdditionalLibraryDirectories="../../../../lib; ../../../../stage/lib"
 				IgnoreAllDefaultLibraries="false"
 				GenerateDebugInformation="true"
 				AssemblyDebug="1"
@@ -145,7 +145,7 @@
 				UseUnicodeResponseFiles="false"
 				OutputFile="../../../../bin/release/$(ProjectName).exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../../../lib;../../boost_1_35_0/lib"
+				AdditionalLibraryDirectories="../../../../lib; ../../../../stage/lib"
 				IgnoreAllDefaultLibraries="false"
 				GenerateDebugInformation="true"
 				SubSystem="1"
@@ -197,11 +197,11 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\src\itl\interval_base_map.hpp"
+				RelativePath="..\..\src\itl\interval.hpp"
 				>
 			</File>
 			<File
-				RelativePath="..\..\src\itl\interval.hpp"
+				RelativePath="..\..\src\itl\interval_base_map.hpp"
 				>
 			</File>
 			<File

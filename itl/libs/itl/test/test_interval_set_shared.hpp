@@ -101,7 +101,7 @@ void interval_set_fundamentals_4_ordered_types()
 
     BOOST_CHECK_EQUAL(single_I0_0I_from_element, single_I0_0I_from_interval);
     BOOST_CHECK_EQUAL(single_I0_0I_from_element, single_I0_0I);
-    BOOST_CHECK_EQUAL(enclosure(single_I0_0I), I0_0I);
+    //CL BOOST_CHECK_EQUAL(enclosure(single_I0_0I), I0_0I);
     BOOST_CHECK_EQUAL(single_I0_0I.lower(), I0_0I.lower());
     BOOST_CHECK_EQUAL(single_I0_0I.upper(), I0_0I.upper());
 
@@ -141,6 +141,7 @@ void interval_set_fundamentals_4_ordered_types()
 }
 
 
+
 template <template<class T, template<class>class = interval,
                             template<class>class = std::less,
                             template<class>class = std::allocator
@@ -170,8 +171,8 @@ void interval_set_ctor_4_bicremental_types()
     (_I4_4I_1 += v4) += I4_4I;
     BOOST_CHECK_EQUAL( _I4_4I,                    _I4_4I_1 );
     
-    BOOST_CHECK_EQUAL( _I4_4I.cardinality(),      unon<IntervalSet<T>::size_type>::value()  );
-    BOOST_CHECK_EQUAL( _I4_4I.size(),             unon<IntervalSet<T>::size_type>::value()  );
+    BOOST_CHECK_EQUAL( _I4_4I.cardinality(),      unon<typename IntervalSet<T>::size_type>::value()  );
+    BOOST_CHECK_EQUAL( _I4_4I.size(),             unon<typename IntervalSet<T>::size_type>::value()  );
     BOOST_CHECK_EQUAL( _I4_4I.interval_count(),   1  );
     BOOST_CHECK_EQUAL( _I4_4I.iterative_size(),   1  );
     BOOST_CHECK_EQUAL( _I4_4I.lower(),            v4 );
@@ -423,6 +424,7 @@ void interval_set_operators_4_bicremental_types()
     BOOST_CHECK_EQUAL( section.contained_in(right), true );
 }
 
+
 // Test for nontrivial intersection of interval sets with intervals and values
 template <template<class T, template<class>class = interval,
                             template<class>class = std::less,
@@ -496,6 +498,7 @@ void interval_set_base_intersect_4_bicremental_types()
 
     BOOST_CHECK_EQUAL( is_element_equal(split_AB, split_ab2), true );
 }
+
 
 #endif // __test_itl_interval_set_shared_h_JOFA_080920__
 

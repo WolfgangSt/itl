@@ -15,7 +15,8 @@ project
     ;
 
 test-suite "itl"
-    : [ run test_itl_interval/test_itl_interval.cpp ]
+    : 
+      [ run test_itl_interval/test_itl_interval.cpp ]
       [ run test_interval_set/test_interval_set.cpp ]
       [ run test_separate_interval_set/test_separate_interval_set.cpp ]
       [ run test_split_interval_set/test_split_interval_set.cpp ]
