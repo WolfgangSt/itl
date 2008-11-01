@@ -331,7 +331,8 @@ bool is_disjoint
     typename operand_type::const_iterator it = common_lwb;
     while(it != common_upb)
     {
-        object.add_intersection(intersection, operand_type::key_value(it++));
+        //CL object.add_intersection(intersection, operand_type::key_value(it++));
+        object.add_intersection(intersection, *it++);
         if(!intersection.empty())
             return false;
     }
@@ -375,7 +376,9 @@ bool is_disjoint
     typename operand_type::const_iterator it = common_lwb;
     while(it != common_upb)
     {
-        object.add_intersection(intersection, operand_type::key_value(it++));
+		//JODO operand_type::key_value not working with gcc_3.4.4 (cygwin)
+        //object.add_intersection(intersection, operand_type::key_value(it++));
+        object.add_intersection(intersection, (it++)->KEY_VALUE);
         if(!intersection.empty())
             return false;
     }
@@ -431,6 +434,33 @@ erase
 {
     return object -= operand; 
 }
+
+
+//-----------------------------------------------------------------------------
+// enclosure
+//-----------------------------------------------------------------------------
+template 
+<
+    class DomainT, template<class>class Interval, 
+    template<class>class Compare, template<class>class Alloc,
+    template
+    <    
+        class, template<class>class, 
+        template<class>class, template<class>class
+    >
+    class IntervalSet
+>
+typename IntervalSet<DomainT,Interval,Compare,Alloc>::interval_type 
+enclosure(const IntervalSet<DomainT,Interval,Compare,Alloc>& object)
+{
+	typedef IntervalSet<DomainT,Interval,Compare,Alloc> IntervalSetT;
+    typedef typename IntervalSetT::interval_type interval_type;
+    return 
+        object.empty() ? neutron<interval_type>::value()
+        : (*object.begin()).span(*object.rbegin());
+}
+
+
 
 }} // namespace itl boost
 

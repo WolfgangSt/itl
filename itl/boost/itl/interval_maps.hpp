@@ -417,7 +417,7 @@ bool is_disjoint
     typename operand_type::const_iterator it = common_lwb;
     while(it != common_upb)
     {
-        object.add_intersection(intersection, operand_type::key_value(it++));
+        object.add_intersection(intersection, (it++)->KEY_VALUE);
         if(!intersection.empty())
             return false;
     }
@@ -463,12 +463,39 @@ bool is_disjoint
     typename operand_type::const_iterator it = common_lwb;
     while(it != common_upb)
     {
-        object.add_intersection(intersection, operand_type::key_value(it++));
+        object.add_intersection(intersection, *it++);
         if(!intersection.empty())
             return false;
     }
 
     return true; 
+}
+
+
+//-----------------------------------------------------------------------------
+// enclosure
+//-----------------------------------------------------------------------------
+template 
+<
+    class DomainT, class CodomainT,
+    class Traits, template<class>class Interval, 
+    template<class>class Compare, template<class>class Alloc,
+    template
+    <    
+        class, class, class, template<class>class, 
+        template<class>class, template<class>class
+    >
+    class IntervalMap
+>
+typename IntervalMap<DomainT,CodomainT,Traits,Interval,Compare,Alloc>::interval_type 
+enclosure(const IntervalMap<DomainT,CodomainT,Traits,Interval,Compare,Alloc>& object)
+{
+	typedef IntervalMap<DomainT,CodomainT,Traits,Interval,Compare,Alloc> IntervalMapT;
+    typedef typename IntervalMapT::interval_type interval_type;
+    return 
+        object.empty() ? neutron<interval_type>::value()
+        : (object.begin()->KEY_VALUE)
+			.span(object.rbegin()->KEY_VALUE);
 }
 
 }} // namespace itl boost

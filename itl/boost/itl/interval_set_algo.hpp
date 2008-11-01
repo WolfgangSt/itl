@@ -60,17 +60,6 @@ struct discrete_interval_container
 };
 
 
-template<class IntervalSetT>
-typename IntervalSetT::interval_type 
-enclosure(const IntervalSetT& object)
-{
-    typedef typename IntervalSetT::interval_type interval_type;
-    return 
-        object.empty() ? neutron<interval_type>::value()
-        : IntervalSetT::key_value(object.begin())
-          .span(IntervalSetT::key_value(object.rbegin()));
-}
-
 namespace Set
 {
 

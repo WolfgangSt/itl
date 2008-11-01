@@ -823,8 +823,6 @@ void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
         //assert(end_it == this->_map.upper_bound(x_itv));
 
         interval_type fst_itv = (*fst_it).KEY_VALUE ;
-        CodomainT cur_val     = (*fst_it).CONT_VALUE ;
-
         interval_type leadGap; x_itv.left_surplus(leadGap, fst_itv);
         // this is a new Interval that is a gap in the current map
 
@@ -897,7 +895,6 @@ void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
                   iterator& it)
 {
     interval_type cur_itv = (*it).KEY_VALUE ;
-    CodomainT     cur_val = (*it).CONT_VALUE ;
 
     interval_type left_gap;
     x_rest.left_surplus(left_gap, cur_itv);

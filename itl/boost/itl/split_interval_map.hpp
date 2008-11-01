@@ -36,7 +36,6 @@ class split_interval_map
 
 #include <boost/itl/interval_set.hpp>
 #include <boost/itl/interval_map.hpp>
-//CL #include <boost/itl/split_interval_map.hpp>
 #include <boost/itl/interval_base_map.hpp>
 #include <boost/itl/interval_maps.hpp>
 #include <boost/itl/split_interval_set.hpp>
@@ -625,9 +624,7 @@ void split_interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
         if(end_it != this->_map.end())
             end_it++; 
         //assert(end_it == this->_map.upper_bound(x_itv));
-
         interval_type fst_itv = (*fst_it).KEY_VALUE ;
-        CodomainT cur_val     = (*fst_it).CONT_VALUE ;
 
         interval_type leadGap; x_itv.left_surplus(leadGap, fst_itv);
         // this is a new Interval that is a gap in the current map
@@ -688,7 +685,6 @@ void split_interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
                   iterator& it)
 {
     interval_type cur_itv = (*it).KEY_VALUE ;
-    CodomainT     cur_val = (*it).CONT_VALUE ;
 
     interval_type left_gap;
     x_rest.left_surplus(left_gap, cur_itv);
