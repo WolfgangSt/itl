@@ -29,22 +29,13 @@ DEALINGS IN THE SOFTWARE.
 #define __itl_functors_H_JOFA_080315__
 
 #include <boost/itl/type_traits/neutron.hpp>
+#include <functional>
 
 namespace boost{namespace itl
 {
-
-    //CL JODO
     // ------------------------------------------------------------------------
-    //template <typename Type> struct neutron
-    //{
-    //    inline Type operator()()const { return Type(); }
-    //};
-
-    //template<>
-    //inline std::string unary_template_to_string<neutron>::apply() { return "0"; }
-
-    // ------------------------------------------------------------------------
-    template <typename Type> struct inplace_identity
+	template <typename Type> struct inplace_identity 
+		: public std::binary_function<Type&, const Type&, void>
     {
         void operator()(Type& object, const Type& operand)const{}
     };
@@ -54,7 +45,8 @@ namespace boost{namespace itl
     { return "i="; }
 
     // ------------------------------------------------------------------------
-    template <typename Type> struct inplace_erasure
+    template <typename Type> struct inplace_erasure 
+		: public std::binary_function<Type&, const Type&, void>
     {
         void operator()(Type& object, const Type& operand)const
         { 
@@ -68,7 +60,8 @@ namespace boost{namespace itl
     { return "0="; }
 
     // ------------------------------------------------------------------------
-    template <typename Type> struct inplace_plus
+    template <typename Type> struct inplace_plus 
+		: public std::binary_function<Type&, const Type&, void>
     {
         typedef Type type;
 
@@ -83,7 +76,8 @@ namespace boost{namespace itl
     inline std::string unary_template_to_string<inplace_plus>::apply() { return "+="; }
 
     // ------------------------------------------------------------------------
-    template <typename Type> struct inplace_minus
+    template <typename Type> struct inplace_minus 
+		: public std::binary_function<Type&, const Type&, void>
     {
         typedef Type type;
         void operator()(Type& object, const Type& operand)const
@@ -98,6 +92,7 @@ namespace boost{namespace itl
 
     // ------------------------------------------------------------------------
     template <typename Type> struct inserter
+		: public std::binary_function<Type&, const Type&, void>
     {
         void operator()(Type& object, const Type& operand)const
         { insert(object,operand); }
@@ -108,6 +103,7 @@ namespace boost{namespace itl
 
     // ------------------------------------------------------------------------
     template <typename Type> struct eraser
+		: public std::binary_function<Type&, const Type&, void>
     {
         void operator()(Type& object, const Type& operand)const
         { erase(object,operand); }
@@ -118,6 +114,7 @@ namespace boost{namespace itl
 
     // ------------------------------------------------------------------------
     template <typename Type> struct inplace_star
+		: public std::binary_function<Type&, const Type&, void>
     {
         void operator()(Type& object, const Type& operand)const
         { object *= operand; }
@@ -128,6 +125,7 @@ namespace boost{namespace itl
 
     // ------------------------------------------------------------------------
     template <typename Type> struct inplace_max
+		: public std::binary_function<Type&, const Type&, void>
     {
         void operator()(Type& object, const Type& operand)const
         {
@@ -141,6 +139,7 @@ namespace boost{namespace itl
 
     // ------------------------------------------------------------------------
     template <typename Type> struct inplace_min
+		: public std::binary_function<Type&, const Type&, void>
     {
         void operator()(Type& object, const Type& operand)const
         {
@@ -153,8 +152,11 @@ namespace boost{namespace itl
     inline std::string unary_template_to_string<inplace_min>::apply() { return "min="; }
 
 
-    // ------------------------------------------------------------------------
+    // -------------------------------------------------------------------------
     template<template<class>class InplaceBinaryOp, class Type> struct complement
+		: public std::binary_function
+					<      typename InplaceBinaryOp<Type>::type& , 
+					 const typename InplaceBinaryOp<Type>::type& , void>
     {
         void operator()(typename InplaceBinaryOp<Type>::type& object, 
                         const typename InplaceBinaryOp<Type>::type& operand)
