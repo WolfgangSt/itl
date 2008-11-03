@@ -1201,24 +1201,6 @@ inline bool is_protonic_equal(const interval_base_map<SubType,DomainT,CodomainT,
 }
 
 
-template 
-<
-    class SubType,
-    class DomainT, class CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc
->
-inline bool is_element_equal(const interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>& lhs,
-                             const interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc>& rhs)
-{
-    interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc> lhs_joined = lhs;
-    interval_base_map<SubType,DomainT,CodomainT,Traits,Interval,Compare,Alloc> rhs_joined = rhs;
-
-    lhs_joined.join();
-    rhs_joined.join();
-
-    return Set::lexicographical_equal(lhs_joined, rhs_joined);
-}
-
-
 //-----------------------------------------------------------------------------
 // order
 //-----------------------------------------------------------------------------

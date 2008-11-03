@@ -79,6 +79,8 @@ public:
 
 	int next_left(LeftIterT& left, RightIterT& right)
 	{
+		if(left == _left.end())
+			return stop;
 		if(!LeftT::key_value(_prior_left).touches(LeftT::key_value(left)))
 			return stop; //_result = false;
 
@@ -90,6 +92,8 @@ public:
 
 	int next_right(LeftIterT& left, RightIterT& right)
 	{
+		if(right == _right.end())
+			return stop;
 		if(!RightT::key_value(_prior_right).touches(RightT::key_value(right)))
 			return stop; //_result = false;
 
@@ -110,6 +114,11 @@ private:
 template<class LeftT, class RightT>
 bool is_element_equal(const LeftT& left, const RightT& right)
 {
+	if(left.empty())
+		return right.empty();
+	else if(right.empty())
+		return false;
+
 	typedef interval_map_sequence_tracker<LeftT,RightT> Step;
 	Step step(left, right);
 

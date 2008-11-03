@@ -81,6 +81,8 @@ public:
     typedef interval_base_set<itl::separate_interval_set<DomainT,Interval,Compare,Alloc>,
                               DomainT,Interval,Compare,Alloc> base_type;
 
+    typedef separate_interval_set<DomainT,Interval,Compare,Alloc> type;
+
     typedef interval_set<DomainT,Interval,Compare,Alloc> joint_type;
 
     /// The domain type of the set
@@ -179,22 +181,15 @@ public:
 
 
 template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-bool separate_interval_set<DomainT,Interval,Compare,Alloc>::contains_(const interval_type& x)const
+bool separate_interval_set<DomainT,Interval,Compare,Alloc>::contains_(const interval_type& interv)const
 {
-    if(x.empty()) return true;
+    if(interv.empty()) 
+		return true;
 
-    typename ImplSetT::const_iterator fst_it = this->_set.lower_bound(x);
-    typename ImplSetT::const_iterator end_it = this->_set.upper_bound(x);
-
-    interval_set<DomainT,Interval,Compare,Alloc> matchSet;
-    for(typename ImplSetT::const_iterator it=fst_it; it!=end_it; it++) 
-        matchSet.add(*it);
-
-    interval_set<DomainT,Interval,Compare,Alloc> x_asSet; 
-    x_asSet.add(x);
-    return x_asSet.contained_in(matchSet);
+    type section;
+	add_intersection(section, interv);
+	return is_element_equal(section, type(interv));
 }
-
 
 
 template<class DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>

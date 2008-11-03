@@ -233,41 +233,20 @@ private:
     void insert_rear(const interval_type& x_itv, const CodomainT& x_val, iterator& it);
 
     void erase_rest(const interval_type& x_itv, const CodomainT& x_val, iterator& it, iterator& end_it);
-
-    void matchMap(interval_map& matchMap, const value_type& x)const;
 } ;
-
-
-
-template <typename DomainT, typename CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
-void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
-    ::matchMap(interval_map& matchMap, const value_type& x_y)const
-{
-    interval_type x = x_y.KEY_VALUE;
-    typename ImplMapT::const_iterator fst_it = this->_map.lower_bound(x);
-    typename ImplMapT::const_iterator end_it = this->_map.upper_bound(x);
-
-    for(typename ImplMapT::const_iterator it=fst_it; it!=end_it; it++) 
-        matchMap.add(*it);
-}
 
 
 template <typename DomainT, typename CodomainT, class Traits, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
 bool interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
-    ::contains_(const value_type& x_y)const
+    ::contains_(const value_type& interv_value)const
 {
-    interval_type x = x_y.KEY_VALUE;
-    if(x.empty()) return true;
+    interval_type interv = interv_value.KEY_VALUE;
+    if(interv.empty()) 
+		return true;
 
-    interval_map match_map;
-    matchMap(match_map, x_y);
-
-    if(match_map.iterative_size() != 1) return false;
-
-    iterator match_it = match_map._map.find(x);
-    if(! x.contained_in((*match_it).KEY_VALUE) ) return false;
-
-    return (*match_it).CONT_VALUE==x_y.CONT_VALUE;
+    type section;
+	add_intersection(section, interv);
+	return is_element_equal(section, type(interv_value));
 }
 
 
@@ -429,6 +408,7 @@ typename interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>::iterator
 interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
     ::fill_gap_join_left(const value_type& value)
 {
+	static Combinator<CodomainT> combine;
     //collision free insert is asserted
     if(value.KEY_VALUE.empty())
         return this->_map.end();
@@ -439,7 +419,7 @@ interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
     if(Traits::emits_neutrons)
     {
         CodomainT added_val = CodomainT();
-        Combinator<CodomainT>()(added_val, value.CONT_VALUE);
+        combine(added_val, value.CONT_VALUE);
         insertion = this->_map.insert(value_type(value.KEY_VALUE, added_val));
     }
     else
@@ -457,6 +437,7 @@ typename interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>::iterator
 interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
     ::fill_gap_join_both(const value_type& value)
 {
+	static Combinator<CodomainT> combine;
     //collision free insert is asserted
     if(value.KEY_VALUE.empty())
         return this->_map.end();
@@ -467,7 +448,7 @@ interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
     if(Traits::emits_neutrons)
     {
         CodomainT added_val = CodomainT();
-        Combinator<CodomainT>()(added_val, value.CONT_VALUE);
+        combine(added_val, value.CONT_VALUE);
         insertion = this->_map.insert(value_type(value.KEY_VALUE, added_val));
     }
     else
@@ -487,6 +468,8 @@ template <typename DomainT, typename CodomainT, class Traits, template<class>cla
 void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
     ::add_(const value_type& x)
 {
+	static Combinator<CodomainT> combine;
+
     const interval_type& x_itv = x.KEY_VALUE;
     if(x_itv.empty()) 
         return;
@@ -499,7 +482,7 @@ void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
     if(Traits::emits_neutrons)
     {
         CodomainT added_val = CodomainT();
-        Combinator<CodomainT>()(added_val, x_val);
+        combine(added_val, x_val);
         insertion = this->_map.insert(value_type(x_itv, added_val));
     }
     else
@@ -534,7 +517,7 @@ void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
         fst_itv.intersect(interSec, x_itv);
 
         CodomainT cmb_val = cur_val;
-        Combinator<CodomainT>()(cmb_val, x_val);
+        combine(cmb_val, x_val);
 
         iterator snd_it = fst_it; snd_it++; 
 
@@ -586,6 +569,8 @@ template <typename DomainT, typename CodomainT, class Traits, template<class>cla
 void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
     ::add_rest(const interval_type& x_itv, const CodomainT& x_val, iterator& it, iterator& end_it)
 {
+	static Combinator<CodomainT> combine;
+
     iterator nxt_it = it; nxt_it++;
     interval_type x_rest = x_itv, left_gap, common, cur_itv;
 
@@ -594,7 +579,7 @@ void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
         cur_itv = (*it).KEY_VALUE ;            
         x_rest.left_surplus(left_gap, cur_itv);
 
-        Combinator<CodomainT>()(it->CONT_VALUE, x_val);
+        combine(it->CONT_VALUE, x_val);
         fill_gap_join_left<Combinator>(value_type(left_gap, x_val)); //A posteriori
 
         if(Traits::absorbs_neutrons && it->CONT_VALUE == CodomainT())
@@ -619,6 +604,8 @@ template <typename DomainT, typename CodomainT, class Traits, template<class>cla
 void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
     ::add_rear(const interval_type& x_rest, const CodomainT& x_val, iterator& it)
 {
+	static Combinator<CodomainT> combine;
+
     interval_type cur_itv = (*it).KEY_VALUE ;
     CodomainT     cur_val = (*it).CONT_VALUE ;
 
@@ -629,7 +616,7 @@ void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
     cur_itv.intersect(common, x_rest);
 
     CodomainT cmb_val = cur_val;
-    Combinator<CodomainT>()(cmb_val, x_val);
+    combine(cmb_val, x_val);
 
     interval_type end_gap; 
     x_rest.right_surplus(end_gap, cur_itv);
@@ -661,7 +648,9 @@ template <typename DomainT, typename CodomainT, class Traits, template<class>cla
 void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
     ::subtract_(const value_type& x)
 {
+	static Combinator<CodomainT> combine;
     const interval_type& x_itv = x.KEY_VALUE;
+
     if(x_itv.empty()) 
         return;
 
@@ -688,7 +677,7 @@ void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
     fst_itv.intersect(interSec, x_itv);
 
     CodomainT cmb_val = fst_val;
-    Combinator<CodomainT>()(cmb_val, x_val);
+    combine(cmb_val, x_val);
 
     iterator snd_it = fst_it; snd_it++;
     if(snd_it == end_it) 
@@ -729,12 +718,13 @@ template <typename DomainT, typename CodomainT, class Traits, template<class>cla
 void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
     ::subtract_rest(const interval_type& x_itv, const CodomainT& x_val, iterator& it, iterator& end_it)
 {
+	static Combinator<CodomainT> combine;
     iterator nxt_it=it; nxt_it++;
 
     while(nxt_it!=end_it)
     {
         CodomainT& cur_val = (*it).CONT_VALUE ;
-        Combinator<CodomainT>()(cur_val, x_val);
+        combine(cur_val, x_val);
 
         if(Traits::absorbs_neutrons && cur_val==CodomainT())
             this->_map.erase(it++); 
@@ -756,7 +746,7 @@ void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
     if(rightResid.empty())
     {
         CodomainT& cur_val = (*it).CONT_VALUE ;
-        Combinator<CodomainT>()(cur_val, x_val);
+        combine(cur_val, x_val);
         if(Traits::absorbs_neutrons && cur_val==CodomainT())
             this->_map.erase(it);
         else
@@ -776,7 +766,7 @@ void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
     {
         CodomainT cur_val = (*it).CONT_VALUE ;
         CodomainT cmb_val = cur_val ;
-        Combinator<CodomainT>()(cmb_val, x_val);
+        combine(cmb_val, x_val);
         interval_type interSec; 
         cur_itv.intersect(interSec, x_itv);
 

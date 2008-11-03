@@ -352,7 +352,7 @@ operator *=
 //-----------------------------------------------------------------------------
 template 
 <
-    class SubType, class DomainT, class CodomainT,
+    class DomainT, class CodomainT,
     class Traits, template<class>class Interval, 
     template<class>class Compare, template<class>class Alloc,
     template
@@ -360,18 +360,25 @@ template
         class, class, class, template<class>class, 
         template<class>class, template<class>class
     >
-    class IntervalMap
+    class LeftIntervalMap,
+    template
+    <    
+        class, class, class, template<class>class, 
+        template<class>class, template<class>class
+    >
+    class RightIntervalMap
 >
 bool is_element_equal
 (
-          interval_base_map<SubType,DomainT,CodomainT,
-                            Traits,Interval,Compare,Alloc>& object,
-    const IntervalMap<DomainT,CodomainT,
-                      Traits,Interval,Compare,Alloc>& operand
+    const LeftIntervalMap <DomainT,CodomainT,
+                           Traits,Interval,Compare,Alloc>& left,
+    const RightIntervalMap<DomainT,CodomainT,
+                           Traits,Interval,Compare,Alloc>& right
 )
 {
-	return Map::is_element_equal(object, operand);
+	return Map::is_element_equal(left, right);
 }
+
 
 //-----------------------------------------------------------------------------
 // is_disjoint
