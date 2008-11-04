@@ -111,7 +111,7 @@ void mapTestShell()
 
                 }
                 break;
-            //JODO URG REV
+            //JODO REV
             //case '_': 
             //    {
             //        cout << "input: lwb upb >> ";
@@ -158,7 +158,7 @@ int main()
 {
     cout << ">> Interval Template Library: Test splititvmap_shell.cpp <<\n";
     cout << "-----------------------------------------------------------\n";
-    mapTestShell< interval_map<int, int> >(); //JODO URG REV
+    mapTestShell< interval_map<int, int> >(); //JODO REV
 
     return 0;
 }

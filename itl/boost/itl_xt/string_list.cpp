@@ -30,8 +30,6 @@ DEALINGS IN THE SOFTWARE.
 /*---------------------------------------------------------------------------------
 A general list of strings
 ---------------------------------------------------------------------------------*/
-#include "stdafx.h" //JODO URG stdafx
-//#include "d:\opensrc\itl\devel\devel\stdafx.h"
 #include <boost/itl/string_list.hpp>
 
 using namespace std;
@@ -317,24 +315,3 @@ string_list& string_list::emptyTail(int count)
         push_back("");
     return *this;
 }
-
-
-string_list& string_list::trimEach(const char* toTrimFor)
-{
-    iterator it_ = begin(), doomed_;
-    while(it_ != end())
-    {
-        //JODO URG REV (*it_).trim(toTrimFor);
-        if((*it_).empty())
-        {
-            doomed_ = it_;
-            it_++;
-            erase(doomed_);
-        }
-        else
-            it_++;
-    }
-
-    return *this;
-}
-

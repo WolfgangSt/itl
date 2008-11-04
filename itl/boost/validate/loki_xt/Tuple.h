@@ -415,7 +415,6 @@ namespace Loki
             TupleGentor<NullType, index>,
             TupleGentor<NullType, index> >
         {
-            //CL typedef typename TupleGentor<NullType, index> TrgTupleT;
             typedef TupleGentor<NullType, index> SrcTupleT;
 
             static void Do(SrcTupleT& src)
@@ -456,9 +455,7 @@ namespace Loki
 
             static void Do(SrcTupleT& src)
             {
-                //CL TrgHeadClass& trgHead = trg;
                 SrcHeadClass& srcHead = src;
-                //CL TrgTailClass& trgTail = trg;
                 SrcTailClass& srcTail = src;
 
                 Function<TrgType, UnaryTpl>::apply(srcHead);
@@ -591,47 +588,6 @@ namespace Loki
             refer<1>(tup)=val1;
             return tup;
         }
-
-
-        /*CL wgen Deklararionsreihenfolge nach oben verschoben
-
-        ////////////////////////////////////////////////////////////////////////////////
-        // helper class template Reductor
-        // See reduce below
-        ////////////////////////////////////////////////////////////////////////////////
-
-        template <class TupleT, unsigned int i> struct Reductor;
-
-        template <class TupleT>
-        struct Reductor<TupleT, 0>
-        {
-            typedef typename TupleT::TList::Head HeadType;
-
-            static HeadType Do(const TupleT& obj)
-            {
-                return get<0>(obj);
-            }
-        };
-
-        template <class TupleT, unsigned int i>
-        struct Reductor
-        {
-            typedef typename TupleT::TList::Head HeadType;
-            typedef typename TupleT::TailClass TailClass;
-
-            static HeadType Do(const TupleT& obj)
-            {
-                // Which is: first(obj) + reduce(tail(obj))
-                return get<0>(obj) + Reductor<TailClass, i-1>::Do(obj);
-            }
-        };
-        
-        template <class TupleT>
-        typename Reductor<TupleT, 0>::HeadType reduce(const TupleT& obj)
-        {
-            return Reductor<TupleT::BaseClass, Length<TupleT::TList>::value-1>::Do(obj);
-        }
-        */
         
         //---------------------------------------------------------------------------
         // template class Perductor
@@ -879,227 +835,12 @@ namespace Loki
                 return itl::to_string<SourceT>::apply(src);
             }
         };
-
-
-        // ---------------------------------------------------------------------------
-        // class template ConsumerTemplateMapper
-        // ---------------------------------------------------------------------------
-        /*JODO
-        template 
-        <
-            template<class>class ConsumerTpl,    // GentorT<TypeT> 
-            template<class>class ArgumentTpl,    // GentorProfileT<TypeT> 
-            template<template<class>class,        // to consumer GentorT<TypeT>
-                     template<class>class>        // apply GentorProfileT<TypeT>
-                     class Consume,                // using funciton Calibrate
-            class ConsumerTupleT,                // Tuple<GentorT<TypeList>>
-            class ArgumentTupleT,                // tupe type for profile tuple value
-            //CL class BaseTupleT                // Basis value tuple type Tuple<TypeList>
-        >
-        struct ConsumerTemplateMapper;
-
-        //JODO does not work for empty tuples!
-        template 
-        <
-            template<class>class ConsumerTpl,    // GentorT<TypeT> 
-            template<class>class ArgumentTpl,    // GentorProfileT<TypeT> 
-            template<template<class>class,        // to consumer GentorT<TypeT>
-                     template<class>class>        // apply GentorProfileT<TypeT>
-                     class Consume,                // using funciton Calibrate
-            typename TrgType,                    // element type of BaseTuple that is handled
-            unsigned int index
-        >
-        struct ConsumerTemplateMapper
-        <
-            ConsumerTpl, ArgumentTpl, Consume,    // template parameter are allways passed
-                                                // tuple parameter decomposed
-            TupleGentor<Typelist<ConsumerTpl<TrgType>, NullType>, index>,
-            TupleGentor<Typelist<ArgumentTpl<TrgType>, NullType>, index> 
-            //CL TupleGentor<Typelist<TrgType, NullType>, index> 
-        >
-        {
-            typedef typename TupleGentor<Typelist<TrgType, NullType>, index> TrgTupleT;
-            typedef typename TupleGentor<Typelist<ConsumerTpl<TrgType>, NullType>, index> ConsumerTupleT;
-            typedef typename TupleGentor<Typelist<ArgumentTpl<TrgType>, NullType>, index> ArgumentTupleT;
-
-            static void Do(ConsumerTupleT& consumers, const ArgumentTupleT& argument)
-            {
-                // Perform for the single element case
-                Consume<ConsumerTpl, ArgumentTpl, TrgType>::apply(consumers, argument);
-            }
-        };
-
-        template 
-        <
-            template<class>class ConsumerTpl,    // GentorT<TypeT> 
-            template<class>class ArgumentTpl,    // GentorProfileT<TypeT> 
-            template<template<class>class,        // to consumer GentorT<TypeT>
-                     template<class>class>        // apply GentorProfileT<TypeT>
-                     class Consume,                // using functiton Consume
-            class ConsumerTupleT,                // Tuple<GentorT<TypeList>>
-            class ArgumentTupleT,                // tuple type for profile tuple value
-            //CL class BaseTupleT                // Basis value tuple type Tuple<TypeList>
-        >
-        struct ConsumerTemplateMapper
-        {
-            typedef typename ConsumerTupleT::HeadClass ConsumerHeadClass;
-            typedef typename ArgumentTupleT::HeadClass ArgumentHeadClass;
-            typedef typename ConsumerTupleT::TailClass ConsumerTailClass;
-            typedef typename ArgumentTupleT::TailClass ArgumentTailClass;
-            typedef typename ConsumerHeadClass::ValueType ConsumerType;
-            typedef typename ArgumentHeadClass::ValueType ArgumentType;
-
-            static void Do(ConsumerTupleT& consumer, ArgumentTupleT& argument)
-            {
-                ConsumerHeadClass& consumerHead = consumer;
-                ArgumentHeadClass& argumentHead = argument;
-                ConsumerTailClass& consumerTail = consumer;
-                ArgumentTailClass& argumentTail = argument;
-                Consume<ConsumerTpl, ArgumentTpl, ConsumerType>::apply(consumerHead, argumentHead);
-
-                ConsumerTemplateMapper
-                    <ConsumerTpl, ArgumentTpl, Consume, 
-                    ConsumerTailClass, ArgumentTailClass>
-                    ::Do(consumerTail, argumentTail);
-            }
-        };
-        */
         // ---------------------------------------------------------------------------
 
 
 
     } //namespace tup        
 
-    /*
-    // MEMO USENET: Recursive Metaproramming like in Sizer led to
-    // severe Problems. Using msvc++ an indirect solution was possibel
-    // gcc didn't work at all.
-    //----------------------------------------------------------------------------
-    // Sizer
-    //----------------------------------------------------------------------------    
-    template <class TargetT, class SrcT> struct Sizer
-    {
-        static TargetT apply(const SrcT&);
-    };
-
-
-    template <class TargetT, class SrcT> struct RecurseSizer
-    {
-        static TargetT apply(const SrcT& src)
-        {
-            return Sizer<TargetT, SrcT>::apply(src);
-        }
-    };
-    
-    
-    template<> int Sizer<int, int>::apply(const int& val) { return 1; }
-    template<> int Sizer<int, double>::apply(const double& val) { return 1; }
-
-
-    template <class TrgTypes, class SrcTypes> 
-    struct Sizer<tuple<TrgTypes>, tuple<SrcTypes> >
-    {
-        typedef tuple<TrgTypes> TrgTupleT;
-        typedef tuple<SrcTypes> SrcTupleT;
-
-        static TrgTupleT apply(const SrcTupleT& obj) 
-        {
-            // Direct recursion leads to compiler error.
-            return obj.map<RecurseSizer, TrgTupleT>(); 
-        }
-    };
-
-    template <class SrcT> 
-    struct Sizer<int, SrcT>
-    {
-        static int apply(const SrcT& obj) 
-        { 
-            return static_cast<int>(obj.size()); 
-        }
-    };
-    */
-
-    /*
-    //----------------------------------------------------------------------------
-    // Texter
-    //----------------------------------------------------------------------------
-    template <class TargetT, class SrcT> struct Texter
-    {
-        static TargetT apply(const SrcT&);
-    };
-
-    template <class TrgTypes, class SrcTypes> 
-    struct Texter<tuple<TrgTypes>, tuple<SrcTypes> >
-    {
-        typedef tuple<TrgTypes> TrgTupleT;
-        typedef tuple<SrcTypes> SrcTupleT;
-
-        static TrgTupleT apply(const SrcTupleT& obj) 
-        {
-            // Direct recursion leads to compiler error.
-            return obj.map<RecurseTexter, TrgTupleT>(); 
-        }
-    };
-
-    template <class SrcT> 
-    struct Texter<std::string, SrcT>
-    {
-        static std::string apply(const SrcT& obj) 
-        { 
-            return itl::to_string<SrcT>::apply(obj); 
-        }
-    };
-
-    template <class TargetT, class SrcT> struct RecurseTexter
-    {
-        static TargetT apply(const SrcT& src)
-        {
-            return Texter<TargetT, SrcT>::apply(src);
-        }
-    };
-
-    //----------------------------------------------------------------------------
-    // Combinator
-    //----------------------------------------------------------------------------
-    template <typename Type> struct Plus
-    {
-        static Type Do(const Type& rhs, const Type& lhs)
-        {
-            return rhs+lhs;
-        }
-    };
-
-    template <typename Type> struct Concat;
-
-    template <> struct Concat<std::string>
-    {
-        static std::string Do(const std::string& rhs, const std::string& lhs)
-        {
-            return rhs+", "+lhs;
-        }
-    };
-
-    template <typename Type> struct Concat
-    {
-        static Type Do(const Type& rhs, const Type& lhs)
-        {
-            return rhs+lhs;
-        }
-    };
-
-    //----------------------------------------------------------------------------
-    // Structor
-    //----------------------------------------------------------------------------
-    template <typename Type> struct Bracketer;
-
-    template <> struct Bracketer<std::string>
-    {
-        static std::string Do(const std::string& value)
-        {
-            return "[" + value + "]";
-        }
-    };
-    */
     
 #if defined(_MSC_VER) && _MSC_VER >= 1300
 #pragma warning( pop ) 

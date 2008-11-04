@@ -40,18 +40,6 @@ namespace boost{namespace itl
     typedef std::string StringTD;
     typedef StringTD (StringTD::* StringSelectorFPD)()const; 
 
-    //CL absi
-    // Compare class for Strings ignoring case
-    //struct  String_ICLess {
-    //    bool operator() (const std::string& c1, const std::string& c2) const 
-    //    { return _stricmp(c1.c_str(), c2.c_str()) < 0; }
-    //};
-    //
-    //struct  String_Less {
-    //    bool operator() (const std::string& c1, const std::string& c2) const 
-    //    { return c1 < c2; }
-    //};
-
     // Compare class for Strings ignoring case
     template<typename StringT>
     struct  String_ICLess {

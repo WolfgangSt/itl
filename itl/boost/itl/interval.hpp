@@ -1139,9 +1139,6 @@ struct exclusive_less {
     { return x1.exclusive_less(x2); }
 };
 
-//JODO USENET: It is not a strict weak ordering because the induced equality in not 
-// even an equivalence. Still the relation works completely well!
-
 
 // ----------------------------------------------------------------------------
 // operators

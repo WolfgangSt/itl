@@ -462,8 +462,6 @@ bool ItvMapTesterT<ItvMapTV>::hasErasureAsIntersectionComputability(ItvMapTV& x,
     erasure.domain(erasureDomain);
 
     ItvMapTV xxResid = xx;
-    //JODO URG xxResid.erase(erasure);
-    //itl::erase(xxResid,erasure);
     xxResid -= erasureDomain;
 
     interval_set_type xxDomain;

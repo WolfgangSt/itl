@@ -101,7 +101,6 @@ void interval_set_fundamentals_4_ordered_types()
 
     BOOST_CHECK_EQUAL(single_I0_0I_from_element, single_I0_0I_from_interval);
     BOOST_CHECK_EQUAL(single_I0_0I_from_element, single_I0_0I);
-    //CL BOOST_CHECK_EQUAL(enclosure(single_I0_0I), I0_0I);
     BOOST_CHECK_EQUAL(single_I0_0I.lower(), I0_0I.lower());
     BOOST_CHECK_EQUAL(single_I0_0I.upper(), I0_0I.upper());
 

@@ -254,26 +254,18 @@ namespace boost{namespace itl
         /** Intersect map \c x2 and \c *this.
             So \c *this becomes the intersection of \c *this and \c x2 */
         map& operator *= (const map& x2) 
-        {
-            //CL?
-            //if(Traits::emits_neutrons)
-            //     { Set::add(*this, x2); return *this; }
-            //else if(Traits::absorbs_neutrons && !itl::is_set<DataT>::value)
-            //     { Set::add(*this, x2); return *this; }
-            //else 
-            { 
-                Map::intersect(*this, x2); return *this; 
-            }
-        }
+        { Map::intersect(*this, x2); return *this; }
 
         /** Intersect set \c x2 and \c *this.
             So \c *this becomes the intersection of \c *this and \c x2 */
-        map& operator *= (const set_type& x2) { Map::intersect(*this, x2); return *this; }
+        map& operator *= (const set_type& x2) 
+		{ Map::intersect(*this, x2); return *this; }
 
         /** \c key_value allows for a uniform access to \c key_values which is
             is used for common algorithms on sets and maps. */
         template<typename IteratorT>
-        static const key_type& key_value(IteratorT& value_){ return (*value_).first; }
+        static const key_type& key_value(IteratorT& value_)
+		{ return (*value_).first; }
 
         /** \c data_value allows for a uniform access to \c data_values which is
             is used for common algorithms on sets and maps. */

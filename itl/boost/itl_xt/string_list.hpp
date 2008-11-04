@@ -106,9 +106,6 @@ public:
 
     /** Set 'count' tail-Elements to empty strings */
     string_list& emptyTail(int count);
-
-    /** Each element is trimmed for any of the characters in string 'toTrimFor' */
-    string_list& trimEach(const char* toTrimFor = " ");
 } ;
 
 }} // namespace boost itl

@@ -1014,50 +1014,6 @@ void interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>
 
 
 //-----------------------------------------------------------------------------
-// intersection *=
-//-----------------------------------------------------------------------------
-/*CL
-template 
-<
-    class SubType,
-    class DomainT, class CodomainT, 
-    class Traits, template<class>class Interval, 
-    template<class>class Compare, template<class>class Alloc
->
-interval_base_map<SubType,DomainT,CodomainT,
-                  Traits,Interval,Compare,Alloc>& 
-operator *=
-(
-     interval_base_map<SubType,DomainT,CodomainT,
-                       Traits,Interval,Compare,Alloc>& object,
-    const interval_map<        DomainT,CodomainT,
-                       Traits,Interval,Compare,Alloc>& operand
-)
-{
-
-    typedef interval_base_map
-            <SubType,DomainT,CodomainT,
-             Traits,Interval,Compare,Alloc> object_map_type;
-    typedef interval_map
-            <DomainT,CodomainT,
-            Traits,Interval,Compare,Alloc> operand_map_type;
-
-    if(Traits::emits_neutrons)
-        return object += operand;
-    else if(Traits::absorbs_neutrons && !is_set<CodomainT>::value)
-        return object += operand;
-    else
-    {
-        object_map_type section;
-        object.map_intersection(section, operand);
-        object.swap(section);
-        return object;
-    }
-}
-*/
-
-
-//-----------------------------------------------------------------------------
 // type traits
 //-----------------------------------------------------------------------------
 

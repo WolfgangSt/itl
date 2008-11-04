@@ -266,24 +266,6 @@ namespace boost{namespace itl
     }
 
 
-    /*CL
-    template <typename KeyT, template<class>class Compare, 
-                             template<class>class Alloc>
-    set<KeyT,Compare,Alloc>& 
-        set<KeyT,Compare,Alloc>::operator += (const set<KeyT,Compare,Alloc>& x2)
-    {
-        // Union with onself stays the same
-        if(this == &x2)
-            return *this;
-
-        const_iterator i = x2.begin(); 
-        while(i != x2.end()) 
-            insert(*i++); 
-
-        return *this; 
-    }
-    */
-
     template <typename KeyT, template<class>class Compare, template<class>class Alloc>
     std::string set<KeyT,Compare,Alloc>::as_string(const char* sep)const
     { 

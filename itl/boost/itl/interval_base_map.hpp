@@ -259,6 +259,7 @@ public:
     /// is the map empty?
     bool empty()const { return _map.empty(); }
 
+	//--- contains: set view ------------------------------------------------------
     /// Does the map contain the key element \c x
     bool contains(const DomainT& x)const
     { 
@@ -266,6 +267,7 @@ public:
         return it != _map.end(); 
     }
 
+	//--- contains: map view ------------------------------------------------------
     /// Does the map contain the element pair <tt>x = (key_element,value)</tt>?
     bool contains(const base_pair_type& x)const
     { return that()->contains_(value_type(interval_type(x.key), x.data));    }
@@ -564,8 +566,8 @@ public:
 /** @name G.sect: Intersection */
 //@{
 
-    /// Intersection with an interval
-    /** Compute the intersection of <tt>*this</tt> and the interval <tt>x</tt>; assign
+    //JODO DOC Intersection with an interval
+    /* Compute the intersection of <tt>*this</tt> and the interval <tt>x</tt>; assign
         result to the interval map <tt>section</tt>.
 
         The result of the intersection with an interval has to be a interval map,
@@ -587,8 +589,9 @@ public:
         No find function is implemented, because all find operations can be expressed
         as intersections.
     */
-    //CL void intersect(interval_base_map& section, const interval_type& x)const;
 
+
+	/// Intersect the sectant with *this. Pass the result to section.
     template<class SectantT>
     void intersect(interval_base_map& section, const SectantT& sectant)const
     {

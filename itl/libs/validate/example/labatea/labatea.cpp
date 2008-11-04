@@ -49,58 +49,6 @@ void test_Validater()
     //map_cluster_star_pushout.run();
 }
 
-/*CL
-interval_map<int, interval_set<int> > itv_map_of_intsets()
-{
-    itl::interval_set<int> soi_AB; 
-    soi_AB.insert(1);
-    soi_AB.insert(2);
-    soi_AB.insert(3);
-    soi_AB.insert(4);
-    itl::interval_set<int> soi_BC(soi_AB);
-    soi_BC.erase(1);
-    soi_BC.insert(5);
-
-    interval_map<int, itl::interval_set<int> > mois;
-    mois += make_pair(rightopen_interval(0, 20), soi_AB);
-    mois *= make_pair(rightopen_interval(1, 11), soi_BC);
-    mois *= closed_interval(2, 9);
-
-    return mois;
-}
-
-split_interval_map<int, itl::interval_set<int> > spitv_map_of_intsets()
-{
-    itl::interval_set<int> soi_AB; 
-    soi_AB += 2;
-    soi_AB.insert(3);
-    soi_AB.insert(4);
-    soi_AB.insert(5);
-    itl::interval_set<int> soi_BC(soi_AB);
-    soi_BC.subtract(2);
-    soi_BC.insert(6);
-
-    split_interval_map<int, itl::interval_set<int> > mois;
-    mois += make_pair(rightopen_interval(0, 20), soi_AB);
-    mois *= make_pair(rightopen_interval(1, 15), soi_BC);
-    mois *= closed_interval(3, 11);
-
-    return mois;
-}
-
-void test_intersect()
-{
-    split_interval_map<int, itl::interval_set<int> > spim;
-    spim = spitv_map_of_intsets();
-    spim *= itv_map_of_intsets();
-    cout << spim.as_string() << endl;
-
-    interval_map<int, itl::interval_set<int> > im;
-    im = itv_map_of_intsets();
-    im *= spitv_map_of_intsets();
-    cout << im.as_string() << endl;
-}
-*/
 
 void test_realmvalidater()
 {

@@ -143,8 +143,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_map_mixed_ctor_4_bicremental_typ
     split_map.add(I1_3D_1).add(I2_4D_1).add(I4_5D_1);
     BOOST_CHECK_EQUAL( split_map.iterative_size(), 4 );
     IntervalMapT join_map(split_map);
-	//JODO URG: assertion violation using gcc_3.4.4
-    //BOOST_CHECK_EQUAL( join_map.iterative_size(), 3 );
 }
 
 

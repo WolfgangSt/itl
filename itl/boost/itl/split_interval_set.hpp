@@ -225,17 +225,8 @@ namespace boost{namespace itl
 		if(interv.empty()) 
 			return true;
 
-		type section;//CL DBG
-		add_intersection(section, interv);//CL DBG
-
-		type dbg_single = type(interv); //CL DBG ff
-		//std::cout << "sec: " << section << endl;
-		//std::cout << "itv: " << dbg_single << endl; 
-		//if(    (*(   section.begin()))==leftopen_interval<int>(-3,-2) 
-		//	&& (*(dbg_single.begin()))==rightopen_interval<int>(-6,-5) )
-		//{
-		//	int dbg = 42;
-		//}
+		type section;
+		add_intersection(section, interv);
 		return is_element_equal(section, type(interv));
     }
 

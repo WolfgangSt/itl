@@ -245,21 +245,6 @@ public:
 //@}
 
 
-/** @name F: Tester
-    */
-//@{
-    /// Equality
-    //CL bool equal(const interval_base_set& x2)const
-    //{ return contained_in(x2) && x2.contained_in(*this); }
-
-    ///  <tt>*this</tt> and <tt>x2</tt> are disjoint; their intersection is empty.
-    //CL bool is_disjoint(const interval_base_set& x2)const;
-
-    ///  <tt>*this</tt> and <tt>x2</tt> are disjoint; their intersection is empty.
-    //CL bool is_disjoint(const interval_type& x2)const;
-//@}
-
-
 //-----------------------------------------------------------------------------
 /** @name G.add: Addition */
 //@{
@@ -271,14 +256,6 @@ public:
     /// Add an interval of elements \c x to the set
     SubType& add(const value_type& x) 
     { that()->add_(x); return *that(); }
-
-    ///// Add an interval of elements \c x to the set
-    //interval_base_set& operator += (const DomainT& x) 
-    //{ that()->add_(interval_type(x)); return *this; }
-
-    ///// Add an interval of elements \c x to the set
-    //interval_base_set& operator += (const value_type& x) 
-    //{ that()->add_(x); return *this; }
 
 //@}
 
@@ -328,7 +305,7 @@ public:
 /** @name G.sect: Intersection */
 //@{
 
-    /** Intersection with interval x; The intersection is assigned to <tt>section</tt>. 
+    /*JODO DOC Intersection with interval x; The intersection is assigned to <tt>section</tt>. 
     
         Intersection also serves a generalized <tt>find</tt>-function to search
         for intervals in the set:
@@ -343,7 +320,7 @@ public:
     */
     //CL void intersect(interval_base_set& section, const value_type& x)const;
 
-    //JODO doku; welche intersect-varianten kann ich ganz los werden.
+    //JODO DOC; welche intersect-varianten kann ich ganz los werden.
     void add_intersection(interval_base_set& section, const value_type& x)const;
 
     //JODO doku

@@ -21,7 +21,7 @@ w.r.t. addition (neutron()).
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 
-//JODO URG Produce a better compietime error here. 
+//JODO Produce a better compietime error here. 
 //JODO (Write Macro to reduce codereplication. Generate line info.) not needed if compile-time error is nifty.
 //JODO Make it complete for all date_time classes. check portability.
 #ifdef ITL_NEUTRONS_PROVIDED

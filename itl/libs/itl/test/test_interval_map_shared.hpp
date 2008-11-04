@@ -102,13 +102,6 @@ void interval_map_fundamentals_4_ordered_types()
     (mt_map *= mt_interval) *= mt_interval;
     BOOST_CHECK_EQUAL(mt_map, IntervalMapT());
 
-    //JODO URG
-    ////insecting emptieness with elements
-    //(mt_map *= v1_u1) *= v0_u1;
-    //BOOST_CHECK_EQUAL(mt_map, IntervalMapT());
-    ////insecting emptieness with intervals
-    //(mt_map *= I1_1I) *= I0_1I;
-    //BOOST_CHECK_EQUAL(mt_map, IntervalMapT());
     
 
     //-------------------------------------------------------------------------
@@ -484,7 +477,7 @@ void interval_map_operators_4_bicremental_types()
     all -= section;
     complement += all;
     //complement.erase(I3_5I);
-    complement.erase(section); //JODO URG BUG erase is buggy
+    complement.erase(section);
     BOOST_CHECK_EQUAL( is_disjoint(section, complement), true );
 
     //JODO: There seems to be no intersection on maps of non set codomain type

@@ -30,7 +30,6 @@ DEALINGS IN THE SOFTWARE.
 #define __itl_FixTupelConstT_JOFA_040621_H__
 
 #include <boost/itl/notate.hpp>
-//CL? #include <boost/itl/stattd.hpp>
 
 #define FOREACH_VAR(idx) for(VarEnumTD idx=0; idx < varCountV; idx++)
 #define FOREACH_VAR_TO(idx, upb) for(VarEnumTD idx=0; idx < upb; idx++)

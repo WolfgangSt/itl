@@ -331,7 +331,6 @@ bool is_disjoint
     typename operand_type::const_iterator it = common_lwb;
     while(it != common_upb)
     {
-        //CL object.add_intersection(intersection, operand_type::key_value(it++));
         object.add_intersection(intersection, *it++);
         if(!intersection.empty())
             return false;

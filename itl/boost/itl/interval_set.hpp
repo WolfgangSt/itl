@@ -371,24 +371,6 @@ inline bool is_element_equal(const interval_set<DomainT,Interval,Compare,Alloc>&
 {
     return &lhs == &rhs || Set::lexicographical_equal(lhs, rhs);
 }
-/*CL
-template 
-<
-    class SubType, class DomainT, template<class>class Interval, 
-    template<class>class Compare, template<class>class Alloc
->
-inline bool 
-is_element_equal
-(
-    const interval_set             <DomainT,Interval,Compare,Alloc>& lhs,
-    const interval_base_set<SubType,DomainT,Interval,Compare,Alloc>& rhs
-)
-{
-    typedef itl::interval_set<DomainT,Interval,Compare,Alloc> joined_type;
-    joined_type joined_rhs(rhs);
-    return Set::lexicographical_equal(lhs, joined_rhs);
-}
-*/
 
 template <class Type>
 struct is_set<itl::interval_set<Type> >

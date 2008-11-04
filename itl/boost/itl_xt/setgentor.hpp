@@ -89,7 +89,6 @@ void SetGentorT<SetTV>::some(SetTV& x)
     for(int i=0; i<m_sampleSize; i++)
     {
         DomainTD key;
-        //CL m_domainGentor->some(key);
         domainGentor()->some(key);
         x += key;
         m_sample.push_back(key);
