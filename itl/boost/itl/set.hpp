@@ -198,12 +198,12 @@ namespace boost{namespace itl
 
         /** Erase the elements in *this set to which property \c hasProperty applies. 
         Keep all the rest. */
-		template<template<class>class Predicate>
+        template<template<class>class Predicate>
         set& erase_if();
 
         /** Copy the elements in set \c src to which property \c hasProperty applies 
             into \c *this set. */
-		template<template<class>class Predicate>
+        template<template<class>class Predicate>
         set& assign_if(const set& src);
 
         /** Represent this set as a string */
@@ -282,11 +282,11 @@ namespace boost{namespace itl
 
 
     template <typename KeyT, template<class>class Compare, template<class>class Alloc>
-		template<template<class>class Predicate>
+        template<template<class>class Predicate>
     set<KeyT,Compare,Alloc>& set<KeyT,Compare,Alloc>
         ::erase_if()
     {
-		iterator it = begin();
+        iterator it = begin();
         while(it != end())
             if(Predicate<value_type>(*it))
                 erase(it++); 
@@ -296,7 +296,7 @@ namespace boost{namespace itl
     }
 
     template <typename KeyT, template<class>class Compare, template<class>class Alloc>
-		template<template<class>class Predicate>
+        template<template<class>class Predicate>
     set<KeyT,Compare,Alloc>& set<KeyT,Compare,Alloc>
         ::assign_if(const set<KeyT,Compare,Alloc>& src)
     {
@@ -304,7 +304,7 @@ namespace boost{namespace itl
         const_iterator it = src.begin();
         while(it != src.end()) {
             if(Predicate<value_type>(*it)) 
-				add(*it++);
+                add(*it++);
         }
         return *this;
     }

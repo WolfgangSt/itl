@@ -184,11 +184,11 @@ template <typename DomainT, template<class>class Interval, template<class>class 
 bool separate_interval_set<DomainT,Interval,Compare,Alloc>::contains_(const interval_type& interv)const
 {
     if(interv.empty()) 
-		return true;
+        return true;
 
     type section;
-	add_intersection(section, interv);
-	return is_element_equal(section, type(interv));
+    add_intersection(section, interv);
+    return is_element_equal(section, type(interv));
 }
 
 

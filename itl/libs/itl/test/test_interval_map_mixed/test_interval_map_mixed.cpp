@@ -1119,10 +1119,10 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_map_mixed_disjoint_4_bicremental
 template<class Type>
 struct size_greater_1 : public itl::property<Type>
 {
-	bool operator()(const Type& value)const
-	{
-		return value.first.size() > 1 ;
-	}
+    bool operator()(const Type& value)const
+    {
+        return value.first.size() > 1 ;
+    }
 };
 
 
@@ -1166,9 +1166,9 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_map_mixed_erase_if_4_integral_ty
     SplitIntervalMapT split_A, split_B;
 
     split_A.add(I0_3D_1).add(I4_4I_1).add(I6_6I_1);
-	split_B.add(I4_4I_1).add(I6_6I_1);
+    split_B.add(I4_4I_1).add(I6_6I_1);
 
-	split_A.template erase_if<size_greater_1>();
+    split_A.template erase_if<size_greater_1>();
 
     BOOST_CHECK_EQUAL( split_A, split_B );
 }

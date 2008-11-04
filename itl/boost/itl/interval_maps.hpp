@@ -85,7 +85,7 @@ operator +=
 /* Addition of an value pair <tt>x=(I,y)</tt>
 
     This adds (inserts) a value <tt>y</tt> for an interval <tt>I</tt> into the 
-	map, identical member function add. 
+    map, identical member function add. 
 
     If no values are associated already within the range of <tt>I</tt>,
     <tt>y</tt> will be associated to that interval.
@@ -376,7 +376,7 @@ bool is_element_equal
                            Traits,Interval,Compare,Alloc>& right
 )
 {
-	return Map::is_element_equal(left, right);
+    return Map::is_element_equal(left, right);
 }
 
 
@@ -497,12 +497,12 @@ template
 typename IntervalMap<DomainT,CodomainT,Traits,Interval,Compare,Alloc>::interval_type 
 enclosure(const IntervalMap<DomainT,CodomainT,Traits,Interval,Compare,Alloc>& object)
 {
-	typedef IntervalMap<DomainT,CodomainT,Traits,Interval,Compare,Alloc> IntervalMapT;
+    typedef IntervalMap<DomainT,CodomainT,Traits,Interval,Compare,Alloc> IntervalMapT;
     typedef typename IntervalMapT::interval_type interval_type;
     return 
         object.empty() ? neutron<interval_type>::value()
         : (object.begin()->KEY_VALUE)
-			.span(object.rbegin()->KEY_VALUE);
+            .span(object.rbegin()->KEY_VALUE);
 }
 
 }} // namespace itl boost

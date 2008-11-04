@@ -100,7 +100,7 @@ namespace boost{namespace itl
         typedef interval_base_set<itl::split_interval_set<DomainT,Interval,Compare,Alloc>,
                                   DomainT,Interval,Compare,Alloc> base_type;
 
-		typedef split_interval_set<DomainT,Interval,Compare,Alloc> type;
+        typedef split_interval_set<DomainT,Interval,Compare,Alloc> type;
         typedef interval_set<DomainT,Interval,Compare,Alloc> joint_type;
 
         /// The domain type of the set
@@ -199,7 +199,7 @@ namespace boost{namespace itl
         void subtract_rest(const interval_type& x_itv, iterator& it, iterator& end_it);
     } ;
 
-	/*
+    /*
     template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
     bool split_interval_set<DomainT,Interval,Compare,Alloc>::contains_(const interval_type& x)const
     {
@@ -216,18 +216,18 @@ namespace boost{namespace itl
         x_asSet.add(x);
         return x_asSet.contained_in(matchSet);
     }
-	*/
+    */
 
 
-	template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
+    template <typename DomainT, template<class>class Interval, template<class>class Compare, template<class>class Alloc>
     bool split_interval_set<DomainT,Interval,Compare,Alloc>::contains_(const interval_type& interv)const
     {
-		if(interv.empty()) 
-			return true;
+        if(interv.empty()) 
+            return true;
 
-		type section;
-		add_intersection(section, interv);
-		return is_element_equal(section, type(interv));
+        type section;
+        add_intersection(section, interv);
+        return is_element_equal(section, type(interv));
     }
 
 

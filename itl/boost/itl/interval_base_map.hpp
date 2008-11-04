@@ -259,7 +259,7 @@ public:
     /// is the map empty?
     bool empty()const { return _map.empty(); }
 
-	//--- contains: set view ------------------------------------------------------
+    //--- contains: set view ------------------------------------------------------
     /// Does the map contain the key element \c x
     bool contains(const DomainT& x)const
     { 
@@ -267,12 +267,12 @@ public:
         return it != _map.end(); 
     }
 
-	//--- contains: map view ------------------------------------------------------
+    //--- contains: map view ------------------------------------------------------
     /// Does the map contain the element pair <tt>x = (key_element,value)</tt>?
     bool contains(const base_pair_type& x)const
     { return that()->contains_(value_type(interval_type(x.key), x.data));    }
 
-	/// Does the map contain all element value pairs represented by the interval-value pair sub?
+    /// Does the map contain all element value pairs represented by the interval-value pair sub?
     bool contains(const value_type& sub)const
     { return that()->contains_(sub); }
 
@@ -287,13 +287,13 @@ public:
 
 /** @name E: Bounds and other selectors */
 //@{ 
-	/// Lower bound of the first interval
+    /// Lower bound of the first interval
     DomainT lower()const 
-	{ return empty()? Interval<DomainT>().lower() : (*(_map.begin())).KEY_VALUE.lower(); }
+    { return empty()? Interval<DomainT>().lower() : (*(_map.begin())).KEY_VALUE.lower(); }
 
-	/// Upper bound of the last interval
+    /// Upper bound of the last interval
     DomainT upper()const 
-	{ return empty()? Interval<DomainT>().upper() : (*(_map.rbegin())).KEY_VALUE.upper(); }
+    { return empty()? Interval<DomainT>().upper() : (*(_map.rbegin())).KEY_VALUE.upper(); }
 
     /// Number of intervals which is also the size of the iteration over the map
     size_t interval_count()const { return _map.size(); }
@@ -306,7 +306,7 @@ public:
     /// An interval map's size is it's cardinality
     size_type size()const { return cardinality(); }
 
-	/// The length of the interval map which is the sum of interval lenghts
+    /// The length of the interval map which is the sum of interval lenghts
     difference_type length()const;
 
 //@}
@@ -591,7 +591,7 @@ public:
     */
 
 
-	/// Intersect the sectant with *this. Pass the result to section.
+    /// Intersect the sectant with *this. Pass the result to section.
     template<class SectantT>
     void intersect(interval_base_map& section, const SectantT& sectant)const
     {
@@ -661,7 +661,7 @@ public:
 
 //@}
 
-		
+        
     iterator lower_bound(const key_type& interval)
     { return _map.lower_bound(interval); }
 
@@ -687,7 +687,7 @@ public:
     {
         //content_is_neutron<key_type, data_type> neutron_dropper;
         if(!Traits::absorbs_neutrons)
-			erase_if<content_is_neutron>();
+            erase_if<content_is_neutron>();
     }
 
     /// Copies this map into a neutron_absorber type.
@@ -763,11 +763,11 @@ public:
     */
 //@{
     /// Remove all elements where property <tt>p</tt> holds, keep all others
-	template<template<class>class Predicate>
+    template<template<class>class Predicate>
     interval_base_map& erase_if(){ _map.erase_if<Predicate>(); return *this; }
 
     /// Copy all elements if property <tt>p</tt> holds
-	template<template<class>class Predicate>
+    template<template<class>class Predicate>
     interval_base_map& assign_if(const interval_base_map& src)
     { _map.assign_if<Predicate>(src._map); return *this; }
 

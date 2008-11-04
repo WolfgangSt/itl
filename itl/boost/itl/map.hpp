@@ -259,13 +259,13 @@ namespace boost{namespace itl
         /** Intersect set \c x2 and \c *this.
             So \c *this becomes the intersection of \c *this and \c x2 */
         map& operator *= (const set_type& x2) 
-		{ Map::intersect(*this, x2); return *this; }
+        { Map::intersect(*this, x2); return *this; }
 
         /** \c key_value allows for a uniform access to \c key_values which is
             is used for common algorithms on sets and maps. */
         template<typename IteratorT>
         static const key_type& key_value(IteratorT& value_)
-		{ return (*value_).first; }
+        { return (*value_).first; }
 
         /** \c data_value allows for a uniform access to \c data_values which is
             is used for common algorithms on sets and maps. */
@@ -298,12 +298,12 @@ namespace boost{namespace itl
 
         /** Erase the elements in *this map to which property \c hasProperty applies. 
         Keep all the rest. */
-		template<template<class>class Predicate>
+        template<template<class>class Predicate>
         map& erase_if();
 
         /** Copy the elements in map \c src to which property \c hasProperty applies 
         into \c *this map. */
-		template<template<class>class Predicate>
+        template<template<class>class Predicate>
         map& assign_if(const map& src);
 
         /** Represent this map as string */
@@ -460,8 +460,8 @@ namespace boost{namespace itl
         return repr;
     }
 
-	template <typename KeyT, typename DataT, class Traits, template<class>class Compare, template<class>class Alloc>
-		template<template<class>class Predicate>
+    template <typename KeyT, typename DataT, class Traits, template<class>class Compare, template<class>class Alloc>
+        template<template<class>class Predicate>
     map<KeyT,DataT,Traits,Compare,Alloc>& map<KeyT,DataT,Traits,Compare,Alloc>
         ::erase_if()
     {
@@ -475,7 +475,7 @@ namespace boost{namespace itl
 
 
     template <typename KeyT, typename DataT, class Traits, template<class>class Compare, template<class>class Alloc>
-		template<template<class>class Predicate>
+        template<template<class>class Predicate>
     map<KeyT,DataT,Traits,Compare,Alloc>& map<KeyT,DataT,Traits,Compare,Alloc>
         ::assign_if(const map<KeyT,DataT,Traits,Compare,Alloc>& src)
     {
@@ -483,7 +483,7 @@ namespace boost{namespace itl
         const_iterator it = src.begin();
         while(it != src.end()) {
             if(Predicate<value_type>(*it)) 
-				add(*it++); 
+                add(*it++); 
         }
         return *this;
     }

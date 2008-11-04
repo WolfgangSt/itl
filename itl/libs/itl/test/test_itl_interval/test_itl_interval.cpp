@@ -117,7 +117,7 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(test_itl_interval_ctor_4_integral_types, T, integr
 {
     BOOST_CHECK_EQUAL(interval<T>().first(),  itl::unon<T>::value());
     BOOST_CHECK_EQUAL(interval<T>().last(),   itl::neutron<T>::value());
-	BOOST_CHECK_EQUAL(interval<T>().length(), itl::neutron<typename interval<T>::difference_type>::value());
+    BOOST_CHECK_EQUAL(interval<T>().length(), itl::neutron<typename interval<T>::difference_type>::value());
 
     BOOST_CHECK_EQUAL(interval<T>(0,0).length(), itl::unon<typename interval<T>::difference_type>::value());
 }
