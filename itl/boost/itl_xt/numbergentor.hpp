@@ -91,7 +91,7 @@ public:
     NumTV operator() (NumTV lwb, NumTV upb)  { return rnd_within_exUpb<NumTV>(lwb,upb); }
     NumTV operator() (interval<NumTV> rng) 
     { 
-        J_ASSERT(rng.is_rightopen() || rng.is_closed());
+        BOOST_ASSERT(rng.is_rightopen() || rng.is_closed());
         if(rng.is_rightopen())
             return rnd_within_exUpb<NumTV>(rng.lower(), rng.upper());
         else
@@ -151,9 +151,9 @@ public:
     }
 
     WeightsT& operator[](int idx) 
-    { J_ASSERT(0<=idx && idx<_size); return _weights[idx]; }
+    { BOOST_ASSERT(0<=idx && idx<_size); return _weights[idx]; }
 
-    void setWeight(int idx, WeightsT val) { J_ASSERT(0<=idx && idx<_size); _weights[idx] = val; }
+    void setWeight(int idx, WeightsT val) { BOOST_ASSERT(0<=idx && idx<_size); _weights[idx] = val; }
 
     WeightsT getKumWeight(int idx)const { return _kumWeights[idx]; }
 

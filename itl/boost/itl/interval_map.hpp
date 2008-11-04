@@ -12,6 +12,7 @@ class interval_map
 #ifndef __interval_map_h_JOFA_080705__
 #define __interval_map_h_JOFA_080705__
 
+#include <boost/assert.hpp>
 #include <boost/itl/interval_set.hpp>
 #include <boost/itl/interval_base_map.hpp>
 #include <boost/itl/interval_maps.hpp>
@@ -295,9 +296,9 @@ typename interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>::iterator
     ::joint_insert(iterator& left_it, const iterator& right_it)
 {
     // both left and right are in the set and they are neighbours
-    J_ASSERT(right_it != _map.end());
-    J_ASSERT(left_it->KEY_VALUE.exclusive_less(right_it->KEY_VALUE));
-    J_ASSERT(left_it->KEY_VALUE.touches(right_it->KEY_VALUE));
+    BOOST_ASSERT(right_it != _map.end());
+    BOOST_ASSERT(left_it->KEY_VALUE.exclusive_less(right_it->KEY_VALUE));
+    BOOST_ASSERT(left_it->KEY_VALUE.touches(right_it->KEY_VALUE));
 
     interval_type interval    = left_it->KEY_VALUE;
     //It has to be a copy, because is location will be erased 
@@ -310,8 +311,8 @@ typename interval_map<DomainT,CodomainT,Traits,Interval,Compare,Alloc>::iterator
     
     std::pair<iterator,bool> insertion = this->_map.insert(make_pair(interval, value));
     iterator new_it = insertion.ITERATOR;
-    J_ASSERT(insertion.WAS_SUCCESSFUL);
-    J_ASSERT(new_it!=this->_map.end());
+    BOOST_ASSERT(insertion.WAS_SUCCESSFUL);
+    BOOST_ASSERT(new_it!=this->_map.end());
     left_it = new_it;
     return new_it;
 }

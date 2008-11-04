@@ -38,7 +38,7 @@ class itl::list
 #include <string>
 #include <list>
 #include <algorithm>
-#include <boost/itl/j_assert.hpp>
+#include <boost/assert.hpp>
 #include <boost/itl/type_traits/to_string.hpp>
 #include <boost/itl/set_algo.hpp>
 #include <boost/itl/predicates.hpp>
@@ -368,8 +368,8 @@ namespace boost{namespace itl
     template <typename DataT, template<class>class Alloc>
     void list<DataT,Alloc>::interlace(const list& inList)
     {
-        J_ASSERT(is_unique());
-        J_ASSERT(inList.is_unique());
+        BOOST_ASSERT(is_unique());
+        BOOST_ASSERT(inList.is_unique());
         list seq = inList;
         iterator inPos = begin();
         interlace(seq, inPos);

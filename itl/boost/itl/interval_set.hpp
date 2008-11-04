@@ -33,9 +33,9 @@ class interval_set
 #ifndef __itl_interval_set_hpp_JOFA_990223__
 #define __itl_interval_set_hpp_JOFA_990223__
 
+#include <boost/assert.hpp>
 #include <boost/itl/interval_base_set.hpp>
 #include <boost/itl/interval_sets.hpp>
-#include <boost/itl/j_assert.hpp>
 
 namespace boost{namespace itl
 {
@@ -290,8 +290,8 @@ typename interval_set<DomainT,Interval,Compare,Alloc>::iterator
     ::joint_insert(const iterator& left_it, const iterator& right_it)
 {
     // both left and right are in the set and they are neighbours
-    DEV_ASSERT((*left_it).excl_less(*right_it));
-    DEV_ASSERT((*left_it).touches(*right_it));
+    BOOST_ASSERT((*left_it).excl_less(*right_it));
+    BOOST_ASSERT((*left_it).touches(*right_it));
 
     interval_type curItv = (*left_it);
     curItv.extend(*right_it);
@@ -300,7 +300,7 @@ typename interval_set<DomainT,Interval,Compare,Alloc>::iterator
     this->_set.erase(right_it);
     
     iterator new_it = this->_set.insert(curItv).ITERATOR;
-    J_ASSERT(new_it!=this->_set.end());
+    BOOST_ASSERT(new_it!=this->_set.end());
     return new_it;
 }
 

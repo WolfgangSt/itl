@@ -31,7 +31,7 @@ DEALINGS IN THE SOFTWARE.
 
 #include <functional>
 #include <stdlib.h>
-#include <boost/itl/j_assert.hpp>
+#include <boost/assert.hpp>
 #include <boost/itl/interval.hpp>
 
 namespace boost{namespace itl
@@ -51,15 +51,15 @@ public:
 
 
     unsigned rnd(unsigned lwb, unsigned upb)
-    { // JODO cpp
-        J_ASSERT(0<=lwb && lwb <= upb);
+    {
+        BOOST_ASSERT(0<=lwb && lwb <= upb);
         unsigned len = upb - lwb ;
         unsigned some = rnd(len);
         return some + lwb;
     }
 
     unsigned rnd(const itl::interval<unsigned>& rng)
-    { J_ASSERT( rng.is_rightopen() ); return rnd(rng.lower(),rng.upper()); }
+    { BOOST_ASSERT( rng.is_rightopen() ); return rnd(rng.lower(),rng.upper()); }
 
 private:
     //JODO subtractive_rng m_random;

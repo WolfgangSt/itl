@@ -56,7 +56,7 @@ public:
     void setRangeOfSampleSize(int lwb, int upb)
     { m_sampleSizeRange = rightopen_interval(lwb,upb); }
     void setRangeOfSampleSize(const interval<int>& szRange)
-    { J_ASSERT(szRange.isROpen()); m_sampleSizeRange = szRange; }
+    { BOOST_ASSERT(szRange.isROpen()); m_sampleSizeRange = szRange; }
 
     void setUnique(bool truth) { m_unique = truth; }
 

@@ -49,12 +49,12 @@ namespace boost{namespace itl
         void setLowerBoundRange(int lwb, int upb)
         { setLowerBoundRange(rightopen_interval(lwb,upb)); }
         void setLowerBoundRange(const interval<int>& range)
-        { J_ASSERT(range.is_rightopen()||range.is_closed()); _lwbGentor.setRange(range); }
+        { BOOST_ASSERT(range.is_rightopen()||range.is_closed()); _lwbGentor.setRange(range); }
 
         void setUpperBoundRange(int lwb, int upb)
         { setUpperBoundRange(rightopen_interval(lwb,upb)); }
         void setUpperBoundRange(const interval<int>& range)
-        { J_ASSERT(range.is_rightopen()||range.is_closed()); _upbGentor.setRange(range); }
+        { BOOST_ASSERT(range.is_rightopen()||range.is_closed()); _upbGentor.setRange(range); }
 
     private:
         NumberGentorT<Type>   _lwbGentor;

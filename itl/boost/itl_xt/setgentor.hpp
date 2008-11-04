@@ -66,7 +66,7 @@ public:
     void setRangeOfSampleSize(int lwb, int upb)
     { m_sampleSizeRange = rightopen_interval(lwb,upb); }
     void setRangeOfSampleSize(const interval<int>& szRange)
-    { J_ASSERT(szRange.is_rightopen()); m_sampleSizeRange = szRange; }
+    { BOOST_ASSERT(szRange.is_rightopen()); m_sampleSizeRange = szRange; }
 
     DomainGentorPT domainGentor()const { return p_domainGentor; } 
 
